@@ -108,9 +108,7 @@ public class KakaoAuthService {
                     .email(email)
                     .name(userInfo.getProperties().getNickname())
                     .birth(null) // 카카오에서 생년월일 정보가 없을 수 있음
-                    .gender(null) // 카카오에서 성별 정보가 없을 수 있음
                     .phone(null) // 카카오에서 전화번호 정보가 없을 수 있음
-                    .password("kakao_login") // 카카오 로그인은 비밀번호가 필요 없으므로 임의 값 설정
                     .build();
             userMapper.insertUser(newUser);
 

@@ -50,11 +50,4 @@ public class ServletConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/v2/api-docs")
 			.addResourceLocations("classpath:/META-INF/resources/");
 	}
-
-	// Servlet 3.0 파일 업로드 사용시
-	@Bean
-	public MultipartResolver multipartResolver() {
-		StandardServletMultipartResolver resolver = new StandardServletMultipartResolver();
-		return resolver;
-	}
 }

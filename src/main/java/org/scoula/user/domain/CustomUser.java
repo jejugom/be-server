@@ -15,7 +15,7 @@ public class CustomUser extends User {
     }
 
     public CustomUser(UserVO userVO) {
-        super(userVO.getEmail(), userVO.getPassword(), new ArrayList<>()); // 권한이 없으므로 빈 리스트 전달
+        super(userVO.getEmail(), "", new ArrayList<>()); // 권한이 없으므로 빈 리스트 전달
         this.user = userVO;
     }
 

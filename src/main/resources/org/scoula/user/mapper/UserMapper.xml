@@ -6,17 +6,16 @@
         <result property="name" column="name"/>
         <result property="phone" column="phone"/>
         <result property="birth" column="birth"/>
-        <result property="gender" column="gender"/>
     </resultMap>
 
     <select id="findByEmail" resultMap="userMap">
-        SELECT email, name, phone, birth, gender
+        SELECT email, name, phone, birth
         FROM user
         WHERE email = #{email}
     </select>
 
     <insert id="insertUser">
-        INSERT INTO user (email, name, phone, birth, gender)
-        VALUES (#{email}, #{name}, #{phone}, #{birth}, #{gender})
+        INSERT INTO user (email, name, phone, birth)
+        VALUES (#{email}, #{name}, #{phone}, #{birth})
     </insert>
 </mapper>

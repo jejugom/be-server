@@ -14,7 +14,7 @@ import java.util.Date;
 public class BookingVO {
     private Integer id;
     private String email;
-    private String bankCode;
+    private String branchCode;
     private String prodCode;
     private Date date;
     private String time;

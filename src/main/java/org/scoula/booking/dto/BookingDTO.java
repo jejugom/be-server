@@ -15,7 +15,7 @@ import java.util.Date;
 public class BookingDTO {
     private Integer id;
     private String email;
-    private String bankCode;
+    private String branchCode;
     private String prodCode;
     private Date date;
     private String time;
@@ -25,7 +25,7 @@ public class BookingDTO {
         return BookingDTO.builder()
                 .id(booking.getId())
                 .email(booking.getEmail())
-                .bankCode(booking.getBankCode())
+                .branchCode(booking.getBranchCode())
                 .prodCode(booking.getProdCode())
                 .date(booking.getDate())
                 .time(booking.getTime())
@@ -37,7 +37,7 @@ public class BookingDTO {
         return BookingVO.builder()
                 .id(id)
                 .email(email)
-                .bankCode(bankCode)
+                .branchCode(branchCode)
                 .prodCode(prodCode)
                 .date(date)
                 .time(time)

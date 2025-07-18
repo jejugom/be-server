@@ -14,9 +14,7 @@ import java.util.Date;
 @Builder
 public class UserVO {
     private String email;
-    private String password;
     private String name;
     private String phone;
     private Date birth;
-    private String gender;
 }

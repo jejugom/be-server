@@ -17,7 +17,6 @@ public class UserDTO {
     private String name;
     private String phone;
     private Date birth;
-    private String gender;
 
     public static UserDTO of(UserVO user) {
         return UserDTO.builder()
@@ -25,7 +24,6 @@ public class UserDTO {
                 .name(user.getName())
                 .phone(user.getPhone())
                 .birth(user.getBirth())
-                .gender(user.getGender())
                 .build();
     }
 
@@ -35,7 +33,6 @@ public class UserDTO {
                 .name(name)
                 .phone(phone)
                 .birth(birth)
-                .gender(gender)
                 .build();
     }
 }
