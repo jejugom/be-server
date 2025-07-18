@@ -1,7 +1,6 @@
 package org.scoula.config;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -24,8 +23,8 @@ import lombok.extern.log4j.Log4j2;
 
 @Configuration
 @PropertySource({"classpath:/application.properties"})
-@MapperScan(basePackages = {"org.scoula.board.mapper","org.scoula.member.mapper","org.scoula.travel.mapper"})
-@ComponentScan(basePackages = {"org.scoula.board.service","org.scoula.member.service","org.scoula.travel.service"})
+@MapperScan(basePackages = {"org.scoula.user.mapper", "org.scoula.asset.mapper", "org.scoula.recommend.mapper", "org.scoula.faq.mapper", "org.scoula.bank.mapper", "org.scoula.booking.mapper"})
+@ComponentScan(basePackages = {"org.scoula.user.service", "org.scoula.asset.service", "org.scoula.recommend.service", "org.scoula.faq.service", "org.scoula.bank.service", "org.scoula.booking.service"})
 @Log4j2
 @EnableTransactionManagement
 /***

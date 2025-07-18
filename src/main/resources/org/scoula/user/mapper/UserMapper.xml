@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.user.mapper.UserMapper">
+    <resultMap id="userMap" type="org.scoula.user.domain.UserVO">
+        <id property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="birth" column="birth"/>
+        <result property="gender" column="gender"/>
+        <collection property="authList" resultMap="authMap"/>
+    </resultMap>
+
+    <resultMap id="authMap" type="org.scoula.user.domain.AuthVO">
+        <result property="email" column="email"/>
+        <result property="auth" column="auth"/>
+    </resultMap>
+
+    <select id="findByEmail" resultMap="userMap">
+        SELECT u.email, u.name, u.phone, u.birth, u.gender, a.auth
+        FROM user u
+                 LEFT JOIN auth a ON u.email = a.email
+        WHERE u.email = #{email}
+    </select>
+
+    <insert id="insertUser">
+        INSERT INTO user (email, name, phone, birth, gender)
+        VALUES (#{email}, #{name}, #{phone}, #{birth}, #{gender})
+    </insert>
+
+    <insert id="insertAuth">
+        INSERT INTO auth (email, auth) VALUES (#{email}, #{auth})
+    </insert>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.asset.mapper.AssetDetailMapper">
+    <select id="getAssetDetailsByEmail" resultType="org.scoula.asset.domain.AssetDetailVO">
+        SELECT id, email, code, amount, registered_at, end_date, asset_name, business_type
+        FROM asset_detail
+        WHERE email = #{email}
+    </select>
+
+    <select id="getAssetDetailById" resultType="org.scoula.asset.domain.AssetDetailVO">
+        SELECT id, email, code, amount, registered_at, end_date, asset_name, business_type
+        FROM asset_detail
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertAssetDetail" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO asset_detail (email, code, amount, registered_at, end_date, asset_name, business_type)
+        VALUES (#{email}, #{code}, #{amount}, #{registeredAt}, #{endDate}, #{assetName}, #{businessType})
+    </insert>
+
+    <update id="updateAssetDetail">
+        UPDATE asset_detail
+        SET email = #{email},
+            code = #{code},
+            amount = #{amount},
+            registered_at = #{registeredAt},
+            end_date = #{endDate},
+            asset_name = #{assetName},
+            business_type = #{businessType}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteAssetDetail">
+        DELETE FROM asset_detail WHERE id = #{id}
+    </delete>
+</mapper>

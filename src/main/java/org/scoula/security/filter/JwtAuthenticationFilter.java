@@ -30,10 +30,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtProcessor jwtProcessor;
 	private final UserDetailsService userDetailsService;
 	private Authentication getAuthentication(String token){
-		//jwt에서 username 가져오기
-		String username = jwtProcessor.getUsername(token);
-		//db 에서 username 가져오가ㅣ
-		UserDetails principle = userDetailsService.loadUserByUsername(username);
+		//jwt에서 email 가져오기
+		String email = jwtProcessor.getUsername(token);
+		//db 에서 email 가져오기
+		UserDetails principle = userDetailsService.loadUserByUsername(email);
 		return new UsernamePasswordAuthenticationToken(principle,null,principle.getAuthorities());
 	}
 	@Override

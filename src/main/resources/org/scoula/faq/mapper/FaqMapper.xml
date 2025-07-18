@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.faq.mapper.FaqMapper">
+    <select id="getAllFaqs" resultType="org.scoula.faq.domain.FaqVO">
+        SELECT id, category, title, content, date FROM faq
+    </select>
+
+    <select id="getFaqById" resultType="org.scoula.faq.domain.FaqVO">
+        SELECT id, category, title, content, date FROM faq WHERE id = #{id}
+    </select>
+
+    <insert id="insertFaq" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO faq (category, title, content, date)
+        VALUES (#{category}, #{title}, #{content}, #{date})
+    </insert>
+
+    <update id="updateFaq">
+        UPDATE faq
+        SET category = #{category},
+            title = #{title},
+            content = #{content},
+            date = #{date}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteFaq">
+        DELETE FROM faq WHERE id = #{id}
+    </delete>
+</mapper>

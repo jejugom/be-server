@@ -16,7 +16,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtProcessor {
-	static private final long TOKEN_VALID_MILISECOND = 1000L * 60 * 5 * 10;//50분
+	static private final long TOKEN_VALID_MILISECOND = 1000L * 60 * 60; // 1시간
 	private String secretKey = "비밀키는 충반한 길이의 문자열이어야 한다";
 	private Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 

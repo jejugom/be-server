@@ -3,7 +3,7 @@ package org.scoula.security.filter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.scoula.security.account.dto.LoginDTO;
+import org.scoula.user.dto.LoginDTO;
 import org.scoula.security.handler.LoginFaillureHandler;
 import org.scoula.security.handler.LoginSuccessHandler;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +40,7 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 
 		//인증 토큰 (UsernamePasswordAuthentication)구성
 		UsernamePasswordAuthenticationToken authenticationToken =
-			new UsernamePasswordAuthenticationToken(login.getUsername(),login.getPassword());
+			new UsernamePasswordAuthenticationToken(login.getEmail(),login.getPassword());
 
 
 		//AuthenticationManager에게 인증 요청

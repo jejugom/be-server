@@ -2,6 +2,7 @@ package org.scoula.security.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.scoula.config.RootConfig;
@@ -20,26 +21,32 @@ import lombok.extern.log4j.Log4j2;
 class JwtProcessorTest {
 	@Autowired
 	JwtProcessor jwtProcessor;
+
+	private String testToken;
+
+	@BeforeEach
+	void setup() {
+		String email = "test@example.com";
+		testToken = jwtProcessor.generateToken(email);
+	}
+
 	@Test
 	void generateToken(){
-		String username = "user0";
-		String token = jwtProcessor.generateToken(username);
-		log.info(token);
-		assertNotNull(token);
+		assertNotNull(testToken);
+		log.info("Generated Token: " + testToken);
 	}
+
 	@Test
 	void getUsername(){
-		String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMCIsImlhdCI6MTc1MDcyOTMwNSwiZXhwIjoxNzUwNzI5NjA1fQ.AqmfVs1vYr3GE5nmLw5Zdv9bSPfP7e9N3e5rByA3d_GdF9XIQZMXMvdpYe8tRY0V";
-		String username = jwtProcessor.getUsername(token);
-		log.info(username);
-		assertNotNull(username);
+		String email = jwtProcessor.getUsername(testToken);
+		log.info("Username from Token: " + email);
+		assertEquals("test@example.com", email);
 	}
+
 	@Test
 	void validToken(){
-		//5분 후 경과 테스트
-		String token = "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMCIsImlhdCI6MTc1MDcyOTMwNSwiZXhwIjoxNzUwNzI5NjA1fQ.AqmfVs1vYr3GE5nmLw5Zdv9bSPfP7e9N3e5rByA3d_GdF9XIQZMXMvdpYe8tRY0V";
-		boolean isValid = jwtProcessor.validateToken(token); //5분 경과 후면 예외 발생
-		log.info(isValid);
-		assertTrue(isValid); //5분 전이면 true.
+		boolean isValid = jwtProcessor.validateToken(testToken);
+		log.info("Token is valid: " + isValid);
+		assertTrue(isValid);
 	}
 }

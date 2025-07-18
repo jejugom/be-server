@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.recommend.mapper.CustomRecommendMapper">
+    <select id="getCustomRecommendsByEmail" resultType="org.scoula.recommend.domain.CustomRecommendVO">
+        SELECT email, code, rec_reason, segment
+        FROM custom_recommend
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insertCustomRecommend">
+        INSERT INTO custom_recommend (email, code, rec_reason, segment)
+        VALUES (#{email}, #{code}, #{recReason}, #{segment})
+    </insert>
+
+    <update id="updateCustomRecommend">
+        UPDATE custom_recommend
+        SET rec_reason = #{recReason},
+            segment = #{segment}
+        WHERE email = #{email} AND code = #{code}
+    </update>
+
+    <delete id="deleteCustomRecommend">
+        DELETE FROM custom_recommend WHERE email = #{email} AND code = #{code}
+    </delete>
+</mapper>

@@ -39,7 +39,7 @@ import org.springframework.web.multipart.support.MultipartFilter;
 @EnableWebSecurity
 @Log4j2
 @MapperScan(basePackages = {
-	"org.scoula.security.account.mapper"})
+	"org.scoula.user.mapper"}) // user.mapper로 변경
 @ComponentScan(basePackages = {"org.scoula.security"})
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -81,11 +81,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests()
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
-			.antMatchers(HttpMethod.POST,"/api/member").authenticated()
-			.antMatchers(HttpMethod.PUT,"/api/member","/api/member/*/changepassword").authenticated()
-			.antMatchers(HttpMethod.POST, "/api/board/**").authenticated()
-			.antMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
-			.antMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
+			.antMatchers(HttpMethod.POST,"/api/user/join").permitAll() // 회원가입은 인증 없이 허용
+			.antMatchers(HttpMethod.POST,"/api/user/login").permitAll() // 로그인도 인증 없이 허용
+			.antMatchers("/api/user/**").authenticated() // 나머지 user 관련 API는 인증 필요
+			.antMatchers("/api/categories/**").authenticated()
+			.antMatchers("/api/asset-details/**").authenticated()
+			.antMatchers("/api/asset-info/**").authenticated()
+			.antMatchers("/api/custom-recommends/**").authenticated()
+			.antMatchers("/api/faqs/**").authenticated()
+			.antMatchers("/api/banks/**").authenticated()
+			.antMatchers("/api/bookings/**").authenticated()
 			.anyRequest().permitAll();
 
 	}
@@ -100,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// Vue 연동 시 중요
 	@Override
 	public void configure(WebSecurity web) throws Exception{
-		web.ignoring().antMatchers("/assets/**","/*","/api/member/**",
+		web.ignoring().antMatchers("/assets/**","/*",
 			//Swagger 관련 url은 보안에서 제오ㅣ
 			"/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs"
 			);

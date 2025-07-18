@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.asset.mapper.AssetInfoMapper">
+    <select id="getAssetInfoByEmail" resultType="org.scoula.asset.domain.AssetInfoVO">
+        SELECT email, asset, segment, filename1, filename2
+        FROM asset_info
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insertAssetInfo">
+        INSERT INTO asset_info (email, asset, segment, filename1, filename2)
+        VALUES (#{email}, #{asset}, #{segment}, #{filename1}, #{filename2})
+    </insert>
+
+    <update id="updateAssetInfo">
+        UPDATE asset_info
+        SET asset = #{asset},
+            segment = #{segment},
+            filename1 = #{filename1},
+            filename2 = #{filename2}
+        WHERE email = #{email}
+    </update>
+
+    <delete id="deleteAssetInfo">
+        DELETE FROM asset_info WHERE email = #{email}
+    </delete>
+</mapper>
