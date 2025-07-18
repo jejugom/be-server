@@ -2,7 +2,6 @@ package org.scoula.user.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.scoula.user.domain.AuthVO;
 import org.scoula.user.domain.UserVO;
 import org.scoula.user.dto.UserDTO;
 import org.scoula.user.mapper.UserMapper;
@@ -35,10 +34,5 @@ public class UserServiceImpl implements UserService {
         // 비밀번호 암호화 (만약 UserDTO에 password 필드가 있다면)
         // userVO.setPassword(passwordEncoder.encode(userVO.getPassword()));
         userMapper.insertUser(userVO);
-
-        AuthVO auth = new AuthVO();
-        auth.setEmail(userVO.getEmail());
-        auth.setAuth("ROLE_USER"); // 기본 권한 부여
-        userMapper.insertAuth(auth);
     }
 }

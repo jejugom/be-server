@@ -7,27 +7,16 @@
         <result property="phone" column="phone"/>
         <result property="birth" column="birth"/>
         <result property="gender" column="gender"/>
-        <collection property="authList" resultMap="authMap"/>
-    </resultMap>
-
-    <resultMap id="authMap" type="org.scoula.user.domain.AuthVO">
-        <result property="email" column="email"/>
-        <result property="auth" column="auth"/>
     </resultMap>
 
     <select id="findByEmail" resultMap="userMap">
-        SELECT u.email, u.name, u.phone, u.birth, u.gender, a.auth
-        FROM user u
-                 LEFT JOIN auth a ON u.email = a.email
-        WHERE u.email = #{email}
+        SELECT email, name, phone, birth, gender
+        FROM user
+        WHERE email = #{email}
     </select>
 
     <insert id="insertUser">
         INSERT INTO user (email, name, phone, birth, gender)
         VALUES (#{email}, #{name}, #{phone}, #{birth}, #{gender})
-    </insert>
-
-    <insert id="insertAuth">
-        INSERT INTO auth (email, auth) VALUES (#{email}, #{auth})
     </insert>
 </mapper>

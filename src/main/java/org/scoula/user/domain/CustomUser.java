@@ -3,6 +3,7 @@ package org.scoula.user.domain;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class CustomUser extends User {
@@ -14,7 +15,7 @@ public class CustomUser extends User {
     }
 
     public CustomUser(UserVO userVO) {
-        super(userVO.getEmail(), userVO.getPassword(), userVO.getAuthList());
+        super(userVO.getEmail(), userVO.getPassword(), new ArrayList<>()); // 권한이 없으므로 빈 리스트 전달
         this.user = userVO;
     }
 

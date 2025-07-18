@@ -71,15 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.antMatchers(HttpMethod.POST,"/api/user/join").permitAll() // 회원가입은 인증 없이 허용
 			.antMatchers(HttpMethod.POST,"/auth/kakao").permitAll() // 카카오 로그인 API 허용
-			.antMatchers("/api/user/**").authenticated() // 나머지 user 관련 API는 인증 필요
-			.antMatchers("/api/categories/**").authenticated()
-			.antMatchers("/api/asset-details/**").authenticated()
-			.antMatchers("/api/asset-info/**").authenticated()
-			.antMatchers("/api/custom-recommends/**").authenticated()
-			.antMatchers("/api/faqs/**").authenticated()
-			.antMatchers("/api/banks/**").authenticated()
-			.antMatchers("/api/bookings/**").authenticated()
-			.anyRequest().permitAll();
+			.anyRequest().permitAll(); // 모든 요청 허용
 
 	}
 	//Authentication Manager 구성

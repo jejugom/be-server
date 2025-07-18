@@ -3,7 +3,6 @@ package org.scoula.user.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.scoula.user.domain.AuthVO;
 import org.scoula.user.domain.UserVO;
 import org.scoula.user.dto.KakaoTokenResponseDTO;
 import org.scoula.user.dto.KakaoUserInfoDTO;
@@ -114,11 +113,6 @@ public class KakaoAuthService {
                     .password("kakao_login") // 카카오 로그인은 비밀번호가 필요 없으므로 임의 값 설정
                     .build();
             userMapper.insertUser(newUser);
-
-            AuthVO auth = new AuthVO();
-            auth.setEmail(newUser.getEmail());
-            auth.setAuth("ROLE_USER");
-            userMapper.insertAuth(auth);
 
             return newUser;
         }
