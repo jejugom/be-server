@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.scoula.user.dto.LoginDTO;
 import org.scoula.security.handler.LoginFaillureHandler;
-import org.scoula.security.handler.LoginSuccessHandler;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,12 +22,10 @@ public class JwtUsernamePasswordAuthenticationFilter extends UsernamePasswordAut
 	//스프링 생성자 주입을 통해 전달
 	public JwtUsernamePasswordAuthenticationFilter(
 		AuthenticationManager authenticationManager,
-		LoginSuccessHandler loginSuccessHandler,
 		LoginFaillureHandler loginFaillureHandler
 	) {
 		super(authenticationManager);
 		setFilterProcessesUrl("/api/auth/login"); //POST 로그인 요청 url
-		setAuthenticationSuccessHandler(loginSuccessHandler); //로그인 성공 핸들러 등록
 		setAuthenticationFailureHandler(loginFaillureHandler);//로그인 실패 핸들러 등록
 	}
 
