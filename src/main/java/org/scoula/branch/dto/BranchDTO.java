@@ -1,16 +1,16 @@
-package org.scoula.bank.dto;
+package org.scoula.branch.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.scoula.bank.domain.BankVO;
+import org.scoula.branch.domain.BranchVO;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BankDTO {
+public class BranchDTO {
     private String code;
     private String name;
     private String tel;
@@ -18,19 +18,19 @@ public class BankDTO {
     private String x;
     private String y;
 
-    public static BankDTO of(BankVO bank) {
-        return BankDTO.builder()
-                .code(bank.getCode())
-                .name(bank.getName())
-                .tel(bank.getTel())
-                .address(bank.getAddress())
-                .x(bank.getX())
-                .y(bank.getY())
+    public static BranchDTO of(BranchVO branch) {
+        return BranchDTO.builder()
+                .code(branch.getCode())
+                .name(branch.getName())
+                .tel(branch.getTel())
+                .address(branch.getAddress())
+                .x(branch.getX())
+                .y(branch.getY())
                 .build();
     }
 
-    public BankVO toVO() {
-        return BankVO.builder()
+    public BranchVO toVO() {
+        return BranchVO.builder()
                 .code(code)
                 .name(name)
                 .tel(tel)

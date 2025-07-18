@@ -1,4 +1,4 @@
-package org.scoula.bank.domain;
+package org.scoula.branch.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BankVO {
+public class BranchVO {
     private String code;
     private String name;
     private String tel;

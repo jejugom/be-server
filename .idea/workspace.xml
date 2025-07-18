@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/AuthVO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/CustomUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/CustomUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserInfoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/bank/controller/BankController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/bank/domain/BankVO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/bank/dto/BankDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/bank/mapper/BankMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/bank/service/BankService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/bank/service/BankServiceImpl.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -406,7 +404,7 @@
       <workItem from="1751517020811" duration="15000" />
       <workItem from="1751847465488" duration="7355000" />
       <workItem from="1752741061207" duration="2631000" />
-      <workItem from="1752815516335" duration="6714000" />
+      <workItem from="1752815516335" duration="7050000" />
     </task>
     <servers />
   </component>
