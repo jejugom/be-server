@@ -4,7 +4,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.mybatis.spring.annotation.MapperScan;
 import org.scoula.security.filter.AuthenticationErrorFilter;
 import org.scoula.security.filter.JwtAuthenticationFilter;
-import org.scoula.security.filter.JwtUsernamePasswordAuthenticationFilter;
 import org.scoula.security.handler.CustomAccessDeniedHandler;
 import org.scoula.security.handler.CustomAuthenticationEntryPoint;
 import org.scoula.security.handler.LoginFaillureHandler;
@@ -50,20 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public JwtUsernamePasswordAuthenticationFilter jwtUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) throws Exception {
-		return new JwtUsernamePasswordAuthenticationFilter(authenticationManager, loginFaillureHandler);
-	}
-
 	@Override
 	public void configure(HttpSecurity http) throws Exception{
 		//한글인코딩 필터 설정
 		http.addFilterBefore(encodingFilter(),CsrfFilter.class)
 			//인증 에러 필터
 			.addFilterBefore(authenticationErrorFilter,UsernamePasswordAuthenticationFilter.class)
-			.addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class)
-			//로그인 인증 필터
-			.addFilterBefore(jwtUsernamePasswordAuthenticationFilter(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
 		http.httpBasic().disable()//기본 HTTP 인증 비활성화
 			.csrf().disable()//CSRF 비활성화
 			.formLogin().disable() //FormLogin 비활성화
@@ -78,7 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.antMatchers(HttpMethod.POST,"/api/user/join").permitAll() // 회원가입은 인증 없이 허용
-			.antMatchers(HttpMethod.POST,"/api/user/login").permitAll() // 로그인도 인증 없이 허용
 			.antMatchers(HttpMethod.POST,"/auth/kakao").permitAll() // 카카오 로그인 API 허용
 			.antMatchers("/api/user/**").authenticated() // 나머지 user 관련 API는 인증 필요
 			.antMatchers("/api/categories/**").authenticated()
