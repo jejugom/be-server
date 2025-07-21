@@ -69,11 +69,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return encodingFilter;
 	}
 
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception{
-		return super.authenticationManagerBean();
-	}
+	// @Bean
+	// @Override
+	// public AuthenticationManager authenticationManagerBean() throws Exception{
+	// 	return super.authenticationManagerBean();
+	// } 카카오 소셜 로그인만 사용 -> 이 메서드 필요없음.
 
 	@Bean
 	public CorsFilter corsFilter(){
