@@ -9,12 +9,13 @@
 *   **Spring Security:** 보안 설정은 Spring Security를 통해 관리되며, 모든 API는 현재 `permitAll()`로 설정되어 있어 인증 없이 접근 가능. (추후 개발 시 재설정 필요)
 
 
-1.  **`application.properties` 설정:**
+  **`application.properties` 설정:**
 
     ```properties
     kakao.client.id=YOUR_KAKAO_REST_API_KEY
     kakao.redirect.uri=http://localhost:8080/kakao/callback
     ```
+  **KAKAO API 개발자 페이지에서 "닉네임" "이메일" 동의설정 필요.**
 
 ## 프로젝트 빌드 및 실행
 
