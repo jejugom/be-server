@@ -17,7 +17,7 @@ public class AssetInfoServiceImpl implements AssetInfoService {
     @Override
     public AssetInfoDTO getAssetInfoByEmail(String email) {
         return Optional.ofNullable(assetInfoMapper.getAssetInfoByEmail(email))
-                .map(AssetInfoDTO::of)
+                .map(AssetInfoDTO::from)
                 .orElseThrow(() -> new NoSuchElementException("AssetInfo not found for email: " + email));
     }
 

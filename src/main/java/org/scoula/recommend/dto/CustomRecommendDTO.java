@@ -11,15 +11,15 @@ import org.scoula.recommend.domain.CustomRecommendVO;
 @AllArgsConstructor
 @Builder
 public class CustomRecommendDTO {
+    private String prdtId;
     private String email;
-    private String code;
     private String recReason;
     private String segment;
 
     public static CustomRecommendDTO of(CustomRecommendVO customRecommend) {
         return CustomRecommendDTO.builder()
+                .prdtId(customRecommend.getPrdtId())
                 .email(customRecommend.getEmail())
-                .code(customRecommend.getCode())
                 .recReason(customRecommend.getRecReason())
                 .segment(customRecommend.getSegment())
                 .build();
@@ -27,8 +27,8 @@ public class CustomRecommendDTO {
 
     public CustomRecommendVO toVO() {
         return CustomRecommendVO.builder()
+                .prdtId(prdtId)
                 .email(email)
-                .code(code)
                 .recReason(recReason)
                 .segment(segment)
                 .build();

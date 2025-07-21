@@ -11,13 +11,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -71,6 +76,48 @@ public class KakaoAuthService {
         return response.getBody();
     }
 
+    // public KakaoTokenResponseDTO getKakaoAccessToken(String code) {
+    //     String tokenUrl = "https://kauth.kakao.com/oauth/token";
+    //
+    //     HttpHeaders headers = new HttpHeaders();
+    //     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    //
+    //     MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+    //     params.add("grant_type", "authorization_code");
+    //     params.add("client_id", kakaoClientId);           // ✅ application.properties에 있는 값
+    //     params.add("redirect_uri", kakaoRedirectUri);     // ✅ 반드시 카카오 콘솔과 일치해야 함
+    //     params.add("code", code);                         // ✅ postman에서 받은 인가코드
+    //
+    //     HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
+    //
+    //     try {
+    //         // 💡 디버깅용: 먼저 문자열로 응답 확인
+    //         ResponseEntity<String> response = restTemplate.exchange(
+    //             tokenUrl,
+    //             HttpMethod.POST,
+    //             kakaoTokenRequest,
+    //             String.class
+    //         );
+    //
+    //         System.out.println("✅ 카카오 응답 본문:\n" + response.getBody());
+    //
+    //         // 💡 응답을 DTO로 변환
+    //         ObjectMapper objectMapper = new ObjectMapper();
+    //         return objectMapper.readValue(response.getBody(), KakaoTokenResponseDTO.class);
+    //
+    //     } catch (HttpClientErrorException | HttpServerErrorException e) {
+    //         System.out.println("❌ 카카오 요청 실패:");
+    //         System.out.println("상태 코드: " + e.getStatusCode());
+    //         System.out.println("응답 본문: " + e.getResponseBodyAsString());
+    //
+    //         // 💡 에러 본문을 파싱해서 사용자에게 전달해도 됨
+    //         throw new RuntimeException("카카오 토큰 요청 중 오류 발생");
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         throw new RuntimeException("카카오 응답 파싱 중 오류 발생", e);
+    //     }
+    // }
+
     private KakaoUserInfoDTO getKakaoUserInfo(String accessToken) {
         String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
 
@@ -97,22 +144,60 @@ public class KakaoAuthService {
     }
 
     private UserVO findOrCreateUser(KakaoUserInfoDTO userInfo) {
-        String email = userInfo.getKakaoAccount().getEmail();
-        Optional<UserVO> existingUser = Optional.ofNullable(userMapper.findByEmail(email));
+        String email = null;
+        if (userInfo.getKakaoAccount() != null) {
+            email = userInfo.getKakaoAccount().getEmail();
+        }
 
+        if (email == null) {
+            throw new RuntimeException("카카오 사용자 이메일이 존재하지 않습니다.");
+        }
+
+        Optional<UserVO> existingUser = Optional.ofNullable(userMapper.findByEmail(email));
         if (existingUser.isPresent()) {
             return existingUser.get();
-        } else {
-            // 새로운 사용자 등록
-            UserVO newUser = UserVO.builder()
-                    .email(email)
-                    .name(userInfo.getProperties().getNickname())
-                    .birth(null) // 카카오에서 생년월일 정보가 없을 수 있음
-                    .phone(null) // 카카오에서 전화번호 정보가 없을 수 있음
-                    .build();
-            userMapper.insertUser(newUser);
-
-            return newUser;
         }
+
+        // 생년월일 파싱
+        Date birthDate = null;
+        if (userInfo.getKakaoAccount() != null &&
+            userInfo.getKakaoAccount().getBirthyear() != null &&
+            userInfo.getKakaoAccount().getBirthday() != null) {
+
+            String birthString = userInfo.getKakaoAccount().getBirthyear()
+                + userInfo.getKakaoAccount().getBirthday();
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                birthDate = sdf.parse(birthString);
+            } catch (ParseException e) {
+                log.warn("생년월일 파싱 실패: " + birthString, e);
+            }
+        }
+
+        // 닉네임 추출 (properties → kakao_account.profile 순서)
+        String nickname = "카카오유저";
+        if (userInfo.getProperties() != null &&
+            userInfo.getProperties().getNickname() != null) {
+            nickname = userInfo.getProperties().getNickname();
+        } else if (userInfo.getKakaoAccount() != null &&
+            userInfo.getKakaoAccount().getProfile() != null &&
+            userInfo.getKakaoAccount().getProfile().getNickname() != null) {
+            nickname = userInfo.getKakaoAccount().getProfile().getNickname();
+        }
+
+        // 새로운 사용자 등록
+        UserVO newUser = UserVO.builder()
+            .email(email)
+            .userName(nickname)
+            .birth(birthDate)
+            .userPhone(null)
+            .branchName(null)
+            .connectedId(null)
+            .branchBranchName(null)
+            .build();
+
+        userMapper.save(newUser);
+        return newUser;
     }
+
 }

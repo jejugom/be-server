@@ -11,32 +11,35 @@ import org.scoula.branch.domain.BranchVO;
 @AllArgsConstructor
 @Builder
 public class BranchDTO {
-    private String code;
-    private String name;
-    private String tel;
-    private String address;
+    private String branchName;
+    private String branchPhone;
+    private String addressName;
+    private String roadAddressName;
     private String x;
     private String y;
+    private String distance;
 
     public static BranchDTO of(BranchVO branch) {
         return BranchDTO.builder()
-                .code(branch.getCode())
-                .name(branch.getName())
-                .tel(branch.getTel())
-                .address(branch.getAddress())
+                .branchName(branch.getBranchName())
+                .branchPhone(branch.getBranchPhone())
+                .addressName(branch.getAddressName())
+                .roadAddressName(branch.getRoadAddressName())
                 .x(branch.getX())
                 .y(branch.getY())
+                .distance(branch.getDistance())
                 .build();
     }
 
     public BranchVO toVO() {
         return BranchVO.builder()
-                .code(code)
-                .name(name)
-                .tel(tel)
-                .address(address)
+                .branchName(branchName)
+                .branchPhone(branchPhone)
+                .addressName(addressName)
+                .roadAddressName(roadAddressName)
                 .x(x)
                 .y(y)
+                .distance(distance)
                 .build();
     }
 }

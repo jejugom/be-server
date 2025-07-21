@@ -14,25 +14,34 @@ import java.util.Date;
 @Builder
 public class UserDTO {
     private String email;
-    private String name;
-    private String phone;
+    private String userName;
+    private String userPhone;
     private Date birth;
+    private String branchName;
+    private String connectedId;
+    private String branchBranchName;
 
     public static UserDTO of(UserVO user) {
         return UserDTO.builder()
                 .email(user.getEmail())
-                .name(user.getName())
-                .phone(user.getPhone())
+                .userName(user.getUserName())
+                .userPhone(user.getUserPhone())
                 .birth(user.getBirth())
+                .branchName(user.getBranchName())
+                .connectedId(user.getConnectedId())
+                .branchBranchName(user.getBranchBranchName())
                 .build();
     }
 
     public UserVO toVO() {
         return UserVO.builder()
                 .email(email)
-                .name(name)
-                .phone(phone)
+                .userName(userName)
+                .userPhone(userPhone)
                 .birth(birth)
+                .branchName(branchName)
+                .connectedId(connectedId)
+                .branchBranchName(branchBranchName)
                 .build();
     }
 }

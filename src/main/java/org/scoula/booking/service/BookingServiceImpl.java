@@ -24,10 +24,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDTO getBookingById(Integer id) {
-        return Optional.ofNullable(bookingMapper.getBookingById(id))
+    public BookingDTO getBookingById(Integer bookingId) {
+        return Optional.ofNullable(bookingMapper.getBookingById(bookingId))
                 .map(BookingDTO::of)
-                .orElseThrow(() -> new NoSuchElementException("Booking not found with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Booking not found with id: " + bookingId));
     }
 
     @Override
@@ -38,14 +38,14 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void updateBooking(BookingDTO bookingDTO) {
         if (bookingMapper.updateBooking(bookingDTO.toVO()) == 0) {
-            throw new NoSuchElementException("Booking not found with id: " + bookingDTO.getId());
+            throw new NoSuchElementException("Booking not found with id: " + bookingDTO.getBookingId());
         }
     }
 
     @Override
-    public void deleteBooking(Integer id) {
-        if (bookingMapper.deleteBooking(id) == 0) {
-            throw new NoSuchElementException("Booking not found with id: " + id);
+    public void deleteBooking(Integer bookingId) {
+        if (bookingMapper.deleteBooking(bookingId) == 0) {
+            throw new NoSuchElementException("Booking not found with id: " + bookingId);
         }
     }
 }

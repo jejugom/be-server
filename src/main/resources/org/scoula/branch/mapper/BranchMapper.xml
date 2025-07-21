@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.scoula.branch.mapper.BranchMapper">
-    <select id="getAllBranches" resultType="org.scoula.branch.domain.BranchVO">
-        SELECT code, name, tel, address, x, y FROM bank
+    <resultMap id="branchMap" type="org.scoula.branch.domain.BranchVO">
+        <id property="branchName" column="branch_name"/>
+        <result property="branchPhone" column="branch_phone"/>
+        <result property="addressName" column="address_name"/>
+        <result property="roadAddressName" column="road_address_name"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <result property="distance" column="distance"/>
+    </resultMap>
+
+    <select id="getAllBranches" resultMap="branchMap">
+        SELECT * FROM branch
     </select>
 
-    <select id="getBranchByCode" resultType="org.scoula.branch.domain.BranchVO">
-        SELECT code, name, tel, address, x, y FROM bank WHERE code = #{code}
+    <select id="getBranchByName" resultMap="branchMap">
+        SELECT * FROM branch WHERE branch_name = #{branchName}
     </select>
 
     <insert id="insertBranch">
-        INSERT INTO bank (code, name, tel, address, x, y)
-        VALUES (#{code}, #{name}, #{tel}, #{address}, #{x}, #{y})
+        INSERT INTO branch (branch_name, branch_phone, address_name, road_address_name, x, y, distance)
+        VALUES (#{branchName}, #{branchPhone}, #{addressName}, #{roadAddressName}, #{x}, #{y}, #{distance})
     </insert>
 
     <update id="updateBranch">
-        UPDATE bank
-        SET name = #{name},
-            tel = #{tel},
-            address = #{address},
+        UPDATE branch
+        SET branch_phone = #{branchPhone},
+            address_name = #{addressName},
+            road_address_name = #{roadAddressName},
             x = #{x},
-            y = #{y}
-        WHERE code = #{code}
+            y = #{y},
+            distance = #{distance}
+        WHERE branch_name = #{branchName}
     </update>
 
     <delete id="deleteBranch">
-        DELETE FROM bank WHERE code = #{code}
+        DELETE FROM branch WHERE branch_name = #{branchName}
     </delete>
 </mapper>

@@ -14,7 +14,10 @@ import java.util.Date;
 @Builder
 public class UserVO {
     private String email;
-    private String name;
-    private String phone;
+    private String userName;
+    private String userPhone;
     private Date birth;
+    private String branchName;
+    private String connectedId;
+    private String branchBranchName;
 }

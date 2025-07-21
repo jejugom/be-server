@@ -9,7 +9,12 @@
     <typeAliases>
         <package name="org.scoula.security.account.domain" />
         <package name="org.scoula.board.domain" />
-<!--        <package name="org.scoula.security.account.domain.MemberVO"/>-->
+        <package name="org.scoula.user.domain" />
+        <package name="org.scoula.asset.domain" />
+        <package name="org.scoula.booking.domain" />
+        <package name="org.scoula.branch.domain" />
+        <package name="org.scoula.faq.domain" />
+        <package name="org.scoula.recommend.domain" />
     </typeAliases>
 
 </configuration>

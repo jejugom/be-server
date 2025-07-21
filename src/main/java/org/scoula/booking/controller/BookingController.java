@@ -20,9 +20,9 @@ public class BookingController {
         return ResponseEntity.ok(bookingService.getBookingsByEmail(email));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BookingDTO> getBookingById(@PathVariable Integer id) {
-        return ResponseEntity.ok(bookingService.getBookingById(id));
+    @GetMapping("/{bookingId}")
+    public ResponseEntity<BookingDTO> getBookingById(@PathVariable Integer bookingId) {
+        return ResponseEntity.ok(bookingService.getBookingById(bookingId));
     }
 
     @PostMapping
@@ -31,16 +31,16 @@ public class BookingController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBooking(@PathVariable Integer id, @RequestBody BookingDTO bookingDTO) {
-        bookingDTO.setId(id);
+    @PutMapping("/{bookingId}")
+    public ResponseEntity<Void> updateBooking(@PathVariable Integer bookingId, @RequestBody BookingDTO bookingDTO) {
+        bookingDTO.setBookingId(bookingId);
         bookingService.updateBooking(bookingDTO);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable Integer id) {
-        bookingService.deleteBooking(id);
+    @DeleteMapping("/{bookingId}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable Integer bookingId) {
+        bookingService.deleteBooking(bookingId);
         return ResponseEntity.ok().build();
     }
 }

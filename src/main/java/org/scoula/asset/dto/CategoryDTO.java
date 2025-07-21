@@ -11,19 +11,19 @@ import org.scoula.asset.domain.CategoryVO;
 @AllArgsConstructor
 @Builder
 public class CategoryDTO {
-    private String code;
+    private String assetCategoryCode;
     private String name;
 
-    public static CategoryDTO of(CategoryVO category) {
+    public static CategoryDTO from(CategoryVO category) {
         return CategoryDTO.builder()
-                .code(category.getCode())
+                .assetCategoryCode(category.getAssetCategoryCode())
                 .name(category.getName())
                 .build();
     }
 
     public CategoryVO toVO() {
         return CategoryVO.builder()
-                .code(code)
+                .assetCategoryCode(assetCategoryCode)
                 .name(name)
                 .build();
     }

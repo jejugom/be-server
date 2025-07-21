@@ -20,9 +20,9 @@ public class BranchController {
         return ResponseEntity.ok(branchService.getAllBranches());
     }
 
-    @GetMapping("/{code}")
-    public ResponseEntity<BranchDTO> getBranchByCode(@PathVariable String code) {
-        return ResponseEntity.ok(branchService.getBranchByCode(code));
+    @GetMapping("/{branchName}")
+    public ResponseEntity<BranchDTO> getBranchByCode(@PathVariable String branchName) {
+        return ResponseEntity.ok(branchService.getBranchByName(branchName));
     }
 
     @PostMapping
@@ -31,16 +31,16 @@ public class BranchController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{code}")
-    public ResponseEntity<Void> updateBranch(@PathVariable String code, @RequestBody BranchDTO branchDTO) {
-        branchDTO.setCode(code);
+    @PutMapping("/{branchName}")
+    public ResponseEntity<Void> updateBranch(@PathVariable String branchName, @RequestBody BranchDTO branchDTO) {
+        branchDTO.setBranchName(branchName);
         branchService.updateBranch(branchDTO);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{code}")
-    public ResponseEntity<Void> deleteBranch(@PathVariable String code) {
-        branchService.deleteBranch(code);
+    @DeleteMapping("/{branchName}")
+    public ResponseEntity<Void> deleteBranch(@PathVariable String branchName) {
+        branchService.deleteBranch(branchName);
         return ResponseEntity.ok().build();
     }
 }

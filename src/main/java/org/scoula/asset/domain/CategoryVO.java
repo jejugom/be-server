@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CategoryVO {
-    private String code;
+    private String assetCategoryCode;
     private String name;
 }

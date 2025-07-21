@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface BookingService {
     List<BookingDTO> getBookingsByEmail(String email);
-    BookingDTO getBookingById(Integer id);
+    BookingDTO getBookingById(Integer bookingId);
     void addBooking(BookingDTO bookingDTO);
     void updateBooking(BookingDTO bookingDTO);
-    void deleteBooking(Integer id);
+    void deleteBooking(Integer bookingId);
 }

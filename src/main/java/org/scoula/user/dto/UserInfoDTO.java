@@ -11,12 +11,12 @@ import org.scoula.user.domain.UserVO;
 @AllArgsConstructor
 public class UserInfoDTO {
 	String email;
-	String name;
+	String userName;
 
 	public static UserInfoDTO of(UserVO userVO) {
 		return new UserInfoDTO(
 			userVO.getEmail(),
-			userVO.getName()
+			userVO.getUserName()
 		);
 	}
 }

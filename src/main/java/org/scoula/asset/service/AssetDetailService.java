@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface AssetDetailService {
     List<AssetDetailDTO> getAssetDetailsByEmail(String email);
-    AssetDetailDTO getAssetDetailById(Integer id);
+    AssetDetailDTO getAssetDetailById(Integer assetId);
     void addAssetDetail(AssetDetailDTO assetDetailDTO);
     void updateAssetDetail(AssetDetailDTO assetDetailDTO);
-    void deleteAssetDetail(Integer id);
+    void deleteAssetDetail(Integer assetId);
 }

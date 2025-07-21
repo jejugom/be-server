@@ -24,10 +24,10 @@ public class AssetDetailServiceImpl implements AssetDetailService {
     }
 
     @Override
-    public AssetDetailDTO getAssetDetailById(Integer id) {
-        return Optional.ofNullable(assetDetailMapper.getAssetDetailById(id))
+    public AssetDetailDTO getAssetDetailById(Integer assetId) {
+        return Optional.ofNullable(assetDetailMapper.getAssetDetailById(assetId))
                 .map(AssetDetailDTO::of)
-                .orElseThrow(() -> new NoSuchElementException("AssetDetail not found with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("AssetDetail not found with id: " + assetId));
     }
 
     @Override
@@ -37,15 +37,15 @@ public class AssetDetailServiceImpl implements AssetDetailService {
 
     @Override
     public void updateAssetDetail(AssetDetailDTO assetDetailDTO) {
-        // if (assetDetailMapper.updateAssetDetail(assetDetailDTO.toVO()) == 0) {
-        //     throw new NoSuchElementException("AssetDetail not found with id: " + assetDetailDTO.getId());
-        // }
+        if (assetDetailMapper.updateAssetDetail(assetDetailDTO.toVO()) == 0) {
+            throw new NoSuchElementException("AssetDetail not found with id: " + assetDetailDTO.getAssetId());
+        }
     }
 
     @Override
-    public void deleteAssetDetail(Integer id) {
-        // if (assetDetailMapper.deleteAssetDetail(id) == 0) {
-        //     throw new NoSuchElementException("AssetDetail not found with id: " + id);
-        // }
+    public void deleteAssetDetail(Integer assetId) {
+        if (assetDetailMapper.deleteAssetDetail(assetId) == 0) {
+            throw new NoSuchElementException("AssetDetail not found with id: " + assetId);
+        }
     }
 }

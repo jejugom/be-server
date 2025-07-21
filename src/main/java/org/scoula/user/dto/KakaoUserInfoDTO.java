@@ -1,5 +1,6 @@
 package org.scoula.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -24,6 +25,7 @@ public class KakaoUserInfoDTO {
     }
 
     @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class KakaoAccount {
         @JsonProperty("profile_nickname_needs_agreement")
         private Boolean profileNicknameNeedsAgreement;
@@ -32,8 +34,11 @@ public class KakaoUserInfoDTO {
         private Boolean isEmailValid;
         private Boolean isEmailVerified;
         private String email;
+        private String birthyear;
+        private String birthday;
 
         @Data
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Profile {
             private String nickname;
             @JsonProperty("thumbnail_image_url")

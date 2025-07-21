@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class FaqDTO {
-    private Integer id;
+    private int faqId;
     private String category;
     private String title;
     private String content;
@@ -21,7 +21,7 @@ public class FaqDTO {
 
     public static FaqDTO of(FaqVO faq) {
         return FaqDTO.builder()
-                .id(faq.getId())
+                .faqId(faq.getFaqId())
                 .category(faq.getCategory())
                 .title(faq.getTitle())
                 .content(faq.getContent())
@@ -31,7 +31,7 @@ public class FaqDTO {
 
     public FaqVO toVO() {
         return FaqVO.builder()
-                .id(id)
+                .faqId(faqId)
                 .category(category)
                 .title(title)
                 .content(content)

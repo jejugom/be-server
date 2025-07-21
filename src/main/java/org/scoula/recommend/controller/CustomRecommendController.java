@@ -26,17 +26,17 @@ public class CustomRecommendController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{email}/{code}")
-    public ResponseEntity<Void> updateCustomRecommend(@PathVariable String email, @PathVariable String code, @RequestBody CustomRecommendDTO customRecommendDTO) {
+    @PutMapping("/{email}/{prdtId}")
+    public ResponseEntity<Void> updateCustomRecommend(@PathVariable String email, @PathVariable String prdtId, @RequestBody CustomRecommendDTO customRecommendDTO) {
         customRecommendDTO.setEmail(email);
-        customRecommendDTO.setCode(code);
+        customRecommendDTO.setPrdtId(prdtId);
         customRecommendService.updateCustomRecommend(customRecommendDTO);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{email}/{code}")
-    public ResponseEntity<Void> deleteCustomRecommend(@PathVariable String email, @PathVariable String code) {
-        customRecommendService.deleteCustomRecommend(email, code);
+    @DeleteMapping("/{email}/{prdtId}")
+    public ResponseEntity<Void> deleteCustomRecommend(@PathVariable String email, @PathVariable String prdtId) {
+        customRecommendService.deleteCustomRecommend(email, prdtId);
         return ResponseEntity.ok().build();
     }
 }

@@ -20,15 +20,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> getAllCategories() {
         return categoryMapper.getAllCategories().stream()
-                .map(CategoryDTO::of)
+                .map(CategoryDTO::from)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CategoryDTO getCategoryByCode(String code) {
-        return Optional.ofNullable(categoryMapper.getCategoryByCode(code))
-                .map(CategoryDTO::of)
-                .orElseThrow(() -> new NoSuchElementException("Category not found with code: " + code));
+    public CategoryDTO getCategoryByCode(String assetCategoryCode) {
+        return Optional.ofNullable(categoryMapper.getCategoryByCode(assetCategoryCode))
+                .map(CategoryDTO::from)
+                .orElseThrow(() -> new NoSuchElementException("Category not found with code: " + assetCategoryCode));
     }
 
     @Override
@@ -39,14 +39,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void updateCategory(CategoryDTO categoryDTO) {
         if (categoryMapper.updateCategory(categoryDTO.toVO()) == 0) {
-            throw new NoSuchElementException("Category not found with code: " + categoryDTO.getCode());
+            throw new NoSuchElementException("Category not found with code: " + categoryDTO.getAssetCategoryCode());
         }
     }
 
     @Override
-    public void deleteCategory(String code) {
-        if (categoryMapper.deleteCategory(code) == 0) {
-            throw new NoSuchElementException("Category not found with code: " + code);
+    public void deleteCategory(String assetCategoryCode) {
+        if (categoryMapper.deleteCategory(assetCategoryCode) == 0) {
+            throw new NoSuchElementException("Category not found with code: " + assetCategoryCode);
         }
     }
 }

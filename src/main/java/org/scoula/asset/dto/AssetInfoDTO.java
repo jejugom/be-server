@@ -6,20 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.scoula.asset.domain.AssetInfoVO;
 
-import java.math.BigDecimal;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class AssetInfoDTO {
     private String email;
-    private BigDecimal asset;
+    private Long asset;
     private String segment;
     private String filename1;
     private String filename2;
 
-    public static AssetInfoDTO of(AssetInfoVO assetInfo) {
+    public static AssetInfoDTO from(AssetInfoVO assetInfo) {
         return AssetInfoDTO.builder()
                 .email(assetInfo.getEmail())
                 .asset(assetInfo.getAsset())

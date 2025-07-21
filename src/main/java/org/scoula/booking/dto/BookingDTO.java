@@ -13,35 +13,41 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class BookingDTO {
-    private Integer id;
+    private int bookingId;
     private String email;
-    private String branchCode;
-    private String prodCode;
+    private String prdtCode;
     private Date date;
     private String time;
     private String docInfo;
+    private String branchName;
+    private String branchBranchName;
+    private String userEmail;
 
     public static BookingDTO of(BookingVO booking) {
         return BookingDTO.builder()
-                .id(booking.getId())
+                .bookingId(booking.getBookingId())
                 .email(booking.getEmail())
-                .branchCode(booking.getBranchCode())
-                .prodCode(booking.getProdCode())
+                .prdtCode(booking.getPrdtCode())
                 .date(booking.getDate())
                 .time(booking.getTime())
                 .docInfo(booking.getDocInfo())
+                .branchName(booking.getBranchName())
+                .branchBranchName(booking.getBranchBranchName())
+                .userEmail(booking.getUserEmail())
                 .build();
     }
 
     public BookingVO toVO() {
         return BookingVO.builder()
-                .id(id)
+                .bookingId(bookingId)
                 .email(email)
-                .branchCode(branchCode)
-                .prodCode(prodCode)
+                .prdtCode(prdtCode)
                 .date(date)
                 .time(time)
                 .docInfo(docInfo)
+                .branchName(branchName)
+                .branchBranchName(branchBranchName)
+                .userEmail(userEmail)
                 .build();
     }
 }

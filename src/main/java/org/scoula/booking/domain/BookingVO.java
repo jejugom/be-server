@@ -12,11 +12,13 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class BookingVO {
-    private Integer id;
+    private int bookingId;
     private String email;
-    private String branchCode;
-    private String prodCode;
+    private String prdtCode;
     private Date date;
     private String time;
     private String docInfo;
+    private String branchName;
+    private String branchBranchName;
+    private String userEmail;
 }

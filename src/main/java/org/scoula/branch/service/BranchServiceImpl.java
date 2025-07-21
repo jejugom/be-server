@@ -24,10 +24,10 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public BranchDTO getBranchByCode(String code) {
-        return Optional.ofNullable(branchMapper.getBranchByCode(code))
+    public BranchDTO getBranchByName(String branchName) {
+        return Optional.ofNullable(branchMapper.getBranchByName(branchName))
                 .map(BranchDTO::of)
-                .orElseThrow(() -> new NoSuchElementException("Branch not found with code: " + code));
+                .orElseThrow(() -> new NoSuchElementException("Branch not found with name: " + branchName));
     }
 
     @Override
@@ -38,14 +38,14 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public void updateBranch(BranchDTO branchDTO) {
         if (branchMapper.updateBranch(branchDTO.toVO()) == 0) {
-            throw new NoSuchElementException("Branch not found with code: " + branchDTO.getCode());
+            throw new NoSuchElementException("Branch not found with name: " + branchDTO.getBranchName());
         }
     }
 
     @Override
-    public void deleteBranch(String code) {
-        if (branchMapper.deleteBranch(code) == 0) {
-            throw new NoSuchElementException("Branch not found with code: " + code);
+    public void deleteBranch(String branchName) {
+        if (branchMapper.deleteBranch(branchName) == 0) {
+            throw new NoSuchElementException("Branch not found with name: " + branchName);
         }
     }
 }

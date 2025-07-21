@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface BranchService {
     List<BranchDTO> getAllBranches();
-    BranchDTO getBranchByCode(String code);
+    BranchDTO getBranchByName(String branchName);
     void addBranch(BranchDTO branchDTO);
     void updateBranch(BranchDTO branchDTO);
-    void deleteBranch(String code);
+    void deleteBranch(String branchName);
 }

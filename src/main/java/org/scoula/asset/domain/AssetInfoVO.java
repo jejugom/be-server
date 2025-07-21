@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class AssetInfoVO {
     private String email;
-    private BigDecimal asset;
+    private Long asset;
     private String segment;
     private String filename1;
     private String filename2;

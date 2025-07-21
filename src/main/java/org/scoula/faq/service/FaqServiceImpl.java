@@ -24,10 +24,10 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
-    public FaqDTO getFaqById(Integer id) {
-        return Optional.ofNullable(faqMapper.getFaqById(id))
+    public FaqDTO getFaqById(Integer faqId) {
+        return Optional.ofNullable(faqMapper.getFaqById(faqId))
                 .map(FaqDTO::of)
-                .orElseThrow(() -> new NoSuchElementException("FAQ not found with id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("FAQ not found with id: " + faqId));
     }
 
     @Override
@@ -38,14 +38,14 @@ public class FaqServiceImpl implements FaqService {
     @Override
     public void updateFaq(FaqDTO faqDTO) {
         if (faqMapper.updateFaq(faqDTO.toVO()) == 0) {
-            throw new NoSuchElementException("FAQ not found with id: " + faqDTO.getId());
+            throw new NoSuchElementException("FAQ not found with id: " + faqDTO.getFaqId());
         }
     }
 
     @Override
-    public void deleteFaq(Integer id) {
-        if (faqMapper.deleteFaq(id) == 0) {
-            throw new NoSuchElementException("FAQ not found with id: " + id);
+    public void deleteFaq(Integer faqId) {
+        if (faqMapper.deleteFaq(faqId) == 0) {
+            throw new NoSuchElementException("FAQ not found with id: " + faqId);
         }
     }
 }

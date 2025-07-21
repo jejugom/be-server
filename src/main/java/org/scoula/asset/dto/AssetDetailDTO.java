@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.scoula.asset.domain.AssetDetailVO;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -14,38 +13,41 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class AssetDetailDTO {
-    private Integer id;
+    private int assetId;
     private String email;
-    private String code;
-    private BigDecimal amount;
+    private String assetCategoryCode;
+    private Long amount;
     private Date registeredAt;
     private Date endDate;
     private String assetName;
     private String businessType;
+    private String categoryAssetCategoryCode;
 
     public static AssetDetailDTO of(AssetDetailVO assetDetail) {
         return AssetDetailDTO.builder()
-                .id(assetDetail.getId())
+                .assetId(assetDetail.getAssetId())
                 .email(assetDetail.getEmail())
-                .code(assetDetail.getCode())
+                .assetCategoryCode(assetDetail.getAssetCategoryCode())
                 .amount(assetDetail.getAmount())
                 .registeredAt(assetDetail.getRegisteredAt())
                 .endDate(assetDetail.getEndDate())
                 .assetName(assetDetail.getAssetName())
                 .businessType(assetDetail.getBusinessType())
+                .categoryAssetCategoryCode(assetDetail.getCategoryAssetCategoryCode())
                 .build();
     }
 
     public AssetDetailVO toVO() {
         return AssetDetailVO.builder()
-                .id(id)
+                .assetId(assetId)
                 .email(email)
-                .code(code)
+                .assetCategoryCode(assetCategoryCode)
                 .amount(amount)
                 .registeredAt(registeredAt)
                 .endDate(endDate)
                 .assetName(assetName)
                 .businessType(businessType)
+                .categoryAssetCategoryCode(categoryAssetCategoryCode)
                 .build();
     }
 }

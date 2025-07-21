@@ -20,9 +20,9 @@ public class FaqController {
         return ResponseEntity.ok(faqService.getAllFaqs());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<FaqDTO> getFaqById(@PathVariable Integer id) {
-        return ResponseEntity.ok(faqService.getFaqById(id));
+    @GetMapping("/{faqId}")
+    public ResponseEntity<FaqDTO> getFaqById(@PathVariable Integer faqId) {
+        return ResponseEntity.ok(faqService.getFaqById(faqId));
     }
 
     @PostMapping
@@ -31,16 +31,16 @@ public class FaqController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateFaq(@PathVariable Integer id, @RequestBody FaqDTO faqDTO) {
-        faqDTO.setId(id);
+    @PutMapping("/{faqId}")
+    public ResponseEntity<Void> updateFaq(@PathVariable Integer faqId, @RequestBody FaqDTO faqDTO) {
+        faqDTO.setFaqId(faqId);
         faqService.updateFaq(faqDTO);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFaq(@PathVariable Integer id) {
-        faqService.deleteFaq(id);
+    @DeleteMapping("/{faqId}")
+    public ResponseEntity<Void> deleteFaq(@PathVariable Integer faqId) {
+        faqService.deleteFaq(faqId);
         return ResponseEntity.ok().build();
     }
 }

@@ -8,5 +8,5 @@ public interface CustomRecommendService {
     List<CustomRecommendDTO> getCustomRecommendsByEmail(String email);
     void addCustomRecommend(CustomRecommendDTO customRecommendDTO);
     void updateCustomRecommend(CustomRecommendDTO customRecommendDTO);
-    void deleteCustomRecommend(String email, String code);
+    void deleteCustomRecommend(String email, String prdtId);
 }

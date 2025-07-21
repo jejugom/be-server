@@ -20,9 +20,9 @@ public class AssetDetailController {
         return ResponseEntity.ok(assetDetailService.getAssetDetailsByEmail(email));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AssetDetailDTO> getAssetDetailById(@PathVariable Integer id) {
-        return ResponseEntity.ok(assetDetailService.getAssetDetailById(id));
+    @GetMapping("/{assetId}")
+    public ResponseEntity<AssetDetailDTO> getAssetDetailById(@PathVariable Integer assetId) {
+        return ResponseEntity.ok(assetDetailService.getAssetDetailById(assetId));
     }
 
     @PostMapping
@@ -31,16 +31,16 @@ public class AssetDetailController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAssetDetail(@PathVariable Integer id, @RequestBody AssetDetailDTO assetDetailDTO) {
-        assetDetailDTO.setId(id);
+    @PutMapping("/{assetId}")
+    public ResponseEntity<Void> updateAssetDetail(@PathVariable Integer assetId, @RequestBody AssetDetailDTO assetDetailDTO) {
+        assetDetailDTO.setAssetId(assetId);
         assetDetailService.updateAssetDetail(assetDetailDTO);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAssetDetail(@PathVariable Integer id) {
-        assetDetailService.deleteAssetDetail(id);
+    @DeleteMapping("/{assetId}")
+    public ResponseEntity<Void> deleteAssetDetail(@PathVariable Integer assetId) {
+        assetDetailService.deleteAssetDetail(assetId);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,33 +1,35 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import javax.sql.DataSource;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import lombok.extern.log4j.Log4j2;
+import org.scoula.config.RootConfig;
 
 @Log4j2
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {RootConfig.class})
 public class JDBCTests {
-	@BeforeAll
-	public static void setup(){
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		}catch (Exception e){
-			e.printStackTrace();
-		}
-	}
+
+	@Autowired
+	private DataSource dataSource;
+
 	@Test
 	@DisplayName("JDBC 드라이버 연결이 된다.")
 	public void testConnection(){
-		String url = "jdbc:mysql://localhost:3306/scoula_db";
-		try (Connection con= DriverManager.getConnection(url,"scoula","1234")){
+		try (Connection con= dataSource.getConnection()){
 			log.info(con);
 			log.info("DDDDD");
 		}catch (Exception e){
-			fail(e.getMessage());
+			log.error("JDBC connection error: ", e);
+			fail("JDBC connection failed: " + e.getMessage());
 		}
 	}
 }

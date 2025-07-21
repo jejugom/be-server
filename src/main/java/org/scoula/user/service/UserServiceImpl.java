@@ -29,6 +29,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void join(UserDTO userDTO) {
         UserVO userVO = userDTO.toVO();
-        userMapper.insertUser(userVO);
+        userMapper.save(userVO);
     }
 }

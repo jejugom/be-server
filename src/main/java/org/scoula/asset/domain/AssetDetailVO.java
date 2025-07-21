@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -13,12 +12,13 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class AssetDetailVO {
-    private Integer id;
+    private int assetId;
     private String email;
-    private String code;
-    private BigDecimal amount;
+    private String assetCategoryCode;
+    private Long amount;
     private Date registeredAt;
     private Date endDate;
     private String assetName;
     private String businessType;
+    private String categoryAssetCategoryCode;
 }

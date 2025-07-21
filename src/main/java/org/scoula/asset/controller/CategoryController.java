@@ -20,9 +20,9 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
-    @GetMapping("/{code}")
-    public ResponseEntity<CategoryDTO> getCategoryByCode(@PathVariable String code) {
-        return ResponseEntity.ok(categoryService.getCategoryByCode(code));
+    @GetMapping("/{assetCategoryCode}")
+    public ResponseEntity<CategoryDTO> getCategoryByCode(@PathVariable String assetCategoryCode) {
+        return ResponseEntity.ok(categoryService.getCategoryByCode(assetCategoryCode));
     }
 
     @PostMapping
@@ -31,16 +31,16 @@ public class CategoryController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{code}")
-    public ResponseEntity<Void> updateCategory(@PathVariable String code, @RequestBody CategoryDTO categoryDTO) {
-        categoryDTO.setCode(code);
+    @PutMapping("/{assetCategoryCode}")
+    public ResponseEntity<Void> updateCategory(@PathVariable String assetCategoryCode, @RequestBody CategoryDTO categoryDTO) {
+        categoryDTO.setAssetCategoryCode(assetCategoryCode);
         categoryService.updateCategory(categoryDTO);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{code}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable String code) {
-        categoryService.deleteCategory(code);
+    @DeleteMapping("/{assetCategoryCode}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable String assetCategoryCode) {
+        categoryService.deleteCategory(assetCategoryCode);
         return ResponseEntity.ok().build();
     }
 }

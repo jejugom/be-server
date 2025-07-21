@@ -4,5 +4,7 @@ import org.scoula.user.domain.UserVO;
 
 public interface UserMapper {
     UserVO findByEmail(String email);
-    int insertUser(UserVO user);
+    int save(UserVO user);
+    int update(UserVO user);
+    int delete(String email);
 }

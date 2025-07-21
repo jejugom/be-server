@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class FaqVO {
-    private Integer id;
+    private int faqId;
     private String category;
     private String title;
     private String content;

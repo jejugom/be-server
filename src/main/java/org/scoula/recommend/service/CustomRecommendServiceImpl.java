@@ -30,14 +30,14 @@ public class CustomRecommendServiceImpl implements CustomRecommendService {
     @Override
     public void updateCustomRecommend(CustomRecommendDTO customRecommendDTO) {
         if (customRecommendMapper.updateCustomRecommend(customRecommendDTO.toVO()) == 0) {
-            throw new NoSuchElementException("CustomRecommend not found for email: " + customRecommendDTO.getEmail() + " and code: " + customRecommendDTO.getCode());
+            throw new NoSuchElementException("CustomRecommend not found for email: " + customRecommendDTO.getEmail() + " and prdtId: " + customRecommendDTO.getPrdtId());
         }
     }
 
     @Override
-    public void deleteCustomRecommend(String email, String code) {
-        if (customRecommendMapper.deleteCustomRecommend(email, code) == 0) {
-            throw new NoSuchElementException("CustomRecommend not found for email: " + email + " and code: " + code);
+    public void deleteCustomRecommend(String email, String prdtId) {
+        if (customRecommendMapper.deleteCustomRecommend(email, prdtId) == 0) {
+            throw new NoSuchElementException("CustomRecommend not found for email: " + email + " and prdtId: " + prdtId);
         }
     }
 }
