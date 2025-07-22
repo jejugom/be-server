@@ -545,7 +545,14 @@
       <updated>1753157071642</updated>
       <workItem from="1753151396146" duration="3699000" />
     </task>
-    <servers />
+    <servers>
+      <JIRA url="https://nohudorak.atlassian.net">
+        <option name="apiType" value="REST_2_0" />
+        <option name="inCloud" value="true" />
+        <option name="jiraVersion" value="1001.0.0-SNAPSHOT" />
+        <username>shallom75321@gmail.com</username>
+      </JIRA>
+    </servers>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
