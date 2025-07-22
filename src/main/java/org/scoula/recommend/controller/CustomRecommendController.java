@@ -1,42 +1,51 @@
 package org.scoula.recommend.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.scoula.recommend.dto.CustomRecommendDTO;
+import java.util.List;
+
+import org.scoula.recommend.dto.CustomRecommendDto;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/custom-recommends")
 public class CustomRecommendController {
 
-    private final CustomRecommendService customRecommendService;
+	private final CustomRecommendService customRecommendService;
 
-    @GetMapping("/user/{email}")
-    public ResponseEntity<List<CustomRecommendDTO>> getCustomRecommendsByEmail(@PathVariable String email) {
-        return ResponseEntity.ok(customRecommendService.getCustomRecommendsByEmail(email));
-    }
+	@GetMapping("/user/{email}")
+	public ResponseEntity<List<CustomRecommendDto>> getCustomRecommendsByEmail(@PathVariable String email) {
+		return ResponseEntity.ok(customRecommendService.getCustomRecommendsByEmail(email));
+	}
 
-    @PostMapping
-    public ResponseEntity<Void> addCustomRecommend(@RequestBody CustomRecommendDTO customRecommendDTO) {
-        customRecommendService.addCustomRecommend(customRecommendDTO);
-        return ResponseEntity.ok().build();
-    }
+	@PostMapping
+	public ResponseEntity<Void> addCustomRecommend(@RequestBody CustomRecommendDto customRecommendDto) {
+		customRecommendService.addCustomRecommend(customRecommendDto);
+		return ResponseEntity.ok().build();
+	}
 
-    @PutMapping("/{email}/{prdtId}")
-    public ResponseEntity<Void> updateCustomRecommend(@PathVariable String email, @PathVariable String prdtId, @RequestBody CustomRecommendDTO customRecommendDTO) {
-        customRecommendDTO.setEmail(email);
-        customRecommendDTO.setPrdtId(prdtId);
-        customRecommendService.updateCustomRecommend(customRecommendDTO);
-        return ResponseEntity.ok().build();
-    }
+	@PutMapping("/{email}/{prdtId}")
+	public ResponseEntity<Void> updateCustomRecommend(@PathVariable String email, @PathVariable String prdtId,
+		@RequestBody CustomRecommendDto customRecommendDto) {
+		customRecommendDto.setEmail(email);
+		customRecommendDto.setPrdtId(prdtId);
+		customRecommendService.updateCustomRecommend(customRecommendDto);
+		return ResponseEntity.ok().build();
+	}
 
-    @DeleteMapping("/{email}/{prdtId}")
-    public ResponseEntity<Void> deleteCustomRecommend(@PathVariable String email, @PathVariable String prdtId) {
-        customRecommendService.deleteCustomRecommend(email, prdtId);
-        return ResponseEntity.ok().build();
-    }
+	@DeleteMapping("/{email}/{prdtId}")
+	public ResponseEntity<Void> deleteCustomRecommend(@PathVariable String email, @PathVariable String prdtId) {
+		customRecommendService.deleteCustomRecommend(email, prdtId);
+		return ResponseEntity.ok().build();
+	}
 }

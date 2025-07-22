@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomRecommendVO {
-    private String prdtId;
-    private String email;
-    private String recReason;
-    private String segment;
+public class CustomRecommendVo {
+	private String prdtId;
+	private String email;
+	private String recReason;
+	private String segment;
 }
