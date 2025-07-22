@@ -31,22 +31,22 @@ public class FaqServiceImpl implements FaqService {
 			.orElseThrow(() -> new NoSuchElementException("FAQ not found with id: " + faqId));
 	}
 
-	@Override
-	public void addFaq(FaqDto faqDto) {
-		faqMapper.insertFaq(faqDto.toVo());
-	}
-
-	@Override
-	public void updateFaq(FaqDto faqDto) {
-		if (faqMapper.updateFaq(faqDto.toVo()) == 0) {
-			throw new NoSuchElementException("FAQ not found with id: " + faqDto.getFaqId());
-		}
-	}
-
-	@Override
-	public void deleteFaq(Integer faqId) {
-		if (faqMapper.deleteFaq(faqId) == 0) {
-			throw new NoSuchElementException("FAQ not found with id: " + faqId);
-		}
-	}
+	// @Override
+	// public void addFaq(FaqDto faqDto) {
+	// 	faqMapper.insertFaq(faqDto.toVo());
+	// }
+	//
+	// @Override
+	// public void updateFaq(FaqDto faqDto) {
+	// 	if (faqMapper.updateFaq(faqDto.toVo()) == 0) {
+	// 		throw new NoSuchElementException("FAQ not found with id: " + faqDto.getFaqId());
+	// 	}
+	// }
+	//
+	// @Override
+	// public void deleteFaq(Integer faqId) {
+	// 	if (faqMapper.deleteFaq(faqId) == 0) {
+	// 		throw new NoSuchElementException("FAQ not found with id: " + faqId);
+	// 	}
+	// }
 }

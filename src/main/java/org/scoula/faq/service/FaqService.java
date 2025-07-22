@@ -9,9 +9,9 @@ public interface FaqService {
 
 	FaqDto getFaqById(Integer faqId);
 
-	void addFaq(FaqDto faqDto);
-
-	void updateFaq(FaqDto faqDto);
-
-	void deleteFaq(Integer faqId);
+	// void addFaq(FaqDto faqDto);
+	//
+	// void updateFaq(FaqDto faqDto);
+	//
+	// void deleteFaq(Integer faqId);
 }

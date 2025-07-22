@@ -5,12 +5,8 @@ import java.util.List;
 import org.scoula.faq.dto.FaqDto;
 import org.scoula.faq.service.FaqService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/faqs")
+@RequestMapping("/api/v1/faq")
 public class FaqController {
 
 	private final FaqService faqService;
@@ -33,22 +29,22 @@ public class FaqController {
 		return ResponseEntity.ok(faqService.getFaqById(faqId));
 	}
 
-	@PostMapping
-	public ResponseEntity<Void> addFaq(@RequestBody FaqDto faqDto) {
-		faqService.addFaq(faqDto);
-		return ResponseEntity.ok().build();
-	}
-
-	@PutMapping("/{faqId}")
-	public ResponseEntity<Void> updateFaq(@PathVariable Integer faqId, @RequestBody FaqDto faqDto) {
-		faqDto.setFaqId(faqId);
-		faqService.updateFaq(faqDto);
-		return ResponseEntity.ok().build();
-	}
-
-	@DeleteMapping("/{faqId}")
-	public ResponseEntity<Void> deleteFaq(@PathVariable Integer faqId) {
-		faqService.deleteFaq(faqId);
-		return ResponseEntity.ok().build();
-	}
+	// @PostMapping
+	// public ResponseEntity<Void> addFaq(@RequestBody FaqDto faqDto) {
+	// 	faqService.addFaq(faqDto);
+	// 	return ResponseEntity.ok().build();
+	// }
+	//
+	// @PutMapping("/{faqId}")
+	// public ResponseEntity<Void> updateFaq(@PathVariable Integer faqId, @RequestBody FaqDto faqDto) {
+	// 	faqDto.setFaqId(faqId);
+	// 	faqService.updateFaq(faqDto);
+	// 	return ResponseEntity.ok().build();
+	// }
+	//
+	// @DeleteMapping("/{faqId}")
+	// public ResponseEntity<Void> deleteFaq(@PathVariable Integer faqId) {
+	// 	faqService.deleteFaq(faqId);
+	// 	return ResponseEntity.ok().build();
+	// }
 }

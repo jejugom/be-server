@@ -4,23 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Others)-세영">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetDetailDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetDetailDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/domain/BookingVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/domain/BookingVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/dto/BookingDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/dto/BookingDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetDetailMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetDetailMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/booking/mapper/BookingMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/booking/mapper/BookingMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" afterDir="false" />
+    <list default="true" id="43a67b2d-ab25-4303-a74b-8aded2c7cb65" name="NHDR-106 [백엔드] FAQ 목록 및 상세 조회 API 구현" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/controller/FaqController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/controller/FaqController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/mapper/FaqMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/mapper/FaqMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqServiceImpl.java" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="NHDR-102 refactor: Naver Convention fromat(Else)-세영">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/KakaoAuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/KakaoAuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +123,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="57899073742959daf6f1836d3046a0e4fa8d840e" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -161,7 +162,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/jejugom/be-server.git&quot;,
-    &quot;accountId&quot;: &quot;1660d7e9-23c0-4069-82d8-39264255ca0c&quot;
+    &quot;accountId&quot;: &quot;56b0aeb2-c6c5-4b2c-b9fc-4c210f8ae6fc&quot;
   }
 }</component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -189,37 +190,44 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build be-server.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Tomcat Server.Tomcat 9.0.105.executor&quot;: &quot;Run&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;NHDR-102&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/shall/Desktop/ITYL/final_project/project/be-server/naver-checkstyle-rules.xml&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;4f9724b3204f4d9eb05b2dfda8b89bfd&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build be-server.executor": "Run",
+    "Gradle.FaqMapperTest.executor": "Run",
+    "Gradle.FaqMapperTest.testGetAllFaqs.executor": "Run",
+    "Gradle.FaqMapperTest.testGetFaqById_found.executor": "Run",
+    "Gradle.JDBCTest.executor": "Run",
+    "Gradle.JdbcTests.executor": "Run",
+    "Gradle.RootConfigTest.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Tomcat Server.Tomcat 9.0.105.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
+    "git-widget-placeholder": "NHDR-106-feat-FAQ-seyoung-0722",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/shall/Desktop/ITYL/final_project/project/be-server/naver-checkstyle-rules.xml",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.stylelint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "File.Encoding",
+    "spring.configuration.checksum": "4f9724b3204f4d9eb05b2dfda8b89bfd",
+    "start.from.branch": "origin/main",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\shall\Desktop\ITYL\final_project\project\be-server" />
@@ -244,8 +252,8 @@
       <recent name="org.scoula.security.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat 서버.Tomcat 9.0.105">
-    <configuration name="JwtProcessorTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.105">
+    <configuration name="FaqMapperTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -258,7 +266,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.scoula.security.util.JwtProcessorTest&quot;" />
+            <option value="&quot;org.scoula.faq.mapper.FaqMapperTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -266,9 +274,10 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="JwtProcessorTest.generateToken" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FaqMapperTest.testGetAllFaqs" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -281,7 +290,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.scoula.security.util.JwtProcessorTest.generateToken&quot;" />
+            <option value="&quot;org.scoula.faq.mapper.FaqMapperTest.testGetAllFaqs&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -289,9 +298,10 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="JwtProcessorTest.getUsername" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="FaqMapperTest.testGetFaqById_found" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -304,7 +314,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.scoula.security.util.JwtProcessorTest.getUsername&quot;" />
+            <option value="&quot;org.scoula.faq.mapper.FaqMapperTest.testGetFaqById_found&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -312,9 +322,10 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="JwtProcessorTest.validToken" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="JDBCTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -327,7 +338,7 @@
           <list>
             <option value=":test" />
             <option value="--tests" />
-            <option value="&quot;org.scoula.security.util.JwtProcessorTest.validToken&quot;" />
+            <option value="&quot;org.scoula.persistence.JDBCTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -335,6 +346,31 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="RootConfigTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;org.scoula.config.RootConfigTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="SecurityConfigTest.testEncode" type="GradleRunConfiguration" factoryName="Gradle">
@@ -358,6 +394,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="UserDetailsMapperTest" type="GradleRunConfiguration" factoryName="Gradle">
@@ -381,33 +418,11 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="UserDetailsMapperTest.get" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;org.scoula.security.account.mapper.UserDetailsMapperTest.get&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="Tomcat 9.0.105" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.105" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
-      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/Gradle___org_scoula___Backend_1_0_SNAPSHOT_war/" />
+      <option name="COMMON_VM_ARGUMENTS" value="-Dfile.encoding=UTF-8" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="Gradle : org.scoula : Backend-1.0-SNAPSHOT.war">
@@ -497,20 +512,20 @@
     <list>
       <item itemvalue="Gradle.SecurityConfigTest.testEncode" />
       <item itemvalue="Gradle.UserDetailsMapperTest" />
-      <item itemvalue="Gradle.JwtProcessorTest" />
-      <item itemvalue="Gradle.JwtProcessorTest.generateToken" />
-      <item itemvalue="Gradle.JwtProcessorTest.getUsername" />
-      <item itemvalue="Gradle.JwtProcessorTest.validToken" />
-      <item itemvalue="Gradle.UserDetailsMapperTest.get" />
-      <item itemvalue="Tomcat 서버.Tomcat 9.0.105" />
+      <item itemvalue="Gradle.FaqMapperTest" />
+      <item itemvalue="Gradle.FaqMapperTest.testGetAllFaqs" />
+      <item itemvalue="Gradle.FaqMapperTest.testGetFaqById_found" />
+      <item itemvalue="Gradle.RootConfigTest" />
+      <item itemvalue="Gradle.JDBCTest" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.105" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.UserDetailsMapperTest.get" />
-        <item itemvalue="Gradle.JwtProcessorTest.validToken" />
-        <item itemvalue="Gradle.JwtProcessorTest.getUsername" />
-        <item itemvalue="Gradle.JwtProcessorTest.generateToken" />
-        <item itemvalue="Gradle.JwtProcessorTest" />
+        <item itemvalue="Gradle.FaqMapperTest.testGetAllFaqs" />
+        <item itemvalue="Gradle.FaqMapperTest.testGetFaqById_found" />
+        <item itemvalue="Gradle.FaqMapperTest" />
+        <item itemvalue="Gradle.RootConfigTest" />
+        <item itemvalue="Gradle.JDBCTest" />
       </list>
     </recent_temporary>
   </component>
@@ -530,7 +545,7 @@
       <created>1750638411689</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1753151396113</updated>
+      <updated>1753189939178</updated>
       <workItem from="1750638413269" duration="2243000" />
       <workItem from="1750640845480" duration="7520000" />
       <workItem from="1750724539081" duration="11552000" />
@@ -544,21 +559,25 @@
       <workItem from="1752815516335" duration="25677000" />
       <workItem from="1753084199448" duration="84000" />
       <workItem from="1753151315842" duration="80000" />
+      <workItem from="1753183552746" duration="17000" />
+      <workItem from="1753183573867" duration="4000" />
+      <workItem from="1753183579916" duration="725000" />
+      <workItem from="1753186995741" duration="2222000" />
     </task>
-    <task active="true" id="NHDR-102" summary="백엔드 코드베이스 코딩 컨벤션 적용">
-      <branch name="main" repository="C:\Users\shall\Desktop\ITYL\final_project\project\be-server" original="true" />
-      <branch name="NHDR-102" repository="C:\Users\shall\Desktop\ITYL\final_project\project\be-server" />
-      <changelist id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="" />
-      <created>1753148425917</created>
+    <task active="true" id="NHDR-106" summary="[백엔드] FAQ 목록 및 상세 조회 API 구현">
+      <branch name="origin/main" repository="D:\Seyoung\DEV\kb_fullstack\final_project\project\be-server" original="true" />
+      <branch name="NHDR-106-feat-FAQ-seyoung-0722" repository="D:\Seyoung\DEV\kb_fullstack\final_project\project\be-server" />
+      <changelist id="43a67b2d-ab25-4303-a74b-8aded2c7cb65" name="NHDR-106 [백엔드] FAQ 목록 및 상세 조회 API 구현" comment="" />
+      <created>1753164648708</created>
       <option name="issue" value="true" />
-      <url>https://nohudorak.atlassian.net/browse/NHDR-102</url>
-      <option name="number" value="102" />
-      <option name="presentableId" value="NHDR-102" />
+      <url>https://nohudorak.atlassian.net/browse/NHDR-106</url>
+      <option name="number" value="106" />
+      <option name="presentableId" value="NHDR-106" />
       <option name="project" value="NHDR" />
-      <updated>1753160150992</updated>
-      <workItem from="1753151396146" duration="5555000" />
-      <workItem from="1753159721192" duration="390000" />
-      <workItem from="1753160273617" duration="584000" />
+      <updated>1753189939178</updated>
+      <workItem from="1753189939970" duration="839000" />
+      <workItem from="1753190843094" duration="229000" />
+      <workItem from="1753191114767" duration="4545000" />
     </task>
     <servers>
       <JIRA url="https://nohudorak.atlassian.net">
@@ -588,6 +607,17 @@
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Else)-세영" />
     <MESSAGE value="NHDR-102 docs: Set PR Template-세영" />
     <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 docs: Set PR Template-세영" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/org/scoula/config/RootConfigTest.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
