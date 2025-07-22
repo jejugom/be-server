@@ -4,22 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Security)-세영">
+    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(User)-세영">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/CustomUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/CustomUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/AuthResultDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/AuthResultDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/KakaoTokenResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/KakaoTokenResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/KakaoUserInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/KakaoUserInfoDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserInfoDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/KakaoAuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/KakaoAuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/board/mapper/BoardMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/member/mapper/MemberMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/travel/mapper/TravelMapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/JDBCTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/JDBCTests.java" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="변경">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
@@ -151,11 +141,11 @@
     <file path="$PROJECT_DIR$/.idea/workspace.xml">
       <ranges>
         <range start1="6" end1="7" start2="6" end2="7" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="8" end1="14" start2="8" end2="22" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="145" end1="150" start2="153" end2="158" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="546" end1="548" start2="554" end2="556" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="549" end1="550" start2="557" end2="565" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
-        <range start1="564" end1="565" start2="579" end2="581" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="8" end1="22" start2="8" end2="12" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="153" end1="158" start2="143" end2="148" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="554" end1="556" start2="544" end2="546" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="557" end1="558" start2="547" end2="555" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="573" end1="574" start2="570" end2="572" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
       </ranges>
     </file>
   </component>
@@ -552,8 +542,8 @@
       <option name="number" value="102" />
       <option name="presentableId" value="NHDR-102" />
       <option name="project" value="NHDR" />
-      <updated>1753156577458</updated>
-      <workItem from="1753151396146" duration="3510000" />
+      <updated>1753157071642</updated>
+      <workItem from="1753151396146" duration="3699000" />
     </task>
     <servers />
   </component>
@@ -571,7 +561,8 @@
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(FAQ)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Recommand)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Security)-세영" />
-    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Security)-세영" />
+    <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(User)-세영" />
+    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(User)-세영" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
