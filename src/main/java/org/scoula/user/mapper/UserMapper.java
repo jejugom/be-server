@@ -1,10 +1,13 @@
 package org.scoula.user.mapper;
 
-import org.scoula.user.domain.UserVO;
+import org.scoula.user.domain.UserVo;
 
 public interface UserMapper {
-    UserVO findByEmail(String email);
-    int save(UserVO user);
-    int update(UserVO user);
-    int delete(String email);
+	UserVo findByEmail(String email);
+
+	int save(UserVo user);
+
+	int update(UserVo user);
+
+	int delete(String email);
 }

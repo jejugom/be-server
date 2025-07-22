@@ -4,14 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Recommand)-세영">
+    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Security)-세영">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/filter/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/handler/CustomAccessDeniedHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/handler/CustomAccessDeniedHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/handler/CustomAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/handler/CustomAuthenticationEntryPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/util/JsonResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/util/JsonResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/util/JwtProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/util/JwtProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/CustomUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/CustomUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/AuthResultDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/AuthResultDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/KakaoTokenResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/KakaoTokenResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/KakaoUserInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/KakaoUserInfoDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserInfoDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/KakaoAuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/KakaoAuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="변경">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
@@ -143,11 +151,11 @@
     <file path="$PROJECT_DIR$/.idea/workspace.xml">
       <ranges>
         <range start1="6" end1="7" start2="6" end2="7" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="8" end1="15" start2="8" end2="13" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="146" end1="151" start2="144" end2="149" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="547" end1="549" start2="545" end2="547" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="550" end1="551" start2="548" end2="556" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
-        <range start1="564" end1="565" start2="569" end2="571" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="8" end1="14" start2="8" end2="22" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="145" end1="150" start2="153" end2="158" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="546" end1="548" start2="554" end2="556" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="549" end1="550" start2="557" end2="565" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="564" end1="565" start2="579" end2="581" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
       </ranges>
     </file>
   </component>
@@ -544,8 +552,8 @@
       <option name="number" value="102" />
       <option name="presentableId" value="NHDR-102" />
       <option name="project" value="NHDR" />
-      <updated>1753156463132</updated>
-      <workItem from="1753151396146" duration="3033000" />
+      <updated>1753156577458</updated>
+      <workItem from="1753151396146" duration="3510000" />
     </task>
     <servers />
   </component>
@@ -562,7 +570,8 @@
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Config, Exception)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(FAQ)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Recommand)-세영" />
-    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Recommand)-세영" />
+    <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Security)-세영" />
+    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Security)-세영" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
