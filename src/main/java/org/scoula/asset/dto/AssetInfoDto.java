@@ -28,7 +28,7 @@ public class AssetInfoDto {
 			.build();
 	}
 
-	public AssetInfoVo toVO() {
+	public AssetInfoVo toVo() {
 		return AssetInfoVo.builder()
 			.email(email)
 			.asset(asset)

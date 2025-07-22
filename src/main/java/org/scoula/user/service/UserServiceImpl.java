@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void join(UserDto userDto) {
-		UserVo userVO = userDto.toVO();
+		UserVo userVO = userDto.toVo();
 		userMapper.save(userVO);
 	}
 }

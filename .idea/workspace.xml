@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Others)-세영">
+    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 docs: Set PR Template-세영">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVo.java" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="NHDR-102 refactor: Naver Convention fromat(Else)-세영" />
     <option name="SHOW_DIALOG" value="false" />
@@ -522,8 +528,10 @@
       <option name="number" value="102" />
       <option name="presentableId" value="NHDR-102" />
       <option name="project" value="NHDR" />
-      <updated>1753158430469</updated>
+      <updated>1753160150992</updated>
       <workItem from="1753151396146" duration="5555000" />
+      <workItem from="1753159721192" duration="390000" />
+      <workItem from="1753160273617" duration="584000" />
     </task>
     <servers>
       <JIRA url="https://nohudorak.atlassian.net">
@@ -551,7 +559,8 @@
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(User)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Others)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Else)-세영" />
-    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Else)-세영" />
+    <MESSAGE value="NHDR-102 docs: Set PR Template-세영" />
+    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 docs: Set PR Template-세영" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

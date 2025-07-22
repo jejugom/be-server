@@ -38,7 +38,7 @@ public class AssetDetailDto {
 			.build();
 	}
 
-	public AssetDetailVo toVO() {
+	public AssetDetailVo toVo() {
 		return AssetDetailVo.builder()
 			.assetId(assetId)
 			.email(email)

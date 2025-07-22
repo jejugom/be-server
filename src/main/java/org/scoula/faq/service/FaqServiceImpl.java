@@ -33,12 +33,12 @@ public class FaqServiceImpl implements FaqService {
 
 	@Override
 	public void addFaq(FaqDto faqDto) {
-		faqMapper.insertFaq(faqDto.toVO());
+		faqMapper.insertFaq(faqDto.toVo());
 	}
 
 	@Override
 	public void updateFaq(FaqDto faqDto) {
-		if (faqMapper.updateFaq(faqDto.toVO()) == 0) {
+		if (faqMapper.updateFaq(faqDto.toVo()) == 0) {
 			throw new NoSuchElementException("FAQ not found with id: " + faqDto.getFaqId());
 		}
 	}

@@ -25,12 +25,12 @@ public class CustomRecommendServiceImpl implements CustomRecommendService {
 
 	@Override
 	public void addCustomRecommend(CustomRecommendDto customRecommendDto) {
-		customRecommendMapper.insertCustomRecommend(customRecommendDto.toVO());
+		customRecommendMapper.insertCustomRecommend(customRecommendDto.toVo());
 	}
 
 	@Override
 	public void updateCustomRecommend(CustomRecommendDto customRecommendDto) {
-		if (customRecommendMapper.updateCustomRecommend(customRecommendDto.toVO()) == 0) {
+		if (customRecommendMapper.updateCustomRecommend(customRecommendDto.toVo()) == 0) {
 			throw new NoSuchElementException(
 				"CustomRecommend not found for email: " + customRecommendDto.getEmail() + " and prdtId: "
 					+ customRecommendDto.getPrdtId());

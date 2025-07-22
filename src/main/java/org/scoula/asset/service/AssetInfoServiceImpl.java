@@ -24,7 +24,7 @@ public class AssetInfoServiceImpl implements AssetInfoService {
 
 	@Override
 	public void addAssetInfo(AssetInfoDto assetInfoDto) {
-		assetInfoMapper.insertAssetInfo(assetInfoDto.toVO());
+		assetInfoMapper.insertAssetInfo(assetInfoDto.toVo());
 	}
 
 	@Override
