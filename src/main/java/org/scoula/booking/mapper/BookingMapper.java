@@ -1,13 +1,17 @@
 package org.scoula.booking.mapper;
 
-import org.scoula.booking.domain.BookingVO;
-
 import java.util.List;
 
+import org.scoula.booking.domain.BookingVo;
+
 public interface BookingMapper {
-    List<BookingVO> getBookingsByEmail(String email);
-    BookingVO getBookingById(Integer id);
-    void insertBooking(BookingVO booking);
-    int updateBooking(BookingVO booking);
-    int deleteBooking(Integer id);
+	List<BookingVo> getBookingsByEmail(String email);
+
+	BookingVo getBookingById(Integer id);
+
+	void insertBooking(BookingVo booking);
+
+	int updateBooking(BookingVo booking);
+
+	int deleteBooking(Integer id);
 }

@@ -4,30 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: 커밋 테스트(DB연결)-세영">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Asset)-세영">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/AssetDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/AssetDetailController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/AssetInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/AssetInfoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/CategoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetInfoVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/CategoryVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/CategoryVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetDetailDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetDetailDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetInfoDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/CategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/CategoryDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/AssetDetailMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/AssetDetailMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/AssetInfoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/AssetInfoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/CategoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/CategoryMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetDetailServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/CategoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/CategoryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetDetailMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetDetailMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetInfoMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/CategoryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/CategoryMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/controller/BookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/controller/BookingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/domain/BookingVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/domain/BookingVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/dto/BookingDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/dto/BookingDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/mapper/BookingMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/mapper/BookingMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/service/BookingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/service/BookingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/service/BookingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/booking/mapper/BookingMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/booking/mapper/BookingMapper.xml" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="변경">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
@@ -158,48 +143,12 @@
   <component name="LineStatusTrackerManager">
     <file path="$PROJECT_DIR$/.idea/workspace.xml">
       <ranges>
-        <range start1="6" end1="7" start2="6" end2="32" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="8" end1="9" start2="33" end2="33" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="10" end1="12" start2="34" end2="34" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="13" end1="15" start2="35" end2="35" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="57" end1="57" start2="77" end2="133" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="58" end1="58" start2="134" end2="139" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="60" end1="60" start2="141" end2="205" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="70" end1="70" start2="215" end2="222" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="74" end1="90" start2="226" end2="250" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="91" end1="94" start2="251" end2="254" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="96" end1="97" start2="256" end2="257" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="99" end1="99" start2="259" end2="260" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="103" end1="104" start2="264" end2="264" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="121" end1="122" start2="281" end2="282" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="143" end1="143" start2="303" end2="304" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="166" end1="166" start2="327" end2="328" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="189" end1="189" start2="351" end2="352" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="212" end1="212" start2="375" end2="376" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="235" end1="235" start2="399" end2="400" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="258" end1="258" start2="423" end2="424" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="281" end1="281" start2="447" end2="448" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="283" end1="286" start2="450" end2="452" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="294" end1="295" start2="460" end2="461" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="302" end1="303" start2="468" end2="469" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="379" end1="380" start2="545" end2="546" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="383" end1="383" start2="549" end2="550" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="385" end1="385" start2="552" end2="553" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="386" end1="388" start2="554" end2="554" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="391" end1="391" start2="557" end2="565" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="393" end1="394" start2="567" end2="569" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="398" end1="399" start2="573" end2="574" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="423" end1="425" start2="598" end2="600" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="426" end1="427" start2="601" end2="609" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
-        <range start1="431" end1="454" start2="613" end2="622" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/.idea/dataSources.local.xml">
-      <ranges>
-        <range start1="2" end1="5" start2="2" end2="5" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
-        <range start1="7" end1="7" start2="7" end2="8" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
-        <range start1="8" end1="9" start2="9" end2="10" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
-        <range start1="13" end1="17" start2="14" end2="15" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="6" end1="8" start2="6" end2="7" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="9" end1="30" start2="8" end2="15" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="160" end1="202" start2="145" end2="151" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="598" end1="600" start2="547" end2="549" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="601" end1="602" start2="550" end2="558" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="610" end1="611" start2="566" end2="568" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
       </ranges>
     </file>
   </component>
@@ -596,8 +545,8 @@
       <option name="number" value="102" />
       <option name="presentableId" value="NHDR-102" />
       <option name="project" value="NHDR" />
-      <updated>1753151781503</updated>
-      <workItem from="1753151396146" duration="825000" />
+      <updated>1753152289900</updated>
+      <workItem from="1753151396146" duration="995000" />
     </task>
     <servers />
   </component>
@@ -608,7 +557,8 @@
     <MESSAGE value="변경" />
     <MESSAGE value="NHDR-102 refactor: 커밋 테스트-세영" />
     <MESSAGE value="NHDR-102 refactor: 커밋 테스트(DB연결)-세영" />
-    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: 커밋 테스트(DB연결)-세영" />
+    <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Asset)-세영" />
+    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Asset)-세영" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
