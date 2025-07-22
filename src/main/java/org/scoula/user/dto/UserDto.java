@@ -32,7 +32,7 @@ public class UserDto {
 			.build();
 	}
 
-	public UserVo toVO() {
+	public UserVo toVo() {
 		return UserVo.builder()
 			.email(email)
 			.userName(userName)

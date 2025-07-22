@@ -35,7 +35,7 @@ public class BookingDto {
 			.build();
 	}
 
-	public BookingVo toVO() {
+	public BookingVo toVo() {
 		return BookingVo.builder()
 			.bookingId(bookingId)
 			.email(email)

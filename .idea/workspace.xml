@@ -555,8 +555,10 @@
       <option name="number" value="102" />
       <option name="presentableId" value="NHDR-102" />
       <option name="project" value="NHDR" />
-      <updated>1753158430469</updated>
+      <updated>1753160150992</updated>
       <workItem from="1753151396146" duration="5555000" />
+      <workItem from="1753159721192" duration="390000" />
+      <workItem from="1753160273617" duration="584000" />
     </task>
     <servers>
       <JIRA url="https://nohudorak.atlassian.net">
@@ -584,7 +586,8 @@
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(User)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Others)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Else)-세영" />
-    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Else)-세영" />
+    <MESSAGE value="NHDR-102 docs: Set PR Template-세영" />
+    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 docs: Set PR Template-세영" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -32,12 +32,12 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public void addBooking(BookingDto bookingDto) {
-		bookingMapper.insertBooking(bookingDto.toVO());
+		bookingMapper.insertBooking(bookingDto.toVo());
 	}
 
 	@Override
 	public void updateBooking(BookingDto bookingDto) {
-		if (bookingMapper.updateBooking(bookingDto.toVO()) == 0) {
+		if (bookingMapper.updateBooking(bookingDto.toVo()) == 0) {
 			throw new NoSuchElementException("Booking not found with id: " + bookingDto.getBookingId());
 		}
 	}

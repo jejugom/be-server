@@ -26,7 +26,7 @@ public class CustomRecommendDto {
 			.build();
 	}
 
-	public CustomRecommendVo toVO() {
+	public CustomRecommendVo toVo() {
 		return CustomRecommendVo.builder()
 			.prdtId(prdtId)
 			.email(email)

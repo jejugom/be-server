@@ -33,12 +33,12 @@ public class AssetDetailServiceImpl implements AssetDetailService {
 
 	@Override
 	public void addAssetDetail(AssetDetailDto assetDetailDto) {
-		assetDetailMapper.insertAssetDetail(assetDetailDto.toVO());
+		assetDetailMapper.insertAssetDetail(assetDetailDto.toVo());
 	}
 
 	@Override
 	public void updateAssetDetail(AssetDetailDto assetDetailDto) {
-		if (assetDetailMapper.updateAssetDetail(assetDetailDto.toVO()) == 0) {
+		if (assetDetailMapper.updateAssetDetail(assetDetailDto.toVo()) == 0) {
 			throw new NoSuchElementException("AssetDetail not found with id: " + assetDetailDto.getAssetId());
 		}
 	}
