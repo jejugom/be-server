@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.scoula.asset.mapper.AssetInfoMapper">
-    <resultMap id="assetInfoMap" type="org.scoula.asset.domain.AssetInfoVO">
+    <resultMap id="assetInfoMap" type="org.scoula.asset.domain.AssetInfoVo">
         <id property="email" column="email"/>
         <result property="asset" column="asset"/>
         <result property="segment" column="segment"/>
@@ -10,7 +10,9 @@
     </resultMap>
 
     <select id="getAssetInfoByEmail" resultMap="assetInfoMap">
-        SELECT * FROM asset_info WHERE email = #{email}
+        SELECT *
+        FROM asset_info
+        WHERE email = #{email}
     </select>
 
     <insert id="insertAssetInfo">
@@ -20,14 +22,16 @@
 
     <update id="updateAssetInfo">
         UPDATE asset_info
-        SET asset = #{asset},
-            segment = #{segment},
+        SET asset     = #{asset},
+            segment   = #{segment},
             filename1 = #{filename1},
             filename2 = #{filename2}
         WHERE email = #{email}
     </update>
 
     <delete id="deleteAssetInfo">
-        DELETE FROM asset_info WHERE email = #{email}
+        DELETE
+        FROM asset_info
+        WHERE email = #{email}
     </delete>
 </mapper>

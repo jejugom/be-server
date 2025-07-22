@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.scoula.asset.mapper.AssetDetailMapper">
-    <resultMap id="assetDetailMap" type="org.scoula.asset.domain.AssetDetailVO">
+    <resultMap id="assetDetailMap" type="org.scoula.asset.domain.AssetDetailVo">
         <id property="assetId" column="asset_id"/>
         <id property="email" column="email"/>
         <result property="assetCategoryCode" column="asset_category_code"/>
@@ -14,28 +14,37 @@
     </resultMap>
 
     <select id="getAssetDetailsByEmail" resultMap="assetDetailMap">
-        SELECT * FROM asset_detail WHERE email = #{email}
+        SELECT *
+        FROM asset_detail
+        WHERE email = #{email}
     </select>
+    <select id="getAssetDetailById" resultType="org.scoula.asset.domain.AssetDetailVo"></select>
 
     <insert id="insertAssetDetail">
-        INSERT INTO asset_detail (asset_id, email, asset_category_code, amount, registered_at, end_date, asset_name, business_type, category_asset_category_code)
-        VALUES (#{assetId}, #{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName}, #{businessType}, #{categoryAssetCategoryCode})
+        INSERT INTO asset_detail (asset_id, email, asset_category_code, amount, registered_at, end_date, asset_name,
+                                  business_type, category_asset_category_code)
+        VALUES (#{assetId}, #{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName},
+                #{businessType}, #{categoryAssetCategoryCode})
     </insert>
 
     <update id="updateAssetDetail">
         UPDATE asset_detail
-        SET asset_category_code = #{assetCategoryCode},
-            amount = #{amount},
-            registered_at = #{registeredAt},
-            end_date = #{endDate},
-            asset_name = #{assetName},
-            business_type = #{businessType},
+        SET asset_category_code          = #{assetCategoryCode},
+            amount                       = #{amount},
+            registered_at                = #{registeredAt},
+            end_date                     = #{endDate},
+            asset_name                   = #{assetName},
+            business_type                = #{businessType},
             category_asset_category_code = #{categoryAssetCategoryCode}
-        WHERE asset_id = #{assetId} AND email = #{email}
+        WHERE asset_id = #{assetId}
+          AND email = #{email}
     </update>
 
     <delete id="deleteAssetDetail">
-        DELETE FROM asset_detail WHERE asset_id = #{assetId} AND email = #{email}
+        DELETE
+        FROM asset_detail
+        WHERE asset_id = #{assetId}
+          AND email = #{email}
     </delete>
 </mapper>
 

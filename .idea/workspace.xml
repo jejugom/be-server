@@ -4,15 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="">
+    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: 커밋 테스트(DB연결)-세영">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44/storage_v2/_src_/schema/information_schema.FNRwLQ.zip" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/filter/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/AssetDetailController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/AssetDetailController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/AssetInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/AssetInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/controller/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetInfoVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/CategoryVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/CategoryVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetDetailDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetDetailDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetInfoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetInfoDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/CategoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/CategoryDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/AssetDetailMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/AssetDetailMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/AssetInfoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/AssetInfoMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/CategoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/mapper/CategoryMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetDetailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetDetailServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/CategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/CategoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetDetailMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetDetailMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetInfoMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/CategoryMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/CategoryMapper.xml" afterDir="false" />
+    </list>
+    <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="변경">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9dbcf919-758c-46d0-890f-fc08f017dd44.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,8 +75,133 @@
       </list>
     </option>
   </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+    <option name="myAllFileTypesSelected" value="false" />
+    <option name="mySelectedFileTypes">
+      <set>
+        <option value="Angular2Html" />
+        <option value="CassandraQL" />
+        <option value="DGM" />
+        <option value="DTD" />
+        <option value="ECMAScript 6" />
+        <option value="EditorConfig" />
+        <option value="FTL" />
+        <option value="Flow" />
+        <option value="Gradle" />
+        <option value="Groovy" />
+        <option value="HTTP Request" />
+        <option value="HiveQL" />
+        <option value="JAVA" />
+        <option value="JSHELL" />
+        <option value="JSHint" />
+        <option value="JSON" />
+        <option value="JSON-lines" />
+        <option value="JSON5" />
+        <option value="JSP" />
+        <option value="JSPX" />
+        <option value="JSX Harmony" />
+        <option value="Kotlin" />
+        <option value="Less" />
+        <option value="Markdown" />
+        <option value="PostCSS" />
+        <option value="Properties" />
+        <option value="Qute" />
+        <option value="RNG Compact" />
+        <option value="Redis" />
+        <option value="SARIF" />
+        <option value="SCSS" />
+        <option value="SQL" />
+        <option value="SVG" />
+        <option value="Sass" />
+        <option value="Shell Script" />
+        <option value="SourceMap" />
+        <option value="TOML" />
+        <option value="TypeScript" />
+        <option value="TypeScript JSX" />
+        <option value="VTL" />
+        <option value="XHTML" />
+        <option value="XML" />
+        <option value="YAML" />
+        <option value="gdsl" />
+        <option value="logback" />
+        <option value="protobuf" />
+        <option value="prototext" />
+        <option value="tsconfig" />
+      </set>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "syann97"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/jejugom/be-server.git",
+    "accountId": "1660d7e9-23c0-4069-82d8-39264255ca0c"
+  }
+}]]></component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/.idea/workspace.xml">
+      <ranges>
+        <range start1="6" end1="7" start2="6" end2="32" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="8" end1="9" start2="33" end2="33" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="10" end1="12" start2="34" end2="34" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="13" end1="15" start2="35" end2="35" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="57" end1="57" start2="77" end2="133" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="58" end1="58" start2="134" end2="139" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="60" end1="60" start2="141" end2="205" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="70" end1="70" start2="215" end2="222" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="74" end1="90" start2="226" end2="250" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="91" end1="94" start2="251" end2="254" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="96" end1="97" start2="256" end2="257" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="99" end1="99" start2="259" end2="260" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="103" end1="104" start2="264" end2="264" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="121" end1="122" start2="281" end2="282" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="143" end1="143" start2="303" end2="304" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="166" end1="166" start2="327" end2="328" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="189" end1="189" start2="351" end2="352" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="212" end1="212" start2="375" end2="376" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="235" end1="235" start2="399" end2="400" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="258" end1="258" start2="423" end2="424" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="281" end1="281" start2="447" end2="448" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="283" end1="286" start2="450" end2="452" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="294" end1="295" start2="460" end2="461" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="302" end1="303" start2="468" end2="469" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="379" end1="380" start2="545" end2="546" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="383" end1="383" start2="549" end2="550" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="385" end1="385" start2="552" end2="553" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="386" end1="388" start2="554" end2="554" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="391" end1="391" start2="557" end2="565" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="393" end1="394" start2="567" end2="569" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="398" end1="399" start2="573" end2="574" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="423" end1="425" start2="598" end2="600" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="426" end1="427" start2="601" end2="609" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="431" end1="454" start2="613" end2="622" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/.idea/dataSources.local.xml">
+      <ranges>
+        <range start1="2" end1="5" start2="2" end2="5" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="7" end1="7" start2="7" end2="8" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="8" end1="9" start2="9" end2="10" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="13" end1="17" start2="14" end2="15" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+      </ranges>
+    </file>
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -68,40 +213,55 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
   <component name="ProjectId" id="2yt09KeXaFb4RY1ooZcuW9jpQj6" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/dong2/Desktop/KB/최종프로젝트/Backend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;4f9724b3204f4d9eb05b2dfda8b89bfd&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build be-server.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Tomcat Server.Tomcat 9.0.105.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
+    "git-widget-placeholder": "NHDR-102",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/shall/Desktop/ITYL/final_project/project/be-server/naver-checkstyle-rules.xml",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.stylelint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "actions.on.save",
+    "spring.configuration.checksum": "4f9724b3204f4d9eb05b2dfda8b89bfd",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\shall\Desktop\ITYL\final_project\project\be-server" />
       <recent name="$PROJECT_DIR$/src/main/java/org/scoula/config" />
       <recent name="$PROJECT_DIR$/src/main/resources/org/scoula" />
       <recent name="$PROJECT_DIR$/src/main/java/org/scoula" />
       <recent name="$PROJECT_DIR$/src/main/java/org" />
-      <recent name="$PROJECT_DIR$/src/main/java/org/scoula/exception" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -119,7 +279,7 @@
       <recent name="org.scoula.security.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat 서버.Tomcat 9.0.1051">
+  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.105">
     <configuration name="JwtProcessorTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -141,6 +301,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="JwtProcessorTest.generateToken" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -164,6 +325,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="JwtProcessorTest.getUsername" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -187,6 +349,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="JwtProcessorTest.validToken" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -210,6 +373,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="SecurityConfigTest.testEncode" type="GradleRunConfiguration" factoryName="Gradle">
@@ -233,6 +397,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="UserDetailsMapperTest" type="GradleRunConfiguration" factoryName="Gradle">
@@ -256,6 +421,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="UserDetailsMapperTest.get" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -279,11 +445,11 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Tomcat 9.0.1051" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.1051" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
-      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/./" />
-      <option name="UPDATING_POLICY" value="restart-server" />
+    <configuration name="Tomcat 9.0.105" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.105" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATING_POLICY" value="hot-swap-classes" />
       <deployment>
         <artifact name="Gradle : org.scoula : Backend-1.0-SNAPSHOT.war">
           <settings>
@@ -292,7 +458,7 @@
         </artifact>
       </deployment>
       <server-settings>
-        <option name="BASE_DIRECTORY_NAME" value="21030c2a-01e3-4586-b4ce-91a9b243ac01" />
+        <option name="BASE_DIRECTORY_NAME" value="3bed2ea2-f899-4967-804a-7d2167deff4d" />
       </server-settings>
       <predefined_log_file enabled="true" id="Tomcat" />
       <predefined_log_file enabled="true" id="Tomcat Catalina" />
@@ -300,7 +466,7 @@
       <predefined_log_file id="Tomcat Host Manager" />
       <predefined_log_file id="Tomcat Localhost Access" />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="49235" />
+        <option name="DEBUG_PORT" value="60675" />
       </RunnerSettings>
       <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
         <option name="USE_ENV_VARIABLES" value="true" />
@@ -377,26 +543,35 @@
       <item itemvalue="Gradle.JwtProcessorTest.getUsername" />
       <item itemvalue="Gradle.JwtProcessorTest.validToken" />
       <item itemvalue="Gradle.UserDetailsMapperTest.get" />
-      <item itemvalue="Tomcat 서버.Tomcat 9.0.1051" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.105" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.UserDetailsMapperTest.get" />
         <item itemvalue="Gradle.JwtProcessorTest.validToken" />
         <item itemvalue="Gradle.JwtProcessorTest.getUsername" />
-        <item itemvalue="Gradle.JwtProcessorTest" />
         <item itemvalue="Gradle.JwtProcessorTest.generateToken" />
-        <item itemvalue="Gradle.UserDetailsMapperTest.get" />
+        <item itemvalue="Gradle.JwtProcessorTest" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="디폴트 작업">
+    <task id="Default" summary="디폴트 작업">
+      <branch name="main" repository="C:\Users\shall\Desktop\ITYL\final_project\project\be-server" />
       <changelist id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="" />
       <created>1750638411689</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1750638411689</updated>
+      <updated>1753151396113</updated>
       <workItem from="1750638413269" duration="2243000" />
       <workItem from="1750640845480" duration="7520000" />
       <workItem from="1750724539081" duration="11552000" />
@@ -421,36 +596,22 @@
       <option name="number" value="102" />
       <option name="presentableId" value="NHDR-102" />
       <option name="project" value="NHDR" />
-      <updated>1753151611356</updated>
-      <workItem from="1753151396146" duration="324000" />
+      <updated>1753151781503</updated>
+      <workItem from="1753151396146" duration="825000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/org/scoula/board/mapper/BoardMapper.java</url>
-          <line>14</line>
-          <properties class="org.scoula.board.mapper.BoardMapper" method="getList">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/org/scoula/board/mapper/BoardMapper.java</url>
-          <line>15</line>
-          <properties class="org.scoula.board.mapper.BoardMapper" method="get">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="변경" />
+    <MESSAGE value="NHDR-102 refactor: 커밋 테스트-세영" />
+    <MESSAGE value="NHDR-102 refactor: 커밋 테스트(DB연결)-세영" />
+    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: 커밋 테스트(DB연결)-세영" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
