@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Branch)-세영">
+    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Config, Exception)-세영">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/config/RootConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/config/RootConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/config/ServletConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/config/ServletConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/exception/ApiExceptionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/exception/ApiExceptionAdvice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/exception/CommonExceptionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/exception/CommonExceptionAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/controller/FaqController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/controller/FaqController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/domain/FaqVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/domain/FaqVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/dto/FaqDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/dto/FaqDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/mapper/FaqMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/mapper/FaqMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/faq/mapper/FaqMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/faq/mapper/FaqMapper.xml" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="변경">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
@@ -143,12 +144,11 @@
     <file path="$PROJECT_DIR$/.idea/workspace.xml">
       <ranges>
         <range start1="6" end1="7" start2="6" end2="7" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="8" end1="15" start2="8" end2="8" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="16" end1="17" start2="9" end2="14" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="148" end1="153" start2="145" end2="151" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="549" end1="551" start2="547" end2="549" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="552" end1="553" start2="550" end2="558" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
-        <range start1="563" end1="564" start2="568" end2="570" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="8" end1="14" start2="8" end2="15" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="145" end1="151" start2="146" end2="151" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="547" end1="549" start2="547" end2="549" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="550" end1="551" start2="550" end2="558" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="562" end1="563" start2="569" end2="571" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
       </ranges>
     </file>
   </component>
@@ -545,8 +545,8 @@
       <option name="number" value="102" />
       <option name="presentableId" value="NHDR-102" />
       <option name="project" value="NHDR" />
-      <updated>1753155964706</updated>
-      <workItem from="1753151396146" duration="2608000" />
+      <updated>1753156190804</updated>
+      <workItem from="1753151396146" duration="2780000" />
     </task>
     <servers />
   </component>
@@ -560,7 +560,8 @@
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Asset)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Booking)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Branch)-세영" />
-    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Branch)-세영" />
+    <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Config, Exception)-세영" />
+    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Config, Exception)-세영" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
