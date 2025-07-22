@@ -10,7 +10,7 @@
         <result property="endDate" column="end_date"/>
         <result property="assetName" column="asset_name"/>
         <result property="businessType" column="business_type"/>
-        <result property="categoryAssetCategoryCode" column="category_asset_category_code"/>
+        <result property="businessType" column="business_type"/>
     </resultMap>
 
     <select id="getAssetDetailsByEmail" resultMap="assetDetailMap">
@@ -22,9 +22,9 @@
 
     <insert id="insertAssetDetail">
         INSERT INTO asset_detail (asset_id, email, asset_category_code, amount, registered_at, end_date, asset_name,
-                                  business_type, category_asset_category_code)
+                                  business_type)
         VALUES (#{assetId}, #{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName},
-                #{businessType}, #{categoryAssetCategoryCode})
+                #{businessType})
     </insert>
 
     <update id="updateAssetDetail">
@@ -34,8 +34,7 @@
             registered_at                = #{registeredAt},
             end_date                     = #{endDate},
             asset_name                   = #{assetName},
-            business_type                = #{businessType},
-            category_asset_category_code = #{categoryAssetCategoryCode}
+            business_type                = #{businessType}
         WHERE asset_id = #{assetId}
           AND email = #{email}
     </update>

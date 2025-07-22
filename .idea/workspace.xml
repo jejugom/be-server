@@ -5,9 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Others)-세영">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/domain/AssetDetailVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetDetailDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/dto/AssetDetailDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/domain/BookingVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/domain/BookingVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/dto/BookingDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/dto/BookingDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/domain/UserVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetDetailMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/asset/mapper/AssetDetailMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/booking/mapper/BookingMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/booking/mapper/BookingMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/user/mapper/UserMapper.xml" afterDir="false" />
     </list>
-    <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="NHDR-102 refactor: Naver Convention fromat(Else)-세영" />
+    <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="NHDR-102 refactor: Naver Convention fromat(Else)-세영">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/KakaoAuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/user/service/KakaoAuthService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -119,6 +133,31 @@
     &quot;assignee&quot;: &quot;syann97&quot;
   }
 }</component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="NHDR-104-refactor-xml파일수정-dong" />
+                    <option name="lastUsedInstant" value="1753161127" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1753161126" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/jejugom/be-server.git&quot;,
@@ -205,7 +244,7 @@
       <recent name="org.scoula.security.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.105">
+  <component name="RunManager" selected="Tomcat 서버.Tomcat 9.0.105">
     <configuration name="JwtProcessorTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -227,7 +266,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="JwtProcessorTest.generateToken" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -251,7 +289,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="JwtProcessorTest.getUsername" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -275,7 +312,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="JwtProcessorTest.validToken" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -299,7 +335,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="SecurityConfigTest.testEncode" type="GradleRunConfiguration" factoryName="Gradle">
@@ -323,7 +358,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="UserDetailsMapperTest" type="GradleRunConfiguration" factoryName="Gradle">
@@ -347,7 +381,6 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="UserDetailsMapperTest.get" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -371,11 +404,11 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="Tomcat 9.0.105" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.105" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
-      <option name="UPDATING_POLICY" value="hot-swap-classes" />
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/Gradle___org_scoula___Backend_1_0_SNAPSHOT_war/" />
+      <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="Gradle : org.scoula : Backend-1.0-SNAPSHOT.war">
           <settings>
@@ -469,7 +502,7 @@
       <item itemvalue="Gradle.JwtProcessorTest.getUsername" />
       <item itemvalue="Gradle.JwtProcessorTest.validToken" />
       <item itemvalue="Gradle.UserDetailsMapperTest.get" />
-      <item itemvalue="Tomcat Server.Tomcat 9.0.105" />
+      <item itemvalue="Tomcat 서버.Tomcat 9.0.105" />
     </list>
     <recent_temporary>
       <list>

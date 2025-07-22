@@ -9,8 +9,7 @@
         <result property="time" column="time"/>
         <result property="docInfo" column="doc_info"/>
         <result property="branchName" column="branch_name"/>
-        <result property="branchBranchName" column="branch_branch_name"/>
-        <result property="userEmail" column="user_email"/>
+        <result property="branchName" column="branch_name"/>
     </resultMap>
 
     <select id="getBookingsByEmail" resultMap="bookingMap">
@@ -26,8 +25,8 @@
     </select>
 
     <insert id="insertBooking" useGeneratedKeys="true" keyProperty="bookingId">
-        INSERT INTO booking (email, prdt_code, date, time, doc_info, branch_name, branch_branch_name, user_email)
-        VALUES (#{email}, #{prdtCode}, #{date}, #{time}, #{docInfo}, #{branchName}, #{branchBranchName}, #{userEmail})
+        INSERT INTO booking (email, prdt_code, date, time, doc_info, branch_name)
+        VALUES (#{email}, #{prdtCode}, #{date}, #{time}, #{docInfo}, #{branchName})
     </insert>
 
     <update id="updateBooking">
@@ -37,9 +36,7 @@
             date               = #{date},
             time               = #{time},
             doc_info           = #{docInfo},
-            branch_name        = #{branchName},
-            branch_branch_name = #{branchBranchName},
-            user_email         = #{userEmail}
+            branch_name        = #{branchName}
         WHERE booking_id = #{bookingId}
     </update>
 

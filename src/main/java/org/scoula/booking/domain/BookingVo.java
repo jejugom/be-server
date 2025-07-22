@@ -19,6 +19,4 @@ public class BookingVo {
 	private String time;
 	private String docInfo;
 	private String branchName;
-	private String branchBranchName;
-	private String userEmail;
 }

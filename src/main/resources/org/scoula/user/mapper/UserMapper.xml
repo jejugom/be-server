@@ -8,18 +8,17 @@
         <result property="birth" column="birth" javaType="java.util.Date"/>
         <result property="branchName" column="branch_name"/>
         <result property="connectedId" column="connected_id"/>
-        <result property="branchBranchName" column="branch_branch_name"/>
-    </resultMap>
+        </resultMap>
 
     <select id="findByEmail" resultMap="userMap">
-        SELECT email, user_name, user_phone, birth, branch_name, connected_id, branch_branch_name
+        SELECT email, user_name, user_phone, birth, branch_name, connected_id
         FROM user
         WHERE email = #{email}
     </select>
 
     <insert id="save">
-        INSERT INTO user (email, user_name, user_phone, birth, branch_name, connected_id, branch_branch_name)
-        VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{branchName}, #{connectedId}, #{branchBranchName})
+        INSERT INTO user (email, user_name, user_phone, birth, branch_name, connected_id)
+        VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{branchName}, #{connectedId})
     </insert>
 
     <update id="update">
@@ -27,8 +26,7 @@
         SET user_name          = #{userName},
             user_phone         = #{userPhone},
             birth              = #{birth},
-            branch_name        = #{branchName},
-            branch_branch_name = #{branchBranchName}
+            branch_name        = #{branchName}
         WHERE email = #{email}
     </update>
 
