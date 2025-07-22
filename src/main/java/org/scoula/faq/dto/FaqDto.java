@@ -30,7 +30,7 @@ public class FaqDto {
 			.build();
 	}
 
-	public FaqVo toVO() {
+	public FaqVo toVo() {
 		return FaqVo.builder()
 			.faqId(faqId)
 			.category(category)

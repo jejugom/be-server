@@ -22,7 +22,7 @@ public class CategoryDto {
 			.build();
 	}
 
-	public CategoryVo toVO() {
+	public CategoryVo toVo() {
 		return CategoryVo.builder()
 			.assetCategoryCode(assetCategoryCode)
 			.name(name)

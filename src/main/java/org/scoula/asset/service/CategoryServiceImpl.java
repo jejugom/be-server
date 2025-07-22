@@ -33,12 +33,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void addCategory(CategoryDto categoryDto) {
-		categoryMapper.insertCategory(categoryDto.toVO());
+		categoryMapper.insertCategory(categoryDto.toVo());
 	}
 
 	@Override
 	public void updateCategory(CategoryDto categoryDto) {
-		if (categoryMapper.updateCategory(categoryDto.toVO()) == 0) {
+		if (categoryMapper.updateCategory(categoryDto.toVo()) == 0) {
 			throw new NoSuchElementException("Category not found with code: " + categoryDto.getAssetCategoryCode());
 		}
 	}
