@@ -4,15 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Asset)-세영">
+    <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Booking)-세영">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/controller/BookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/controller/BookingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/domain/BookingVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/domain/BookingVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/dto/BookingDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/dto/BookingDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/mapper/BookingMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/mapper/BookingMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/service/BookingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/booking/service/BookingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/booking/service/BookingServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/booking/mapper/BookingMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/booking/mapper/BookingMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/asset/service/AssetInfoServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/branch/controller/BranchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/branch/controller/BranchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/branch/domain/BranchVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/branch/domain/BranchVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/branch/dto/BranchDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/branch/dto/BranchDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/branch/mapper/BranchMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/branch/mapper/BranchMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/branch/service/BranchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/branch/service/BranchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/branch/service/BranchServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/branch/service/BranchServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/config/RootConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/config/RootConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/scoula/branch/mapper/BranchMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/scoula/branch/mapper/BranchMapper.xml" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="변경">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
@@ -143,12 +145,12 @@
   <component name="LineStatusTrackerManager">
     <file path="$PROJECT_DIR$/.idea/workspace.xml">
       <ranges>
-        <range start1="6" end1="8" start2="6" end2="7" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="9" end1="30" start2="8" end2="15" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="160" end1="202" start2="145" end2="151" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="598" end1="600" start2="547" end2="549" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
-        <range start1="601" end1="602" start2="550" end2="558" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
-        <range start1="610" end1="611" start2="566" end2="568" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="6" end1="7" start2="6" end2="7" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="8" end1="15" start2="8" end2="17" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="145" end1="151" start2="147" end2="153" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="547" end1="549" start2="549" end2="551" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
+        <range start1="550" end1="551" start2="552" end2="560" changelist="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" />
+        <range start1="560" end1="561" start2="569" end2="571" changelist="2617d830-7e24-47f5-a06b-d578720969cc" />
       </ranges>
     </file>
   </component>
@@ -545,8 +547,8 @@
       <option name="number" value="102" />
       <option name="presentableId" value="NHDR-102" />
       <option name="project" value="NHDR" />
-      <updated>1753152289900</updated>
-      <workItem from="1753151396146" duration="995000" />
+      <updated>1753152432288</updated>
+      <workItem from="1753151396146" duration="2428000" />
     </task>
     <servers />
   </component>
@@ -558,7 +560,8 @@
     <MESSAGE value="NHDR-102 refactor: 커밋 테스트-세영" />
     <MESSAGE value="NHDR-102 refactor: 커밋 테스트(DB연결)-세영" />
     <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Asset)-세영" />
-    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Asset)-세영" />
+    <MESSAGE value="NHDR-102 refactor: Naver Convention fromat(Booking)-세영" />
+    <option name="LAST_COMMIT_MESSAGE" value="NHDR-102 refactor: Naver Convention fromat(Booking)-세영" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

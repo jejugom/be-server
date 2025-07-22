@@ -29,7 +29,7 @@ public class AssetInfoServiceImpl implements AssetInfoService {
 
 	@Override
 	public void updateAssetInfo(AssetInfoDto assetInfoDto) {
-		// if (assetInfoMapper.updateAssetInfo(assetInfoDto.toVO()) == 0) {
+		// if (assetInfoMapper.updateAssetInfo(assetInfoDto.toVo()) == 0) {
 		//     throw new NoSuchElementException("AssetInfo not found for email: " + assetInfoDTO.getEmail());
 		// }
 	}
