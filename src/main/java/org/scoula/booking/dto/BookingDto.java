@@ -21,7 +21,6 @@ public class BookingDto {
 	private String time;
 	private String docInfo;
 	private String branchName;
-	private String branchBranchName;
 	private String userEmail;
 
 	public static BookingDto of(BookingVo booking) {
@@ -33,8 +32,6 @@ public class BookingDto {
 			.time(booking.getTime())
 			.docInfo(booking.getDocInfo())
 			.branchName(booking.getBranchName())
-			.branchBranchName(booking.getBranchBranchName())
-			.userEmail(booking.getUserEmail())
 			.build();
 	}
 
@@ -47,8 +44,6 @@ public class BookingDto {
 			.time(time)
 			.docInfo(docInfo)
 			.branchName(branchName)
-			.branchBranchName(branchBranchName)
-			.userEmail(userEmail)
 			.build();
 	}
 }
