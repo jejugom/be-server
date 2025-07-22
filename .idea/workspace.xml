@@ -409,6 +409,20 @@
       <workItem from="1752741061207" duration="2631000" />
       <workItem from="1752815516335" duration="25677000" />
       <workItem from="1753084199448" duration="84000" />
+      <workItem from="1753151315842" duration="80000" />
+    </task>
+    <task active="true" id="NHDR-102" summary="백엔드 코드베이스 코딩 컨벤션 적용">
+      <branch name="main" repository="C:\Users\shall\Desktop\ITYL\final_project\project\be-server" original="true" />
+      <branch name="NHDR-102" repository="C:\Users\shall\Desktop\ITYL\final_project\project\be-server" />
+      <changelist id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="" />
+      <created>1753148425917</created>
+      <option name="issue" value="true" />
+      <url>https://nohudorak.atlassian.net/browse/NHDR-102</url>
+      <option name="number" value="102" />
+      <option name="presentableId" value="NHDR-102" />
+      <option name="project" value="NHDR" />
+      <updated>1753151611356</updated>
+      <workItem from="1753151396146" duration="324000" />
     </task>
     <servers />
   </component>
