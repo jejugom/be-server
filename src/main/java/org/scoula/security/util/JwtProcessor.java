@@ -2,10 +2,7 @@ package org.scoula.security.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.security.KeyStore;
 import java.util.Date;
-
-import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Component;
 
@@ -16,14 +13,14 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtProcessor {
-	static private final long TOKEN_VALID_MILISECOND = 1000L * 60 * 60; // 1시간
+	private static final long TOKEN_VALID_MILISECOND = 1000L * 60 * 60; // 1시간
 	private String secretKey = "비밀키는 충반한 길이의 문자열이어야 한다";
 	private Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
 	//private Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); - 운영 시 사용
 
 	//JWT 생성
-	public String generateToken(String subject){
+	public String generateToken(String subject) {
 		return Jwts.builder()
 			.setSubject(subject)
 			.setIssuedAt(new Date())
@@ -35,7 +32,7 @@ public class JwtProcessor {
 	//JWT subject(username) 추출 - 해석 불가인 경우 예욍
 	//예외 ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException,
 	//illegalArgumentException
-	public String getUsername(String token){
+	public String getUsername(String token) {
 		return Jwts.parserBuilder()
 			.setSigningKey(key)
 			.build()
@@ -43,8 +40,9 @@ public class JwtProcessor {
 			.getBody()
 			.getSubject();
 	}
+
 	//JWT 검증 (유요기간 검증) - 해석 불가인 경우 예외 발생
-	public boolean validateToken(String token){
+	public boolean validateToken(String token) {
 		Jws<Claims> claims = Jwts.parserBuilder()
 			.setSigningKey(key)
 			.build()
