@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AssetInfoVO {
-    private String email;
-    private Long asset;
-    private String segment;
-    private String filename1;
-    private String filename2;
+public class CategoryVo {
+	private String assetCategoryCode;
+	private String name;
 }

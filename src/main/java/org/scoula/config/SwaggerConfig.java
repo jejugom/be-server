@@ -21,19 +21,20 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-	private final String API_NAME ="BACKEND API";
+	private final String API_NAME = "BACKEND API";
 	private final String API_VERSION = "1.0";
 	private final String API_DESCRIPTION = "BACKEND API 명세서";
 
-	private ApiInfo apiInfo(){
+	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 			.title(API_NAME)
 			.description(API_DESCRIPTION)
 			.version(API_VERSION)
 			.build();
 	}
+
 	@Bean
-	public Docket api(){
+	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 			//JWT 인증 추가 / backend
 			.securityContexts(List.of(this.securityContext())) //SecurityContext 설정
@@ -45,20 +46,23 @@ public class SwaggerConfig {
 			.build()
 			.apiInfo(apiInfo());
 	}
+
 	//JWT SecurityContext 구성
-	private SecurityContext securityContext()	{
+	private SecurityContext securityContext() {
 		return SecurityContext.builder()
 			.securityReferences(defaultAuth())
 			.build();
 	}
-	private List<SecurityReference> defaultAuth(){
-		AuthorizationScope authorizationScope = new AuthorizationScope("global","accessEverything");
+
+	private List<SecurityReference> defaultAuth() {
+		AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
 		authorizationScopes[0] = authorizationScope;
-		return List.of(new SecurityReference("Authorization",authorizationScopes));
+		return List.of(new SecurityReference("Authorization", authorizationScopes));
 	}
+
 	//Api 키 정의
-	private ApiKey apiKey(){
-		return new ApiKey("Authorization","Authorization","header");
+	private ApiKey apiKey() {
+		return new ApiKey("Authorization", "Authorization", "header");
 	}
 }

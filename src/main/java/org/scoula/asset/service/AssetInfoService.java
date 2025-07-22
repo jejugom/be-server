@@ -1,10 +1,13 @@
 package org.scoula.asset.service;
 
-import org.scoula.asset.dto.AssetInfoDTO;
+import org.scoula.asset.dto.AssetInfoDto;
 
 public interface AssetInfoService {
-    AssetInfoDTO getAssetInfoByEmail(String email);
-    void addAssetInfo(AssetInfoDTO assetInfoDTO);
-    void updateAssetInfo(AssetInfoDTO assetInfoDTO);
-    void deleteAssetInfo(String email);
+	AssetInfoDto getAssetInfoByEmail(String email);
+
+	void addAssetInfo(AssetInfoDto assetInfoDto);
+
+	void updateAssetInfo(AssetInfoDto assetInfoDto);
+
+	void deleteAssetInfo(String email);
 }

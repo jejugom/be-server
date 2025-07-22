@@ -1,34 +1,35 @@
 package org.scoula.user.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.scoula.user.domain.UserVO;
-import org.scoula.user.dto.UserDTO;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.scoula.user.domain.UserVo;
+import org.scoula.user.dto.UserDto;
 import org.scoula.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
+	private final UserMapper userMapper;
 
-    @Override
-    public UserDTO getUser(String email) {
-        UserVO userVO = Optional.ofNullable(userMapper.findByEmail(email))
-                .orElseThrow(NoSuchElementException::new);
-        return UserDTO.of(userVO);
-    }
+	@Override
+	public UserDto getUser(String email) {
+		UserVo userVO = Optional.ofNullable(userMapper.findByEmail(email))
+			.orElseThrow(NoSuchElementException::new);
+		return UserDto.of(userVO);
+	}
 
-    @Transactional
-    @Override
-    public void join(UserDTO userDTO) {
-        UserVO userVO = userDTO.toVO();
-        userMapper.save(userVO);
-    }
+	@Transactional
+	@Override
+	public void join(UserDto userDto) {
+		UserVo userVO = userDto.toVO();
+		userMapper.save(userVO);
+	}
 }

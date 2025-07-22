@@ -1,13 +1,17 @@
 package org.scoula.branch.mapper;
 
-import org.scoula.branch.domain.BranchVO;
-
 import java.util.List;
 
+import org.scoula.branch.domain.BranchVo;
+
 public interface BranchMapper {
-    List<BranchVO> getAllBranches();
-    BranchVO getBranchByName(String branchName);
-    void insertBranch(BranchVO branch);
-    int updateBranch(BranchVO branch);
-    int deleteBranch(String code);
+	List<BranchVo> getAllBranches();
+
+	BranchVo getBranchByName(String branchName);
+
+	void insertBranch(BranchVo branch);
+
+	int updateBranch(BranchVo branch);
+
+	int deleteBranch(String code);
 }

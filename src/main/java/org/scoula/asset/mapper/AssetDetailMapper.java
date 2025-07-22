@@ -1,13 +1,17 @@
 package org.scoula.asset.mapper;
 
-import org.scoula.asset.domain.AssetDetailVO;
-
 import java.util.List;
 
+import org.scoula.asset.domain.AssetDetailVo;
+
 public interface AssetDetailMapper {
-    List<AssetDetailVO> getAssetDetailsByEmail(String email);
-    AssetDetailVO getAssetDetailById(Integer id);
-    void insertAssetDetail(AssetDetailVO assetDetail);
-    int updateAssetDetail(AssetDetailVO assetDetail);
-    int deleteAssetDetail(Integer id);
+	List<AssetDetailVo> getAssetDetailsByEmail(String email);
+
+	AssetDetailVo getAssetDetailById(Integer id);
+
+	void insertAssetDetail(AssetDetailVo assetDetail);
+
+	int updateAssetDetail(AssetDetailVo assetDetail);
+
+	int deleteAssetDetail(Integer id);
 }

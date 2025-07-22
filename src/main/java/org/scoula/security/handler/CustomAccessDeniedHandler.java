@@ -21,6 +21,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 		AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		log.error("============= 인가 에러 =========");
-		JsonResponse.sendError(response, HttpStatus.FORBIDDEN,"권한이 부족합니다.");
+		JsonResponse.sendError(response, HttpStatus.FORBIDDEN, "권한이 부족합니다.");
 	}
 }
