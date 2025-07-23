@@ -15,7 +15,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 	"org.scoula.recommend.controller",
 	"org.scoula.faq.controller",
 	"org.scoula.branch.controller",
-	"org.scoula.booking.controller"}) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
+	"org.scoula.booking.controller",
+	"org.scoula.codef.controller"}) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
 public class ServletConfig implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {

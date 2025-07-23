@@ -12,15 +12,8 @@ import org.scoula.security.util.JwtProcessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-
-@Component
-@Log4j2
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private static final String AUTHORIZATION_HEADER = "Authorization";
 	public static final String BEARER_PREFIX = "Bearer "; // 끝에 공백 포함
@@ -39,16 +32,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
 
+		log.info("JwtAuthenticationFilter: doFilterInternal called for URI: {}", request.getRequestURI()); // 필터 호출 로그
+
 		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
-		if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
+		if (bearerToken == null) {
+			log.warn("JwtAuthenticationFilter: Authorization header is missing."); // 헤더 누락 로그
+		} else if (!bearerToken.startsWith(BEARER_PREFIX)) {
+			log.warn("JwtAuthenticationFilter: Authorization header does not start with Bearer. Header: {}",
+				bearerToken); // Bearer 접두사 누락 로그
+		} else {
 			String token = bearerToken.substring(BEARER_PREFIX.length());
+			log.info("JwtAuthenticationFilter: Extracted token: {}", token); // 토큰 추출 로그
 
 			if (jwtProcessor.validateToken(token)) {
 				Authentication authentication = getAuthentication(token);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
+				log.info("JwtAuthenticationFilter: Authentication successful for user: {}",
+					authentication.getName()); // 인증 성공 로그
 			} else {
-				log.warn("유효하지 않은 JWT 토큰");
+				log.warn("JwtAuthenticationFilter: Invalid JWT token."); // 유효하지 않은 토큰 로그
 			}
 		}
 

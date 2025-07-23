@@ -6,4 +6,6 @@ public interface UserService {
 	UserDto getUser(String email);
 
 	void join(UserDto userDto);
+
+	void updateConnectedId(String email, String connectedId);
 }

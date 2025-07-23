@@ -49,4 +49,9 @@ public class AssetDetailServiceImpl implements AssetDetailService {
 			throw new NoSuchElementException("AssetDetail not found with id: " + assetId);
 		}
 	}
+
+	@Override
+	public void saveAssetDetail(AssetDetailDto assetDetailDto) {
+		assetDetailMapper.insertAssetDetailWithGeneratedKey(assetDetailDto.toVo());
+	}
 }

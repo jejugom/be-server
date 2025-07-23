@@ -51,7 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.antMatchers(HttpMethod.POST, "/api/user/join").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth/kakao").permitAll()
-			.anyRequest().permitAll();
+			.antMatchers("/api/codef/**").authenticated()
+			.anyRequest().authenticated();
 
 	}
 
