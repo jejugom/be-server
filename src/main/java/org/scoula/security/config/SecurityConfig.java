@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.POST, "/auth/kakao").permitAll()
 			.antMatchers("/kakao/callback").permitAll() // ✅ 이 줄 추가!
 			.antMatchers("/api/codef/**").authenticated()
-			.anyRequest().authenticated();
+			.anyRequest().permitAll();
 
 	}
 
