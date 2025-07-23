@@ -14,4 +14,6 @@ public interface AssetDetailService {
 	void updateAssetDetail(AssetDetailDto assetDetailDto);
 
 	void deleteAssetDetail(Integer assetId);
+
+	void saveAssetDetail(AssetDetailDto assetDetailDto);
 }

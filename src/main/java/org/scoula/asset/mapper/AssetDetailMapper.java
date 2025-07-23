@@ -11,6 +11,8 @@ public interface AssetDetailMapper {
 
 	void insertAssetDetail(AssetDetailVo assetDetail);
 
+	void insertAssetDetailWithGeneratedKey(AssetDetailVo assetDetail);
+
 	int updateAssetDetail(AssetDetailVo assetDetail);
 
 	int deleteAssetDetail(Integer id);
