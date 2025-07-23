@@ -18,6 +18,8 @@ public class FaqServiceImpl implements FaqService {
 
 	private final FaqMapper faqMapper;
 
+	// FAQ 목록 조회를 2가지 방법으로 명세
+
 	/**
 	 * 방법 1: 목록 조회용 (id, title 등 요약 정보만 반환)
 	 */

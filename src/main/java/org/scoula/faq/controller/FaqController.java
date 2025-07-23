@@ -34,6 +34,7 @@ public class FaqController {
 		return ResponseEntity.ok(faqsWithContent);
 	}
 
+	// 3. 특정 FAQ 상세 조회할 때
 	@GetMapping("/{faqId}")
 	public ResponseEntity<FaqDto> getFaqById(@PathVariable Integer faqId) {
 		return ResponseEntity.ok(faqService.getFaqById(faqId));

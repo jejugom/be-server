@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
+// FAQ 요약 정보(faqId, category, title) 조회
 public class FaqListDto {
 	private int faqId;
 	private String category;
