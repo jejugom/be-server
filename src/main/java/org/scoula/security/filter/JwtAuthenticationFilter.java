@@ -2,6 +2,7 @@ package org.scoula.security.filter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -40,8 +41,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
 
-		log.info("JwtAuthenticationFilter: doFilterInternal called for URI: {}", request.getRequestURI()); // 필터 호출 로그
+		// 인증 없이 허용할 경로
+		List<String> whitelist = List.of(
+			"/auth/kakao",
+			"/api/user/join",
+			"/favicon.ico",
+			"/oauth/authorize",
+			"/kakao/callback"
+		);
 
+		String uri = request.getRequestURI();
+		log.info("JwtAuthenticationFilter: doFilterInternal called for URI: {}", uri);
+
+		if (whitelist.contains(uri)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
 		if (bearerToken == null) {
