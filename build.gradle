@@ -51,6 +51,7 @@ dependencies {
     //e데이터ㅏ 베이스
     implementation 'com.zaxxer:HikariCP:2.7.4'
     implementation 'com.mysql:mysql-connector-j:8.1.0'
+
     //MyBatis
     implementation "org.springframework:spring-tx:${springVersion}"
     implementation "org.springframework:spring-jdbc:${springVersion}"
