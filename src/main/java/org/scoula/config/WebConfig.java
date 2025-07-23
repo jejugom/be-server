@@ -1,8 +1,11 @@
 package org.scoula.config;
 
+import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 import org.scoula.security.config.SecurityConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -28,5 +31,14 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	protected String[] getServletMappings() {
 		return new String[] {"/"};
 	}
+
 	// Post body 문자 인코딩 필터 설정
+	@Override
+	protected Filter[] getServletFilters() {
+		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+		encodingFilter.setEncoding("UTF-8");
+		encodingFilter.setForceEncoding(true);
+		return new Filter[] { encodingFilter };
+	}
+
 }

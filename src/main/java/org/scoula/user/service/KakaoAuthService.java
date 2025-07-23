@@ -1,5 +1,6 @@
 package org.scoula.user.service;
 
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -38,6 +40,8 @@ public class KakaoAuthService {
 
 	private final UserMapper userMapper;
 	private final RestTemplate restTemplate = new RestTemplate();
+
+
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Transactional
@@ -53,6 +57,9 @@ public class KakaoAuthService {
 	}
 
 	private KakaoTokenResponseDto getKakaoAccessToken(String code) {
+		restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+
 		String tokenUrl = "https://kauth.kakao.com/oauth/token";
 
 		HttpHeaders headers = new HttpHeaders();
@@ -74,48 +81,6 @@ public class KakaoAuthService {
 		);
 		return response.getBody();
 	}
-
-	// public KakaoTokenResponseDto getKakaoAccessToken(String code) {
-	//     String tokenUrl = "https://kauth.kakao.com/oauth/token";
-	//
-	//     HttpHeaders headers = new HttpHeaders();
-	//     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-	//
-	//     MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-	//     params.add("grant_type", "authorization_code");
-	//     params.add("client_id", kakaoClientId);           // ✅ application.properties에 있는 값
-	//     params.add("redirect_uri", kakaoRedirectUri);     // ✅ 반드시 카카오 콘솔과 일치해야 함
-	//     params.add("code", code);                         // ✅ postman에서 받은 인가코드
-	//
-	//     HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
-	//
-	//     try {
-	//         // 💡 디버깅용: 먼저 문자열로 응답 확인
-	//         ResponseEntity<String> response = restTemplate.exchange(
-	//             tokenUrl,
-	//             HttpMethod.POST,
-	//             kakaoTokenRequest,
-	//             String.class
-	//         );
-	//
-	//         System.out.println("✅ 카카오 응답 본문:\n" + response.getBody());
-	//
-	//         // 💡 응답을 DTO로 변환
-	//         ObjectMapper objectMapper = new ObjectMapper();
-	//         return objectMapper.readValue(response.getBody(), KakaoTokenResponseDto.class);
-	//
-	//     } catch (HttpClientErrorException | HttpServerErrorException e) {
-	//         System.out.println("❌ 카카오 요청 실패:");
-	//         System.out.println("상태 코드: " + e.getStatusCode());
-	//         System.out.println("응답 본문: " + e.getResponseBodyAsString());
-	//
-	//         // 💡 에러 본문을 파싱해서 사용자에게 전달해도 됨
-	//         throw new RuntimeException("카카오 토큰 요청 중 오류 발생");
-	//     } catch (Exception e) {
-	//         e.printStackTrace();
-	//         throw new RuntimeException("카카오 응답 파싱 중 오류 발생", e);
-	//     }
-	// }
 
 	private KakaoUserInfoDto getKakaoUserInfo(String accessToken) {
 		String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
@@ -148,9 +113,9 @@ public class KakaoAuthService {
 			email = userInfo.getKakaoAccount().getEmail();
 		}
 
-		if (email == null) {
-			throw new RuntimeException("카카오 사용자 이메일이 존재하지 않습니다.");
-		}
+		// if (email == null) {
+		// 	throw new RuntimeException("카카오 사용자 이메일이 존재하지 않습니다.");
+		// }
 
 		Optional<UserVo> existingUser = Optional.ofNullable(userMapper.findByEmail(email));
 		if (existingUser.isPresent()) {
