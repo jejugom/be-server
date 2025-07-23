@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.scoula.recommend.mapper.CustomRecommendMapper">
-    <resultMap id="customRecommendMap" type="org.scoula.recommend.domain.CustomRecommendVO">
+    <resultMap id="customRecommendMap" type="org.scoula.recommend.domain.CustomRecommendVo">
         <id property="prdtId" column="prdt_id"/>
         <id property="email" column="email"/>
         <result property="recReason" column="rec_reason"/>
@@ -9,7 +9,9 @@
     </resultMap>
 
     <select id="getCustomRecommendsByEmail" resultMap="customRecommendMap">
-        SELECT * FROM custom_recommand_prdt WHERE email = #{email}
+        SELECT *
+        FROM custom_recommand_prdt
+        WHERE email = #{email}
     </select>
 
     <insert id="insertCustomRecommend">
@@ -20,11 +22,15 @@
     <update id="updateCustomRecommend">
         UPDATE custom_recommand_prdt
         SET rec_reason = #{recReason},
-            segment = #{segment}
-        WHERE prdt_id = #{prdtId} AND email = #{email}
+            segment    = #{segment}
+        WHERE prdt_id = #{prdtId}
+          AND email = #{email}
     </update>
 
     <delete id="deleteCustomRecommend">
-        DELETE FROM custom_recommand_prdt WHERE prdt_id = #{prdtId} AND email = #{email}
+        DELETE
+        FROM custom_recommand_prdt
+        WHERE prdt_id = #{prdtId}
+          AND email = #{email}
     </delete>
 </mapper>

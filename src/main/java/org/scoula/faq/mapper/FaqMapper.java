@@ -1,13 +1,17 @@
 package org.scoula.faq.mapper;
 
-import org.scoula.faq.domain.FaqVO;
-
 import java.util.List;
 
+import org.scoula.faq.domain.FaqVo;
+
 public interface FaqMapper {
-    List<FaqVO> getAllFaqs();
-    FaqVO getFaqById(Integer id);
-    void insertFaq(FaqVO faq);
-    int updateFaq(FaqVO faq);
-    int deleteFaq(Integer id);
+	List<FaqVo> getAllFaqs();
+
+	FaqVo getFaqById(Integer id);
+
+	// void insertFaq(FaqVo faq);
+	//
+	// int updateFaq(FaqVo faq);
+	//
+	// int deleteFaq(Integer id);
 }

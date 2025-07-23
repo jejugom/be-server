@@ -1,12 +1,15 @@
 package org.scoula.recommend.service;
 
-import org.scoula.recommend.dto.CustomRecommendDTO;
-
 import java.util.List;
 
+import org.scoula.recommend.dto.CustomRecommendDto;
+
 public interface CustomRecommendService {
-    List<CustomRecommendDTO> getCustomRecommendsByEmail(String email);
-    void addCustomRecommend(CustomRecommendDTO customRecommendDTO);
-    void updateCustomRecommend(CustomRecommendDTO customRecommendDTO);
-    void deleteCustomRecommend(String email, String prdtId);
+	List<CustomRecommendDto> getCustomRecommendsByEmail(String email);
+
+	void addCustomRecommend(CustomRecommendDto customRecommendDto);
+
+	void updateCustomRecommend(CustomRecommendDto customRecommendDto);
+
+	void deleteCustomRecommend(String email, String prdtId);
 }

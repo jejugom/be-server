@@ -22,12 +22,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException authException) throws IOException, ServletException {
 		log.error("======인증 에러======");
-		JsonResponse.sendError(response, HttpStatus.UNAUTHORIZED,authException.getMessage());
+		JsonResponse.sendError(response, HttpStatus.UNAUTHORIZED, authException.getMessage());
 	}
 	/**
 	 * 클라이언트는 위 메세지를 받으면 loginPage로 이동해야 함.
 	 * login 성공을 하면,ㅡ 원래 가고자 하는 페이지로 이동하는 작업을
 	 * 클라이언트에서 해줘야 함.
 	 */
-
 }

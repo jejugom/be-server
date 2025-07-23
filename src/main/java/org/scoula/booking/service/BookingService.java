@@ -1,13 +1,17 @@
 package org.scoula.booking.service;
 
-import org.scoula.booking.dto.BookingDTO;
-
 import java.util.List;
 
+import org.scoula.booking.dto.BookingDto;
+
 public interface BookingService {
-    List<BookingDTO> getBookingsByEmail(String email);
-    BookingDTO getBookingById(Integer bookingId);
-    void addBooking(BookingDTO bookingDTO);
-    void updateBooking(BookingDTO bookingDTO);
-    void deleteBooking(Integer bookingId);
+	List<BookingDto> getBookingsByEmail(String email);
+
+	BookingDto getBookingById(Integer bookingId);
+
+	void addBooking(BookingDto bookingDto);
+
+	void updateBooking(BookingDto bookingDto);
+
+	void deleteBooking(Integer bookingId);
 }

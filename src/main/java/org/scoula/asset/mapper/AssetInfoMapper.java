@@ -1,10 +1,13 @@
 package org.scoula.asset.mapper;
 
-import org.scoula.asset.domain.AssetInfoVO;
+import org.scoula.asset.domain.AssetInfoVo;
 
 public interface AssetInfoMapper {
-    AssetInfoVO getAssetInfoByEmail(String email);
-    void insertAssetInfo(AssetInfoVO assetInfo);
-    int updateAssetInfo(AssetInfoVO assetInfo);
-    int deleteAssetInfo(String email);
+	AssetInfoVo getAssetInfoByEmail(String email);
+
+	void insertAssetInfo(AssetInfoVo assetInfo);
+
+	int updateAssetInfo(AssetInfoVo assetInfo);
+
+	int deleteAssetInfo(String email);
 }

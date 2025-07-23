@@ -1,8 +1,11 @@
 package org.scoula.user.service;
 
-import org.scoula.user.dto.UserDTO;
+import org.scoula.user.dto.UserDto;
 
 public interface UserService {
-    UserDTO getUser(String email);
-    void join(UserDTO userDTO);
+	UserDto getUser(String email);
+
+	void join(UserDto userDto);
+
+	void updateConnectedId(String email, String connectedId);
 }

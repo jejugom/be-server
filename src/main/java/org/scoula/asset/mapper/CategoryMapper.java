@@ -1,13 +1,17 @@
 package org.scoula.asset.mapper;
 
-import org.scoula.asset.domain.CategoryVO;
-
 import java.util.List;
 
+import org.scoula.asset.domain.CategoryVo;
+
 public interface CategoryMapper {
-    List<CategoryVO> getAllCategories();
-    CategoryVO getCategoryByCode(String code);
-    void insertCategory(CategoryVO category);
-    int updateCategory(CategoryVO category);
-    int deleteCategory(String code);
+	List<CategoryVo> getAllCategories();
+
+	CategoryVo getCategoryByCode(String code);
+
+	void insertCategory(CategoryVo category);
+
+	int updateCategory(CategoryVo category);
+
+	int deleteCategory(String code);
 }

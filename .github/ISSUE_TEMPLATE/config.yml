@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+issue_templates:
+  - name: 🐞 버그 리포트
+    description: 버그가 발생했을 때 작성하는 템플릿입니다.
+    labels: [bug]
+    body: .github/ISSUE_TEMPLATE/bug_report.md
+
+  - name: ✨ 기능 제안
+    description: 새로운 기능 아이디어를 제안하는 템플릿입니다.
+    labels: [enhancement]
+    body: .github/ISSUE_TEMPLATE/feature_request.md

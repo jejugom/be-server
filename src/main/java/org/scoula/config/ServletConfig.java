@@ -16,7 +16,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 	"org.scoula.faq.controller",
 	"org.scoula.branch.controller",
 	"org.scoula.booking.controller",
+<<<<<<< HEAD
 	"org.scoula.product.controller"}) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
+=======
+	"org.scoula.codef.controller"}) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
+>>>>>>> origin/develop
 public class ServletConfig implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
@@ -28,7 +32,7 @@ public class ServletConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry
 			.addResourceHandler("/resources/**")//url이 /resources/로 시작하는 모든 경로
-			.addResourceLocations("/resources/");//webapp/resource/경로로 매핑
+			.addResourceLocations("/resources/");    // webapp/resource/경로로 매핑
 
 		registry.addResourceHandler("/assets/**")
 			.addResourceLocations("/resources/assets/");

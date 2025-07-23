@@ -1,13 +1,20 @@
 package org.scoula.faq.service;
 
-import org.scoula.faq.dto.FaqDTO;
-
 import java.util.List;
 
+import org.scoula.faq.dto.FaqDto;
+import org.scoula.faq.dto.FaqListDto;
+
 public interface FaqService {
-    List<FaqDTO> getAllFaqs();
-    FaqDTO getFaqById(Integer faqId);
-    void addFaq(FaqDTO faqDTO);
-    void updateFaq(FaqDTO faqDTO);
-    void deleteFaq(Integer faqId);
+	List<FaqListDto> getFaqList();
+
+	List<FaqDto> getAllFaqsWithContent();
+
+	FaqDto getFaqById(Integer faqId);
+
+	// void addFaq(FaqDto faqDto);
+	//
+	// void updateFaq(FaqDto faqDto);
+	//
+	// void deleteFaq(Integer faqId);
 }

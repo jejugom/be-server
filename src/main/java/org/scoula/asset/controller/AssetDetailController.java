@@ -1,46 +1,55 @@
 package org.scoula.asset.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.scoula.asset.dto.AssetDetailDTO;
+import java.util.List;
+
+import org.scoula.asset.dto.AssetDetailDto;
 import org.scoula.asset.service.AssetDetailService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/asset-details")
 public class AssetDetailController {
 
-    private final AssetDetailService assetDetailService;
+	private final AssetDetailService assetDetailService;
 
-    @GetMapping("/user/{email}")
-    public ResponseEntity<List<AssetDetailDTO>> getAssetDetailsByEmail(@PathVariable String email) {
-        return ResponseEntity.ok(assetDetailService.getAssetDetailsByEmail(email));
-    }
+	@GetMapping("/user/{email}")
+	public ResponseEntity<List<AssetDetailDto>> getAssetDetailsByEmail(@PathVariable String email) {
+		return ResponseEntity.ok(assetDetailService.getAssetDetailsByEmail(email));
+	}
 
-    @GetMapping("/{assetId}")
-    public ResponseEntity<AssetDetailDTO> getAssetDetailById(@PathVariable Integer assetId) {
-        return ResponseEntity.ok(assetDetailService.getAssetDetailById(assetId));
-    }
+	@GetMapping("/{assetId}")
+	public ResponseEntity<AssetDetailDto> getAssetDetailById(@PathVariable Integer assetId) {
+		return ResponseEntity.ok(assetDetailService.getAssetDetailById(assetId));
+	}
 
-    @PostMapping
-    public ResponseEntity<Void> addAssetDetail(@RequestBody AssetDetailDTO assetDetailDTO) {
-        assetDetailService.addAssetDetail(assetDetailDTO);
-        return ResponseEntity.ok().build();
-    }
+	@PostMapping
+	public ResponseEntity<Void> addAssetDetail(@RequestBody AssetDetailDto assetDetailDto) {
+		assetDetailService.addAssetDetail(assetDetailDto);
+		return ResponseEntity.ok().build();
+	}
 
-    @PutMapping("/{assetId}")
-    public ResponseEntity<Void> updateAssetDetail(@PathVariable Integer assetId, @RequestBody AssetDetailDTO assetDetailDTO) {
-        assetDetailDTO.setAssetId(assetId);
-        assetDetailService.updateAssetDetail(assetDetailDTO);
-        return ResponseEntity.ok().build();
-    }
+	@PutMapping("/{assetId}")
+	public ResponseEntity<Void> updateAssetDetail(@PathVariable Integer assetId,
+		@RequestBody AssetDetailDto assetDetailDto) {
+		assetDetailDto.setAssetId(assetId);
+		assetDetailService.updateAssetDetail(assetDetailDto);
+		return ResponseEntity.ok().build();
+	}
 
-    @DeleteMapping("/{assetId}")
-    public ResponseEntity<Void> deleteAssetDetail(@PathVariable Integer assetId) {
-        assetDetailService.deleteAssetDetail(assetId);
-        return ResponseEntity.ok().build();
-    }
+	@DeleteMapping("/{assetId}")
+	public ResponseEntity<Void> deleteAssetDetail(@PathVariable Integer assetId) {
+		assetDetailService.deleteAssetDetail(assetId);
+		return ResponseEntity.ok().build();
+	}
 }

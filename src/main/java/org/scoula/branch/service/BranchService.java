@@ -1,13 +1,17 @@
 package org.scoula.branch.service;
 
-import org.scoula.branch.dto.BranchDTO;
-
 import java.util.List;
 
+import org.scoula.branch.dto.BranchDto;
+
 public interface BranchService {
-    List<BranchDTO> getAllBranches();
-    BranchDTO getBranchByName(String branchName);
-    void addBranch(BranchDTO branchDTO);
-    void updateBranch(BranchDTO branchDTO);
-    void deleteBranch(String branchName);
+	List<BranchDto> getAllBranches();
+
+	BranchDto getBranchByName(String branchName);
+
+	void addBranch(BranchDto branchDto);
+
+	void updateBranch(BranchDto branchDto);
+
+	void deleteBranch(String branchName);
 }
