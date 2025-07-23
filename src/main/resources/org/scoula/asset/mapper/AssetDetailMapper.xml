@@ -45,5 +45,12 @@
         WHERE asset_id = #{assetId}
           AND email = #{email}
     </delete>
+
+    <insert id="insertAssetDetailWithGeneratedKey" useGeneratedKeys="true" keyProperty="assetId">
+        INSERT INTO asset_detail (email, asset_category_code, amount, registered_at, end_date, asset_name,
+                                  business_type)
+        VALUES (#{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName},
+                #{businessType})
+    </insert>
 </mapper>
 

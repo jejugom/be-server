@@ -51,13 +51,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.antMatchers(HttpMethod.POST, "/api/user/join").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth/kakao").permitAll()
+			.antMatchers("/kakao/callback").permitAll() // ✅ 이 줄 추가!
+			.antMatchers("/api/codef/**").authenticated()
 			.anyRequest().permitAll();
 
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/assets/**", "/*",
+		web.ignoring().antMatchers("/assets/**",
 			"/swagger-ui.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs"
 		);
 	}

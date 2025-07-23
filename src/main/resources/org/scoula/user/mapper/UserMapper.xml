@@ -40,4 +40,10 @@
         SELECT *
         FROM user
     </select>
+
+    <update id="updateConnectedId">
+        UPDATE user
+        SET connected_id = #{connectedId}
+        WHERE email = #{email}
+    </update>
 </mapper>

@@ -32,4 +32,10 @@ public class UserServiceImpl implements UserService {
 		UserVo userVO = userDto.toVo();
 		userMapper.save(userVO);
 	}
+
+	@Transactional
+	@Override
+	public void updateConnectedId(String email, String connectedId) {
+		userMapper.updateConnectedId(email, connectedId);
+	}
 }
