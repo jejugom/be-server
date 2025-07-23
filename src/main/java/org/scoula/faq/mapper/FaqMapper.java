@@ -9,9 +9,9 @@ public interface FaqMapper {
 
 	FaqVo getFaqById(Integer id);
 
-	void insertFaq(FaqVo faq);
-
-	int updateFaq(FaqVo faq);
-
-	int deleteFaq(Integer id);
+	// void insertFaq(FaqVo faq);
+	//
+	// int updateFaq(FaqVo faq);
+	//
+	// int deleteFaq(Integer id);
 }

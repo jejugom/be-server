@@ -20,7 +20,7 @@ public class FaqDto {
 	private String content;
 	private Date date;
 
-	public static FaqDto of(FaqVo faq) {
+	public static FaqDto from(FaqVo faq) {
 		return FaqDto.builder()
 			.faqId(faq.getFaqId())
 			.category(faq.getCategory())
