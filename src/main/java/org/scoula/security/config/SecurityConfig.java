@@ -48,12 +48,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 			.authorizeRequests()
-			.antMatchers(HttpMethod.OPTIONS).permitAll()
+			// --- 인증 없이 접근을 허용할 경로 ---
+			.antMatchers("/").permitAll()
+			.antMatchers("/kakao/callback").permitAll()
 			.antMatchers(HttpMethod.POST, "/api/user/join").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth/kakao").permitAll()
-			.antMatchers("/kakao/callback").permitAll() // ✅ 이 줄 추가!
+			.antMatchers(HttpMethod.OPTIONS).permitAll()
+
+			// --- 인증이 필요한 경로 ---
 			.antMatchers("/api/codef/**").authenticated()
-			.anyRequest().permitAll();
+
+			// --- 나머지 모든 경로는 반드시 인증을 요구 ---
+			.anyRequest().authenticated();
 
 	}
 
