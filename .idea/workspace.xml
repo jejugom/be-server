@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2617d830-7e24-47f5-a06b-d578720969cc" name="NHDR-102 백엔드 코드베이스 코딩 컨벤션 적용-세영" comment="NHDR-102 refactor: Naver Convention fromat(Others)-세영">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/scoula/config/SecurityInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/codef/service/CodefTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/codef/service/CodefTokenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/security/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/security/filter/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/codef/controller/CodefController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/codef/controller/CodefController.java" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="NHDR-102 refactor: Naver Convention fromat(Else)-세영" />
     <option name="SHOW_DIALOG" value="false" />
@@ -548,7 +545,7 @@
       <workItem from="1753151396146" duration="5555000" />
       <workItem from="1753159721192" duration="390000" />
       <workItem from="1753160273617" duration="584000" />
-      <workItem from="1753164243881" duration="19430000" />
+      <workItem from="1753164243881" duration="20580000" />
     </task>
     <servers>
       <JIRA url="https://nohudorak.atlassian.net">

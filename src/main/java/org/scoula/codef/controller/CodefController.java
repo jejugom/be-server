@@ -65,7 +65,10 @@ public class CodefController {
 			return ResponseEntity.status(500).body("CODEF 오류: " + code);
 		}
 
-		String connectedId = (String)result.get("connectedId");
+		// String connectedId = (String)result.get("connectedId");
+		Map<String, Object> data = (Map<String, Object>)result.get("data");
+		String connectedId = (String)data.get("connectedId");
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userEmail = authentication.getName();
 
@@ -75,6 +78,8 @@ public class CodefController {
 			return ResponseEntity.ok(result);
 		} else {
 			log.error("❌ userEmail 또는 connectedId null - {}, {}", userEmail, connectedId);
+			log.info(connectedId);
+			log.info(result);
 			return ResponseEntity.status(500).body("user 또는 connectedId 누락");
 		}
 	}
