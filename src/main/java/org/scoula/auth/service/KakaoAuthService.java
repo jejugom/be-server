@@ -1,13 +1,18 @@
-package org.scoula.user.service;
+package org.scoula.auth.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+import org.scoula.auth.dto.KakaoTokenResponseDto;
+import org.scoula.auth.dto.KakaoUserInfoDto;
+import org.scoula.auth.dto.LoginResponseDto;
+import org.scoula.auth.dto.RefreshTokenDto;
+import org.scoula.auth.mapper.RefreshTokenMapper;
+import org.scoula.security.util.JwtProcessor;
 import org.scoula.user.domain.UserVo;
-import org.scoula.user.dto.KakaoTokenResponseDto;
-import org.scoula.user.dto.KakaoUserInfoDto;
 import org.scoula.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -37,19 +42,40 @@ public class KakaoAuthService {
 	private String kakaoRedirectUri;
 
 	private final UserMapper userMapper;
+	private final RefreshTokenMapper refreshTokenMapper;
 	private final RestTemplate restTemplate = new RestTemplate();
 	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final JwtProcessor jwtProcessor;
 
 	@Transactional
-	public UserVo processKakaoLogin(String code) {
-		// 1. 인가 코드로 액세스 토큰 요청
-		KakaoTokenResponseDto tokenResponse = getKakaoAccessToken(code);
+	public LoginResponseDto processKakaoLogin(String code) {
+		// 1. 카카오 API를 통해 사용자 정보 받아오기
+		KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(getKakaoAccessToken(code).getAccessToken());
 
-		// 2. 액세스 토큰으로 사용자 정보 요청
-		KakaoUserInfoDto userInfo = getKakaoUserInfo(tokenResponse.getAccessToken());
+		// 2. DB에서 사용자를 찾거나 새로 가입시키기
+		UserVo user = findOrCreateUser(kakaoUserInfo);
 
-		// 3. 사용자 정보로 회원 가입 또는 로그인 처리
-		return findOrCreateUser(userInfo);
+		// 3. 우리 서비스의 Access Token과 Refresh Token 생성
+		String accessToken = jwtProcessor.generateAccessToken(user.getEmail());
+		String refreshTokenValue = jwtProcessor.generateRefreshToken(user.getEmail());
+
+		// 4. ✅ 생성된 리프레시 토큰 정보를 DB에 저장 (핵심 변경 부분)
+		RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
+			.userEmail(user.getEmail())
+			.provider("OUR_SERVICE")
+			.tokenValue(refreshTokenValue)
+			.expiresAt(LocalDateTime.now().plusWeeks(2)) // 2주 후 만료
+			.build();
+
+		refreshTokenMapper.saveRefreshToken(refreshTokenDto); // Mapper 메서드 호출
+
+		// 5. 클라이언트에게 전달할 최종 응답 DTO 생성
+		return LoginResponseDto.builder()
+			.accessToken(accessToken)
+			.refreshToken(refreshTokenValue)
+			.userId(user.getEmail())
+			.userName(user.getUserName())
+			.build();
 	}
 
 	private KakaoTokenResponseDto getKakaoAccessToken(String code) {

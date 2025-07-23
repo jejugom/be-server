@@ -1,4 +1,6 @@
-package org.scoula.user.dto;
+package org.scoula.auth.dto;
+
+import org.scoula.user.dto.UserInfoDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
