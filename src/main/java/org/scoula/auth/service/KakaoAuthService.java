@@ -34,7 +34,6 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 public class KakaoAuthService {
-
 	@Value("${kakao.client.id}")
 	private String kakaoClientId;
 
