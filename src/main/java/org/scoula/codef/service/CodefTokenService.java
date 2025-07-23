@@ -39,6 +39,7 @@ public class CodefTokenService {
 				int expiresIn = (Integer)tokenMap.get("expires_in");
 				this.tokenExpiryTime = System.currentTimeMillis() + (expiresIn * 1000L); // 현재 시간 + 유효 기간
 				log.info("New Access Token published successfully.");
+				log.info(accessToken);
 			} else {
 				log.error("Failed to publish new Access Token.");
 				return null;
@@ -60,13 +61,13 @@ public class CodefTokenService {
 					// String encryptedPassword = codefApiClient.encryptRSA((String)account.get("password"),
 					// 	codefApiClient.getPublicKey());
 					String encryptedPassword = codefApiClient.encryptRSA((String)account.get("password"),
-                            codefApiClient.getPublicKey())
-                        .replaceAll("\n", "");
-                    account.put("password", encryptedPassword);
-                }
-                log.info("🔐 암호화 후 account: {}", account); // ✅ 추가
+							codefApiClient.getPublicKey())
+						.replaceAll("\n", "");
+					account.put("password", encryptedPassword);
+				}
+				log.info("🔐 암호화 후 account: {}", account); // ✅ 추가
 
-            }
+			}
 
 			// 계정 리스트 통째로 담은 요청
 			Map<String, Object> bodyMap = new HashMap<>();
