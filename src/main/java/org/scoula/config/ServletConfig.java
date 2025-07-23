@@ -1,21 +1,16 @@
 package org.scoula.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @ComponentScan(basePackages = {"org.scoula.controller",
 	"org.scoula.exception",
 	"org.scoula.security",
+	"org.scoula.auth.service",
 	"org.scoula.user.controller",
 	"org.scoula.asset.controller",
 	"org.scoula.recommend.controller",
@@ -23,7 +18,8 @@ import org.springframework.web.servlet.view.JstlView;
 	"org.scoula.branch.controller",
 	"org.scoula.booking.controller",
 	"org.scoula.product.controller",
-	"org.scoula.codef.controller"
+	"org.scoula.codef.controller",
+	"org.scoula.auth.controller",
 }) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
 public class ServletConfig implements WebMvcConfigurer {
 	@Override

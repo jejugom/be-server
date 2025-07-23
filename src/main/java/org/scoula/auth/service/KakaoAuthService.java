@@ -58,7 +58,7 @@ public class KakaoAuthService {
 		String accessToken = jwtProcessor.generateAccessToken(user.getEmail());
 		String refreshTokenValue = jwtProcessor.generateRefreshToken(user.getEmail());
 
-		// 4. ✅ 생성된 리프레시 토큰 정보를 DB에 저장 (핵심 변경 부분)
+		// 4. 생성된 리프레시 토큰 정보를 DB에 저장 (핵심 변경 부분)
 		RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
 			.userEmail(user.getEmail())
 			.provider("OUR_SERVICE")

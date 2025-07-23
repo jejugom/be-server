@@ -49,4 +49,19 @@ public class JwtProcessor {
 			.parseClaimsJws(token);
 		return true;
 	}
+
+	/**
+	 * JWT에서 사용자 이메일(Subject)을 추출합니다.
+	 * 토큰 해석이 불가능한 경우(서명 오류, 만료 등) 예외가 발생합니다.
+	 * @param token Access Token 문자열
+	 * @return 사용자 이메일
+	 */
+	public String getUsername(String token) {
+		return Jwts.parserBuilder()
+			.setSigningKey(key)
+			.build()
+			.parseClaimsJws(token)
+			.getBody()
+			.getSubject();
+	}
 }
