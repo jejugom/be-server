@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.scoula.faq.dto.FaqDto;
+import org.scoula.faq.dto.FaqListDto;
 import org.scoula.faq.mapper.FaqMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +18,30 @@ public class FaqServiceImpl implements FaqService {
 
 	private final FaqMapper faqMapper;
 
+	/**
+	 * 방법 1: 목록 조회용 (id, title 등 요약 정보만 반환)
+	 */
 	@Override
-	public List<FaqDto> getAllFaqs() {
+	public List<FaqListDto> getFaqList() {
 		return faqMapper.getAllFaqs().stream()
-			.map(FaqDto::of)
+			.map(FaqListDto::from)
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * 방법 2: 상세 내용 포함 전체 조회용 (팝업, 페이지 이동 없는 상세보기에 사용)
+	 */
+	@Override
+	public List<FaqDto> getAllFaqsWithContent() {
+		return faqMapper.getAllFaqs().stream()
+			.map(FaqDto::from)
 			.collect(Collectors.toList());
 	}
 
 	@Override
 	public FaqDto getFaqById(Integer faqId) {
 		return Optional.ofNullable(faqMapper.getFaqById(faqId))
-			.map(FaqDto::of)
+			.map(FaqDto::from)
 			.orElseThrow(() -> new NoSuchElementException("FAQ not found with id: " + faqId));
 	}
 

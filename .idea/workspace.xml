@@ -5,22 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43a67b2d-ab25-4303-a74b-8aded2c7cb65" name="NHDR-106 [백엔드] FAQ 목록 및 상세 조회 API 구현" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3/storage_v2/_src_/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/controller/FaqController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/controller/FaqController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/mapper/FaqMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/mapper/FaqMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/dto/FaqDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/dto/FaqDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/scoula/faq/service/FaqServiceImpl.java" afterDir="false" />
     </list>
     <list id="e4d9053a-eb90-4f50-8bd1-4297d3bb9132" name="변경" comment="NHDR-102 refactor: Naver Convention fromat(Else)-세영">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/489be780-fd4a-4319-a68f-d0936547bfa3.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -159,12 +149,12 @@
       </RecentBranches>
     </option>
   </component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/jejugom/be-server.git&quot;,
-    &quot;accountId&quot;: &quot;56b0aeb2-c6c5-4b2c-b9fc-4c210f8ae6fc&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/jejugom/be-server.git",
+    "accountId": "1660d7e9-23c0-4069-82d8-39264255ca0c"
   }
-}</component>
+}]]></component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -203,6 +193,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Tomcat Server.Tomcat 9.0.105.executor": "Run",
+    "Tomcat Server.seyoung-notebook.executor": "Run",
     "WebServerToolWindowFactoryState": "false",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
@@ -252,7 +243,7 @@
       <recent name="org.scoula.security.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.105">
+  <component name="RunManager" selected="Tomcat Server.seyoung-notebook">
     <configuration name="FaqMapperTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -421,9 +412,8 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Tomcat 9.0.105" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.105" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
-      <option name="COMMON_VM_ARGUMENTS" value="-Dfile.encoding=UTF-8" />
-      <option name="UPDATING_POLICY" value="restart-server" />
+    <configuration name="seyoung-notebook" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.105" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="UPDATING_POLICY" value="hot-swap-classes" />
       <deployment>
         <artifact name="Gradle : org.scoula : Backend-1.0-SNAPSHOT.war">
           <settings>
@@ -432,7 +422,7 @@
         </artifact>
       </deployment>
       <server-settings>
-        <option name="BASE_DIRECTORY_NAME" value="3bed2ea2-f899-4967-804a-7d2167deff4d" />
+        <option name="BASE_DIRECTORY_NAME" value="9e40986b-3502-4103-b917-ae36eaf55ab2" />
       </server-settings>
       <predefined_log_file enabled="true" id="Tomcat" />
       <predefined_log_file enabled="true" id="Tomcat Catalina" />
@@ -440,7 +430,7 @@
       <predefined_log_file id="Tomcat Host Manager" />
       <predefined_log_file id="Tomcat Localhost Access" />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="60675" />
+        <option name="DEBUG_PORT" value="54445" />
       </RunnerSettings>
       <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
         <option name="USE_ENV_VARIABLES" value="true" />
@@ -517,7 +507,7 @@
       <item itemvalue="Gradle.FaqMapperTest.testGetFaqById_found" />
       <item itemvalue="Gradle.RootConfigTest" />
       <item itemvalue="Gradle.JDBCTest" />
-      <item itemvalue="Tomcat Server.Tomcat 9.0.105" />
+      <item itemvalue="Tomcat Server.seyoung-notebook" />
     </list>
     <recent_temporary>
       <list>
@@ -578,6 +568,8 @@
       <workItem from="1753189939970" duration="839000" />
       <workItem from="1753190843094" duration="229000" />
       <workItem from="1753191114767" duration="4545000" />
+      <workItem from="1753230797978" duration="2000" />
+      <workItem from="1753230810038" duration="3054000" />
     </task>
     <servers>
       <JIRA url="https://nohudorak.atlassian.net">

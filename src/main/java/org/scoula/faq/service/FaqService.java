@@ -3,9 +3,12 @@ package org.scoula.faq.service;
 import java.util.List;
 
 import org.scoula.faq.dto.FaqDto;
+import org.scoula.faq.dto.FaqListDto;
 
 public interface FaqService {
-	List<FaqDto> getAllFaqs();
+	List<FaqListDto> getFaqList();
+
+	List<FaqDto> getAllFaqsWithContent();
 
 	FaqDto getFaqById(Integer faqId);
 

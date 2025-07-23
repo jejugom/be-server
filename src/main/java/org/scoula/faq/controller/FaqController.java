@@ -3,6 +3,7 @@ package org.scoula.faq.controller;
 import java.util.List;
 
 import org.scoula.faq.dto.FaqDto;
+import org.scoula.faq.dto.FaqListDto;
 import org.scoula.faq.service.FaqService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +20,18 @@ public class FaqController {
 
 	private final FaqService faqService;
 
-	@GetMapping
-	public ResponseEntity<List<FaqDto>> getAllFaqs() {
-		return ResponseEntity.ok(faqService.getAllFaqs());
+	// 1. FAQ 목록 페이지만 보여줄 때
+	@GetMapping("/list")
+	public ResponseEntity<List<FaqListDto>> faqListPage() {
+		List<FaqListDto> faqList = faqService.getFaqList();
+		return ResponseEntity.ok(faqList);
+	}
+
+	// 2. 팝업 등에서 모든 상세 정보를 미리 로딩할 때
+	@GetMapping("/all")
+	public ResponseEntity<List<FaqDto>> faqAllDetails() {
+		List<FaqDto> faqsWithContent = faqService.getAllFaqsWithContent();
+		return ResponseEntity.ok(faqsWithContent);
 	}
 
 	@GetMapping("/{faqId}")
