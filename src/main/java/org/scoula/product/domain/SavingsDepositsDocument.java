@@ -56,7 +56,7 @@ public class SavingsDepositsDocument {
 		private String rsrv_type_nm; //적립 유형명
 		private String save_trm; //저축 기간[단위: 개월]
 		private Double intr_rate; //저축 금리[소수점 2자리]
-		private Double intr_rate2; //저축 금리[소수점 2자리]
+		private Double intr_rate2; //최고 우대금리[소수점 2자리]
 	}
 
 }
