@@ -4,7 +4,6 @@ import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 import org.scoula.security.config.SecurityConfig;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -26,7 +25,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 		return new Class[] {ServletConfig.class, SwaggerConfig.class};
 	}
 
-	//스프링의 FrontController 인 DisplatcherServlet 이 담당할 url 매핑 패턴,
+	//스프링의 FrontController 인 DispatcherServlet 이 담당할 url 매핑 패턴,
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] {"/"};
@@ -38,7 +37,7 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
 		encodingFilter.setEncoding("UTF-8");
 		encodingFilter.setForceEncoding(true);
-		return new Filter[] { encodingFilter };
+		return new Filter[] {encodingFilter};
 	}
 
 }

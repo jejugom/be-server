@@ -1,14 +1,20 @@
-package org.scoula.user.service;
+package org.scoula.auth.service;
 
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+import org.scoula.auth.dto.KakaoTokenResponseDto;
+import org.scoula.auth.dto.KakaoUserInfoDto;
+import org.scoula.auth.dto.LoginResponseDto;
+import org.scoula.auth.dto.RefreshTokenDto;
+import org.scoula.auth.dto.TokenRefreshResponseDto;
+import org.scoula.auth.mapper.RefreshTokenMapper;
+import org.scoula.security.util.JwtProcessor;
 import org.scoula.user.domain.UserVo;
-import org.scoula.user.dto.KakaoTokenResponseDto;
-import org.scoula.user.dto.KakaoUserInfoDto;
 import org.scoula.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -31,7 +37,6 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 public class KakaoAuthService {
-
 	@Value("${kakao.client.id}")
 	private String kakaoClientId;
 
@@ -39,26 +44,43 @@ public class KakaoAuthService {
 	private String kakaoRedirectUri;
 
 	private final UserMapper userMapper;
+	private final RefreshTokenMapper refreshTokenMapper;
 	private final RestTemplate restTemplate = new RestTemplate();
-
-
 	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final JwtProcessor jwtProcessor;
 
 	@Transactional
-	public UserVo processKakaoLogin(String code) {
-		// 1. 인가 코드로 액세스 토큰 요청
-		KakaoTokenResponseDto tokenResponse = getKakaoAccessToken(code);
+	public LoginResponseDto processKakaoLogin(String code) {
+		// 1. 카카오 API를 통해 사용자 정보 받아오기
+		KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(getKakaoAccessToken(code).getAccessToken());
 
-		// 2. 액세스 토큰으로 사용자 정보 요청
-		KakaoUserInfoDto userInfo = getKakaoUserInfo(tokenResponse.getAccessToken());
+		// 2. DB에서 사용자를 찾거나 새로 가입시키기
+		UserVo user = findOrCreateUser(kakaoUserInfo);
 
-		// 3. 사용자 정보로 회원 가입 또는 로그인 처리
-		return findOrCreateUser(userInfo);
+		// 3. 우리 서비스의 Access Token과 Refresh Token 생성
+		String accessToken = jwtProcessor.generateAccessToken(user.getEmail());
+		String refreshTokenValue = jwtProcessor.generateRefreshToken(user.getEmail());
+
+		// 4. 생성된 리프레시 토큰 정보를 DB에 저장 (핵심 변경 부분)
+		RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
+			.userEmail(user.getEmail())
+			.tokenValue(refreshTokenValue)
+			.expiresAt(LocalDateTime.now().plusWeeks(2)) // 2주 후 만료
+			.build();
+
+		refreshTokenMapper.saveRefreshToken(refreshTokenDto); // Mapper 메서드 호출
+
+		// 5. 클라이언트에게 전달할 최종 응답 DTO 생성
+		return LoginResponseDto.builder()
+			.accessToken(accessToken)
+			.refreshToken(refreshTokenValue)
+			.userId(user.getEmail())
+			.userName(user.getUserName())
+			.build();
 	}
 
 	private KakaoTokenResponseDto getKakaoAccessToken(String code) {
 		restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-
 
 		String tokenUrl = "https://kauth.kakao.com/oauth/token";
 
@@ -113,10 +135,6 @@ public class KakaoAuthService {
 			email = userInfo.getKakaoAccount().getEmail();
 		}
 
-		// if (email == null) {
-		// 	throw new RuntimeException("카카오 사용자 이메일이 존재하지 않습니다.");
-		// }
-
 		Optional<UserVo> existingUser = Optional.ofNullable(userMapper.findByEmail(email));
 		if (existingUser.isPresent()) {
 			return existingUser.get();
@@ -160,4 +178,29 @@ public class KakaoAuthService {
 		return newUser;
 	}
 
+	@Transactional
+	public TokenRefreshResponseDto reissueTokens(String refreshToken) {
+		// 1. 기존 Refresh Token 검증 (DB와 대조)
+		String userEmail = jwtProcessor.getUsername(refreshToken);
+		RefreshTokenDto storedToken = refreshTokenMapper.findTokenByUserEmail(userEmail);
+
+		if (storedToken == null || !storedToken.getTokenValue().equals(refreshToken)) {
+			throw new RuntimeException("Invalid Refresh Token");
+		}
+
+		// 2. 새로운 Access Token과 Refresh Token 생성
+		String newAccessToken = jwtProcessor.generateAccessToken(userEmail);
+		String newRefreshToken = jwtProcessor.generateRefreshToken(userEmail);
+
+		// 3. DB에 새로운 Refresh Token으로 갱신
+		RefreshTokenDto newRefreshTokenDto = RefreshTokenDto.builder()
+			.userEmail(userEmail)
+			.tokenValue(newRefreshToken)
+			.expiresAt(LocalDateTime.now().plusWeeks(2))
+			.build();
+		refreshTokenMapper.saveRefreshToken(newRefreshTokenDto);
+
+		// 4. 두 개의 새로운 토큰을 모두 반환
+		return new TokenRefreshResponseDto(newAccessToken, newRefreshToken);
+	}
 }

@@ -14,6 +14,7 @@ import lombok.extern.log4j.Log4j2;
 public class GlobalExceptionHandler {
 	//카카오 등 외부 요청 실패
 	@ExceptionHandler(HttpClientErrorException.class)
+
 	public ResponseEntity<ErrorResponse> handleHttpClientError(HttpClientErrorException e){
 		log.error("Http client Error: {}",e.getMessage());
 		if(e.getStatusCode() == HttpStatus.BAD_REQUEST &&
@@ -46,11 +47,11 @@ public class GlobalExceptionHandler {
 
 	//나머지 예외 통합 처리
 	@ExceptionHandler(Exception.class)
+
 	public ResponseEntity<ErrorResponse> handleGeneral(Exception e){
 		log.error("X 알 수 없는 예외 발생: {}",e.getMessage(),e);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 			.body(new ErrorResponse("서버 내부 오류",e.getMessage()));
 	}
 }
-
 

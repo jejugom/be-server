@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -23,9 +22,12 @@ import lombok.extern.log4j.Log4j2;
 
 @Configuration
 @PropertySource({"classpath:/application.properties"})
-@MapperScan(basePackages = {"org.scoula.user.mapper", "org.scoula.asset.mapper", "org.scoula.recommend.mapper", "org.scoula.faq.mapper", "org.scoula.branch.mapper", "org.scoula.booking.mapper"})
-@ComponentScan(basePackages = {"org.scoula.user.service", "org.scoula.asset.service", "org.scoula.recommend.service", "org.scoula.faq.service", "org.scoula.branch.service", "org.scoula.booking.service","org.scoula.codef.util","org.scoula.codef.service","org.scoula.codef.dto","org.scoula.product.service"})
-@Import(MongoConfig.class)
+@MapperScan(basePackages = {"org.scoula.user.mapper", "org.scoula.asset.mapper", "org.scoula.recommend.mapper",
+	"org.scoula.faq.mapper", "org.scoula.branch.mapper", "org.scoula.booking.mapper", "org.scoula.auth.mapper",
+	"org.scoula.product.repository"})
+@ComponentScan(basePackages = {"org.scoula.user.service", "org.scoula.asset.service", "org.scoula.recommend.service",
+	"org.scoula.faq.service", "org.scoula.branch.service", "org.scoula.booking.service", "org.scoula.codef.util",
+	"org.scoula.codef.service", "org.scoula.codef.dto", "org.scoula.product.service", "org.scoula.auth.service"})
 @Log4j2
 @EnableTransactionManagement
 /***
@@ -46,7 +48,7 @@ public class RootConfig {
 	String password;
 
 	@Bean
-	public DataSource dataSource(){
+	public DataSource dataSource() {
 		HikariConfig config = new HikariConfig();
 
 		config.setDriverClassName(driver);
@@ -59,17 +61,17 @@ public class RootConfig {
 	}
 
 	@Bean
-	public SqlSessionFactory sqlSessionFactory() throws Exception{
+	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
 		sqlSessionFactory.setConfigLocation(applicationContext.getResource("classpath:/mybatis-config.xml"));
 		sqlSessionFactory.setDataSource(dataSource());
 		return (SqlSessionFactory)sqlSessionFactory.getObject();
 	}
+
 	@Bean
-	public DataSourceTransactionManager transactionManager(){
+	public DataSourceTransactionManager transactionManager() {
 		DataSourceTransactionManager manager = new DataSourceTransactionManager(dataSource());
 		return manager;
 	}
-
 
 }
