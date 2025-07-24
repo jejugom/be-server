@@ -48,23 +48,26 @@ public class CodefController {
 
 		if (requestDto.getAccountList() == null || requestDto.getAccountList().isEmpty()) {
 			log.error("❌ accountList 누락");
-			return ResponseEntity.badRequest().body("accountList는 필수입니다.");
+			throw new IllegalArgumentException("고객의 은행 정보를 입력해주세요.");
 		}
 
 		Map<String, Object> result = codefTokenService.createConnectedId(requestDto);
 		if (result == null) {
 			log.error("❌ CODEF 응답이 null");
-			return ResponseEntity.status(500).body("CODEF 응답 없음");
+			throw new RuntimeException("CODEF에서 응답을 받아오지 못했습니다.");
 		}
 
 		Map<String, Object> resultInfo = (Map<String, Object>)result.get("result");
 		String code = (String)resultInfo.get("code");
 		if (!"CF-00000".equals(code)) {
 			log.error("❌ CODEF 실패 응답 코드: {}", code);
-			return ResponseEntity.status(500).body("CODEF 오류: " + code);
+			if ("CF-04000".equals(code)) {
+				throw new IllegalArgumentException("은행 아이디/비밀번호 오류");
+			} else {
+				throw new RuntimeException("CODEF 응답 오류 : " + code);
+			}
 		}
 
-		// String connectedId = (String)result.get("connectedId");
 		Map<String, Object> data = (Map<String, Object>)result.get("data");
 		String connectedId = (String)data.get("connectedId");
 
@@ -79,7 +82,7 @@ public class CodefController {
 			log.error("❌ userEmail 또는 connectedId null - {}, {}", userEmail, connectedId);
 			log.info(connectedId);
 			log.info(result);
-			return ResponseEntity.status(500).body("user 또는 connectedId 누락");
+			throw new RuntimeException("서버 에러 : CODEF 에서 connectedId를 받아오지 못했거나 서버에서 유저의 email을 받아오지 못했습니다. " + code);
 		}
 	}
 
@@ -96,7 +99,7 @@ public class CodefController {
 		Map<String, Object> result = codefTokenService.getAccountInfo(connectedId, organization);
 		if (result == null || !result.containsKey("data")) {
 			log.error("❌ CODEF 계좌 응답 오류 또는 data 없음");
-			return ResponseEntity.status(500).body("CODEF 계좌 응답 오류");
+			throw new RuntimeException("CODEF에서 계좌 정보를 받아올 수 없습니다.");
 		}
 
 		Map<String, Object> data = (Map<String, Object>)result.get("data");
@@ -125,6 +128,7 @@ public class CodefController {
 				assetDetailService.saveAssetDetail(asset);
 			} catch (Exception e) {
 				log.error("❗ 계좌 저장 실패: {}", e.getMessage(), e);
+				throw new RuntimeException("계좌 저장에 실패했습니다.");
 			}
 		}
 

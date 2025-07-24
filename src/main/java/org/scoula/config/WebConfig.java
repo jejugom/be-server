@@ -1,8 +1,10 @@
 package org.scoula.config;
 
+import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 import org.scoula.security.config.SecurityConfig;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -23,10 +25,19 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 		return new Class[] {ServletConfig.class, SwaggerConfig.class};
 	}
 
-	//스프링의 FrontController 인 DisplatcherServlet 이 담당할 url 매핑 패턴,
+	//스프링의 FrontController 인 DispatcherServlet 이 담당할 url 매핑 패턴,
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] {"/"};
 	}
+
 	// Post body 문자 인코딩 필터 설정
+	@Override
+	protected Filter[] getServletFilters() {
+		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+		encodingFilter.setEncoding("UTF-8");
+		encodingFilter.setForceEncoding(true);
+		return new Filter[] {encodingFilter};
+	}
+
 }

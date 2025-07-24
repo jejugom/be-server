@@ -2,6 +2,7 @@ package org.scoula.security.filter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -39,6 +40,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
+		List<String> whitelist = List.of(
+			"/auth/kakao",
+			"/api/user/join",
+			"/favicon.ico",
+			"/oauth/authorize",
+			"/auth/kakao/callback",
+			"/auth/refresh"
+		);
+
+		String uri = request.getRequestURI();
+		log.info("JwtAuthenticationFilter: doFilterInternal called for URI: {}", uri);
+
+		if (whitelist.contains(uri)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 
 		log.info("JwtAuthenticationFilter: doFilterInternal called for URI: {}", request.getRequestURI());
 
@@ -48,9 +65,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		// 2. 토큰이 존재하고, 유효한 경우에만 인증(Authentication) 객체를 생성하여 SecurityContext에 저장
 		if (bearerToken == null) {
 			log.warn("JwtAuthenticationFilter: Authorization header is missing."); // 헤더 누락 로그
+			log.warn("Authorization header missing.");
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write("{\"error\": \"Authorization Header가 누락되었습니다.\"}");
+			return;
 		} else if (!bearerToken.startsWith(BEARER_PREFIX)) {
 			log.warn("JwtAuthenticationFilter: Authorization header does not start with Bearer. Header: {}",
 				bearerToken); // Bearer 접두사 누락 로그
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write("{\"error\": \"Authorization-Header는 Bearer 로 시작해야 합니다.\"}");
+			return;
 		} else {
 			String token = bearerToken.substring(BEARER_PREFIX.length());
 			log.info("JwtAuthenticationFilter: Extracted token: {}", token); // 토큰 추출 로그
@@ -61,7 +87,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				log.info("JwtAuthenticationFilter: Authentication successful for user: {}",
 					authentication.getName()); // 인증 성공 로그
 			} else {
-				log.warn("JwtAuthenticationFilter: Invalid JWT token."); // 유효하지 않은 토큰 로그
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.setContentType("application/json;charset=UTF-8");
+				response.getWriter().write("{\"error\": \"유효하지 않은 토큰입니다.\"}");
+				return;
 			}
 		}
 
