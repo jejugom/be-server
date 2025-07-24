@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.asset.mapper.AssetDetailMapper">
+    <resultMap id="assetDetailMap" type="org.scoula.asset.domain.AssetDetailVo">
+        <id property="assetId" column="asset_id"/>
+        <id property="email" column="email"/>
+        <result property="assetCategoryCode" column="asset_category_code"/>
+        <result property="amount" column="amount"/>
+        <result property="registeredAt" column="registered_at"/>
+        <result property="endDate" column="end_date"/>
+        <result property="assetName" column="asset_name"/>
+        <result property="businessType" column="business_type"/>
+        <result property="businessType" column="business_type"/>
+    </resultMap>
+
+    <select id="getAssetDetailsByEmail" resultMap="assetDetailMap">
+        SELECT *
+        FROM asset_detail
+        WHERE email = #{email}
+    </select>
+    <select id="getAssetDetailById" resultType="org.scoula.asset.domain.AssetDetailVo"></select>
+
+    <insert id="insertAssetDetail">
+        INSERT INTO asset_detail (asset_id, email, asset_category_code, amount, registered_at, end_date, asset_name,
+                                  business_type)
+        VALUES (#{assetId}, #{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName},
+                #{businessType})
+    </insert>
+
+    <update id="updateAssetDetail">
+        UPDATE asset_detail
+        SET asset_category_code          = #{assetCategoryCode},
+            amount                       = #{amount},
+            registered_at                = #{registeredAt},
+            end_date                     = #{endDate},
+            asset_name                   = #{assetName},
+            business_type                = #{businessType}
+        WHERE asset_id = #{assetId}
+          AND email = #{email}
+    </update>
+
+    <delete id="deleteAssetDetail">
+        DELETE
+        FROM asset_detail
+        WHERE asset_id = #{assetId}
+          AND email = #{email}
+    </delete>
+
+    <insert id="insertAssetDetailWithGeneratedKey" useGeneratedKeys="true" keyProperty="assetId">
+        INSERT INTO asset_detail (email, asset_category_code, amount, registered_at, end_date, asset_name,
+                                  business_type)
+        VALUES (#{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName},
+                #{businessType})
+    </insert>
+</mapper>
+

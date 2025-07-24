@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.booking.mapper.BookingMapper">
+    <resultMap id="bookingMap" type="org.scoula.booking.domain.BookingVo">
+        <id property="bookingId" column="booking_id"/>
+        <result property="email" column="email"/>
+        <result property="prdtCode" column="prdt_code"/>
+        <result property="date" column="date"/>
+        <result property="time" column="time"/>
+        <result property="docInfo" column="doc_info"/>
+        <result property="branchName" column="branch_name"/>
+        <result property="branchName" column="branch_name"/>
+    </resultMap>
+
+    <select id="getBookingsByEmail" resultMap="bookingMap">
+        SELECT *
+        FROM booking
+        WHERE email = #{email}
+    </select>
+
+    <select id="getBookingById" resultMap="bookingMap">
+        SELECT *
+        FROM booking
+        WHERE booking_id = #{bookingId}
+    </select>
+
+    <insert id="insertBooking" useGeneratedKeys="true" keyProperty="bookingId">
+        INSERT INTO booking (email, prdt_code, date, time, doc_info, branch_name)
+        VALUES (#{email}, #{prdtCode}, #{date}, #{time}, #{docInfo}, #{branchName})
+    </insert>
+
+    <update id="updateBooking">
+        UPDATE booking
+        SET email              = #{email},
+            prdt_code          = #{prdtCode},
+            date               = #{date},
+            time               = #{time},
+            doc_info           = #{docInfo},
+            branch_name        = #{branchName}
+        WHERE booking_id = #{bookingId}
+    </update>
+
+    <delete id="deleteBooking">
+        DELETE
+        FROM booking
+        WHERE booking_id = #{bookingId}
+    </delete>
+</mapper>
