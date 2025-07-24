@@ -4,10 +4,17 @@
 
     <insert id="saveRefreshToken" parameterType="org.scoula.auth.dto.RefreshTokenDto">
         INSERT INTO refresh_token (user_email, token_value, expires_at)
-        VALUES (#{userEmail}, #{tokenValue}, #{expiresAt})
-            ON DUPLICATE KEY UPDATE
-                                 token_value = VALUES(token_value),
-                                 expires_at = VALUES(expires_at)
+        VALUES (#{userEmail}, #{tokenValue}, #{expiresAt}) ON DUPLICATE KEY
+        UPDATE
+            token_value =
+        VALUES (token_value), expires_at =
+        VALUES (expires_at);
     </insert>
 
+    <select id="findTokenByUserEmail" resultType="org.scoula.auth.dto.RefreshTokenDto">
+        SELECT user_email, token_value, expires_at
+        FROM refresh_token
+        WHERE user_email = #{userEmail};
+    </select>
+    
 </mapper>

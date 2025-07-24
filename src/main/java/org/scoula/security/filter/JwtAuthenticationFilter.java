@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			"/api/user/join",
 			"/favicon.ico",
 			"/oauth/authorize",
-			"/kakao/callback"
+			"/auth/kakao/callback"
 		);
 
 		String uri = request.getRequestURI();

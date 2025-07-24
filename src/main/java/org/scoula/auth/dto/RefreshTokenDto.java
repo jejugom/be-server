@@ -9,7 +9,6 @@ import lombok.Data;
 @Builder
 public class RefreshTokenDto {
 	private String userEmail;
-	private String provider;
 	private String tokenValue;
 	private LocalDateTime expiresAt;
 }

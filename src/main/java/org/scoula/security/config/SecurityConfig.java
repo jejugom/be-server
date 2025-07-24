@@ -48,15 +48,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 			.authorizeRequests()
-			.antMatchers("/", "/favicon.ico").permitAll()
-			.antMatchers(HttpMethod.POST, "/api/user/join").permitAll()
-			.antMatchers(HttpMethod.POST, "/auth/kakao").permitAll()
-			.antMatchers(HttpMethod.GET, "/auth/kakao").permitAll()
-			.antMatchers(HttpMethod.GET, "/auth/kakao/callback").permitAll()
-			.antMatchers(HttpMethod.GET, "/kakao/callback").permitAll()	// redirect 변경 시 수정
-			.antMatchers(HttpMethod.OPTIONS).permitAll()
-			.antMatchers("/api/codef/**").authenticated()
-			.anyRequest().authenticated();
+			.antMatchers("/", "/favicon.ico")
+			.permitAll()
+			.antMatchers(HttpMethod.POST, "/api/user/join")
+			.permitAll()
+			.antMatchers(HttpMethod.POST, "/auth/kakao")
+			.permitAll()
+			.antMatchers(HttpMethod.GET, "/auth/kakao/callback")
+			.permitAll()
+			.antMatchers(HttpMethod.POST, "/auth/refresh")
+			.permitAll() // Refresh Token을 활용한 Access Token, Refresh Token 재발급
+			.antMatchers(HttpMethod.OPTIONS)
+			.permitAll()
+			.antMatchers("/api/codef/**")
+			.authenticated()
+			.anyRequest()
+			.authenticated();
 
 	}
 

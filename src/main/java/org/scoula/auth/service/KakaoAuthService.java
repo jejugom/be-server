@@ -10,6 +10,7 @@ import org.scoula.auth.dto.KakaoTokenResponseDto;
 import org.scoula.auth.dto.KakaoUserInfoDto;
 import org.scoula.auth.dto.LoginResponseDto;
 import org.scoula.auth.dto.RefreshTokenDto;
+import org.scoula.auth.dto.TokenRefreshResponseDto;
 import org.scoula.auth.mapper.RefreshTokenMapper;
 import org.scoula.security.util.JwtProcessor;
 import org.scoula.user.domain.UserVo;
@@ -61,7 +62,6 @@ public class KakaoAuthService {
 		// 4. 생성된 리프레시 토큰 정보를 DB에 저장 (핵심 변경 부분)
 		RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
 			.userEmail(user.getEmail())
-			.provider("OUR_SERVICE")
 			.tokenValue(refreshTokenValue)
 			.expiresAt(LocalDateTime.now().plusWeeks(2)) // 2주 후 만료
 			.build();
@@ -220,4 +220,29 @@ public class KakaoAuthService {
 		return newUser;
 	}
 
+	@Transactional
+	public TokenRefreshResponseDto reissueTokens(String refreshToken) {
+		// 1. 기존 Refresh Token 검증 (DB와 대조)
+		String userEmail = jwtProcessor.getUsername(refreshToken);
+		RefreshTokenDto storedToken = refreshTokenMapper.findTokenByUserEmail(userEmail);
+
+		if (storedToken == null || !storedToken.getTokenValue().equals(refreshToken)) {
+			throw new RuntimeException("Invalid Refresh Token");
+		}
+
+		// 2. 새로운 Access Token과 Refresh Token 생성
+		String newAccessToken = jwtProcessor.generateAccessToken(userEmail);
+		String newRefreshToken = jwtProcessor.generateRefreshToken(userEmail);
+
+		// 3. DB에 새로운 Refresh Token으로 갱신
+		RefreshTokenDto newRefreshTokenDto = RefreshTokenDto.builder()
+			.userEmail(userEmail)
+			.tokenValue(newRefreshToken)
+			.expiresAt(LocalDateTime.now().plusWeeks(2))
+			.build();
+		refreshTokenMapper.saveRefreshToken(newRefreshTokenDto);
+
+		// 4. 두 개의 새로운 토큰을 모두 반환
+		return new TokenRefreshResponseDto(newAccessToken, newRefreshToken);
+	}
 }

@@ -10,4 +10,8 @@ public interface RefreshTokenMapper {
 	 * @param refreshToken 저장할 토큰 정보
 	 */
 	void saveRefreshToken(RefreshTokenDto refreshToken);
+
+	// 이메일과 provider로 토큰을 조회하는 메서드 추가
+	// provider 파라미터 삭제
+	RefreshTokenDto findTokenByUserEmail(String userEmail);
 }

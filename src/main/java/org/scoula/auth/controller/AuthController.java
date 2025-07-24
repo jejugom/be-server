@@ -2,7 +2,10 @@ package org.scoula.auth.controller;
 
 import java.util.Map;
 
+
 import org.scoula.auth.dto.LoginResponseDto;
+import org.scoula.auth.dto.RefreshTokenRequestDto;
+import org.scoula.auth.dto.TokenRefreshResponseDto;
 import org.scoula.auth.service.KakaoAuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-// @RequestMapping("/auth")
-@RequestMapping	// redirect 변경 시 수정
+@RequestMapping("/auth")
+// @RequestMapping	// redirect 변경 시 수정
 public class AuthController {
 
 	private final KakaoAuthService kakaoAuthService;
@@ -39,5 +42,17 @@ public class AuthController {
 
 		// 수정된 반환 타입과 일치하므로 에러가 발생하지 않음
 		return ResponseEntity.ok(loginResponse);
+	}
+
+	/**
+	 * Access Token과 Refresh Token을 재발급합니다.
+	 * @return 새로운 Access Token
+	 */
+	@PostMapping("/refresh")
+	public ResponseEntity<TokenRefreshResponseDto> refreshAccessToken(
+		@RequestBody RefreshTokenRequestDto requestDto) {
+
+		TokenRefreshResponseDto responseDto = kakaoAuthService.reissueTokens(requestDto.getRefreshToken());
+		return ResponseEntity.ok(responseDto);
 	}
 }
