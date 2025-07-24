@@ -61,9 +61,9 @@ public class CodefController {
 		String code = (String)resultInfo.get("code");
 		if (!"CF-00000".equals(code)) {
 			log.error("❌ CODEF 실패 응답 코드: {}", code);
-			if ("CF-04000".equals(code)) {
+			if("CF-04000".equals(code)){
 				throw new IllegalArgumentException("은행 아이디/비밀번호 오류");
-			} else {
+			}else{
 				throw new RuntimeException("CODEF 응답 오류 : " + code);
 			}
 		}
@@ -82,7 +82,7 @@ public class CodefController {
 			log.error("❌ userEmail 또는 connectedId null - {}, {}", userEmail, connectedId);
 			log.info(connectedId);
 			log.info(result);
-			throw new RuntimeException("서버 에러 : CODEF 에서 connectedId를 받아오지 못했거나 서버에서 유저의 email을 받아오지 못했습니다. " + code);
+			throw new RuntimeException("서버 에러 : CODEF 에서 connectedId를 받아오지 못했거나 서버에서 유저의 email을 받아오지 못했습니다. "+code);
 		}
 	}
 
