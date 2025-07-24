@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.scoula.security.util.JwtProcessor;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -58,12 +59,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			return;
 		}
 		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-
 		if (bearerToken == null) {
-			log.warn("JwtAuthenticationFilter: Authorization header is missing."); // 헤더 누락 로그
+			log.warn("Authorization header missing.");
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write("{\"error\": \"Authorization Header가 누락되었습니다.\"}");
+			return;
 		} else if (!bearerToken.startsWith(BEARER_PREFIX)) {
 			log.warn("JwtAuthenticationFilter: Authorization header does not start with Bearer. Header: {}",
 				bearerToken); // Bearer 접두사 누락 로그
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write("{\"error\": \"Authorization-Header는 Bearer 로 시작해야 합니다.\"}");
+			return;
 		} else {
 			String token = bearerToken.substring(BEARER_PREFIX.length());
 			log.info("JwtAuthenticationFilter: Extracted token: {}", token); // 토큰 추출 로그
@@ -74,7 +82,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				log.info("JwtAuthenticationFilter: Authentication successful for user: {}",
 					authentication.getName()); // 인증 성공 로그
 			} else {
-				log.warn("JwtAuthenticationFilter: Invalid JWT token."); // 유효하지 않은 토큰 로그
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.setContentType("application/json;charset=UTF-8");
+				response.getWriter().write("{\"error\": \"유효하지 않은 토큰입니다.\"}");
+				return;
 			}
 		}
 
