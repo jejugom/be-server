@@ -2,8 +2,10 @@ package org.scoula.product.controller;
 
 import java.util.List;
 
-import org.scoula.product.domain.TimeDepositDocument;
-import org.scoula.product.service.TimeDepositService;
+import org.scoula.product.dto.AllProductsResponseDTO;
+import org.scoula.product.dto.DepositListResponseDTO;
+import org.scoula.product.service.ProductsService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,13 +14,36 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/products")
+@RequestMapping("/api/retirement/products")
 public class ProductController {
 
-	private final TimeDepositService service;
+	private final ProductsService productsService;
 
+	/**
+	 * 모든 상품 보여주는 메서드
+	 * @return ResponseEntity<AllProductsResponseDTO>
+	 */
 	@GetMapping
-	public List<TimeDepositDocument> getAllTimeDeposits() {
-		return service.findAll();
+	public ResponseEntity<AllProductsResponseDTO> getAllProducts() {
+		AllProductsResponseDTO response = productsService.getAllProducts();
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * 예금 상품 보여주는 메서드
+	 * @return List<DepositListResponseDTO>
+	 */
+	@GetMapping("/time-deposits")
+	public List<DepositListResponseDTO> getAllTimeDeposits() {
+		return productsService.getTimeDepositList();
+	}
+
+	/**
+	 * 적금 상품 보여주는 메서드
+	 * @return List<DepositListResponseDTO>
+	 */
+	@GetMapping("/savings-deposits")
+	public List<DepositListResponseDTO> getAllSavingsDeposits() {
+		return productsService.getSavingsDepositList();
 	}
 }

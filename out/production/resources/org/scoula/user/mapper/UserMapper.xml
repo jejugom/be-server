@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.user.mapper.UserMapper">
+    <resultMap id="userMap" type="org.scoula.user.domain.UserVo">
+        <id property="email" column="email"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="birth" column="birth" javaType="java.util.Date"/>
+        <result property="branchName" column="branch_name"/>
+        <result property="connectedId" column="connected_id"/>
+        </resultMap>
+
+    <select id="findByEmail" resultMap="userMap">
+        SELECT email, user_name, user_phone, birth, branch_name, connected_id
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <insert id="save">
+        INSERT INTO user (email, user_name, user_phone, birth, branch_name, connected_id)
+        VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{branchName}, #{connectedId})
+    </insert>
+
+    <update id="update">
+        UPDATE user
+        SET user_name          = #{userName},
+            user_phone         = #{userPhone},
+            birth              = #{birth},
+            branch_name        = #{branchName}
+        WHERE email = #{email}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM user
+        WHERE email = #{email}
+    </delete>
+
+    <select id="findAll" resultMap="userMap">
+        SELECT *
+        FROM user
+    </select>
+
+    <update id="updateConnectedId">
+        UPDATE user
+        SET connected_id = #{connectedId}
+        WHERE email = #{email}
+    </update>
+</mapper>
