@@ -48,22 +48,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 			.authorizeRequests()
-			.antMatchers("/", "/favicon.ico")
-			.permitAll()
-			.antMatchers(HttpMethod.POST, "/api/user/join")
-			.permitAll()
-			.antMatchers(HttpMethod.POST, "/auth/kakao")
-			.permitAll()
-			.antMatchers(HttpMethod.GET, "/auth/kakao/callback")
-			.permitAll()
-			.antMatchers(HttpMethod.POST, "/auth/refresh")
-			.permitAll() // Refresh Token을 활용한 Access Token, Refresh Token 재발급
-			.antMatchers(HttpMethod.OPTIONS)
-			.permitAll()
-			.antMatchers("/api/codef/**")
-			.authenticated()
-			.anyRequest()
-			.authenticated();
+			// --- 인증 없이 접근을 허용할 경로들 ---
+			.antMatchers(
+				"/",
+				"/favicon.ico",
+				"/oauth/authorize" // 요청하신 경로 추가
+			).permitAll()
+			.antMatchers(HttpMethod.POST,
+				"/api/user/join",
+				"/auth/kakao",
+				"/auth/refresh"
+			).permitAll()
+			.antMatchers(HttpMethod.GET, "/auth/kakao/callback").permitAll()
+			.antMatchers(HttpMethod.OPTIONS).permitAll() // CORS Preflight 요청
+
+			// --- 인증이 필요한 경로 ---
+			.antMatchers("/api/codef/**").authenticated()
+
+			// --- 나머지 모든 경로는 인증 필수 ---
+			.anyRequest().authenticated();
 
 	}
 
@@ -80,12 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		encodingFilter.setForceEncoding(true);
 		return encodingFilter;
 	}
-
-	// @Bean
-	// @Override
-	// public AuthenticationManager authenticationManagerBean() throws Exception{
-	// 	return super.authenticationManagerBean();
-	// } 카카오 소셜 로그인만 사용 -> 이 메서드 필요없음.
 
 	@Bean
 	public CorsFilter corsFilter() {
