@@ -1,5 +1,6 @@
 package org.scoula.user.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.scoula.security.util.JwtProcessor;
@@ -39,10 +40,12 @@ public class AuthController {
 			if (e.getStatusCode() == HttpStatus.BAD_REQUEST &&
 				e.getResponseBodyAsString().contains("KOE320")) {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body("유효하지 않은 인가 코드입니다");
+					.body(Map.of("error","유효하지 않은 인가코드입니다."));
+
 			}
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body("카카오 로그인 실패");
+				.body(Map.of("error","카카오 서버와 연결되지 않는 상태입니다. "));
+
 		}
 
 	}
