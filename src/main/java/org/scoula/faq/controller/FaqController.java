@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = "FAQ API", description = "자주 묻는 질문(FAQ) 관련 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/faq")
+@RequestMapping("/api/faq")
 public class FaqController {
 
 	private final FaqService faqService;
