@@ -16,5 +16,10 @@
         FROM refresh_token
         WHERE user_email = #{userEmail};
     </select>
-    
+
+    <delete id="deleteRefreshToken">
+        DELETE
+        FROM refresh_token
+        WHERE user_email = #{userEmail}
+    </delete>
 </mapper>

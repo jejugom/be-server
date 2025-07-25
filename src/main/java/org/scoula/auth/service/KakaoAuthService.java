@@ -203,4 +203,13 @@ public class KakaoAuthService {
 		// 4. 두 개의 새로운 토큰을 모두 반환
 		return new TokenRefreshResponseDto(newAccessToken, newRefreshToken);
 	}
+
+	/**
+	 * 로그아웃을 처리합니다. DB에서 사용자의 Refresh Token을 삭제합니다.
+	 * @param userEmail 로그아웃할 사용자의 이메일
+	 */
+	public void logout(String userEmail) {
+		// ✅ provider 파라미터 없이 userEmail만 사용하여 토큰을 삭제합니다.
+		refreshTokenMapper.deleteRefreshToken(userEmail);
+	}
 }
