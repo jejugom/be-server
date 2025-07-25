@@ -60,7 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				"/auth/kakao",
 				"/auth/refresh"
 			).permitAll()
-			.antMatchers(HttpMethod.GET, "/auth/kakao/callback").permitAll()
+			.antMatchers(HttpMethod.GET,
+				"/auth/kakao/callback",
+				"/api/home"
+				).permitAll()
 			.antMatchers(HttpMethod.OPTIONS).permitAll() // CORS Preflight 요청
 
 			// --- 인증이 필요한 경로 ---
@@ -68,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 			// --- 나머지 모든 경로는 인증 필수 ---
 			.anyRequest().authenticated();
+
 
 	}
 

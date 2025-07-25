@@ -55,7 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			"/auth/kakao/callback",
 			"/auth/refresh",
 			"/api/faq/list",
-			"/api/faq/all"
+			"/api/faq/all",
+			"/api/home"
 		);
 
 		String uri = request.getRequestURI();
