@@ -41,12 +41,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
 		List<String> whitelist = List.of(
+			"/",
+			"/swagger-ui.html",
+			"/swagger-ui/**", // Swagger UI의 리소스 (v3)
+			"/v2/api-docs",   // Swagger API 문서 (v2)
+			"/swagger-resources",
+			"/swagger-resources/**",
+			"/webjars/**",
 			"/auth/kakao",
 			"/api/user/join",
 			"/favicon.ico",
 			"/oauth/authorize",
 			"/auth/kakao/callback",
 			"/auth/refresh",
+			"/api/faq/list",
+			"/api/faq/all",
 			"/api/home"
 		);
 
