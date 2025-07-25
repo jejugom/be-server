@@ -40,83 +40,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
-		List<String> whitelist = List.of(
-			"/",
-			"/swagger-ui.html",
-			"/swagger-ui/**", // Swagger UI의 리소스 (v3)
-			"/v2/api-docs",   // Swagger API 문서 (v2)
-			"/swagger-resources",
-			"/swagger-resources/**",
-			"/webjars/**",
-			"/auth/kakao",
-			"/api/user/join",
-			"/favicon.ico",
-			"/oauth/authorize",
-			"/auth/kakao/callback",
-			"/auth/refresh",
-			"/api/faq/list",
-			"/api/faq/all",
-			"/api/home"
-		);
 
-		String uri = request.getRequestURI();
-		log.info("JwtAuthenticationFilter: doFilterInternal called for URI: {}", uri);
+		log.debug("JwtAuthenticationFilter running for URI: {}", request.getRequestURI());
 
-		if (whitelist.contains(uri)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-
-		log.info("JwtAuthenticationFilter: doFilterInternal called for URI: {}", request.getRequestURI());
-
-		// 1. 헤더에서 Bearer 토큰을 가져오기
+		// 1. 요청 헤더에서 토큰을 추출합니다.
 		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
 
-		// 2. 토큰이 존재하고, 유효한 경우에만 인증(Authentication) 객체를 생성하여 SecurityContext에 저장
-		if (bearerToken == null) {
-			log.warn("JwtAuthenticationFilter: Authorization header is missing."); // 헤더 누락 로그
-			log.warn("Authorization header missing.");
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.setContentType("application/json;charset=UTF-8");
-			response.getWriter().write("{\"error\": \"Authorization Header가 누락되었습니다.\"}");
-			return;
-		} else if (!bearerToken.startsWith(BEARER_PREFIX)) {
-			log.warn("JwtAuthenticationFilter: Authorization header does not start with Bearer. Header: {}",
-				bearerToken); // Bearer 접두사 누락 로그
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.setContentType("application/json;charset=UTF-8");
-			response.getWriter().write("{\"error\": \"Authorization-Header는 Bearer 로 시작해야 합니다.\"}");
-			return;
-		} else {
+		// 2. 토큰이 존재하고, 'Bearer '로 시작하며, 유효한 경우에만 인증 객체를 생성하여 SecurityContext에 저장합니다.
+		if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
 			String token = bearerToken.substring(BEARER_PREFIX.length());
-			log.info("JwtAuthenticationFilter: Extracted token: {}", token); // 토큰 추출 로그
 
+			// 2-1. 토큰 유효성 검증
 			if (jwtProcessor.validateToken(token)) {
+				// 2-2. 유효한 토큰이면 인증 정보를 생성하여 SecurityContextHolder에 저장
 				Authentication authentication = getAuthentication(token);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
-				log.info("JwtAuthenticationFilter: Authentication successful for user: {}",
-					authentication.getName()); // 인증 성공 로그
+				log.debug("Authentication successful for user: {}", authentication.getName());
 			} else {
-				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				response.setContentType("application/json;charset=UTF-8");
-				response.getWriter().write("{\"error\": \"유효하지 않은 토큰입니다.\"}");
-				return;
+				log.warn("Invalid JWT token received.");
 			}
+		} else {
+			log.debug("Authorization header is missing or does not start with Bearer.");
 		}
 
-		// 동일한 2번 코드 (디버깅 설명 제거 버전)
-		// if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
-		// 	String token = bearerToken.substring(BEARER_PREFIX.length());
-		//
-		// 	if (jwtProcessor.validateToken(token)) {
-		// 		Authentication authentication = getAuthentication(token);
-		// 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		// 	}
-		// }
-
-		// 3. 다음 필터로 요청을 전달합니다. 토큰이 없거나 유효하지 않아도 일단 통과시킵니다.
-		//    최종 접근 허용 여부는 SecurityConfig에서 결정합니다.
+		// 3. 토큰 유무나 유효성과 관계없이 항상 다음 필터로 요청을 전달합니다.
+		//    접근 허용 여부는 SecurityConfig의 설정에 따라 Spring Security가 최종적으로 결정합니다.
 		filterChain.doFilter(request, response);
-
 	}
 }
