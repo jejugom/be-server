@@ -3,7 +3,9 @@ package org.scoula.product.controller;
 import java.util.List;
 
 import org.scoula.product.dto.AllProductsResponseDTO;
-import org.scoula.product.dto.DepositListResponseDTO;
+import org.scoula.product.dto.MortgageLoanDTO;
+import org.scoula.product.dto.SavingsDepositsDTO;
+import org.scoula.product.dto.TimeDepositsDTO;
 import org.scoula.product.service.ProductsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +36,7 @@ public class ProductController {
 	 * @return List<DepositListResponseDTO>
 	 */
 	@GetMapping("/time-deposits")
-	public List<DepositListResponseDTO> getAllTimeDeposits() {
+	public List<TimeDepositsDTO> getAllTimeDeposits() {
 		return productsService.getTimeDepositList();
 	}
 
@@ -43,7 +45,15 @@ public class ProductController {
 	 * @return List<DepositListResponseDTO>
 	 */
 	@GetMapping("/savings-deposits")
-	public List<DepositListResponseDTO> getAllSavingsDeposits() {
+	public List<SavingsDepositsDTO> getAllSavingsDeposits() {
 		return productsService.getSavingsDepositList();
+	}
+
+	/**
+	 * 주택 담보 대출 상품 보여주는 메서드
+	 */
+	@GetMapping("/mortgage-loan")
+	public List<MortgageLoanDTO> getAllMortgageLoan() {
+		return productsService.getMortgageLoanList();
 	}
 }
