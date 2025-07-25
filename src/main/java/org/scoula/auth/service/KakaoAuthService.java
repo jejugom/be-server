@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+import org.scoula.auth.dto.KakaoLoginResponseDto;
 import org.scoula.auth.dto.KakaoTokenResponseDto;
 import org.scoula.auth.dto.KakaoUserInfoDto;
-import org.scoula.auth.dto.LoginResponseDto;
 import org.scoula.auth.dto.RefreshTokenDto;
 import org.scoula.auth.dto.TokenRefreshResponseDto;
 import org.scoula.auth.mapper.RefreshTokenMapper;
@@ -50,7 +50,7 @@ public class KakaoAuthService {
 	private final JwtProcessor jwtProcessor;
 
 	@Transactional
-	public LoginResponseDto processKakaoLogin(String code) {
+	public KakaoLoginResponseDto processKakaoLogin(String code) {
 		// 1. 카카오 API를 통해 사용자 정보 받아오기
 		KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(getKakaoAccessToken(code).getAccessToken());
 
@@ -71,7 +71,7 @@ public class KakaoAuthService {
 		refreshTokenMapper.saveRefreshToken(refreshTokenDto); // Mapper 메서드 호출
 
 		// 5. 클라이언트에게 전달할 최종 응답 DTO 생성
-		return LoginResponseDto.builder()
+		return KakaoLoginResponseDto.builder()
 			.accessToken(accessToken)
 			.refreshToken(refreshTokenValue)
 			.userId(user.getEmail())

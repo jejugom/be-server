@@ -22,13 +22,19 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
+		// Swagger 설정 클래스 추가
 		return new Class[] {ServletConfig.class, SwaggerConfig.class};
 	}
 
-	//스프링의 FrontController 인 DispatcherServlet 이 담당할 url 매핑 패턴,
 	@Override
 	protected String[] getServletMappings() {
-		return new String[] {"/"};
+		return new String[] {
+			"/",                        // 기본 매핑
+			"/swagger-ui.html",         // Swagger UI 메인 페이지
+			"/swagger-resources/**",    // Swagger 리소스
+			"/v2/api-docs",            // API 명세 JSON
+			"/webjars/**"              // WebJar 리소스 (CSS, JS 등)
+		};
 	}
 
 	// Post body 문자 인코딩 필터 설정
