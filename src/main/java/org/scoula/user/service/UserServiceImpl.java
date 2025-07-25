@@ -1,5 +1,6 @@
 package org.scoula.user.service;
 
+import java.text.SimpleDateFormat;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -38,4 +39,46 @@ public class UserServiceImpl implements UserService {
 	public void updateConnectedId(String email, String connectedId) {
 		userMapper.updateConnectedId(email, connectedId);
 	}
+
+	@Override
+	public void updateBranchName(String email, String branchName) {
+		userMapper.updateBranchName(email, branchName);
+	}
+
+	@Override
+	public String getUserName(String email) {
+		return Optional.ofNullable(userMapper.findByEmail(email))
+			.map(UserVo::getUserName)
+			.orElse(null);
+	}
+
+	@Override
+	public String getUserPhone(String email) {
+		return Optional.ofNullable(userMapper.findByEmail(email))
+			.map(UserVo::getUserPhone)
+			.orElse(null);
+	}
+
+	@Override
+	public String getBirth(String email) {
+		return Optional.ofNullable(userMapper.findByEmail(email))
+			.map(UserVo::getBirth)
+			.map(date -> new SimpleDateFormat("yyyy-MM-dd").format(date))
+			.orElse(null);
+	}
+
+	@Override
+	public String getBranchName(String email) {
+		return Optional.ofNullable(userMapper.findByEmail(email))
+			.map(UserVo::getBranchName)
+			.orElse(null);
+	}
+
+	@Override
+	public String getConnectedId(String email) {
+		return Optional.ofNullable(userMapper.findByEmail(email))
+			.map(UserVo::getConnectedId)
+			.orElse(null);
+	}
+
 }

@@ -1,6 +1,7 @@
 package org.scoula.faq.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,4 +66,9 @@ public class FaqServiceImpl implements FaqService {
 	// 		throw new NoSuchElementException("FAQ not found with id: " + faqId);
 	// 	}
 	// }
+
+	@Override
+	public void updateFaqPartial(Integer faqId, Map<String, Object> updates) {
+		faqMapper.updateFaqPartial(faqId, updates);
+	}
 }
