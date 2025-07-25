@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(
 				"/",
 				"/favicon.ico",
-				"/oauth/authorize" // 요청하신 경로 추가
+				"/oauth/authorize", // 요청하신 경로 추가
+				"/api/faq/**"
 			).permitAll()
 			.antMatchers(HttpMethod.POST,
 				"/api/user/join",
