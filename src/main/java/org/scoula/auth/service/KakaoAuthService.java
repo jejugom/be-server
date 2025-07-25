@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
+import org.scoula.asset.domain.AssetInfoVo;
+import org.scoula.asset.dto.AssetInfoDto;
+import org.scoula.asset.mapper.AssetInfoMapper;
+import org.scoula.asset.service.AssetInfoService;
 import org.scoula.auth.dto.KakaoTokenResponseDto;
 import org.scoula.auth.dto.KakaoUserInfoDto;
 import org.scoula.auth.dto.LoginResponseDto;
@@ -44,6 +48,7 @@ public class KakaoAuthService {
 	private String kakaoRedirectUri;
 
 	private final UserMapper userMapper;
+	private final AssetInfoService assetInfoService;
 	private final RefreshTokenMapper refreshTokenMapper;
 	private final RestTemplate restTemplate = new RestTemplate();
 	private final ObjectMapper objectMapper = new ObjectMapper();
@@ -173,8 +178,18 @@ public class KakaoAuthService {
 			.branchName(null)
 			.connectedId(null)
 			.build();
-
 		userMapper.save(newUser);
+
+		/**
+		 * 유저 생성후 assetInfoDTO도 생성
+		 */
+		AssetInfoDto assetInfoDto = new AssetInfoDto();
+		assetInfoDto.setEmail(email);
+		assetInfoDto.setAsset(0L);
+		assetInfoDto.setFilename1(null);
+		assetInfoDto.setFilename2(null);
+		assetInfoDto.setSegment(null);
+		assetInfoService.addAssetInfo(assetInfoDto);
 		return newUser;
 	}
 
