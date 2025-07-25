@@ -22,12 +22,28 @@ import lombok.extern.log4j.Log4j2;
 
 @Configuration
 @PropertySource({"classpath:/application.properties"})
-@MapperScan(basePackages = {"org.scoula.user.mapper", "org.scoula.asset.mapper", "org.scoula.recommend.mapper",
-	"org.scoula.faq.mapper", "org.scoula.branch.mapper", "org.scoula.booking.mapper", "org.scoula.auth.mapper",
+@MapperScan(basePackages = {
+	"org.scoula.user.mapper",
+	"org.scoula.asset.mapper",
+	"org.scoula.recommend.mapper",
+	"org.scoula.faq.mapper",
+	"org.scoula.branch.mapper",
+	"org.scoula.booking.mapper",
+	"org.scoula.auth.mapper",
 	"org.scoula.product.repository"})
-@ComponentScan(basePackages = {"org.scoula.user.service", "org.scoula.asset.service", "org.scoula.recommend.service",
-	"org.scoula.faq.service", "org.scoula.branch.service", "org.scoula.booking.service", "org.scoula.codef.util",
-	"org.scoula.codef.service", "org.scoula.codef.dto", "org.scoula.product.service", "org.scoula.auth.service"})
+@ComponentScan(basePackages = {
+	"org.scoula.user.service",
+	"org.scoula.asset.service",
+	"org.scoula.recommend.service",
+	"org.scoula.faq.service",
+	"org.scoula.branch.service",
+	"org.scoula.booking.service",
+	"org.scoula.codef.util",
+	"org.scoula.codef.service",
+	"org.scoula.codef.dto",
+	"org.scoula.product.service",
+	"org.scoula.home.service",
+	"org.scoula.auth.service"})
 @Log4j2
 @EnableTransactionManagement
 /***

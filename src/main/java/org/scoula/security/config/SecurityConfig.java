@@ -52,14 +52,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(
 				"/",
 				"/favicon.ico",
-				"/oauth/authorize" // 요청하신 경로 추가
+				"/oauth/authorize", // 요청하신 경로 추가
+				"/api/faq/**"
 			).permitAll()
 			.antMatchers(HttpMethod.POST,
 				"/api/user/join",
 				"/auth/kakao",
 				"/auth/refresh"
 			).permitAll()
-			.antMatchers(HttpMethod.GET, "/auth/kakao/callback").permitAll()
+			.antMatchers(HttpMethod.GET,
+				"/auth/kakao/callback",
+				"/api/home"
+				).permitAll()
 			.antMatchers(HttpMethod.OPTIONS).permitAll() // CORS Preflight 요청
 
 			// --- 인증이 필요한 경로 ---
@@ -67,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 			// --- 나머지 모든 경로는 인증 필수 ---
 			.anyRequest().authenticated();
+
 
 	}
 
