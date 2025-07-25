@@ -7,14 +7,11 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
-import org.scoula.auth.dto.KakaoLoginResponseDto;
-import org.scoula.asset.domain.AssetInfoVo;
 import org.scoula.asset.dto.AssetInfoDto;
-import org.scoula.asset.mapper.AssetInfoMapper;
 import org.scoula.asset.service.AssetInfoService;
+import org.scoula.auth.dto.KakaoLoginResponseDto;
 import org.scoula.auth.dto.KakaoTokenResponseDto;
 import org.scoula.auth.dto.KakaoUserInfoDto;
-import org.scoula.auth.dto.KakaoLoginResponseDto;
 import org.scoula.auth.dto.RefreshTokenDto;
 import org.scoula.auth.dto.TokenRefreshResponseDto;
 import org.scoula.auth.mapper.RefreshTokenMapper;
@@ -53,6 +50,7 @@ public class KakaoAuthService {
 	private final RestTemplate restTemplate = new RestTemplate();
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final JwtProcessor jwtProcessor;
+	private final AssetInfoService assetInfoService;
 
 	@Transactional
 	public KakaoLoginResponseDto processKakaoLogin(String code) {
