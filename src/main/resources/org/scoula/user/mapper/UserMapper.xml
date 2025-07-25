@@ -10,7 +10,8 @@
         <result property="connectedId" column="connected_id"/>
         </resultMap>
 
-    <select id="findByEmail" resultMap="userMap">
+
+    <select id="findByEmail" parameterType="string" resultMap="userMap">
         SELECT email, user_name, user_phone, birth, branch_name, connected_id
         FROM user
         WHERE email = #{email}
@@ -20,15 +21,6 @@
         INSERT INTO user (email, user_name, user_phone, birth, branch_name, connected_id)
         VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{branchName}, #{connectedId})
     </insert>
-
-    <update id="update">
-        UPDATE user
-        SET user_name          = #{userName},
-            user_phone         = #{userPhone},
-            birth              = #{birth},
-            branch_name        = #{branchName}
-        WHERE email = #{email}
-    </update>
 
     <delete id="delete">
         DELETE
@@ -44,6 +36,12 @@
     <update id="updateConnectedId">
         UPDATE user
         SET connected_id = #{connectedId}
+        WHERE email = #{email}
+    </update>
+
+    <update id="updateBranchName" parameterType="map">
+        UPDATE user
+        SET branch_name = #{branchName}
         WHERE email = #{email}
     </update>
 </mapper>

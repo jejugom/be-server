@@ -36,7 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.addFilterBefore(encodingFilter(), UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-		http.httpBasic().disable()
+
+		http
+			.httpBasic().disable()
 			.csrf().disable()
 			.formLogin().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -48,11 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 			.authorizeRequests()
-			// --- 인증 없이 접근을 허용할 경로들 ---
 			.antMatchers(
 				"/",
 				"/favicon.ico",
-				"/oauth/authorize", // 요청하신 경로 추가
+				"/oauth/authorize",
 				"/api/faq/**"
 			).permitAll()
 			.antMatchers(HttpMethod.POST,
@@ -63,17 +64,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.GET,
 				"/auth/kakao/callback",
 				"/api/home"
-				).permitAll()
-			.antMatchers(HttpMethod.OPTIONS).permitAll() // CORS Preflight 요청
+			).permitAll()
 
-			// --- 인증이 필요한 경로 ---
-			.antMatchers("/api/codef/**").authenticated()
+			// ✅ PATCH 요청 명시적으로 허용 추가 (예시: 내 지점 등록/수정 허용)
+			.antMatchers(HttpMethod.PATCH,
+				"/api/user/branch"
+			).authenticated()
 
-			// --- 나머지 모든 경로는 인증 필수 ---
+			.antMatchers(HttpMethod.OPTIONS).permitAll() // CORS Preflight
+
 			.anyRequest().authenticated();
-
-
 	}
+
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {

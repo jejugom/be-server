@@ -1,13 +1,16 @@
 package org.scoula.faq.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.scoula.faq.dto.FaqDto;
 import org.scoula.faq.dto.FaqListDto;
 import org.scoula.faq.service.FaqService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,5 +59,13 @@ public class FaqController {
 		@ApiParam(value = "FAQ ID", required = true, example = "1")
 		@PathVariable Integer faqId) {
 		return ResponseEntity.ok(faqService.getFaqById(faqId));
+	}
+
+	@PatchMapping("/{faqId}")
+	public ResponseEntity<Void> updateFaqPartial(
+		@PathVariable Integer faqId,
+		@RequestBody Map<String, Object> updates) {
+		faqService.updateFaqPartial(faqId, updates);
+		return ResponseEntity.noContent().build();
 	}
 }

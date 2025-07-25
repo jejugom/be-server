@@ -38,4 +38,9 @@ public class UserServiceImpl implements UserService {
 	public void updateConnectedId(String email, String connectedId) {
 		userMapper.updateConnectedId(email, connectedId);
 	}
+
+	@Override
+	public void updateBranchName(String email, String branchName) {
+		userMapper.updateBranchName(email, branchName);
+	}
 }

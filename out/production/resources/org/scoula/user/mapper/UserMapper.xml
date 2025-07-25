@@ -36,14 +36,17 @@
         WHERE email = #{email}
     </delete>
 
-    <select id="findAll" resultMap="userMap">
-        SELECT *
-        FROM user
-    </select>
+
 
     <update id="updateConnectedId">
         UPDATE user
         SET connected_id = #{connectedId}
+        WHERE email = #{email}
+    </update>
+
+    <update id="updateBranchName">
+        UPDATE user
+        SET branch_name = #{branchName}
         WHERE email = #{email}
     </update>
 </mapper>
