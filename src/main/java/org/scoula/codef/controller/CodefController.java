@@ -77,7 +77,8 @@ public class CodefController {
 		if (userEmail != null && connectedId != null) {
 			log.info("✅ ConnectedId 저장 - userEmail: {}, connectedId: {}", userEmail, connectedId);
 			userService.updateConnectedId(userEmail, connectedId);
-			return ResponseEntity.ok(result);
+			codefTokenService.saveAccountInfo(userEmail,connectedId);
+			return ResponseEntity.ok(200);
 		} else {
 			log.error("❌ userEmail 또는 connectedId null - {}, {}", userEmail, connectedId);
 			log.info(connectedId);
@@ -87,51 +88,51 @@ public class CodefController {
 	}
 
 	// ✅ 계좌 목록 가져오고 DB 저장
-	@GetMapping("/account-info")
-	public ResponseEntity<?> getAccountInfo() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String user = authentication.getName();
-		String connectedId = userService.getUser(user).getConnectedId();
-		String organization = "0004";
-
-		log.info("📥 계좌 정보 조회 요청: connectedId={}, organization={}", connectedId, organization);
-
-		Map<String, Object> result = codefTokenService.getAccountInfo(connectedId, organization);
-		if (result == null || !result.containsKey("data")) {
-			log.error("❌ CODEF 계좌 응답 오류 또는 data 없음");
-			throw new RuntimeException("CODEF에서 계좌 정보를 받아올 수 없습니다.");
-		}
-
-		Map<String, Object> data = (Map<String, Object>)result.get("data");
-		List<Map<String, Object>> resDepositTrust = (List<Map<String, Object>>)data.get("resDepositTrust");
-
-		if (resDepositTrust == null || resDepositTrust.isEmpty()) {
-			log.info("🔎 계좌는 조회 성공했으나 예금/신탁 내역이 없음");
-			return ResponseEntity.ok(result); // 200 OK + 내용 없음
-		}
-
-		String userEmail = authentication.getName();
-
-		log.info("💾 예금 자산 저장 - 사용자: {}, 계좌 수: {}", userEmail, resDepositTrust.size());
-
-		for (Map<String, Object> account : resDepositTrust) {
-			try {
-				AssetDetailDto asset = new AssetDetailDto();
-				asset.setEmail(userEmail);
-				asset.setAssetCategoryCode("2"); // 예적금
-				asset.setAssetName((String)account.get("resAccountName")); // 통장 이름
-				asset.setAmount(Long.parseLong((String)account.get("resAccountBalance")));
-				asset.setRegisteredAt(new Date());
-				asset.setEndDate(null);
-				asset.setBusinessType(null);
-
-				assetDetailService.saveAssetDetail(asset);
-			} catch (Exception e) {
-				log.error("❗ 계좌 저장 실패: {}", e.getMessage(), e);
-				throw new RuntimeException("계좌 저장에 실패했습니다.");
-			}
-		}
-
-		return ResponseEntity.ok(result);
-	}
+	// @GetMapping("/account-info")
+	// public ResponseEntity<?> getAccountInfo() {
+	// 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	// 	String user = authentication.getName();
+	// 	String connectedId = userService.getUser(user).getConnectedId();
+	// 	String organization = "0004";
+	//
+	// 	log.info("📥 계좌 정보 조회 요청: connectedId={}, organization={}", connectedId, organization);
+	//
+	// 	Map<String, Object> result = codefTokenService.getAccountInfo(connectedId, organization);
+	// 	if (result == null || !result.containsKey("data")) {
+	// 		log.error("❌ CODEF 계좌 응답 오류 또는 data 없음");
+	// 		throw new RuntimeException("CODEF에서 계좌 정보를 받아올 수 없습니다.");
+	// 	}
+	//
+	// 	Map<String, Object> data = (Map<String, Object>)result.get("data");
+	// 	List<Map<String, Object>> resDepositTrust = (List<Map<String, Object>>)data.get("resDepositTrust");
+	//
+	// 	if (resDepositTrust == null || resDepositTrust.isEmpty()) {
+	// 		log.info("🔎 계좌는 조회 성공했으나 예금/신탁 내역이 없음");
+	// 		return ResponseEntity.ok(result); // 200 OK + 내용 없음
+	// 	}
+	//
+	// 	String userEmail = authentication.getName();
+	//
+	// 	log.info("💾 예금 자산 저장 - 사용자: {}, 계좌 수: {}", userEmail, resDepositTrust.size());
+	//
+	// 	for (Map<String, Object> account : resDepositTrust) {
+	// 		try {
+	// 			AssetDetailDto asset = new AssetDetailDto();
+	// 			asset.setEmail(userEmail);
+	// 			asset.setAssetCategoryCode("2"); // 예적금
+	// 			asset.setAssetName((String)account.get("resAccountName")); // 통장 이름
+	// 			asset.setAmount(Long.parseLong((String)account.get("resAccountBalance")));
+	// 			asset.setRegisteredAt(new Date());
+	// 			asset.setEndDate(null);
+	// 			asset.setBusinessType(null);
+	//
+	// 			assetDetailService.saveAssetDetail(asset);
+	// 		} catch (Exception e) {
+	// 			log.error("❗ 계좌 저장 실패: {}", e.getMessage(), e);
+	// 			throw new RuntimeException("계좌 저장에 실패했습니다.");
+	// 		}
+	// 	}
+	//
+	// 	return ResponseEntity.ok(result);
+	// }
 }

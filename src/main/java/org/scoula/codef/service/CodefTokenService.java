@@ -1,12 +1,21 @@
 package org.scoula.codef.service;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.scoula.asset.dto.AssetDetailDto;
+import org.scoula.asset.dto.AssetInfoDto;
+import org.scoula.asset.service.AssetDetailService;
+import org.scoula.asset.service.AssetInfoService;
 import org.scoula.codef.dto.ConnectedIdRequestDto;
 import org.scoula.codef.util.CodefApiClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +31,9 @@ public class CodefTokenService {
 	// TODO: Access Token을 안전하게 저장하고 관리하는 로직 추가 필요
 	private String accessToken;
 	private long tokenExpiryTime; // 토큰 만료 시간 (밀리초)
+	private final AssetDetailService assetDetailService;
+	private final AssetInfoService assetInfoService;
+
 
 	@PostConstruct
 	public void init() {
@@ -79,6 +91,57 @@ public class CodefTokenService {
 			log.error("Error while creating ConnectedId: {}", e.getMessage(), e);
 			return null;
 		}
+	}
+
+	public void saveAccountInfo(String userEmail, String connectedId) {
+		String organization = "0004";
+		log.info("📥 계좌 정보 조회 요청: connectedId={}, organization={}", connectedId, organization);
+
+		Map<String, Object> result = getAccountInfo(connectedId, organization);
+		if (result == null || !result.containsKey("data")) {
+			log.error("❌ CODEF 계좌 응답 오류 또는 data 없음");
+			throw new RuntimeException("CODEF에서 계좌 정보를 받아올 수 없습니다.");
+		}
+
+		Map<String, Object> data = (Map<String, Object>)result.get("data");
+		List<Map<String, Object>> resDepositTrust = (List<Map<String, Object>>)data.get("resDepositTrust");
+
+		if (resDepositTrust == null || resDepositTrust.isEmpty()) {
+			log.info("🔎 계좌는 조회 성공했으나 예금/신탁 내역이 없음");
+			return; // 200 OK + 내용 없음
+		}
+
+		log.info("💾 예금 자산 저장 - 사용자: {}, 계좌 수: {}", userEmail, resDepositTrust.size());
+
+		for (Map<String, Object> account : resDepositTrust) {
+			try {
+				AssetDetailDto asset = new AssetDetailDto();
+				asset.setEmail(userEmail);
+				asset.setAssetCategoryCode("2"); // 예적금
+				asset.setAssetName((String)account.get("resAccountName")); // 통장 이름
+				asset.setAmount(Long.parseLong((String)account.get("resAccountBalance")));
+				asset.setRegisteredAt(new Date());
+				asset.setEndDate(null);
+				asset.setBusinessType(null);
+				assetDetailService.saveAssetDetail(asset);
+
+				/**
+				 * 사용자 총 자산에 Codef에서 불러온 계좌 자산 금액 추가
+				 */
+				AssetInfoDto assetInfoDto = assetInfoService.getAssetInfoByEmail(userEmail);
+				Long curBalance = assetInfoDto.getAsset();
+				curBalance += Long.parseLong((String)account.get("resAccountBalance"));
+				assetInfoDto.setAsset(curBalance);
+				assetInfoService.updateAssetInfo(assetInfoDto);
+
+			} catch (Exception e) {
+				log.error("❗ 계좌 저장 실패: {}", e.getMessage(), e);
+				throw new RuntimeException("계좌 저장에 실패했습니다.");
+			}
+		}
+
+		return;
+
 	}
 
 	public Map<String, Object> getAccountInfo(String connectedId, String organization) {
