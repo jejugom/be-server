@@ -36,10 +36,7 @@
         WHERE email = #{email}
     </delete>
 
-    <select id="findAll" resultMap="userMap">
-        SELECT *
-        FROM user
-    </select>
+
 
     <update id="updateConnectedId">
         UPDATE user
@@ -52,10 +49,4 @@
         SET branch_name = #{branchName}
         WHERE email = #{email}
     </update>
-
-    <select id="findBranchNameByEmail" resultType="string" parameterType="string">
-        SELECT branch_name
-        FROM user
-        WHERE email = #{email}
-    </select>
 </mapper>

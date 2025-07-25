@@ -22,12 +22,6 @@
         VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{branchName}, #{connectedId})
     </insert>
 
-    <update id="updateBranchName" parameterType="map">
-        UPDATE user
-        SET branch_name = #{branchName}
-        WHERE email = #{email}
-    </update>
-
     <delete id="delete">
         DELETE
         FROM user
@@ -42,6 +36,12 @@
     <update id="updateConnectedId">
         UPDATE user
         SET connected_id = #{connectedId}
+        WHERE email = #{email}
+    </update>
+
+    <update id="updateBranchName" parameterType="map">
+        UPDATE user
+        SET branch_name = #{branchName}
         WHERE email = #{email}
     </update>
 </mapper>
