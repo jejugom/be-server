@@ -8,8 +8,13 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.scoula.auth.dto.KakaoLoginResponseDto;
+import org.scoula.asset.domain.AssetInfoVo;
+import org.scoula.asset.dto.AssetInfoDto;
+import org.scoula.asset.mapper.AssetInfoMapper;
+import org.scoula.asset.service.AssetInfoService;
 import org.scoula.auth.dto.KakaoTokenResponseDto;
 import org.scoula.auth.dto.KakaoUserInfoDto;
+import org.scoula.auth.dto.KakaoLoginResponseDto;
 import org.scoula.auth.dto.RefreshTokenDto;
 import org.scoula.auth.dto.TokenRefreshResponseDto;
 import org.scoula.auth.mapper.RefreshTokenMapper;
@@ -173,8 +178,18 @@ public class KakaoAuthService {
 			.branchName(null)
 			.connectedId(null)
 			.build();
-
 		userMapper.save(newUser);
+
+		/**
+		 * 유저 생성후 assetInfoDTO도 생성
+		 */
+		AssetInfoDto assetInfoDto = new AssetInfoDto();
+		assetInfoDto.setEmail(email);
+		assetInfoDto.setAsset(0L);
+		assetInfoDto.setFilename1(null);
+		assetInfoDto.setFilename2(null);
+		assetInfoDto.setSegment(null);
+		assetInfoService.addAssetInfo(assetInfoDto);
 		return newUser;
 	}
 
