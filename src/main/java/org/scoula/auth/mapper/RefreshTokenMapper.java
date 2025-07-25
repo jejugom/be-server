@@ -14,4 +14,7 @@ public interface RefreshTokenMapper {
 	// 이메일과 provider로 토큰을 조회하는 메서드 추가
 	// provider 파라미터 삭제
 	RefreshTokenDto findTokenByUserEmail(String userEmail);
+
+	void deleteRefreshToken(String userEmail);
+
 }
