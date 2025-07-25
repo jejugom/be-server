@@ -2,15 +2,15 @@ package org.scoula.auth.controller;
 
 import java.util.Map;
 
-
 import org.scoula.auth.dto.LoginResponseDto;
 import org.scoula.auth.dto.RefreshTokenRequestDto;
 import org.scoula.auth.dto.TokenRefreshResponseDto;
 import org.scoula.auth.service.KakaoAuthService;
-import org.scoula.user.domain.UserVo;
-import org.scoula.user.dto.UserInfoDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 // @RequestMapping	// redirect 변경 시 수정
 public class AuthController {
 
+	private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 	private final KakaoAuthService kakaoAuthService;
 
 	// ✅ 이 핸들러가 카카오 리디렉션을 처리함
@@ -56,11 +57,11 @@ public class AuthController {
 			if (e.getStatusCode() == HttpStatus.BAD_REQUEST &&
 				e.getResponseBodyAsString().contains("KOE320")) {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body(Map.of("error","유효하지 않은 인가코드입니다."));
+					.body(Map.of("error", "유효하지 않은 인가코드입니다."));
 
 			}
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body(Map.of("error","카카오 서버와 연결되지 않는 상태입니다. "));
+				.body(Map.of("error", "카카오 서버와 연결되지 않는 상태입니다. "));
 
 		}
 
@@ -76,5 +77,14 @@ public class AuthController {
 
 		TokenRefreshResponseDto responseDto = kakaoAuthService.reissueTokens(requestDto.getRefreshToken());
 		return ResponseEntity.ok(responseDto);
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<Void> logout(Authentication authentication) {
+		// SecurityContext에서 현재 인증된 사용자의 이메일을 가져온다.
+		String userEmail = authentication.getName();
+		kakaoAuthService.logout(userEmail);
+
+		return ResponseEntity.noContent().build();
 	}
 }
