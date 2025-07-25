@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 public class CustomUser extends User {
+	//commitTest
 	private UserVo user;
 
 	public CustomUser(String username, String password,
