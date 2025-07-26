@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -22,6 +23,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Configuration
 @PropertySource({"classpath:/application.properties"})
+@Import({MongoConfig.class})
 @MapperScan(basePackages = {
 	"org.scoula.user.mapper",
 	"org.scoula.asset.mapper",
@@ -29,8 +31,7 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.faq.mapper",
 	"org.scoula.branch.mapper",
 	"org.scoula.booking.mapper",
-	"org.scoula.auth.mapper",
-	"org.scoula.product.repository"})
+	"org.scoula.auth.mapper"})
 @ComponentScan(basePackages = {
 	"org.scoula.user.service",
 	"org.scoula.asset.service",
