@@ -5,6 +5,8 @@ import java.util.List;
 import org.scoula.asset.dto.AssetDetailDto;
 import org.scoula.asset.service.AssetDetailService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,14 +20,16 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/asset-details")
+@RequestMapping("/api/assets")
 public class AssetDetailController {
 
 	private final AssetDetailService assetDetailService;
 
-	@GetMapping("/user/{email}")
-	public ResponseEntity<List<AssetDetailDto>> getAssetDetailsByEmail(@PathVariable String email) {
-		return ResponseEntity.ok(assetDetailService.getAssetDetailsByEmail(email));
+	@GetMapping()
+	public ResponseEntity<List<AssetDetailDto>> getAssetDetailsByEmail() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userEmail = authentication.getName();
+		return ResponseEntity.ok(assetDetailService.getAssetDetailsByEmail(userEmail));
 	}
 
 	@GetMapping("/{assetId}")
