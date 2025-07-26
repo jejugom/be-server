@@ -50,29 +50,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 			.authorizeRequests()
-			.antMatchers(
+			// 💡 GET 요청 중 인증 없이 허용할 경로들
+			.antMatchers(HttpMethod.GET,
 				"/",
 				"/favicon.ico",
-				"/oauth/authorize",
-				"/api/faq/**"
+				"/api/home",
+				"/auth/kakao",
+				"/auth/kakao/callback"
 			).permitAll()
 			.antMatchers(HttpMethod.POST,
 				"/api/user/join",
 				"/auth/kakao",
 				"/auth/refresh"
 			).permitAll()
-			.antMatchers(HttpMethod.GET,
-				"/auth/kakao/callback",
-				"/api/home"
-			).permitAll()
-
-			// ✅ PATCH 요청 명시적으로 허용 추가 (예시: 내 지점 등록/수정 허용)
-			.antMatchers(HttpMethod.PATCH,
-				"/api/user/branch"
-			).authenticated()
-
-			.antMatchers(HttpMethod.OPTIONS).permitAll() // CORS Preflight
-
+			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.anyRequest().authenticated();
 	}
 
