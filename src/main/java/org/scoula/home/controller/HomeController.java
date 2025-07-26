@@ -19,16 +19,17 @@ import lombok.RequiredArgsConstructor;
 public class HomeController {
 
 	private final AssetInfoService assetInfoService;
-	private final HomeService homeServie;
+	private final HomeService homeService;
 
-	@GetMapping("/user")
-	public ResponseEntity<HomeResponseDto> getAssetInfoByEmail() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String userEmail = authentication.getName();
-		return ResponseEntity.ok(homeServie.getHomeData(userEmail));
-	}
 	@GetMapping()
-	public ResponseEntity<HomeResponseDto> getHomeToAnonymouse(){
-		return ResponseEntity.ok(homeServie.getHomeData(null));
+	public ResponseEntity<HomeResponseDto> getHome(){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+			return ResponseEntity.ok(homeService.getHomeData(null)); // 비로그인 대응
+		}
+
+		String email = auth.getName();
+		return ResponseEntity.ok(homeService.getHomeData(email));
 	}
 }
