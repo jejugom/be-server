@@ -1,7 +1,9 @@
 package org.scoula.faq.mapper;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.scoula.faq.domain.FaqVo;
 
 public interface FaqMapper {
@@ -14,4 +16,5 @@ public interface FaqMapper {
 	// int updateFaq(FaqVo faq);
 	//
 	// int deleteFaq(Integer id);
+	void updateFaqPartial(@Param("faqId") Integer faqId, @Param("updates") Map<String, Object> updates);
 }

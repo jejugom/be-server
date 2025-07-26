@@ -17,4 +17,9 @@
         <package name="org.scoula.recommend.domain" />
     </typeAliases>
 
+    <mappers>
+        <mapper resource="org/scoula/user/mapper/UserMapper.xml"/>
+        <!-- 필요한 다른 매퍼들도 추가 -->
+    </mappers>
+
 </configuration>

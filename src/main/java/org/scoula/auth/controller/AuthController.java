@@ -2,12 +2,11 @@ package org.scoula.auth.controller;
 
 import java.util.Map;
 
-import org.scoula.auth.dto.LoginResponseDto;
+import org.scoula.auth.dto.KakaoLoginRequestDto;
+import org.scoula.auth.dto.KakaoLoginResponseDto;
 import org.scoula.auth.dto.RefreshTokenRequestDto;
 import org.scoula.auth.dto.TokenRefreshResponseDto;
 import org.scoula.auth.service.KakaoAuthService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,72 +18,78 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
+@Api(tags = "인증 API", description = "카카오 로그인, 토큰 재발급, 로그아웃 관련 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-// @RequestMapping	// redirect 변경 시 수정
 public class AuthController {
 
-	private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 	private final KakaoAuthService kakaoAuthService;
 
-	// ✅ 이 핸들러가 카카오 리디렉션을 처리함
+	@ApiOperation(value = "카카오 로그인 콜백", notes = "카카오 서버로부터 리디렉션되어 인가 코드를 받아 로그인을 처리합니다. (주로 서버 간 통신용)")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "로그인 성공", response = KakaoLoginResponseDto.class),
+		@ApiResponse(code = 500, message = "서버 내부 오류")
+	})
 	@GetMapping("/kakao/callback")
-	public ResponseEntity<LoginResponseDto> kakaoCallback(@RequestParam("code") String code) {
-		LoginResponseDto loginResponse = kakaoAuthService.processKakaoLogin(code);
+	public ResponseEntity<KakaoLoginResponseDto> kakaoCallback(
+		@ApiParam(value = "카카오 서버에서 발급해준 인가 코드 \nex) { \"code\" : \"s2sij32sji..\"}", required = true)
+		@RequestParam("code") String code) {
+		KakaoLoginResponseDto loginResponse = kakaoAuthService.processKakaoLogin(code);
 		return ResponseEntity.ok(loginResponse);
 	}
 
-	/***
-	 * 개발 단계에서는 callBack호출 시 바로 화면에 LoginDTO 띄워주게끔
-	 * 이후 프론트 연동 시 /kakao/callback 매핑 주석/삭제 처리
-	 * 현 단계에서는 /auth/kakao 로 카카오 인가코드 삽입 시 에러 나는것이 정상.
-	 */
-
+	@ApiOperation(value = "카카오 로그인", notes = "클라이언트에서 받은 카카오 인가 코드로 로그인 및 회원가입을 처리하고 JWT 토큰을 발급합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "로그인 성공", response = KakaoLoginResponseDto.class),
+		@ApiResponse(code = 401, message = "유효하지 않은 인가코드"),
+		@ApiResponse(code = 500, message = "카카오 서버 통신 오류")
+	})
 	@PostMapping("/kakao")
-	public ResponseEntity<?> kakaoLogin(@RequestBody Map<String, String> body) {
-		String code = body.get("code");
+	public ResponseEntity<?> kakaoLogin(@RequestBody KakaoLoginRequestDto request) {
+		String code = request.getCode();
 		try {
-			// 1. 카카오 로그인 처리 (토큰 요청 + 사용자 조회 + DB 저장)
-			// 서비스는 LoginResponseDto를 반환
-			LoginResponseDto loginResponse = kakaoAuthService.processKakaoLogin(code);
-			// 2. JWT 발급
+			KakaoLoginResponseDto loginResponse = kakaoAuthService.processKakaoLogin(code);
 			return ResponseEntity.ok(loginResponse);
-
 		} catch (HttpClientErrorException e) {
-			if (e.getStatusCode() == HttpStatus.BAD_REQUEST &&
-				e.getResponseBodyAsString().contains("KOE320")) {
+			if (e.getStatusCode() == HttpStatus.BAD_REQUEST && e.getResponseBodyAsString().contains("KOE320")) {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 					.body(Map.of("error", "유효하지 않은 인가코드입니다."));
-
 			}
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body(Map.of("error", "카카오 서버와 연결되지 않는 상태입니다. "));
-
 		}
-
 	}
 
-	/**
-	 * Access Token과 Refresh Token을 재발급합니다.
-	 * @return 새로운 Access Token
-	 */
+	@ApiOperation(value = "토큰 재발급", notes = "만료된 Access Token을 Refresh Token을 사용하여 재발급합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "토큰 재발급 성공", response = TokenRefreshResponseDto.class),
+		@ApiResponse(code = 401, message = "유효하지 않은 Refresh Token")
+	})
 	@PostMapping("/refresh")
 	public ResponseEntity<TokenRefreshResponseDto> refreshAccessToken(
+		@ApiParam(value = "Refresh Token을 포함하는 DTO", required = true)
 		@RequestBody RefreshTokenRequestDto requestDto) {
-
 		TokenRefreshResponseDto responseDto = kakaoAuthService.reissueTokens(requestDto.getRefreshToken());
 		return ResponseEntity.ok(responseDto);
 	}
 
+	@ApiOperation(value = "로그아웃", notes = "서버에 저장된 사용자의 Refresh Token을 삭제하여 로그아웃 처리합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "로그아웃 성공"),
+		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
+	})
 	@PostMapping("/logout")
 	public ResponseEntity<Void> logout(Authentication authentication) {
-		// SecurityContext에서 현재 인증된 사용자의 이메일을 가져온다.
 		String userEmail = authentication.getName();
 		kakaoAuthService.logout(userEmail);
-
 		return ResponseEntity.noContent().build();
 	}
 }
