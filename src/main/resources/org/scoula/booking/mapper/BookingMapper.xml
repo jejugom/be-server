@@ -66,4 +66,11 @@
           AND date = #{date}
           AND time = #{time}
     </select>
+
+    <select id="findFutureByBranch" resultMap="bookingMap">
+        SELECT *
+        FROM booking
+        WHERE branch_name = #{branchName}
+          AND date >= #{startDate}
+    </select>
 </mapper>

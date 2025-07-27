@@ -1,7 +1,12 @@
 package org.scoula.booking.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,6 +17,7 @@ import org.scoula.booking.dto.BookingCreateResponseDto;
 import org.scoula.booking.dto.BookingDetailResponseDto;
 import org.scoula.booking.dto.BookingDto;
 import org.scoula.booking.dto.DocInfoDto;
+import org.scoula.booking.dto.ReservedSlotsResponseDto;
 import org.scoula.booking.mapper.BookingMapper;
 import org.scoula.exception.DuplicateBookingException;
 import org.scoula.product.service.ProductsService;
@@ -140,5 +146,45 @@ public class BookingServiceImpl implements BookingService {
 
 		// 3. BookingDetailResponseDto.of()를 호출하여 최종 DTO 생성
 		return BookingDetailResponseDto.of(bookingVo, prdtName);
+	}
+
+	/**
+	 * DB에서 가져온 예약 목록(List<BookingVo>)을
+	 * 우리가 원하는 최종 형태(Map<String, List<String>>)로 가공하는 핵심 로직
+	 * @param branchName 지점명
+	 * */
+	public ReservedSlotsResponseDto getReservedSlotsByBranch(String branchName) {
+		// 1. 조회 시작 날짜를 '오늘'로 설정
+		LocalDate today = LocalDate.now();
+		Date startDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+		// 2. DB에서 오늘 이후의 모든 예약 목록을 가져옴
+		List<BookingVo> futureBookings = bookingMapper.findFutureByBranch(branchName, startDate);
+
+		// 3. 날짜 포맷터 정의
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		// 4. Stream의 groupingBy를 사용하여 List를 Map으로 변환
+		Map<String, List<String>> reservedSlotsMap = futureBookings.stream()
+			.collect(Collectors.groupingBy(
+				// 그룹화의 기준(Key): 날짜를 "yyyy-MM-dd" 형식의 문자열로 변환
+				booking -> booking.getDate().toInstant()
+					.atZone(ZoneId.systemDefault())
+					.toLocalDate()
+					.format(dateFormatter),
+				// 그룹화된 요소(Value): 시간(time)만 모아서 리스트로 만듦
+				Collectors.mapping(
+					booking -> {
+						String time = booking.getTime();
+						// 시간이 "10:00:00" 형태일 경우, 앞에서 5글자("10:00")만 잘라냄
+						// null이거나 형식이 다른 경우를 대비하여 방어 코드 추가
+						return (time != null && time.length() >= 5) ? time.substring(0, 5) : time;
+					},
+					Collectors.toList()
+				)
+			));
+
+		// 5. 최종 DTO 로 감싸서 반환
+		return new ReservedSlotsResponseDto(reservedSlotsMap);
 	}
 }

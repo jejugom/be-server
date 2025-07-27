@@ -6,6 +6,7 @@ import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
 import org.scoula.booking.dto.BookingDetailResponseDto;
 import org.scoula.booking.dto.BookingDto;
+import org.scoula.booking.dto.ReservedSlotsResponseDto;
 
 public interface BookingService {
 	List<BookingDto> getBookingsByEmail(String email);
@@ -19,4 +20,6 @@ public interface BookingService {
 	void deleteBooking(Integer bookingId);
 
 	BookingDetailResponseDto getBookingByUlid(String bookingUlid);
+
+	ReservedSlotsResponseDto getReservedSlotsByBranch(String branchName);
 }

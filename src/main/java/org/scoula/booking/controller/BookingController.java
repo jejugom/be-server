@@ -7,6 +7,7 @@ import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
 import org.scoula.booking.dto.BookingDetailResponseDto;
 import org.scoula.booking.dto.BookingDto;
+import org.scoula.booking.dto.ReservedSlotsResponseDto;
 import org.scoula.booking.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -64,6 +65,15 @@ public class BookingController {
 
 		// 201 Created 응답과 함께 생성된 리소스(ResponseDto)를 본문에 담아 반환
 		return ResponseEntity.created(location).body(responseDto);
+	}
+
+	/**
+	 * 특정 지점 예약 목록 조회
+	 * */
+	@GetMapping("/{branchName}/reserved-slots")
+	public ResponseEntity<ReservedSlotsResponseDto> getReservedSlots(@PathVariable String branchName) {
+		ReservedSlotsResponseDto responseDto = bookingService.getReservedSlotsByBranch(branchName);
+		return ResponseEntity.ok(responseDto);
 	}
 
 	@GetMapping("/user")

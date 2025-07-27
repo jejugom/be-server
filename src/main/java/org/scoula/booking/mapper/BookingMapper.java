@@ -22,4 +22,10 @@ public interface BookingMapper {
 		@Param("time") String time);
 
 	BookingVo findByUlid(String bookingUlid);
+
+	// 특정 지점의 현재 시각 기준으로 미래의 예약 목록을 조회하는 메서드
+	List<BookingVo> findFutureByBranch(
+		@Param("branchName") String branchName,
+		@Param("startDate") Date startDate
+	);
 }
