@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 public class BookingDto {
 	private int bookingId;
 	private String email;
-	private String prdtCode;
+	private String prodCode;
 	private Date date;
 	private String time;
-	private String docInfo;
+	private DocInfoDto docInfo;
 	private String branchName;
 	private String userEmail;
 
@@ -27,7 +27,7 @@ public class BookingDto {
 		return BookingDto.builder()
 			.bookingId(booking.getBookingId())
 			.email(booking.getEmail())
-			.prdtCode(booking.getPrdtCode())
+			.prodCode(booking.getProdCode())
 			.date(booking.getDate())
 			.time(booking.getTime())
 			.docInfo(booking.getDocInfo())
@@ -39,7 +39,7 @@ public class BookingDto {
 		return BookingVo.builder()
 			.bookingId(bookingId)
 			.email(email)
-			.prdtCode(prdtCode)
+			.prodCode(prodCode)
 			.date(date)
 			.time(time)
 			.docInfo(docInfo)
