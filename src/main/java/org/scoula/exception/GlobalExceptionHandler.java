@@ -15,43 +15,58 @@ public class GlobalExceptionHandler {
 	//카카오 등 외부 요청 실패
 	@ExceptionHandler(HttpClientErrorException.class)
 
-	public ResponseEntity<ErrorResponse> handleHttpClientError(HttpClientErrorException e){
-		log.error("Http client Error: {}",e.getMessage());
-		if(e.getStatusCode() == HttpStatus.BAD_REQUEST &&
-		e.getResponseBodyAsString().contains("KOE320")){
+	public ResponseEntity<ErrorResponse> handleHttpClientError(HttpClientErrorException e) {
+		log.error("Http client Error: {}", e.getMessage());
+		if (e.getStatusCode() == HttpStatus.BAD_REQUEST &&
+			e.getResponseBodyAsString().contains("KOE320")) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-				.body(new ErrorResponse("유효하지 않은 코드입니다.",e.getResponseBodyAsString()));
+				.body(new ErrorResponse("유효하지 않은 코드입니다.", e.getResponseBodyAsString()));
 		}
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-			.body(new ErrorResponse("외부 서버 통신 장애",e.getResponseBodyAsString()));
+			.body(new ErrorResponse("외부 서버 통신 장애", e.getResponseBodyAsString()));
 	}
+
 	//잘못된 파라미터 타입
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	public ResponseEntity<ErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException e){
-		log.error("파라미터 타입 불일치: {}",e.getMessage());
+	public ResponseEntity<ErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+		log.error("파라미터 타입 불일치: {}", e.getMessage());
 		return ResponseEntity.badRequest()
-			.body(new ErrorResponse("잘못된 요청 파라미터",e.getMessage()));
+			.body(new ErrorResponse("잘못된 요청 파라미터", e.getMessage()));
 	}
+
 	//NPE, 일반 예외
 	@ExceptionHandler(NullPointerException.class)
-	public ResponseEntity<ErrorResponse> handleNPE(NullPointerException e){
-		log.error("NullPointerException: {}",e.getMessage(),e);
+	public ResponseEntity<ErrorResponse> handleNPE(NullPointerException e) {
+		log.error("NullPointerException: {}", e.getMessage(), e);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-			.body(new ErrorResponse("서버 내부 오류","필수 정보가 누락됐거나 잘못되었습니다."));
+			.body(new ErrorResponse("서버 내부 오류", "필수 정보가 누락됐거나 잘못되었습니다."));
 	}
+
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException e) {
 		return ResponseEntity.badRequest()
 			.body(new ErrorResponse("잘못된 요청", e.getMessage()));
 	}
 
+	/**
+	 * 특정 지점에 선택한 시간에 이미 예약이 존재하는 경우에 대한 에러
+	 * */
+	@ExceptionHandler(DuplicateBookingException.class)
+	public ResponseEntity<ErrorResponse> handleDuplicateBooking(DuplicateBookingException ex) {
+		// 클라이언트에게 보낼 에러 응답 DTO 생성
+		ErrorResponse response = new ErrorResponse("DUPLICATE_BOOKING", ex.getMessage());
+
+		// 409 Conflict 상태 코드와 함께 응답 반환
+		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+	}
+
 	//나머지 예외 통합 처리
 	@ExceptionHandler(Exception.class)
 
-	public ResponseEntity<ErrorResponse> handleGeneral(Exception e){
-		log.error("X 알 수 없는 예외 발생: {}",e.getMessage(),e);
+	public ResponseEntity<ErrorResponse> handleGeneral(Exception e) {
+		log.error("X 알 수 없는 예외 발생: {}", e.getMessage(), e);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-			.body(new ErrorResponse("서버 내부 오류",e.getMessage()));
+			.body(new ErrorResponse("서버 내부 오류", e.getMessage()));
 	}
 }
 

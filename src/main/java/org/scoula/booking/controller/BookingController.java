@@ -3,9 +3,10 @@ package org.scoula.booking.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.scoula.booking.dto.BookingCreateRequestDto;
+import org.scoula.booking.dto.BookingCreateResponseDto;
+import org.scoula.booking.dto.BookingDetailResponseDto;
 import org.scoula.booking.dto.BookingDto;
-import org.scoula.booking.dto.BookingRequestDto;
-import org.scoula.booking.dto.BookingResponseDto;
 import org.scoula.booking.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,29 +29,31 @@ public class BookingController {
 
 	private final BookingService bookingService;
 
-	@GetMapping("/user")
-	public ResponseEntity<List<BookingDto>> getMyBookings(Authentication authentication) {
-		String email = authentication.getName();
+	/**
+	 * 예약 번호로 예약 상세 조회하기
+	 * @param bookingUlid 외부 예약 번호
+	 * */
+	@GetMapping("/{bookingUlid}")
+	public ResponseEntity<BookingDetailResponseDto> getBookingByUlid(@PathVariable String bookingUlid) {
+		// 서비스로부터 BookingDetailResponseDto를 받아옴
+		BookingDetailResponseDto responseDto = bookingService.getBookingByUlid(bookingUlid);
 
-		List<BookingDto> bookings = bookingService.getBookingsByEmail(email);
-
-		return ResponseEntity.ok(bookings);
+		// 최종 DTO를 클라이언트에게 응답
+		return ResponseEntity.ok(responseDto);
 	}
 
-	@GetMapping("/{bookingId}")
-	public ResponseEntity<BookingDto> getBookingById(@PathVariable Integer bookingId) {
-		return ResponseEntity.ok(bookingService.getBookingById(bookingId));
-	}
-
+	/**
+	 * 예약 생성하기
+	 * */
 	@PostMapping // "/bookings" 경로에 대한 POST 요청 처리
-	public ResponseEntity<BookingResponseDto> addBooking( // 반환 타입을 BookingResponseDto로 변경
+	public ResponseEntity<BookingCreateResponseDto> addBooking( // 반환 타입을 BookingResponseDto로 변경
 		Authentication authentication,
-		@RequestBody BookingRequestDto requestDto) { // 받는 타입을 BookingRequestDto로 변경
+		@RequestBody BookingCreateRequestDto requestDto) { // 받는 타입을 BookingRequestDto로 변경
 
 		String email = authentication.getName();
 
 		// 서비스는 완성된 BookingResponseDto를 반환
-		BookingResponseDto responseDto = bookingService.addBooking(email, requestDto);
+		BookingCreateResponseDto responseDto = bookingService.addBooking(email, requestDto);
 
 		// 생성된 리소스의 URI를 생성
 		URI location = ServletUriComponentsBuilder
@@ -61,6 +64,15 @@ public class BookingController {
 
 		// 201 Created 응답과 함께 생성된 리소스(ResponseDto)를 본문에 담아 반환
 		return ResponseEntity.created(location).body(responseDto);
+	}
+
+	@GetMapping("/user")
+	public ResponseEntity<List<BookingDto>> getMyBookings(Authentication authentication) {
+		String email = authentication.getName();
+
+		List<BookingDto> bookings = bookingService.getBookingsByEmail(email);
+
+		return ResponseEntity.ok(bookings);
 	}
 
 	@PutMapping("/{bookingId}")

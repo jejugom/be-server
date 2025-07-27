@@ -7,12 +7,12 @@ import lombok.Data;
 
 @Data
 @Builder
-public class BookingResponseDto {
+public class BookingCreateResponseDto {
 	private String bookingId;      // 외부용 고유 ID (ULID)
 	private DocInfoDto docInfo;    // 필요 서류 정보
 
-	public static BookingResponseDto of(BookingVo booking) {
-		return BookingResponseDto.builder()
+	public static BookingCreateResponseDto of(BookingVo booking) {
+		return BookingCreateResponseDto.builder()
 			.bookingId(booking.getBookingUlid())
 			.docInfo(booking.getDocInfo())
 			.build();

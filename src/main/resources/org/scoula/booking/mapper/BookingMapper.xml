@@ -3,13 +3,21 @@
 <mapper namespace="org.scoula.booking.mapper.BookingMapper">
     <resultMap id="bookingMap" type="org.scoula.booking.domain.BookingVo">
         <id property="bookingId" column="booking_id"/>
+        <result property="bookingUlid" column="booking_ulid"/>
         <result property="email" column="email"/>
-        <result property="prodCode" column="prod_code"/>
+        <result property="prdtCode" column="prdt_code"/>
         <result property="date" column="date"/>
         <result property="time" column="time"/>
         <result property="docInfo" column="doc_info" typeHandler="org.scoula.booking.config.JsonTypeHandler"/>
         <result property="branchName" column="branch_name"/>
     </resultMap>
+
+    <!-- 2. ULID로 예약을 조회하는 select 쿼리 추가 -->
+    <select id="findByUlid" resultMap="bookingMap">
+        SELECT *
+        FROM booking
+        WHERE booking_ulid = #{bookingUlid}
+    </select>
 
     <select id="getBookingsByEmail" resultMap="bookingMap">
         SELECT booking_id,
@@ -29,7 +37,7 @@
 
     <insert id="insertBooking" useGeneratedKeys="true" keyProperty="bookingId">
         INSERT INTO booking (booking_ulid, email, prdt_code, date, time, doc_info, branch_name)
-        VALUES (#{bookingUlid}, #{email}, #{prodCode}, #{date}, #{time},
+        VALUES (#{bookingUlid}, #{email}, #{prdtCode}, #{date}, #{time},
                 #{docInfo, typeHandler=org.scoula.booking.config.JsonTypeHandler},
                 #{branchName})
     </insert>
@@ -37,7 +45,7 @@
     <update id="updateBooking">
         UPDATE booking
         SET email       = #{email},
-            prdt_code   = #{prodCode},
+            prdt_code   = #{prdtCode},
             date        = #{date},
             time        = #{time},
             doc_info    = #{docInfo},
@@ -50,4 +58,12 @@
         FROM booking
         WHERE booking_id = #{bookingId}
     </delete>
+
+    <select id="countByBranchDateTime" resultType="int">
+        SELECT COUNT(*)
+        FROM booking
+        WHERE branch_name = #{branchName}
+          AND date = #{date}
+          AND time = #{time}
+    </select>
 </mapper>

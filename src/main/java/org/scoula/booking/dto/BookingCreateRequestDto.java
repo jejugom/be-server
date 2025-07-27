@@ -9,9 +9,9 @@ import org.scoula.booking.domain.BookingVo;
 import lombok.Data;
 
 @Data
-public class BookingRequestDto {
+public class BookingCreateRequestDto {
 	private String branchName;
-	private String prodCode;
+	private String prdtCode;
 	private String date;
 	private String time;
 
@@ -30,7 +30,7 @@ public class BookingRequestDto {
 
 		return BookingVo.builder()
 			.branchName(this.branchName)
-			.prodCode(this.prodCode)
+			.prdtCode(this.prdtCode)
 			.date(parsedDate)
 			.time(this.time)
 			.build();
