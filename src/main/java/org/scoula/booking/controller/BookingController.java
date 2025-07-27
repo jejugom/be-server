@@ -3,6 +3,7 @@ package org.scoula.booking.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.scoula.booking.dto.BookingCheckResponseDto;
 import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
 import org.scoula.booking.dto.BookingDetailResponseDto;
@@ -34,7 +35,7 @@ public class BookingController {
 	 * 예약 번호로 예약 상세 조회하기
 	 * @param bookingUlid 외부 예약 번호
 	 * */
-	@GetMapping("/{bookingUlid}")
+	@GetMapping("/detail/{bookingUlid}")
 	public ResponseEntity<BookingDetailResponseDto> getBookingByUlid(@PathVariable String bookingUlid) {
 		// 서비스로부터 BookingDetailResponseDto를 받아옴
 		BookingDetailResponseDto responseDto = bookingService.getBookingByUlid(bookingUlid);
@@ -73,6 +74,20 @@ public class BookingController {
 	@GetMapping("/{branchName}/reserved-slots")
 	public ResponseEntity<ReservedSlotsResponseDto> getReservedSlots(@PathVariable String branchName) {
 		ReservedSlotsResponseDto responseDto = bookingService.getReservedSlotsByBranch(branchName);
+		return ResponseEntity.ok(responseDto);
+	}
+
+	/**
+	 * 사용자에 대해 특정 상품에 대한 예약 여부 조회
+	 * */
+	@GetMapping("/check/{prdt_code}")
+	public ResponseEntity<BookingCheckResponseDto> checkBookingExists(
+		@PathVariable("prdt_code") String prdtCode,
+		Authentication authentication) {
+
+		String email = authentication.getName();
+		BookingCheckResponseDto responseDto = bookingService.checkBookingExists(email, prdtCode);
+
 		return ResponseEntity.ok(responseDto);
 	}
 

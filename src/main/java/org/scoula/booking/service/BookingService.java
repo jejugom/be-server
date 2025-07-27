@@ -2,6 +2,7 @@ package org.scoula.booking.service;
 
 import java.util.List;
 
+import org.scoula.booking.dto.BookingCheckResponseDto;
 import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
 import org.scoula.booking.dto.BookingDetailResponseDto;
@@ -22,4 +23,6 @@ public interface BookingService {
 	BookingDetailResponseDto getBookingByUlid(String bookingUlid);
 
 	ReservedSlotsResponseDto getReservedSlotsByBranch(String branchName);
+
+	public BookingCheckResponseDto checkBookingExists(String email, String prdtCode);
 }

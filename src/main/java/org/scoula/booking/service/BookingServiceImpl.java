@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.scoula.booking.domain.BookingVo;
+import org.scoula.booking.dto.BookingCheckDetailDto;
+import org.scoula.booking.dto.BookingCheckResponseDto;
 import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
 import org.scoula.booking.dto.BookingDetailResponseDto;
@@ -153,6 +155,7 @@ public class BookingServiceImpl implements BookingService {
 	 * 우리가 원하는 최종 형태(Map<String, List<String>>)로 가공하는 핵심 로직
 	 * @param branchName 지점명
 	 * */
+	@Override
 	public ReservedSlotsResponseDto getReservedSlotsByBranch(String branchName) {
 		// 1. 조회 시작 날짜를 '오늘'로 설정
 		LocalDate today = LocalDate.now();
@@ -186,5 +189,27 @@ public class BookingServiceImpl implements BookingService {
 
 		// 5. 최종 DTO 로 감싸서 반환
 		return new ReservedSlotsResponseDto(reservedSlotsMap);
+	}
+
+	/**
+	 * 사용자가 해당 상품에 대한 예약 여부 조회
+	 * */
+	public BookingCheckResponseDto checkBookingExists(String email, String prdtCode) {
+		// 1. DB에서 해당 사용자의 특정 상품 예약을 조회 (BookingVo 또는 null을 받음)
+		BookingVo existingBooking = bookingMapper.findByEmailAndPrdtCode(email, prdtCode);
+
+		// 2. ofNullable을 사용하여 결과를 Optional로 직접 감싸줌
+		Optional<BookingVo> existingBookingOpt = Optional.ofNullable(existingBooking);
+
+		// 3. Optional의 isPresent()로 존재 여부 확인
+		if (existingBookingOpt.isPresent()) {
+			// 4. 예약이 존재하면, Vo를 DTO로 변환
+			BookingVo booking = existingBookingOpt.get();
+			BookingCheckDetailDto detailDto = BookingCheckDetailDto.from(booking);
+			return new BookingCheckResponseDto(true, detailDto);
+		} else {
+			// 4. 예약이 존재하지 않으면, details는 null로 설정
+			return new BookingCheckResponseDto(false, null);
+		}
 	}
 }

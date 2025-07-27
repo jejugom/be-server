@@ -28,4 +28,7 @@ public interface BookingMapper {
 		@Param("branchName") String branchName,
 		@Param("startDate") Date startDate
 	);
+
+	// email과 prdt_code로 예약 건수를 세는 메서드
+	BookingVo findByEmailAndPrdtCode(@Param("email") String email, @Param("prdtCode") String prdtCode);
 }

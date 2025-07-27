@@ -73,4 +73,13 @@
         WHERE branch_name = #{branchName}
           AND date >= #{startDate}
     </select>
+
+    <select id="findByEmailAndPrdtCode" resultMap="bookingMap">
+        SELECT *
+        FROM booking
+        WHERE email = #{email}
+          AND prdt_code = #{prdtCode}
+        ORDER BY date DESC, time DESC
+            LIMIT 1
+    </select>
 </mapper>
