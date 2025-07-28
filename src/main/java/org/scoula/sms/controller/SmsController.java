@@ -2,6 +2,8 @@ package org.scoula.sms.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+
 import org.scoula.sms.dto.SmsRequestDto;
 import org.scoula.sms.dto.SmsResponseDto;
 import org.scoula.sms.service.SmsService;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/sms")
 @RequiredArgsConstructor
-@Log4j
+@Log4j2
 public class SmsController {
 
     private final SmsService smsService;

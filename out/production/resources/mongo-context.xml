@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/data/mongo
+         http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- properties 파일에서 MongoDB 정보 읽기 -->
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <!-- MongoDB Atlas 연결 -->
+    <mongo:client id="mongoClient" uri="${mongodb.uri}"/>
+
+    <!-- MongoTemplate 등록 -->
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoClient" ref="mongoClient"/>
+        <constructor-arg name="databaseName" value="${mongodb.database}"/>
+    </bean>
+
+    <!-- Repository 자동 스캔 -->
+    <mongo:repositories base-package="org.scoula.product.repository"/>
+
+</beans>

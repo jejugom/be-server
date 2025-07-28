@@ -16,5 +16,5 @@ public interface UserMapper {
 
 	int updateConnectedId(@Param("email") String email, @Param("connectedId") String connectedId);
 
-	int updateBranchName(@Param("email") String email, @Param("branchName") String branchName);
+	int updateBranchId(@Param("email") String email, @Param("branchId") Integer branchId);
 }

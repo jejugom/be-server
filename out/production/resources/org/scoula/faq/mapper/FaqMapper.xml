@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scoula.faq.mapper.FaqMapper">
+    <resultMap id="faqMap" type="org.scoula.faq.domain.FaqVo">
+        <id property="faqId" column="faq_id"/>
+        <result property="category" column="category"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="date" column="date"/>
+    </resultMap>
+
+    <select id="getAllFaqs" resultMap="faqMap">
+        SELECT *
+        FROM faq
+    </select>
+
+    <select id="getFaqById" resultMap="faqMap">
+        SELECT *
+        FROM faq
+        WHERE faq_id = #{faqId}
+    </select>
+
+    <insert id="insertFaq" useGeneratedKeys="true" keyProperty="faqId">
+        INSERT INTO faq (category, title, content, date)
+        VALUES (#{category}, #{title}, #{content}, #{date})
+    </insert>
+
+    <update id="updateFaq">
+        UPDATE faq
+        SET category = #{category},
+            title    = #{title},
+            content  = #{content},
+            date     = #{date}
+        WHERE faq_id = #{faqId}
+    </update>
+
+    <delete id="deleteFaq">
+        DELETE
+        FROM faq
+        WHERE faq_id = #{faqId}
+    </delete>
+
+    <update id="updateFaqPartial">
+        UPDATE faq
+        <set>
+            <if test="updates['category'] != null">
+                category = #{updates.category},
+            </if>
+            <if test="updates['title'] != null">
+                title = #{updates.title},
+            </if>
+            <if test="updates['content'] != null">
+                content = #{updates.content},
+            </if>
+            <!-- 필요하면 다른 필드도 추가 -->
+        </set>
+        WHERE faq_id = #{faqId}
+    </update>
+</mapper>

@@ -1,6 +1,7 @@
 package org.scoula.auth.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.scoula.auth.dto.RefreshTokenDto;
 
 @Mapper
@@ -13,8 +14,8 @@ public interface RefreshTokenMapper {
 
 	// 이메일과 provider로 토큰을 조회하는 메서드 추가
 	// provider 파라미터 삭제
-	RefreshTokenDto findTokenByUserEmail(String userEmail);
+	RefreshTokenDto findTokenByUserEmail(@Param("email") String email);
 
-	void deleteRefreshToken(String userEmail);
+	void deleteRefreshToken(@Param("email") String email);
 
 }

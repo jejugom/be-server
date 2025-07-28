@@ -2,6 +2,8 @@ package org.scoula.sms.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+
 import org.scoula.sms.dto.SmsRequestDto;
 import org.scoula.sms.dto.SmsResponseDto;
 import org.scoula.sms.util.SmsApiClient;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Log4j
+@Log4j2
 public class SmsServiceImpl implements SmsService {
 
     private final SmsApiClient smsApiClient;
