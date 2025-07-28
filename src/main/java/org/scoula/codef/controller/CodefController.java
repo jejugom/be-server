@@ -1,10 +1,7 @@
 package org.scoula.codef.controller;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
-import org.scoula.asset.dto.AssetDetailDto;
 import org.scoula.asset.service.AssetDetailService;
 import org.scoula.codef.dto.ConnectedIdRequestDto;
 import org.scoula.codef.service.CodefTokenService;
