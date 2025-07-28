@@ -10,8 +10,8 @@ import lombok.Data;
 
 @Data
 public class BookingCreateRequestDto {
-	private String branchName;
-	private String prdtCode;
+	private int branchId;
+	private String finPrdtCode;
 	private String date;
 	private String time;
 
@@ -29,8 +29,8 @@ public class BookingCreateRequestDto {
 		}
 
 		return BookingVo.builder()
-			.branchName(this.branchName)
-			.prdtCode(this.prdtCode)
+			.branchId(this.branchId)
+			.finPrdtCode(this.finPrdtCode)
 			.date(parsedDate)
 			.time(this.time)
 			.build();

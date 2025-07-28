@@ -10,10 +10,10 @@ import lombok.Data;
 @Data
 @Builder
 public class BookingCheckDetailDto {
-	private String bookingUlid;
+	private String bookingId;
 	private String date;
 	private String time;
-	private String branchName;
+	private int branchId;
 
 	public static BookingCheckDetailDto from(BookingVo booking) {
 		String formattedDate = null;
@@ -27,10 +27,10 @@ public class BookingCheckDetailDto {
 		}
 
 		return BookingCheckDetailDto.builder()
-			.bookingUlid(booking.getBookingUlid())
+			.bookingId(booking.getBookingId())
 			.date(formattedDate)
 			.time(formattedTime)
-			.branchName(booking.getBranchName())
+			.branchId(booking.getBranchId())
 			.build();
 	}
 }

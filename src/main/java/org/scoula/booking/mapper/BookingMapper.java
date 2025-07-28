@@ -18,17 +18,18 @@ public interface BookingMapper {
 	int deleteBooking(Integer id);
 
 	// 특정 지점, 날짜, 시간에 해당하는 예약 건수를 세는 메서드 추가
-	int countByBranchDateTime(@Param("branchName") String branchName, @Param("date") Date date,
+	int countByBranchDateTime(@Param("branchId") int branchId, @Param("date") Date date,
 		@Param("time") String time);
 
-	BookingVo findByUlid(String bookingUlid);
+	BookingVo findById(String bookingId);
 
 	// 특정 지점의 현재 시각 기준으로 미래의 예약 목록을 조회하는 메서드
 	List<BookingVo> findFutureByBranch(
-		@Param("branchName") String branchName,
-		@Param("startDate") Date startDate
+		@Param("branchId") int branchId,
+		@Param("currentDate") Date currentDate,
+		@Param("currentTime") String currentTime
 	);
 
 	// email과 prdt_code로 예약 건수를 세는 메서드
-	BookingVo findByEmailAndPrdtCode(@Param("email") String email, @Param("prdtCode") String prdtCode);
+	BookingVo findByEmailAndFinPrdtCode(@Param("email") String email, @Param("finPrdtCode") String finPrdtCode);
 }

@@ -20,9 +20,9 @@ public interface BookingService {
 
 	void deleteBooking(Integer bookingId);
 
-	BookingDetailResponseDto getBookingByUlid(String bookingUlid);
+	BookingDetailResponseDto getBookingById(String bookingId);
 
-	ReservedSlotsResponseDto getReservedSlotsByBranch(String branchName);
+	ReservedSlotsResponseDto getReservedSlotsByBranch(int branchId);
 
 	public BookingCheckResponseDto checkBookingExists(String email, String prdtCode);
 }

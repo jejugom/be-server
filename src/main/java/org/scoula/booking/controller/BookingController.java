@@ -38,7 +38,7 @@ public class BookingController {
 	@GetMapping("/detail/{bookingUlid}")
 	public ResponseEntity<BookingDetailResponseDto> getBookingByUlid(@PathVariable String bookingUlid) {
 		// 서비스로부터 BookingDetailResponseDto를 받아옴
-		BookingDetailResponseDto responseDto = bookingService.getBookingByUlid(bookingUlid);
+		BookingDetailResponseDto responseDto = bookingService.getBookingById(bookingUlid);
 
 		// 최종 DTO를 클라이언트에게 응답
 		return ResponseEntity.ok(responseDto);
@@ -71,9 +71,9 @@ public class BookingController {
 	/**
 	 * 특정 지점 예약 목록 조회
 	 * */
-	@GetMapping("/{branchName}/reserved-slots")
-	public ResponseEntity<ReservedSlotsResponseDto> getReservedSlots(@PathVariable String branchName) {
-		ReservedSlotsResponseDto responseDto = bookingService.getReservedSlotsByBranch(branchName);
+	@GetMapping("/{branchId}/reserved-slots")
+	public ResponseEntity<ReservedSlotsResponseDto> getReservedSlots(@PathVariable Integer branchId) {
+		ReservedSlotsResponseDto responseDto = bookingService.getReservedSlotsByBranch(branchId);
 		return ResponseEntity.ok(responseDto);
 	}
 
@@ -101,7 +101,7 @@ public class BookingController {
 	}
 
 	@PutMapping("/{bookingId}")
-	public ResponseEntity<Void> updateBooking(@PathVariable Integer bookingId, @RequestBody BookingDto bookingDto) {
+	public ResponseEntity<Void> updateBooking(@PathVariable String bookingId, @RequestBody BookingDto bookingDto) {
 		bookingDto.setBookingId(bookingId);
 		bookingService.updateBooking(bookingDto);
 		return ResponseEntity.ok().build();

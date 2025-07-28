@@ -14,4 +14,11 @@ public interface BranchMapper {
 	int updateBranch(BranchVo branch);
 
 	int deleteBranch(String code);
+
+	/**
+	 * ID를 통해 지점 이름을 조회
+	 * @param branchId
+	 * @return String branchName
+	 */
+	String findBranchNameById(int branchId);
 }

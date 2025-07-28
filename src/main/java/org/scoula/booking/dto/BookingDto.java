@@ -14,24 +14,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class BookingDto {
-	private int bookingId;
+	private String bookingId;
 	private String email;
-	private String prdtCode;
+	private String finPrdtCode;
 	private Date date;
 	private String time;
 	private DocInfoDto docInfo;
-	private String branchName;
 	private String userEmail;
 
 	public static BookingDto of(BookingVo booking) {
 		return BookingDto.builder()
 			.bookingId(booking.getBookingId())
 			.email(booking.getEmail())
-			.prdtCode(booking.getPrdtCode())
+			.finPrdtCode(booking.getFinPrdtCode())
 			.date(booking.getDate())
 			.time(booking.getTime())
 			.docInfo(booking.getDocInfo())
-			.branchName(booking.getBranchName())
 			.build();
 	}
 
@@ -39,11 +37,10 @@ public class BookingDto {
 		return BookingVo.builder()
 			.bookingId(bookingId)
 			.email(email)
-			.prdtCode(prdtCode)
+			.finPrdtCode(finPrdtCode)
 			.date(date)
 			.time(time)
 			.docInfo(docInfo)
-			.branchName(branchName)
 			.build();
 	}
 }

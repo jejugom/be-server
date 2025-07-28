@@ -49,4 +49,15 @@ public class BranchServiceImpl implements BranchService {
 			throw new NoSuchElementException("Branch not found with name: " + branchName);
 		}
 	}
+
+	/**
+	 * branchId로 branchName을 조회하는 메소드
+	 */
+	@Override
+	public String getBranchNameById(int branchId) {
+		// mapper를 통해 branchId로 이름을 조회하고, 결과가 없을 경우 예외를 던집니다.
+		return Optional.ofNullable(branchMapper.findBranchNameById(branchId))
+			.orElseThrow(() -> new NoSuchElementException("Branch not found with id: " + branchId));
+	}
+
 }

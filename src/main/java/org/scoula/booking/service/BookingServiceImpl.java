@@ -1,6 +1,7 @@
 package org.scoula.booking.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,7 +22,9 @@ import org.scoula.booking.dto.BookingDto;
 import org.scoula.booking.dto.DocInfoDto;
 import org.scoula.booking.dto.ReservedSlotsResponseDto;
 import org.scoula.booking.mapper.BookingMapper;
+import org.scoula.branch.service.BranchService;
 import org.scoula.exception.DuplicateBookingException;
+import org.scoula.exception.InvalidBookingDateException;
 import org.scoula.product.service.ProductsService;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 public class BookingServiceImpl implements BookingService {
 	private final BookingMapper bookingMapper;
 	private final ProductsService productsService;
+	private final BranchService branchService;
 
 	@Override
 	public List<BookingDto> getBookingsByEmail(String email) {
@@ -53,9 +57,12 @@ public class BookingServiceImpl implements BookingService {
 	public BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto) {
 		BookingVo bookingVo = requestDto.toVo();
 
-		// 1. 중복 예약 확인 로직 추가
+		// 0. 예약 날짜 유효성 검사 로직
+		validateBookingDate(bookingVo.getDate());
+
+		// 1. 중복 예약 확인 로직
 		int existingBookings = bookingMapper.countByBranchDateTime(
-			bookingVo.getBranchName(),
+			bookingVo.getBranchId(),
 			bookingVo.getDate(),
 			bookingVo.getTime()
 		);
@@ -65,13 +72,13 @@ public class BookingServiceImpl implements BookingService {
 			throw new DuplicateBookingException("해당 지점의 해당 시간에는 이미 예약이 존재합니다.");
 		}
 
-		DocInfoDto initialDocInfo = generateInitialDocInfo(requestDto.getPrdtCode());
-		String bookingUlid = UlidCreator.getUlid().toString();
+		DocInfoDto initialDocInfo = generateInitialDocInfo(requestDto.getFinPrdtCode());
+		String bookingId = UlidCreator.getUlid().toString();
 
 		// Vo에 모든 정보 설정
 		bookingVo.setEmail(email);
 		bookingVo.setDocInfo(initialDocInfo);
-		bookingVo.setBookingUlid(bookingUlid);
+		bookingVo.setBookingId(bookingId);
 
 		// DB에 저장
 		bookingMapper.insertBooking(bookingVo);
@@ -116,6 +123,29 @@ public class BookingServiceImpl implements BookingService {
 		return docInfo;
 	}
 
+	/**
+	 * 헬퍼 메서드: 예약 날짜가 유효한지 (오늘부터 한 달 이내) 검사합니다.
+	 * @param bookingDate 검사할 예약 날짜
+	 */
+	private void validateBookingDate(Date bookingDate) {
+		if (bookingDate == null) {
+			throw new InvalidBookingDateException("예약 날짜를 입력해주세요.");
+		}
+
+		// java.util.Date를 최신 LocalDate로 변환하여 비교
+		LocalDate today = LocalDate.now();
+		LocalDate requestedDate = bookingDate.toInstant()
+			.atZone(ZoneId.systemDefault())
+			.toLocalDate();
+		// 오늘로부터 한 달 뒤의 날짜 계산
+		LocalDate oneMonthLater = today.plusMonths(1);
+
+		// 과거 날짜이거나, 한 달 이후의 날짜인지 확인
+		if (requestedDate.isBefore(today) || requestedDate.isAfter(oneMonthLater)) {
+			throw new InvalidBookingDateException("예약은 오늘부터 한 달 이내의 날짜만 가능합니다.");
+		}
+	}
+
 	@Override
 	public void updateBooking(BookingDto bookingDto) {
 		if (bookingMapper.updateBooking(bookingDto.toVo()) == 0) {
@@ -132,37 +162,40 @@ public class BookingServiceImpl implements BookingService {
 
 	/**
 	 * 특정 예약 상세 조회
-	 * @param bookingUlid 외부 예약 번호
+	 * @param bookingId 외부 예약 번호
 	 * */
 	@Override
-	public BookingDetailResponseDto getBookingByUlid(String bookingUlid) {
+	public BookingDetailResponseDto getBookingById(String bookingId) {
 		// 1. ULID로 DB에서 예약 정보(Vo)를 조회
-		BookingVo bookingVo = bookingMapper.findByUlid(bookingUlid);
+		BookingVo bookingVo = bookingMapper.findById(bookingId);
 
 		if (bookingVo == null) {
-			throw new NoSuchElementException("Booking not found with ulid: " + bookingUlid);
+			throw new NoSuchElementException("Booking not found with ulid: " + bookingId);
 		}
 
 		// 2. ProductsService에서 상품명을 조회
-		String prdtName = productsService.getProductNameByCode(bookingVo.getPrdtCode());
+		String prdtName = productsService.getProductNameByCode(bookingVo.getFinPrdtCode());
+		String branchName = branchService.getBranchNameById(bookingVo.getBranchId());
 
 		// 3. BookingDetailResponseDto.of()를 호출하여 최종 DTO 생성
-		return BookingDetailResponseDto.of(bookingVo, prdtName);
+		return BookingDetailResponseDto.of(bookingVo, prdtName, branchName);
 	}
 
 	/**
 	 * DB에서 가져온 예약 목록(List<BookingVo>)을
 	 * 우리가 원하는 최종 형태(Map<String, List<String>>)로 가공하는 핵심 로직
-	 * @param branchName 지점명
+	 * @param branchId 지점번호
 	 * */
 	@Override
-	public ReservedSlotsResponseDto getReservedSlotsByBranch(String branchName) {
+	public ReservedSlotsResponseDto getReservedSlotsByBranch(int branchId) {
 		// 1. 조회 시작 날짜를 '오늘'로 설정
 		LocalDate today = LocalDate.now();
 		Date startDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-		// 2. DB에서 오늘 이후의 모든 예약 목록을 가져옴
-		List<BookingVo> futureBookings = bookingMapper.findFutureByBranch(branchName, startDate);
+		// 2. DB에서 오늘 현재 시간 이후의 모든 예약 목록을 가져옴
+		Date currentDate = new Date(); // 오늘 날짜
+		String currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
+		List<BookingVo> futureBookings = bookingMapper.findFutureByBranch(branchId, currentDate, currentTime);
 
 		// 3. 날짜 포맷터 정의
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -196,7 +229,7 @@ public class BookingServiceImpl implements BookingService {
 	 * */
 	public BookingCheckResponseDto checkBookingExists(String email, String prdtCode) {
 		// 1. DB에서 해당 사용자의 특정 상품 예약을 조회 (BookingVo 또는 null을 받음)
-		BookingVo existingBooking = bookingMapper.findByEmailAndPrdtCode(email, prdtCode);
+		BookingVo existingBooking = bookingMapper.findByEmailAndFinPrdtCode(email, prdtCode);
 
 		// 2. ofNullable을 사용하여 결과를 Optional로 직접 감싸줌
 		Optional<BookingVo> existingBookingOpt = Optional.ofNullable(existingBooking);

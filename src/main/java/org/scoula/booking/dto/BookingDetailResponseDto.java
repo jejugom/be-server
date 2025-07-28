@@ -21,9 +21,10 @@ public class BookingDetailResponseDto {
 	 * BookingVo와 상품명을 조합하여 상세 응답 DTO를 생성합니다.
 	 * @param booking Vo 객체
 	 * @param prodName 서비스 계층에서 조회한 상품명
+	 * @param branchName 지점명
 	 * @return 변환된 Dto 객체
 	 */
-	public static BookingDetailResponseDto of(BookingVo booking, String prodName) {
+	public static BookingDetailResponseDto of(BookingVo booking, String prodName, String branchName) {
 
 		String formattedDate = null;
 		if (booking.getDate() != null) {
@@ -31,8 +32,8 @@ public class BookingDetailResponseDto {
 		}
 
 		return BookingDetailResponseDto.builder()
-			.bookingId(booking.getBookingUlid())
-			.branchName(booking.getBranchName())
+			.bookingId(booking.getBookingId())
+			.branchName(branchName)
 			.prodName(prodName)
 			.date(formattedDate)
 			.time(booking.getTime())
