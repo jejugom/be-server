@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AssetDetailDto {
+public class AssetDetailResponseDto {
 	private int assetId;
 	private String email;
 	private String assetCategoryCode;
@@ -23,8 +23,8 @@ public class AssetDetailDto {
 	private String assetName;
 	private String businessType;
 
-	public static AssetDetailDto of(AssetDetailVo assetDetail) {
-		return AssetDetailDto.builder()
+	public static AssetDetailResponseDto of(AssetDetailVo assetDetail) {
+		return AssetDetailResponseDto.builder()
 			.assetId(assetDetail.getAssetId())
 			.email(assetDetail.getEmail())
 			.assetCategoryCode(assetDetail.getAssetCategoryCode())

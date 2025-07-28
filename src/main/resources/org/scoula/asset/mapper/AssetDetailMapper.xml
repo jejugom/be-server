@@ -18,12 +18,16 @@
         FROM asset_detail
         WHERE email = #{email}
     </select>
-    <select id="getAssetDetailById" resultType="org.scoula.asset.domain.AssetDetailVo"></select>
+    <select id="getAssetDetailById" resultMap="assetDetailMap">
+        SELECT *
+        FROM asset_detail
+        WHERE asset_id = #{id}
+    </select>
 
     <insert id="insertAssetDetail">
-        INSERT INTO asset_detail (asset_id, email, asset_category_code, amount, registered_at, end_date, asset_name,
+        INSERT INTO asset_detail (email, asset_category_code, amount, registered_at, end_date, asset_name,
                                   business_type)
-        VALUES (#{assetId}, #{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName},
+        VALUES (#{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName},
                 #{businessType})
     </insert>
 
@@ -43,14 +47,7 @@
         DELETE
         FROM asset_detail
         WHERE asset_id = #{assetId}
-          AND email = #{email}
+          AND email = #{userEmail}
     </delete>
-
-    <insert id="insertAssetDetailWithGeneratedKey" useGeneratedKeys="true" keyProperty="assetId">
-        INSERT INTO asset_detail (email, asset_category_code, amount, registered_at, end_date, asset_name,
-                                  business_type)
-        VALUES (#{email}, #{assetCategoryCode}, #{amount}, #{registeredAt}, #{endDate}, #{assetName},
-                #{businessType})
-    </insert>
 </mapper>
 

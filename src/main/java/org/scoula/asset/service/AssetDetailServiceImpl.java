@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.scoula.asset.dto.AssetDetailDto;
+import org.scoula.asset.dto.AssetDetailResponseDto;
 import org.scoula.asset.mapper.AssetDetailMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,40 +18,35 @@ public class AssetDetailServiceImpl implements AssetDetailService {
 	private final AssetDetailMapper assetDetailMapper;
 
 	@Override
-	public List<AssetDetailDto> getAssetDetailsByEmail(String email) {
+	public List<AssetDetailResponseDto> getAssetDetailsByEmail(String email) {
 		return assetDetailMapper.getAssetDetailsByEmail(email).stream()
-			.map(AssetDetailDto::of)
+			.map(AssetDetailResponseDto::of)
 			.collect(Collectors.toList());
 	}
 
 	@Override
-	public AssetDetailDto getAssetDetailById(Integer assetId) {
+	public AssetDetailResponseDto getAssetDetailById(Integer assetId) {
 		return Optional.ofNullable(assetDetailMapper.getAssetDetailById(assetId))
-			.map(AssetDetailDto::of)
+			.map(AssetDetailResponseDto::of)
 			.orElseThrow(() -> new NoSuchElementException("AssetDetail not found with id: " + assetId));
 	}
 
 	@Override
-	public void addAssetDetail(AssetDetailDto assetDetailDto) {
-		assetDetailMapper.insertAssetDetail(assetDetailDto.toVo());
+	public void addAssetDetail(AssetDetailResponseDto assetDetailResponseDto) {
+		assetDetailMapper.insertAssetDetail(assetDetailResponseDto.toVo());
 	}
 
 	@Override
-	public void updateAssetDetail(AssetDetailDto assetDetailDto) {
-		if (assetDetailMapper.updateAssetDetail(assetDetailDto.toVo()) == 0) {
-			throw new NoSuchElementException("AssetDetail not found with id: " + assetDetailDto.getAssetId());
+	public void updateAssetDetail(AssetDetailResponseDto assetDetailResponseDto) {
+		if (assetDetailMapper.updateAssetDetail(assetDetailResponseDto.toVo()) == 0) {
+			throw new NoSuchElementException("AssetDetail not found with id: " + assetDetailResponseDto.getAssetId());
 		}
 	}
 
 	@Override
-	public void deleteAssetDetail(Integer assetId) {
-		if (assetDetailMapper.deleteAssetDetail(assetId) == 0) {
-			throw new NoSuchElementException("AssetDetail not found with id: " + assetId);
+	public void deleteAssetDetail(Integer assetId, String userEmail) {
+		if (assetDetailMapper.deleteAssetDetail(assetId, userEmail) == 0) {
+			throw new NoSuchElementException("AssetDetail not found with id: " + assetId + " for user " + userEmail);
 		}
-	}
-
-	@Override
-	public void saveAssetDetail(AssetDetailDto assetDetailDto) {
-		assetDetailMapper.insertAssetDetailWithGeneratedKey(assetDetailDto.toVo());
 	}
 }

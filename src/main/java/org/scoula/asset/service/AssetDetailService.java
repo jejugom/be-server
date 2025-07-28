@@ -2,18 +2,17 @@ package org.scoula.asset.service;
 
 import java.util.List;
 
-import org.scoula.asset.dto.AssetDetailDto;
+import org.scoula.asset.dto.AssetDetailResponseDto;
 
 public interface AssetDetailService {
-	List<AssetDetailDto> getAssetDetailsByEmail(String email);
+	List<AssetDetailResponseDto> getAssetDetailsByEmail(String email);
 
-	AssetDetailDto getAssetDetailById(Integer assetId);
+	AssetDetailResponseDto getAssetDetailById(Integer assetId);
 
-	void addAssetDetail(AssetDetailDto assetDetailDto);
+	void addAssetDetail(AssetDetailResponseDto assetDetailResponseDto);
 
-	void updateAssetDetail(AssetDetailDto assetDetailDto);
+	void updateAssetDetail(AssetDetailResponseDto assetDetailResponseDto);
 
-	void deleteAssetDetail(Integer assetId);
+	void deleteAssetDetail(Integer assetId, String userEmail);
 
-	void saveAssetDetail(AssetDetailDto assetDetailDto);
 }
