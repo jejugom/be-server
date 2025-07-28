@@ -6,13 +6,24 @@ import java.util.Date;
 
 import org.scoula.booking.domain.BookingVo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
+@ApiModel(value = "BookingCreateRequestDto", description = "예약 생성 요청 DTO")
 public class BookingCreateRequestDto {
+
+	@ApiModelProperty(value = "지점 ID", example = "101", required = true)
 	private int branchId;
+
+	@ApiModelProperty(value = "금융상품 코드", example = "FIN123456", required = true)
 	private String finPrdtCode;
+
+	@ApiModelProperty(value = "예약 날짜 (yyyy-MM-dd)", example = "2025-07-28", required = true)
 	private String date;
+
+	@ApiModelProperty(value = "예약 시간 (HH:mm)", example = "14:30", required = true)
 	private String time;
 
 	/**

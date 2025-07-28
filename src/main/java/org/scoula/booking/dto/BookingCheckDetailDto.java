@@ -4,15 +4,26 @@ import java.text.SimpleDateFormat;
 
 import org.scoula.booking.domain.BookingVo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@ApiModel(value = "BookingCheckDetailDto", description = "예약 상세 정보를 제공하는 DTO")
 public class BookingCheckDetailDto {
+
+	@ApiModelProperty(value = "예약 ID", example = "bkg-1234abcd")
 	private String bookingId;
+
+	@ApiModelProperty(value = "예약 날짜 (yyyy-MM-dd)", example = "2025-07-28")
 	private String date;
+
+	@ApiModelProperty(value = "예약 시간 (HH:mm)", example = "14:30")
 	private String time;
+
+	@ApiModelProperty(value = "지점 ID", example = "101")
 	private int branchId;
 
 	public static BookingCheckDetailDto from(BookingVo booking) {
@@ -34,4 +45,3 @@ public class BookingCheckDetailDto {
 			.build();
 	}
 }
-

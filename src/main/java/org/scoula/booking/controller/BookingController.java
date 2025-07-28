@@ -24,8 +24,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
+@Api(tags = "Booking", description = "예약 관련 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/bookings")
@@ -33,110 +39,108 @@ public class BookingController {
 
 	private final BookingService bookingService;
 
-	/**
-	 * 예약 번호로 예약 상세 조회하기
-	 *
-	 * @param bookingId 예약 번호
-	 */
-	@GetMapping("/detail/{bookingId}")
-	public ResponseEntity<BookingDetailResponseDto> getBookingById(@PathVariable String bookingId) {
-		// 서비스로부터 BookingDetailResponseDto를 받아옴
-		BookingDetailResponseDto responseDto = bookingService.getBookingById(bookingId);
-
-		// 최종 DTO를 클라이언트에게 응답
-		return ResponseEntity.ok(responseDto);
-	}
-
-	/**
-	 * 예약 생성하기
-	 * */
-	@PostMapping // "/bookings" 경로에 대한 POST 요청 처리
-	public ResponseEntity<BookingCreateResponseDto> addBooking( // 반환 타입을 BookingResponseDto로 변경
+	@ApiOperation(value = "신규 예약 생성", notes = "새로운 상담 예약을 생성합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 201, message = "예약 성공"),
+		@ApiResponse(code = 400, message = "잘못된 요청 데이터 (유효하지 않은 날짜 등)"),
+		@ApiResponse(code = 409, message = "이미 예약된 시간이거나 중복된 예약")
+	})
+	@PostMapping
+	public ResponseEntity<BookingCreateResponseDto> addBooking(
 		Authentication authentication,
-		@RequestBody BookingCreateRequestDto requestDto) { // 받는 타입을 BookingRequestDto로 변경
+		@RequestBody BookingCreateRequestDto requestDto) {
 
 		String email = authentication.getName();
-
-		// 서비스는 완성된 BookingResponseDto를 반환
 		BookingCreateResponseDto responseDto = bookingService.addBooking(email, requestDto);
 
-		// 생성된 리소스의 URI를 생성
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path("/{id}")
-			.buildAndExpand(responseDto.getBookingId()) // String ID 사용
+			.buildAndExpand(responseDto.getBookingId())
 			.toUri();
 
-		// 201 Created 응답과 함께 생성된 리소스(ResponseDto)를 본문에 담아 반환
 		return ResponseEntity.created(location).body(responseDto);
 	}
 
-	/**
-	 * 특정 지점 예약 목록 조회
-	 * */
-	@GetMapping("/{branchId}/reserved-slots")
-	public ResponseEntity<ReservedSlotsResponseDto> getReservedSlots(@PathVariable Integer branchId) {
-		ReservedSlotsResponseDto responseDto = bookingService.getReservedSlotsByBranch(branchId);
+	@ApiOperation(value = "내 예약 목록 조회", notes = "현재 로그인한 사용자의 모든 예약 목록을 조회합니다.")
+	@ApiResponse(code = 200, message = "조회 성공")
+	@GetMapping("/user")
+	public ResponseEntity<List<BookingDto>> getMyBookings(Authentication authentication) {
+		String email = authentication.getName();
+		List<BookingDto> bookings = bookingService.getBookingsByEmail(email);
+		return ResponseEntity.ok(bookings);
+	}
+
+	@ApiOperation(value = "예약 상세 조회", notes = "예약 ID로 특정 예약의 상세 정보를 조회합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "조회 성공"),
+		@ApiResponse(code = 404, message = "존재하지 않는 예약")
+	})
+	@GetMapping("/detail/{bookingId}")
+	public ResponseEntity<BookingDetailResponseDto> getBookingById(
+		@ApiParam(value = "조회할 예약의 ID(ULID)", required = true, example = "01H8XJ6B4T1Z0V0E0M0R0P0W0")
+		@PathVariable String bookingId) {
+
+		BookingDetailResponseDto responseDto = bookingService.getBookingById(bookingId);
 		return ResponseEntity.ok(responseDto);
 	}
 
-	/**
-	 * 사용자에 대해 특정 상품에 대한 예약 여부 조회
-	 * */
+	@ApiOperation(value = "예약 정보 부분 수정", notes = "예약의 날짜 또는 시간을 수정합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "수정 성공"),
+		@ApiResponse(code = 403, message = "수정 권한 없음"),
+		@ApiResponse(code = 404, message = "존재하지 않는 예약"),
+		@ApiResponse(code = 409, message = "변경하려는 시간에 이미 예약이 존재함")
+	})
+	@PatchMapping("/{bookingId}")
+	public ResponseEntity<BookingDetailResponseDto> patchBooking(
+		@ApiParam(value = "수정할 예약의 ID(ULID)", required = true, example = "01H8XJ6B4T1Z0V0E0M0R0P0W0")
+		@PathVariable String bookingId,
+		@RequestBody BookingPatchRequestDto patchDto,
+		Authentication authentication) throws AccessDeniedException {
+
+		String email = authentication.getName();
+		BookingDetailResponseDto updatedBooking = bookingService.patchBooking(bookingId, email, patchDto);
+		return ResponseEntity.ok(updatedBooking);
+	}
+
+	@ApiOperation(value = "예약 삭제", notes = "예약 ID로 특정 예약을 삭제합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "삭제 성공"),
+		@ApiResponse(code = 403, message = "삭제 권한 없음"),
+		@ApiResponse(code = 404, message = "존재하지 않는 예약")
+	})
+	@DeleteMapping("/{bookingId}")
+	public ResponseEntity<Void> deleteBooking(
+		@ApiParam(value = "삭제할 예약의 ID(ULID)", required = true, example = "01H8XJ6B4T1Z0V0E0M0R0P0W0")
+		@PathVariable String bookingId,
+		Authentication authentication) throws AccessDeniedException {
+
+		String currentUserEmail = authentication.getName();
+		bookingService.deleteBooking(bookingId, currentUserEmail);
+		return ResponseEntity.noContent().build();
+	}
+
+	@ApiOperation(value = "특정 상품에 대한 예약 존재 여부 확인", notes = "현재 사용자가 특정 금융 상품을 이미 예약했는지 확인합니다.")
+	@ApiResponse(code = 200, message = "조회 성공 (예약이 있으면 isBooked=true, 없으면 isBooked=false)")
 	@GetMapping("/check/{fin_prdt_code}")
 	public ResponseEntity<BookingCheckResponseDto> checkBookingExists(
+		@ApiParam(value = "확인할 금융 상품의 코드", required = true, example = "LN200300000002")
 		@PathVariable("fin_prdt_code") String finPrdtCode,
 		Authentication authentication) {
 
 		String email = authentication.getName();
 		BookingCheckResponseDto responseDto = bookingService.checkBookingExists(email, finPrdtCode);
-
 		return ResponseEntity.ok(responseDto);
 	}
 
-	@GetMapping("/user")
-	public ResponseEntity<List<BookingDto>> getMyBookings(Authentication authentication) {
-		String email = authentication.getName();
-
-		List<BookingDto> bookings = bookingService.getBookingsByEmail(email);
-
-		return ResponseEntity.ok(bookings);
-	}
-
-	/**
-	 * 예약 번호로 예약 정보 부분 수정하기 (날짜, 시간 등)
-	 *
-	 * @param bookingId 예약 번호
-	 * @param patchDto  수정할 정보가 담긴 DTO
-	 */
-	@PatchMapping("/{bookingId}")
-	public ResponseEntity<BookingDetailResponseDto> patchBooking(
-		@PathVariable String bookingId,
-		@RequestBody BookingPatchRequestDto patchDto,
-		Authentication authentication) throws AccessDeniedException { // 👈 Principal 파라미터 추가
-
-		// 1. Principal 객체에서 현재 사용자의 이메일을 가져옵니다.
-		String email = authentication.getName();
-
-		// 2. 서비스에 실제 사용자 이메일을 전달합니다.
-		BookingDetailResponseDto updatedBooking = bookingService.patchBooking(bookingId, email, patchDto);
-
-		// 3. 수정된 최종 DTO를 클라이언트에게 응답합니다.
-		return ResponseEntity.ok(updatedBooking);
-	}
-
-	@DeleteMapping("/{bookingId}")
-	public ResponseEntity<Void> deleteBooking(
-		@PathVariable String bookingId, // 👈 타입을 String으로 변경
-		Authentication authentication) throws AccessDeniedException {
-
-		// 1. Authentication 객체에서 현재 사용자의 이메일을 가져옵니다.
-		String currentUserEmail = authentication.getName();
-
-		// 2. 서비스에 예약 ID와 사용자 이메일을 모두 전달합니다.
-		bookingService.deleteBooking(bookingId, currentUserEmail);
-
-		// 3. 성공적으로 삭제되었음을 의미하는 204 No Content 응답을 반환합니다.
-		return ResponseEntity.noContent().build();
+	@ApiOperation(value = "특정 지점의 예약된 시간 목록 조회", notes = "특정 지점의 예약된 날짜와 시간 목록을 조회합니다.")
+	@ApiResponse(code = 200, message = "조회 성공")
+	@GetMapping("/{branchId}/reserved-slots")
+	public ResponseEntity<ReservedSlotsResponseDto> getReservedSlots(
+		@ApiParam(value = "조회할 지점의 ID", required = true, example = "1")
+		@PathVariable Integer branchId) {
+		ReservedSlotsResponseDto responseDto = bookingService.getReservedSlotsByBranch(branchId);
+		return ResponseEntity.ok(responseDto);
 	}
 }

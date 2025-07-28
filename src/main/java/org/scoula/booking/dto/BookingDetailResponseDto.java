@@ -4,17 +4,32 @@ import java.text.SimpleDateFormat;
 
 import org.scoula.booking.domain.BookingVo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@ApiModel(value = "BookingDetailResponseDto", description = "예약 상세 응답 DTO")
 public class BookingDetailResponseDto {
-	private String bookingId;      // 외부용 고유 ID (ULID)
+
+	@ApiModelProperty(value = "예약 고유 ID (ULID)", example = "01HXYZABCDEF12345678")
+	private String bookingId;
+
+	@ApiModelProperty(value = "지점명", example = "강남지점")
 	private String branchName;
-	private String prodName;       // 상품명
+
+	@ApiModelProperty(value = "금융 상품명", example = "정기예금 1년제")
+	private String prodName;
+
+	@ApiModelProperty(value = "예약 날짜 (yyyy-MM-dd)", example = "2025-07-28")
 	private String date;
+
+	@ApiModelProperty(value = "예약 시간 (HH:mm)", example = "14:30")
 	private String time;
+
+	@ApiModelProperty(value = "필요 서류 정보")
 	private DocInfoDto docInfo;
 
 	/**
@@ -25,7 +40,6 @@ public class BookingDetailResponseDto {
 	 * @return 변환된 Dto 객체
 	 */
 	public static BookingDetailResponseDto of(BookingVo booking, String prodName, String branchName) {
-
 		String formattedDate = null;
 		if (booking.getDate() != null) {
 			formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(booking.getDate());
