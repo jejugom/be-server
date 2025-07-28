@@ -227,9 +227,9 @@ public class BookingServiceImpl implements BookingService {
 	/**
 	 * 사용자가 해당 상품에 대한 예약 여부 조회
 	 * */
-	public BookingCheckResponseDto checkBookingExists(String email, String prdtCode) {
+	public BookingCheckResponseDto checkBookingExists(String email, String finPrdtCode) {
 		// 1. DB에서 해당 사용자의 특정 상품 예약을 조회 (BookingVo 또는 null을 받음)
-		BookingVo existingBooking = bookingMapper.findByEmailAndFinPrdtCode(email, prdtCode);
+		BookingVo existingBooking = bookingMapper.findByEmailAndFinPrdtCode(email, finPrdtCode);
 
 		// 2. ofNullable을 사용하여 결과를 Optional로 직접 감싸줌
 		Optional<BookingVo> existingBookingOpt = Optional.ofNullable(existingBooking);

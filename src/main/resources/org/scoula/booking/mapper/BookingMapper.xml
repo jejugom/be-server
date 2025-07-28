@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.scoula.booking.mapper.BookingMapper">
     <resultMap id="bookingMap" type="org.scoula.booking.domain.BookingVo">
-        <result property="bookingId" column="booking_Id"/>
+        <result property="bookingId" column="booking_id"/>
         <result property="branchId" column="branch_id"/>
         <result property="email" column="email"/>
-        <result property="finPrdtCode" column="fin_prdt_code"/>
+        <result property="finPrdtCode" column="fin_prdt_cd"/>
         <result property="date" column="date"/>
         <result property="time" column="time"/>
         <result property="docInfo" column="doc_info" typeHandler="org.scoula.booking.config.JsonTypeHandler"/>
@@ -80,7 +80,7 @@
         SELECT *
         FROM booking
         WHERE email = #{email}
-          AND fin_prdt_code = #{finPrdtCode}
+          AND fin_prdt_cd = #{finPrdtCode}
         ORDER BY date DESC, time DESC
             LIMIT 1
     </select>

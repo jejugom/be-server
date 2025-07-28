@@ -33,12 +33,13 @@ public class BookingController {
 
 	/**
 	 * 예약 번호로 예약 상세 조회하기
-	 * @param bookingUlid 외부 예약 번호
-	 * */
-	@GetMapping("/detail/{bookingUlid}")
-	public ResponseEntity<BookingDetailResponseDto> getBookingByUlid(@PathVariable String bookingUlid) {
+	 *
+	 * @param bookingId 예약 번호
+	 */
+	@GetMapping("/detail/{bookingId}")
+	public ResponseEntity<BookingDetailResponseDto> getBookingById(@PathVariable String bookingId) {
 		// 서비스로부터 BookingDetailResponseDto를 받아옴
-		BookingDetailResponseDto responseDto = bookingService.getBookingById(bookingUlid);
+		BookingDetailResponseDto responseDto = bookingService.getBookingById(bookingId);
 
 		// 최종 DTO를 클라이언트에게 응답
 		return ResponseEntity.ok(responseDto);
@@ -80,13 +81,13 @@ public class BookingController {
 	/**
 	 * 사용자에 대해 특정 상품에 대한 예약 여부 조회
 	 * */
-	@GetMapping("/check/{prdt_code}")
+	@GetMapping("/check/{fin_prdt_code}")
 	public ResponseEntity<BookingCheckResponseDto> checkBookingExists(
-		@PathVariable("prdt_code") String prdtCode,
+		@PathVariable("fin_prdt_code") String finPrdtCode,
 		Authentication authentication) {
 
 		String email = authentication.getName();
-		BookingCheckResponseDto responseDto = bookingService.checkBookingExists(email, prdtCode);
+		BookingCheckResponseDto responseDto = bookingService.checkBookingExists(email, finPrdtCode);
 
 		return ResponseEntity.ok(responseDto);
 	}
