@@ -2,8 +2,6 @@ package org.scoula.home.service;
 
 import java.util.List;
 
-import org.scoula.asset.dto.AssetInfoDto;
-import org.scoula.asset.service.AssetInfoService;
 import org.scoula.home.dto.HomeResponseDto;
 import org.scoula.home.dto.RecommendationDto;
 import org.scoula.home.dto.UserSummary;
@@ -17,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeService {
 	private final UserService userService;
-	private final AssetInfoService assetInfoService;
 
 	public HomeResponseDto getHomeData(String userEmail) {
 		// 추천은 항상 포함
@@ -37,7 +34,7 @@ public class HomeService {
 		// 로그인 사용자 정보 예시 (실제 서비스에서 DB 조회)
 		UserSummary summary = UserSummary.builder()
 			.name(userService.getUser(userEmail).getUserName()) // 예시
-			.asset(assetInfoService.getAssetInfoByEmail(userEmail).getAsset())
+			.asset(userService.getUser(userEmail).getAsset())
 			.build();
 
 		return HomeResponseDto.builder()

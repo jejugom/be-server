@@ -1,12 +1,14 @@
 package org.scoula.sms.util;
 
 import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+
 import org.scoula.sms.dto.SmsRequestDto;
 import org.scoula.sms.dto.SmsResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
-@Log4j
+@Log4j2
 public class SmsApiClient {
 
     // TODO: 외부 API 설정값들을 properties에서 주입받도록 수정 예정

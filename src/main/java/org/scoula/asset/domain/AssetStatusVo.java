@@ -11,13 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AssetDetailVo {
+public class AssetStatusVo {
 	private int assetId;
 	private String email;
 	private String assetCategoryCode;
 	private Long amount;
-	private Date registeredAt;
-	private Date endDate;
 	private String assetName;
 	private String businessType;
 }

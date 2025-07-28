@@ -1,6 +1,6 @@
 package org.scoula.user.controller;
 
-import org.scoula.user.dto.BranchNameUpdateRequestDto;
+import org.scoula.user.dto.BranchIdUpdateRequestDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +39,10 @@ public class UserController {
 	@PatchMapping("/branch")
 	public ResponseEntity<Void> updateBranchName(
 		Authentication authentication,
-		@RequestBody BranchNameUpdateRequestDto requestDto) {
+		@RequestBody BranchIdUpdateRequestDto requestDto) {
 
 		String email = authentication.getName();
-		userService.updateBranchName(email, requestDto.getBranchName());
+		userService.updateBranchId(email, requestDto.getBranchId());
 
 		return ResponseEntity.noContent().build();
 	}
