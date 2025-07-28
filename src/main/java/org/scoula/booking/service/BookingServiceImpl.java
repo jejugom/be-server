@@ -22,6 +22,7 @@ import org.scoula.booking.dto.DocInfoDto;
 import org.scoula.booking.dto.ReservedSlotsResponseDto;
 import org.scoula.booking.mapper.BookingMapper;
 import org.scoula.exception.DuplicateBookingException;
+import org.scoula.exception.InvalidBookingDateException;
 import org.scoula.product.service.ProductsService;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,10 @@ public class BookingServiceImpl implements BookingService {
 	public BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto) {
 		BookingVo bookingVo = requestDto.toVo();
 
-		// 1. 중복 예약 확인 로직 추가
+		// 0. 예약 날짜 유효성 검사 로직
+		validateBookingDate(bookingVo.getDate());
+
+		// 1. 중복 예약 확인 로직
 		int existingBookings = bookingMapper.countByBranchDateTime(
 			bookingVo.getBranchName(),
 			bookingVo.getDate(),
@@ -114,6 +118,29 @@ public class BookingServiceImpl implements BookingService {
 
 		docInfo.setRequiredDocuments(requiredDocs);
 		return docInfo;
+	}
+
+	/**
+	 * 헬퍼 메서드: 예약 날짜가 유효한지 (오늘부터 한 달 이내) 검사합니다.
+	 * @param bookingDate 검사할 예약 날짜
+	 */
+	private void validateBookingDate(Date bookingDate) {
+		if (bookingDate == null) {
+			throw new InvalidBookingDateException("예약 날짜를 입력해주세요.");
+		}
+
+		// java.util.Date를 최신 LocalDate로 변환하여 비교
+		LocalDate today = LocalDate.now();
+		LocalDate requestedDate = bookingDate.toInstant()
+			.atZone(ZoneId.systemDefault())
+			.toLocalDate();
+		// 오늘로부터 한 달 뒤의 날짜 계산
+		LocalDate oneMonthLater = today.plusMonths(1);
+
+		// 과거 날짜이거나, 한 달 이후의 날짜인지 확인
+		if (requestedDate.isBefore(today) || requestedDate.isAfter(oneMonthLater)) {
+			throw new InvalidBookingDateException("예약은 오늘부터 한 달 이내의 날짜만 가능합니다.");
+		}
 	}
 
 	@Override
