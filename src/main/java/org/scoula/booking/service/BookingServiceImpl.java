@@ -47,13 +47,6 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public BookingDto getBookingById(Integer bookingId) {
-		return Optional.ofNullable(bookingMapper.getBookingById(bookingId))
-			.map(BookingDto::of)
-			.orElseThrow(() -> new NoSuchElementException("Booking not found with id: " + bookingId));
-	}
-
-	@Override
 	public BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto) {
 		BookingVo bookingVo = requestDto.toVo();
 

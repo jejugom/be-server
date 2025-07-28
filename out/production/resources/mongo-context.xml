@@ -24,5 +24,6 @@
     </bean>
 
     <!-- Repository 자동 스캔 -->
-    <mongo:repositories base-package="com.example.repository"/>
+    <mongo:repositories base-package="org.scoula.product.repository"/>
+
 </beans>

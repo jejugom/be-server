@@ -12,8 +12,6 @@ import org.scoula.booking.dto.ReservedSlotsResponseDto;
 public interface BookingService {
 	List<BookingDto> getBookingsByEmail(String email);
 
-	BookingDto getBookingById(Integer bookingId);
-
 	BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto);
 
 	void updateBooking(BookingDto bookingDto);

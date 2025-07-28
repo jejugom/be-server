@@ -43,4 +43,10 @@
         FROM branch
         WHERE branch_name = #{branchName}
     </delete>
+
+    <select id="findBranchNameById" parameterType="int" resultType="string">
+        SELECT branch_name
+        FROM branch
+        WHERE branch_id = #{branchId}
+    </select>
 </mapper>

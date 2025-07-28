@@ -49,5 +49,4 @@
         FROM branch
         WHERE branch_id = #{branchId}
     </select>
-
 </mapper>
