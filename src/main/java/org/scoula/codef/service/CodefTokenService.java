@@ -7,15 +7,12 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.scoula.asset.dto.AssetDetailDto;
+import org.scoula.asset.dto.AssetDetailResponseDto;
 import org.scoula.asset.dto.AssetInfoDto;
 import org.scoula.asset.service.AssetDetailService;
 import org.scoula.asset.service.AssetInfoService;
 import org.scoula.codef.dto.ConnectedIdRequestDto;
 import org.scoula.codef.util.CodefApiClient;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -115,7 +112,7 @@ public class CodefTokenService {
 
 		for (Map<String, Object> account : resDepositTrust) {
 			try {
-				AssetDetailDto asset = new AssetDetailDto();
+				AssetDetailResponseDto asset = new AssetDetailResponseDto();
 				asset.setEmail(userEmail);
 				asset.setAssetCategoryCode("2"); // 예적금
 				asset.setAssetName((String)account.get("resAccountName")); // 통장 이름
@@ -123,7 +120,7 @@ public class CodefTokenService {
 				asset.setRegisteredAt(new Date());
 				asset.setEndDate(null);
 				asset.setBusinessType(null);
-				assetDetailService.saveAssetDetail(asset);
+				assetDetailService.addAssetDetail(asset);
 
 				/**
 				 * 사용자 총 자산에 Codef에서 불러온 계좌 자산 금액 추가
