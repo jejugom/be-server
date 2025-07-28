@@ -25,6 +25,7 @@ import org.scoula.booking.mapper.BookingMapper;
 import org.scoula.branch.service.BranchService;
 import org.scoula.exception.DuplicateBookingException;
 import org.scoula.exception.InvalidBookingDateException;
+import org.scoula.product.service.ProductService;
 import org.scoula.product.service.ProductsService;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ import lombok.RequiredArgsConstructor;
 public class BookingServiceImpl implements BookingService {
 	private final BookingMapper bookingMapper;
 	private final ProductsService productsService;
+	private final ProductService productService;
 	private final BranchService branchService;
 
 	@Override
@@ -166,8 +168,9 @@ public class BookingServiceImpl implements BookingService {
 			throw new NoSuchElementException("Booking not found with ulid: " + bookingId);
 		}
 
-		// 2. ProductsService에서 상품명을 조회
-		String prdtName = productsService.getProductNameByCode(bookingVo.getFinPrdtCode());
+		// 2. ProductService에서 상품명을 조회
+		// String prdtName = productsService.getProductNameByCode(bookingVo.getFinPrdtCode());
+		String prdtName = productService.getProductNameByCode(bookingVo.getFinPrdtCode());
 		String branchName = branchService.getBranchNameById(bookingVo.getBranchId());
 
 		// 3. BookingDetailResponseDto.of()를 호출하여 최종 DTO 생성
