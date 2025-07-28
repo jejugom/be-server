@@ -41,12 +41,8 @@
 
     <update id="updateBooking">
         UPDATE booking
-        SET email          = #{email},
-            fint_prdt_code = #{finPrdtCoderdtCode},
-            date           = #{date},
-            time           = #{time},
-            doc_info       = #{docInfo},
-            branch_name    = #{branchName}
+        SET date = #{date},
+            time = #{time}
         WHERE booking_id = #{bookingId}
     </update>
 

@@ -1,5 +1,8 @@
 package org.scoula.booking.service;
 
+import java.nio.file.AccessDeniedException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -19,6 +22,7 @@ import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
 import org.scoula.booking.dto.BookingDetailResponseDto;
 import org.scoula.booking.dto.BookingDto;
+import org.scoula.booking.dto.BookingPatchRequestDto;
 import org.scoula.booking.dto.DocInfoDto;
 import org.scoula.booking.dto.ReservedSlotsResponseDto;
 import org.scoula.booking.mapper.BookingMapper;
@@ -28,6 +32,7 @@ import org.scoula.exception.InvalidBookingDateException;
 import org.scoula.product.service.ProductService;
 import org.scoula.product.service.ProductsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.f4b6a3.ulid.UlidCreator;
 
@@ -80,6 +85,73 @@ public class BookingServiceImpl implements BookingService {
 
 		// 올바른 인자들로 of 메서드 호출
 		return BookingCreateResponseDto.of(bookingVo);
+	}
+
+	@Transactional
+	@Override // 인터페이스를 구현하므로 @Override 추가
+	public BookingDetailResponseDto patchBooking(String bookingId, String email,
+		BookingPatchRequestDto patchDto) throws AccessDeniedException {
+
+		// 1. 기존 예약 데이터를 DB에서 조회
+		BookingVo existingBooking = bookingMapper.findById(bookingId);
+
+		// 2. 예약 존재 여부 확인
+		if (existingBooking == null) {
+			throw new NoSuchElementException("해당 예약을 찾을 수 없습니다: " + bookingId);
+		}
+
+		// 3. 수정 권한 확인 (매우 중요!)
+		if (!existingBooking.getEmail().equals(email)) {
+			throw new AccessDeniedException("예약을 수정할 권한이 없습니다.");
+		}
+
+		// 4. 변경 요청된 필드가 있는지 확인하고 값 업데이트
+		boolean isTimeSlotChanged = false;
+		// 4-1. 날짜 변경 요청이 있는 경우
+		if (patchDto.getDate() != null && !patchDto.getDate().isEmpty()) {
+			Date newDate = parseDate(patchDto.getDate()); // 헬퍼 메소드로 날짜 파싱
+			validateBookingDate(newDate);                 // 헬퍼 메소드로 날짜 유효성 검사
+			existingBooking.setDate(newDate);
+			isTimeSlotChanged = true;
+		}
+		// 4-2. 시간 변경 요청이 있는 경우
+		if (patchDto.getTime() != null && !patchDto.getTime().isEmpty()) {
+			existingBooking.setTime(patchDto.getTime());
+			isTimeSlotChanged = true;
+		}
+
+		// 5. 날짜 또는 시간이 변경되었다면, 해당 시간대가 비어있는지 중복 확인
+		if (isTimeSlotChanged) {
+			int existingCount = bookingMapper.countByBranchDateTime(
+				existingBooking.getBranchId(),
+				existingBooking.getDate(),
+				existingBooking.getTime()
+			);
+			if (existingCount > 0) {
+				throw new DuplicateBookingException("변경하려는 시간에는 이미 다른 예약이 존재합니다.");
+			}
+		}
+
+		// 6. 수정된 내용이 반영된 Vo 객체로 DB 업데이트
+		bookingMapper.updateBooking(existingBooking);
+
+		// 7. 수정된 최종 정보를 DTO로 만들어 반환
+		String prdtName = productService.getProductNameByCode(existingBooking.getFinPrdtCode());
+		String branchName = branchService.getBranchNameById(existingBooking.getBranchId());
+
+		return BookingDetailResponseDto.of(existingBooking, prdtName, branchName);
+	}
+
+	/**
+	 * 헬퍼 메서드: 날짜를 파싱합니다.
+	 * @param dateString String 타입으로 된 date
+	 */
+	private Date parseDate(String dateString) {
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Invalid date format. Please use yyyy-MM-dd.", e);
+		}
 	}
 
 	/**
@@ -141,24 +213,28 @@ public class BookingServiceImpl implements BookingService {
 		}
 	}
 
+	@Transactional
 	@Override
-	public void updateBooking(BookingDto bookingDto) {
-		if (bookingMapper.updateBooking(bookingDto.toVo()) == 0) {
-			throw new NoSuchElementException("Booking not found with id: " + bookingDto.getBookingId());
+	public void deleteBooking(String bookingId, String currentUserEmail) throws AccessDeniedException {
+		// 1. 삭제할 예약 정보를 DB에서 조회합니다.
+		BookingVo bookingVo = bookingMapper.findById(bookingId);
+
+		// 2. 예약이 존재하는지 확인합니다.
+		if (bookingVo == null) {
+			// 예약이 없어도 굳이 에러를 발생시키지 않고 정상 처리할 수도 있습니다.
+			// 여기서는 일단 없다고 알려주는 방식으로 처리합니다.
+			throw new NoSuchElementException("해당 예약을 찾을 수 없습니다: " + bookingId);
 		}
+
+		// 3. 삭제 권한이 있는지 확인합니다 (매우 중요!).
+		if (!bookingVo.getEmail().equals(currentUserEmail)) {
+			throw new AccessDeniedException("예약을 삭제할 권한이 없습니다.");
+		}
+
+		// 4. 권한이 확인되면 예약을 삭제합니다.
+		bookingMapper.deleteBooking(bookingId);
 	}
 
-	@Override
-	public void deleteBooking(Integer bookingId) {
-		if (bookingMapper.deleteBooking(bookingId) == 0) {
-			throw new NoSuchElementException("Booking not found with id: " + bookingId);
-		}
-	}
-
-	/**
-	 * 특정 예약 상세 조회
-	 * @param bookingId 외부 예약 번호
-	 * */
 	@Override
 	public BookingDetailResponseDto getBookingById(String bookingId) {
 		// 1. ULID로 DB에서 예약 정보(Vo)를 조회
@@ -168,12 +244,17 @@ public class BookingServiceImpl implements BookingService {
 			throw new NoSuchElementException("Booking not found with ulid: " + bookingId);
 		}
 
+		// [추가] DB에서 가져온 시간 값의 초 단위 제거
+		String time = bookingVo.getTime();
+		if (time != null && time.length() > 5) {
+			bookingVo.setTime(time.substring(0, 5));
+		}
+
 		// 2. ProductService에서 상품명을 조회
-		// String prdtName = productsService.getProductNameByCode(bookingVo.getFinPrdtCode());
 		String prdtName = productService.getProductNameByCode(bookingVo.getFinPrdtCode());
 		String branchName = branchService.getBranchNameById(bookingVo.getBranchId());
 
-		// 3. BookingDetailResponseDto.of()를 호출하여 최종 DTO 생성
+		// 3. 수정된 bookingVo를 사용하여 최종 DTO 생성
 		return BookingDetailResponseDto.of(bookingVo, prdtName, branchName);
 	}
 

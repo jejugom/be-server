@@ -1,6 +1,7 @@
 package org.scoula.booking.controller;
 
 import java.net.URI;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import org.scoula.booking.dto.BookingCheckResponseDto;
@@ -8,15 +9,16 @@ import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
 import org.scoula.booking.dto.BookingDetailResponseDto;
 import org.scoula.booking.dto.BookingDto;
+import org.scoula.booking.dto.BookingPatchRequestDto;
 import org.scoula.booking.dto.ReservedSlotsResponseDto;
 import org.scoula.booking.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -101,16 +103,40 @@ public class BookingController {
 		return ResponseEntity.ok(bookings);
 	}
 
-	@PutMapping("/{bookingId}")
-	public ResponseEntity<Void> updateBooking(@PathVariable String bookingId, @RequestBody BookingDto bookingDto) {
-		bookingDto.setBookingId(bookingId);
-		bookingService.updateBooking(bookingDto);
-		return ResponseEntity.ok().build();
+	/**
+	 * 예약 번호로 예약 정보 부분 수정하기 (날짜, 시간 등)
+	 *
+	 * @param bookingId 예약 번호
+	 * @param patchDto  수정할 정보가 담긴 DTO
+	 */
+	@PatchMapping("/{bookingId}")
+	public ResponseEntity<BookingDetailResponseDto> patchBooking(
+		@PathVariable String bookingId,
+		@RequestBody BookingPatchRequestDto patchDto,
+		Authentication authentication) throws AccessDeniedException { // 👈 Principal 파라미터 추가
+
+		// 1. Principal 객체에서 현재 사용자의 이메일을 가져옵니다.
+		String email = authentication.getName();
+
+		// 2. 서비스에 실제 사용자 이메일을 전달합니다.
+		BookingDetailResponseDto updatedBooking = bookingService.patchBooking(bookingId, email, patchDto);
+
+		// 3. 수정된 최종 DTO를 클라이언트에게 응답합니다.
+		return ResponseEntity.ok(updatedBooking);
 	}
 
 	@DeleteMapping("/{bookingId}")
-	public ResponseEntity<Void> deleteBooking(@PathVariable Integer bookingId) {
-		bookingService.deleteBooking(bookingId);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<Void> deleteBooking(
+		@PathVariable String bookingId, // 👈 타입을 String으로 변경
+		Authentication authentication) throws AccessDeniedException {
+
+		// 1. Authentication 객체에서 현재 사용자의 이메일을 가져옵니다.
+		String currentUserEmail = authentication.getName();
+
+		// 2. 서비스에 예약 ID와 사용자 이메일을 모두 전달합니다.
+		bookingService.deleteBooking(bookingId, currentUserEmail);
+
+		// 3. 성공적으로 삭제되었음을 의미하는 204 No Content 응답을 반환합니다.
+		return ResponseEntity.noContent().build();
 	}
 }

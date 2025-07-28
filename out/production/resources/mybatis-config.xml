@@ -14,6 +14,7 @@
         <package name="org.scoula.booking.domain"/>
         <package name="org.scoula.branch.domain"/>
         <package name="org.scoula.faq.domain"/>
+        <package name="org.scoula.product.domain"/>
         <package name="org.scoula.recommend.domain"/>
     </typeAliases>
 
@@ -23,6 +24,7 @@
 
     <mappers>
         <mapper resource="org/scoula/user/mapper/UserMapper.xml"/>
+        <mapper resource="org/scoula/product/mapper/ProductMapper.xml"/>
     </mappers>
 
 </configuration>

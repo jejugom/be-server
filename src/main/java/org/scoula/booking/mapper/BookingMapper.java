@@ -15,7 +15,7 @@ public interface BookingMapper {
 
 	int updateBooking(BookingVo booking);
 
-	int deleteBooking(Integer id);
+	int deleteBooking(String bookingId); //
 
 	// 특정 지점, 날짜, 시간에 해당하는 예약 건수를 세는 메서드 추가
 	int countByBranchDateTime(@Param("branchId") int branchId, @Param("date") Date date,
