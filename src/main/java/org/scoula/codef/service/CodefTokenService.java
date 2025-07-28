@@ -7,12 +7,15 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.scoula.asset.dto.AssetDetailResponseDto;
-import org.scoula.asset.dto.AssetInfoDto;
-import org.scoula.asset.service.AssetDetailService;
-import org.scoula.asset.service.AssetInfoService;
+
+import org.scoula.asset.dto.AssetStatusRequestDto;
+import org.scoula.asset.dto.AssetStatusResponseDto;
+
+import org.scoula.asset.service.AssetStatusService;
 import org.scoula.codef.dto.ConnectedIdRequestDto;
 import org.scoula.codef.util.CodefApiClient;
+import org.scoula.user.dto.UserDto;
+import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -28,8 +31,8 @@ public class CodefTokenService {
 	// TODO: Access Token을 안전하게 저장하고 관리하는 로직 추가 필요
 	private String accessToken;
 	private long tokenExpiryTime; // 토큰 만료 시간 (밀리초)
-	private final AssetDetailService assetDetailService;
-	private final AssetInfoService assetInfoService;
+	private final AssetStatusService assetStatusService;
+	private final UserService userService;
 
 
 	@PostConstruct
@@ -112,24 +115,22 @@ public class CodefTokenService {
 
 		for (Map<String, Object> account : resDepositTrust) {
 			try {
-				AssetDetailResponseDto asset = new AssetDetailResponseDto();
-				asset.setEmail(userEmail);
+				AssetStatusRequestDto asset = new AssetStatusRequestDto();
 				asset.setAssetCategoryCode("2"); // 예적금
 				asset.setAssetName((String)account.get("resAccountName")); // 통장 이름
 				asset.setAmount(Long.parseLong((String)account.get("resAccountBalance")));
-				asset.setRegisteredAt(new Date());
-				asset.setEndDate(null);
 				asset.setBusinessType(null);
-				assetDetailService.addAssetDetail(asset);
-
+				assetStatusService.addAssetStatus(userEmail,asset);
 				/**
 				 * 사용자 총 자산에 Codef에서 불러온 계좌 자산 금액 추가
 				 */
-				AssetInfoDto assetInfoDto = assetInfoService.getAssetInfoByEmail(userEmail);
-				Long curBalance = assetInfoDto.getAsset();
+				UserDto userDto = userService.getUser(userEmail);
+				Long curBalance = userDto.getAsset();
 				curBalance += Long.parseLong((String)account.get("resAccountBalance"));
-				assetInfoDto.setAsset(curBalance);
-				assetInfoService.updateAssetInfo(assetInfoDto);
+				userDto.setAsset(curBalance);
+				userService.updateUser(userEmail,userDto);
+
+
 
 			} catch (Exception e) {
 				log.error("❗ 계좌 저장 실패: {}", e.getMessage(), e);

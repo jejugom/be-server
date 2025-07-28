@@ -2,7 +2,6 @@ package org.scoula.codef.controller;
 
 import java.util.Map;
 
-import org.scoula.asset.service.AssetDetailService;
 import org.scoula.codef.dto.ConnectedIdRequestDto;
 import org.scoula.codef.service.CodefTokenService;
 import org.scoula.user.service.UserService;
@@ -31,7 +30,6 @@ public class CodefController {
 
 	private final CodefTokenService codefTokenService;
 	private final UserService userService;
-	private final AssetDetailService assetDetailService;
 
 	@ApiOperation(value = "CODEF Access Token 조회", notes = "서버가 현재 보유하고 있는 CODEF Access Token을 조회합니다. (주로 개발 및 디버깅용)")
 	@ApiResponses({

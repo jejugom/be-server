@@ -13,7 +13,7 @@ import lombok.Data;
 public class RefreshTokenDto {
 
 	@ApiModelProperty(value = "토큰 소유자의 이메일", required = true, example = "test@example.com")
-	private String userEmail;
+	private String email;
 
 	@ApiModelProperty(value = "리프레시 토큰 값", required = true, example = "eyJhbGciOiJIUzUxMiJ9...")
 	private String tokenValue;

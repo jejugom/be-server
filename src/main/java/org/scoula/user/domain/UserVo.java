@@ -16,6 +16,14 @@ public class UserVo {
 	private String userName;
 	private String userPhone;
 	private Date birth;
-	private String branchName;
 	private String connectedId;
+	private Integer branchId;
+	private Long asset;
+	private String segment;
+	private String filename1;
+	private String filename2;
+	private Double tendency;
+	private Double assetProportion;
+	private String incomeRange;
+	private Boolean martialStatus;
 }

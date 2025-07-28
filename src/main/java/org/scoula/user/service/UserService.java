@@ -7,7 +7,9 @@ public interface UserService {
 
 	void join(UserDto userDto);
 
+	void updateUser(String email, UserDto userDto);
+
 	void updateConnectedId(String email, String connectedId);
 
-	void updateBranchName(String email, String branchName);
+	void updateBranchId(String email, Integer branchId);
 }

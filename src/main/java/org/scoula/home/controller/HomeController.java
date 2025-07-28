@@ -1,7 +1,5 @@
 package org.scoula.home.controller;
 
-import org.scoula.asset.dto.AssetInfoDto;
-import org.scoula.asset.service.AssetInfoService;
 import org.scoula.home.dto.HomeResponseDto;
 import org.scoula.home.service.HomeService;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/home")
 public class HomeController {
 
-	private final AssetInfoService assetInfoService;
 	private final HomeService homeService;
 
 	@GetMapping()
