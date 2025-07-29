@@ -9,9 +9,9 @@ import org.scoula.product.domain.MortgageLoanDocuments;
 import org.scoula.product.domain.SavingsDepositsDocument;
 import org.scoula.product.domain.TimeDepositsDocument;
 import org.scoula.product.dto.AllProductsResponseDTO;
-import org.scoula.product.dto.MortgageLoanDTO;
-import org.scoula.product.dto.SavingsDepositsDTO;
-import org.scoula.product.dto.TimeDepositsDTO;
+import org.scoula.product.dto.MortgageLoanDto;
+import org.scoula.product.dto.SavingsDepositsDto;
+import org.scoula.product.dto.TimeDepositsDto;
 import org.scoula.product.repository.MortgageLoanRepository;
 import org.scoula.product.repository.SavingsDepositsRepository;
 import org.scoula.product.repository.TimeDepositsRepository;
@@ -31,9 +31,9 @@ public class ProductsService {
 	 * 예금, 적금, 주택담보 통합
 	 */
 	public AllProductsResponseDTO getAllProducts() {
-		List<TimeDepositsDTO> timeDeposits = getTimeDepositList();
-		List<SavingsDepositsDTO> savingsDeposits = getSavingsDepositList();
-		List<MortgageLoanDTO> mortgageLoan = getMortgageLoanList();
+		List<TimeDepositsDto> timeDeposits = getTimeDepositList();
+		List<SavingsDepositsDto> savingsDeposits = getSavingsDepositList();
+		List<MortgageLoanDto> mortgageLoan = getMortgageLoanList();
 
 		return new AllProductsResponseDTO(timeDeposits, savingsDeposits, mortgageLoan);
 	}
@@ -42,22 +42,22 @@ public class ProductsService {
 	 * 예금(time-deposits)상품 가져오기
 	 * @return List<DepositListResponseDTO>
 	 */
-	public List<TimeDepositsDTO> getTimeDepositList() {
+	public List<TimeDepositsDto> getTimeDepositList() {
 		List<TimeDepositsDocument> documents = timeDepositsRepository.findAll();
 
 		return documents.stream()
 			.flatMap(doc -> doc.getBaseList().stream()
 				.map(base -> {
-					List<TimeDepositsDTO.OptionList> matchedOptions = doc.getOptionList().stream()
+					List<TimeDepositsDto.OptionList> matchedOptions = doc.getOptionList().stream()
 						.filter(option -> option.getFin_prdt_cd().equals(base.getFin_prdt_cd()))
-						.map(option -> new TimeDepositsDTO.OptionList(
+						.map(option -> new TimeDepositsDto.OptionList(
 							option.getSave_trm(),
 							option.getIntr_rate(),
 							option.getIntr_rate2()
 						))
 						.collect(Collectors.toList());
 
-					return new TimeDepositsDTO(
+					return new TimeDepositsDto(
 						base.getFin_prdt_cd(),
 						base.getFin_prdt_nm(),
 						base.getPrdt_feature(),
@@ -71,22 +71,22 @@ public class ProductsService {
 	 * 적금(savings-deposits)상품 가져오기
 	 * @return List<DepositListResponseDTO>
 	 */
-	public List<SavingsDepositsDTO> getSavingsDepositList() {
+	public List<SavingsDepositsDto> getSavingsDepositList() {
 		List<SavingsDepositsDocument> documents = savingsDepositsRepository.findAll();
 
 		return documents.stream()
 			.flatMap(doc -> doc.getBaseList().stream()
 				.map(base -> {
-					List<SavingsDepositsDTO.OptionList> matchedOptions = doc.getOptionList().stream()
+					List<SavingsDepositsDto.OptionList> matchedOptions = doc.getOptionList().stream()
 						.filter(option -> option.getFin_prdt_cd().equals(base.getFin_prdt_cd()))
-						.map(option -> new SavingsDepositsDTO.OptionList(
+						.map(option -> new SavingsDepositsDto.OptionList(
 							option.getSave_trm(),
 							option.getIntr_rate(),
 							option.getIntr_rate2()
 						))
 						.collect(Collectors.toList());
 
-					return new SavingsDepositsDTO(
+					return new SavingsDepositsDto(
 						base.getFin_prdt_cd(),
 						base.getFin_prdt_nm(),
 						base.getPrdt_feature(),
@@ -100,15 +100,15 @@ public class ProductsService {
 	 * 주택담보대출(mortgage-loan-products)상품 가져오기
 	 * @return List<MortgageLoanListResponseDTO>
 	 */
-	public List<MortgageLoanDTO> getMortgageLoanList() {
+	public List<MortgageLoanDto> getMortgageLoanList() {
 		List<MortgageLoanDocuments> documents = mortgageLoanRepository.findAll();
 
 		return documents.stream()
 			.flatMap(doc -> doc.getBaseList().stream()
 				.map(base -> {
-					List<MortgageLoanDTO.OptionList> matchedOptions = doc.getOptionList().stream()
+					List<MortgageLoanDto.OptionList> matchedOptions = doc.getOptionList().stream()
 						.filter(option -> option.getFin_prdt_cd().equals(base.getFin_prdt_cd()))
-						.map(option -> new MortgageLoanDTO.OptionList(
+						.map(option -> new MortgageLoanDto.OptionList(
 							option.getMrtg_type_nm(),
 							option.getRpay_type_nm(),
 							option.getLend_rate_type_nm(),
@@ -117,7 +117,7 @@ public class ProductsService {
 						))
 						.collect(Collectors.toList());
 
-					return new MortgageLoanDTO(
+					return new MortgageLoanDto(
 						base.getFin_prdt_cd(),
 						base.getFin_prdt_nm(),
 						base.getPrdt_feature(),

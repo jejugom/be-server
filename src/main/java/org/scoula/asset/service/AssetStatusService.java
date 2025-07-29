@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.dto.AssetStatusResponseDto;
+import org.scoula.asset.dto.AssetStatusSummaryDto;
 
 public interface AssetStatusService {
 	List<AssetStatusResponseDto> getAssetStatusByEmail(String email);
+
+	List<AssetStatusSummaryDto> getAssetStatusSummaryByEmail(String email);
 
 	void addAssetStatus(String email, AssetStatusRequestDto requestDto);
 

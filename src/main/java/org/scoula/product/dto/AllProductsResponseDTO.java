@@ -14,7 +14,7 @@ public class AllProductsResponseDTO {
 	/**
 	 * 예금/적금/주택담보대출 상품 데이터를 한번에 묶어서 넘기기 위한 DTO
 	 */
-	private List<TimeDepositsDTO> timeDeposits;
-	private List<SavingsDepositsDTO> savingDeposits;
-	private List<MortgageLoanDTO> mortgageLoan;
+	private List<TimeDepositsDto> timeDeposits;
+	private List<SavingsDepositsDto> savingDeposits;
+	private List<MortgageLoanDto> mortgageLoan;
 }

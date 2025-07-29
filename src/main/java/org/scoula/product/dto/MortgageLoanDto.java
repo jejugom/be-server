@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MortgageLoanDTO {
+public class MortgageLoanDto {
 
 	/**
 	 * 주택담보대출(mortgageLoan) 상품 목록 조회 페이지에서 사용될 DTO입니다.
@@ -26,6 +26,7 @@ public class MortgageLoanDTO {
 	 */
 	@Data
 	@AllArgsConstructor
+	@NoArgsConstructor // MyBatis가 객체를 생성할 때 필요
 	public static class OptionList {
 		private String mrtg_type_nm; //담보유형
 		private String rpay_type_nm; //대출상환유형
