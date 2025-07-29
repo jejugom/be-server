@@ -9,7 +9,7 @@ public interface CustomRecommendService {
 
 	void addCustomRecommend(CustomRecommendDto customRecommendDto);
 
-	void updateCustomRecommend(CustomRecommendDto customRecommendDto);
-
-	void deleteCustomRecommend(String email, String prdtId);
+	// void updateCustomRecommend(CustomRecommendDto customRecommendDto);
+	//
+	// void deleteCustomRecommend(String email, String prdtId);
 }
