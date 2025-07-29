@@ -43,5 +43,10 @@
         WHERE asset_id = #{assetId}
           AND email = #{userEmail}
     </delete>
+    <delete id="deleteByEmail">
+        DELETE
+        FROM asset_status
+        WHERE email = #{email}
+    </delete>
 </mapper>
 

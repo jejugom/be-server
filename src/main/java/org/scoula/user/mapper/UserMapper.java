@@ -12,7 +12,7 @@ public interface UserMapper {
 
 	int update(UserVo user);
 
-	int delete(String email);
+	int deleteByEmail(@Param("email") String email);
 
 	int updateConnectedId(@Param("email") String email, @Param("connectedId") String connectedId);
 

@@ -3,9 +3,8 @@ package org.scoula.asset.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.scoula.asset.domain.AssetStatusVo;
-
 import org.apache.ibatis.annotations.Param;
+import org.scoula.asset.domain.AssetStatusVo;
 
 @Mapper
 public interface AssetStatusMapper {
@@ -17,5 +16,8 @@ public interface AssetStatusMapper {
 
 	int updateAssetStatus(AssetStatusVo assetStatus);
 
-	int deleteAssetStatus(@Param("assetId") Integer assetId, @Param("userEmail") String userEmail);
+	int deleteAssetStatus(@Param("assetId") Integer assetId, @Param("email") String email);
+
+	// email로 모든 자산 정보를 삭제
+	int deleteByEmail(@Param("email") String email);
 }
