@@ -1,4 +1,4 @@
-package org.scoula.products.controller;
+package org.scoula.product.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

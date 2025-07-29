@@ -2,12 +2,12 @@ package org.scoula.products.service;
 
 import java.util.List;
 
-import org.scoula.products.dto.MortgageLoanDto;
-import org.scoula.products.dto.SavingsDepositsDto;
-import org.scoula.products.dto.TimeDepositsDto;
-import org.scoula.products.mapper.MortgageLoanMapper;
-import org.scoula.products.mapper.SavingsDepositsMapper;
-import org.scoula.products.mapper.TimeDepositsMapper;
+import org.scoula.product.dto.MortgageLoanDto;
+import org.scoula.product.dto.SavingsDepositsDto;
+import org.scoula.product.dto.TimeDepositsDto;
+import org.scoula.product.mapper.MortgageLoanMapper;
+import org.scoula.product.mapper.SavingsDepositsMapper;
+import org.scoula.product.mapper.TimeDepositsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +47,6 @@ public class ProductsService {
 		return mortgageLoanMapper.findAllMortgageLoans();
 	}
 
-	// TODO: 필요하다면 특정 상품 코드에 대한 상세 정보를 가져오는 메서드 등 추가 가능
 	// public TimeDepositsDTO getTimeDepositsDetail(String finPrdtCd) {
 	//     // 상세 정보를 가져오는 Mapper 메서드 호출
 	// }
