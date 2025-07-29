@@ -3,12 +3,14 @@ package org.scoula.retirement.controller;
 import java.util.List;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
+import org.scoula.asset.service.AssetStatusService;
 import org.scoula.asset.service.AssetStatusServiceImpl;
 import org.scoula.product.service.ProductsService; // ProductsService 임포트
 import org.scoula.recommend.service.CustomRecommendServiceImpl;
 import org.scoula.retirement.dto.RetirementMainResponseDto; // RetirementMainResponseDTO 경로 확인
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.dto.UserInfoDto;
+import org.scoula.user.service.UserService;
 import org.scoula.user.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class RetirementController {
 
 	@Autowired
-	private UserServiceImpl userServiceImpl;
+	private UserService userServiceImpl;
 
 	@Autowired
-	private AssetStatusServiceImpl assetStatusService;
+	private AssetStatusService assetStatusService;
 
-	@Autowired
-	private CustomRecommendServiceImpl customRecommendService;
+	// @Autowired
+	// private CustomRecommendServiceImpl customRecommendService;
 
 	@Autowired
 	private ProductsService productsService; // ProductService 하나만 주입
