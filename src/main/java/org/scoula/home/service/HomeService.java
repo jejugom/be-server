@@ -20,9 +20,9 @@ public class HomeService {
 	public HomeResponseDto getHomeData(String userEmail) {
 		// 추천은 항상 포함
 		List<RecommendationDto> hardcodedRecommends = List.of(
-			new RecommendationDto("KB001", "KB Star 정기예금", "6개월 예치, 안정적인 이자 수익", 3.2),
-			new RecommendationDto("KB002", "KB 골드 연금", "장기 투자 적합 연금 상품", 4.0),
-			new RecommendationDto("KB003", "KB 투자형 펀드", "리스크 있지만 수익률 기대", 5.5)
+			new RecommendationDto("KB001", "KB Star 정기예금", "6개월 예치, 안정적인 이자 수익", 3.2,4.0),
+			new RecommendationDto("KB002", "KB 골드 연금", "장기 투자 적합 연금 상품", 4.0,5.5),
+			new RecommendationDto("KB003", "KB 투자형 펀드", "리스크 있지만 수익률 기대", 5.5,10.2)
 		);
 
 		if (userEmail == null) {

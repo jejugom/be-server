@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RecommendationDto {
-	private String prodId;
-	private String prodName;
-	private String description;
-	private Double rate;
+	private String fin_prdt_cd;
+	private String fin_prdt_nm;
+	private String prdt_feature;
+	private Double intr_rate;
+	private Double intr_rate2;
 }
