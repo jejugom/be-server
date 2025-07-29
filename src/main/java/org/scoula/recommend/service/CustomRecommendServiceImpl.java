@@ -28,20 +28,20 @@ public class CustomRecommendServiceImpl implements CustomRecommendService {
 		customRecommendMapper.insertCustomRecommend(customRecommendDto.toVo());
 	}
 
-	@Override
-	public void updateCustomRecommend(CustomRecommendDto customRecommendDto) {
-		if (customRecommendMapper.updateCustomRecommend(customRecommendDto.toVo()) == 0) {
-			throw new NoSuchElementException(
-				"CustomRecommend not found for email: " + customRecommendDto.getEmail() + " and prdtId: "
-					+ customRecommendDto.getPrdtId());
-		}
-	}
-
-	@Override
-	public void deleteCustomRecommend(String email, String prdtId) {
-		if (customRecommendMapper.deleteCustomRecommend(email, prdtId) == 0) {
-			throw new NoSuchElementException(
-				"CustomRecommend not found for email: " + email + " and prdtId: " + prdtId);
-		}
-	}
+	// @Override
+	// public void updateCustomRecommend(CustomRecommendDto customRecommendDto) {
+	// 	if (customRecommendMapper.updateCustomRecommend(customRecommendDto.toVo()) == 0) {
+	// 		throw new NoSuchElementException(
+	// 			"CustomRecommend not found for email: " + customRecommendDto.getEmail() + " and prdtId: "
+	// 				+ customRecommendDto.getFin_prdt_cd());
+	// 	}
+	// }
+	//
+	// @Override
+	// public void deleteCustomRecommend(String email, String prdtId) {
+	// 	if (customRecommendMapper.deleteCustomRecommend(email, prdtId) == 0) {
+	// 		throw new NoSuchElementException(
+	// 			"CustomRecommend not found for email: " + email + " and prdtId: " + prdtId);
+	// 	}
+	// }
 }

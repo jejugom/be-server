@@ -34,18 +34,18 @@ public class CustomRecommendController {
 		return ResponseEntity.ok().build();
 	}
 
-	@PutMapping("/{email}/{prdtId}")
-	public ResponseEntity<Void> updateCustomRecommend(@PathVariable String email, @PathVariable String prdtId,
-		@RequestBody CustomRecommendDto customRecommendDto) {
-		customRecommendDto.setEmail(email);
-		customRecommendDto.setPrdtId(prdtId);
-		customRecommendService.updateCustomRecommend(customRecommendDto);
-		return ResponseEntity.ok().build();
-	}
-
-	@DeleteMapping("/{email}/{prdtId}")
-	public ResponseEntity<Void> deleteCustomRecommend(@PathVariable String email, @PathVariable String prdtId) {
-		customRecommendService.deleteCustomRecommend(email, prdtId);
-		return ResponseEntity.ok().build();
-	}
+	// @PutMapping("/{email}/{prdtId}")
+	// public ResponseEntity<Void> updateCustomRecommend(@PathVariable String email, @PathVariable String prdtId,
+	// 	@RequestBody CustomRecommendDto customRecommendDto) {
+	// 	customRecommendDto.setEmail(email);
+	// 	customRecommendDto.setPrdtId(prdtId);
+	// 	customRecommendService.updateCustomRecommend(customRecommendDto);
+	// 	return ResponseEntity.ok().build();
+	// }
+	//
+	// @DeleteMapping("/{email}/{prdtId}")
+	// public ResponseEntity<Void> deleteCustomRecommend(@PathVariable String email, @PathVariable String prdtId) {
+	// 	customRecommendService.deleteCustomRecommend(email, prdtId);
+	// 	return ResponseEntity.ok().build();
+	// }
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SavingsDepositsDTO {
+public class SavingsDepositsDto {
 
 	/**
 	 * 적금(savingsDeposits) 상품 목록 조회 페이지에서 사용될 DTO입니다.
@@ -25,9 +25,10 @@ public class SavingsDepositsDTO {
 	 */
 	@Data
 	@AllArgsConstructor
+	@NoArgsConstructor // MyBatis가 객체를 생성할 때 필요
 	public static class OptionList {
-		private String save_trm;
-		private Double intr_rate;
-		private Double intr_rate2;
+		private String save_trm;      // 저축 기간 (개월)
+		private Double intr_rate;     // 금리
+		private Double intr_rate2;    // 최고 우대금리
 	}
 }
