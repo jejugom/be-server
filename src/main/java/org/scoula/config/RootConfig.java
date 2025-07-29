@@ -22,6 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.log4j.Log4j2;
 
 @Configuration
+@PropertySource({"classpath:/application.properties", "classpath:/application-local.properties"})
 @PropertySource({"classpath:/application.properties"})
 @Import({MongoConfig.class})
 @MapperScan(basePackages = {
@@ -46,6 +47,8 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.codef.dto",
 	"org.scoula.product.service",
 	"org.scoula.home.service",
+	"org.scoula.auth.service",
+	"org.scoula.sms.service", // sms 서비스 추가
 	"org.scoula.auth.service",
 	"org.scoula.product.repository"
 })
