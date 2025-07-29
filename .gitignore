@@ -35,3 +35,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### API Keys & Sensitive Config ###
+application-local.properties
+.env
+**/secrets/
+**/*secret*
