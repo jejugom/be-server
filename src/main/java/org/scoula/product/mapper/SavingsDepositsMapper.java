@@ -1,10 +1,10 @@
-package org.scoula.products.mapper;
+package org.scoula.product.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.scoula.products.dto.SavingsDepositsDto;
-import org.scoula.products.dto.SavingsDepositsDto.OptionList;
+import org.scoula.product.dto.SavingsDepositsDto;
+import org.scoula.product.dto.SavingsDepositsDto.OptionList;
 
 @Mapper
 public interface SavingsDepositsMapper {

@@ -5,10 +5,10 @@
 <!--
     *** 중요: 이 namespace는 SavingsDepositsMapper.java 인터페이스의 FQCN과 정확히 일치해야 합니다. ***
 -->
-<mapper namespace="org.scoula.products.mapper.SavingsDepositsMapper">
+<mapper namespace="org.scoula.product.mapper.SavingsDepositsMapper">
 
     <!-- SavingsDepositsDTO를 위한 ResultMap -->
-    <resultMap id="SavingsDepositsDTOMap" type="org.scoula.products.dto.SavingsDepositsDto">
+    <resultMap id="SavingsDepositsDTOMap" type="org.scoula.product.dto.SavingsDepositsDto">
         <id property="fin_prdt_cd" column="fin_prdt_cd"/>
         <result property="fin_prdt_nm" column="fin_prdt_nm"/>
         <result property="prdt_feature" column="prdt_feature"/>
@@ -16,12 +16,12 @@
             optionList는 별도의 쿼리를 통해 가져오도록 설정합니다.
             SavingsDepositsDTO의 필드명에 맞춰 'optionList'로 변경합니다.
         -->
-        <collection property="optionList" ofType="org.scoula.products.dto.SavingsDepositsDto$OptionList"
+        <collection property="optionList" ofType="org.scoula.product.dto.SavingsDepositsDto$OptionList"
                     select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
     </resultMap>
 
     <!-- OptionList Inner Class를 위한 ResultMap -->
-    <resultMap id="OptionListMap" type="org.scoula.products.dto.SavingsDepositsDto$OptionList">
+    <resultMap id="OptionListMap" type="org.scoula.product.dto.SavingsDepositsDto$OptionList">
         <result property="save_trm" column="save_trm"/>
         <result property="intr_rate" column="intr_rate"/>
         <result property="intr_rate2" column="intr_rate2"/>

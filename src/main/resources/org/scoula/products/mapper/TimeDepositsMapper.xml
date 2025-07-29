@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.scoula.products.mapper.TimeDepositsMapper">
+<mapper namespace="org.scoula.product.mapper.TimeDepositsMapper">
 
-    <resultMap id="TimeDepositsDTOMap" type="org.scoula.products.dto.TimeDepositsDto">
+    <resultMap id="TimeDepositsDTOMap" type="org.scoula.product.dto.TimeDepositsDto">
         <id property="fin_prdt_cd" column="fin_prdt_cd"/>
         <result property="fin_prdt_nm" column="fin_prdt_nm"/>
         <result property="prdt_feature" column="prdt_feature"/>
-        <collection property="optionList" ofType="org.scoula.products.dto.TimeDepositsDto$OptionList"
+        <collection property="optionList" ofType="org.scoula.product.dto.TimeDepositsDto$OptionList"
                     select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
     </resultMap>
 
-    <resultMap id="OptionListMap" type="org.scoula.products.dto.TimeDepositsDto$OptionList">
+    <resultMap id="OptionListMap" type="org.scoula.product.dto.TimeDepositsDto$OptionList">
         <result property="save_trm" column="save_trm"/>
         <result property="intr_rate" column="intr_rate"/>
         <result property="intr_rate2" column="intr_rate2"/>

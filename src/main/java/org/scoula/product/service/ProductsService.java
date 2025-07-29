@@ -1,4 +1,4 @@
-package org.scoula.products.service;
+package org.scoula.product.service;
 
 import java.util.List;
 

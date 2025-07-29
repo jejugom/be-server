@@ -3,9 +3,9 @@ package org.scoula.retirement.dto;
 import java.util.List;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
-import org.scoula.products.dto.MortgageLoanDto;
-import org.scoula.products.dto.SavingsDepositsDto;
-import org.scoula.products.dto.TimeDepositsDto;
+import org.scoula.product.dto.MortgageLoanDto;
+import org.scoula.product.dto.SavingsDepositsDto;
+import org.scoula.product.dto.TimeDepositsDto;
 import org.scoula.recommend.dto.CustomRecommendDto;
 import org.scoula.user.dto.UserInfoDto;
 

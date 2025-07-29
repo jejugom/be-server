@@ -1,10 +1,10 @@
-package org.scoula.products.mapper;
+package org.scoula.product.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.scoula.products.dto.MortgageLoanDto;
-import org.scoula.products.dto.MortgageLoanDto.OptionList;
+import org.scoula.product.dto.MortgageLoanDto;
+import org.scoula.product.dto.MortgageLoanDto.OptionList;
 
 @Mapper
 public interface MortgageLoanMapper {

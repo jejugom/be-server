@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusServiceImpl;
-import org.scoula.products.service.ProductsService; // ProductsService 임포트
+import org.scoula.product.service.ProductsService; // ProductsService 임포트
 import org.scoula.recommend.service.CustomRecommendServiceImpl;
 import org.scoula.retirement.dto.RetirementMainResponseDto; // RetirementMainResponseDTO 경로 확인
 import org.scoula.user.dto.UserDto;
@@ -58,7 +58,7 @@ public class RetirementController {
 		response.setUser_info(List.of(userInfo));
 
 		// 2. 맞춤 상품 데이터 조회 및 설정 (CustomRecommendDto 관련 서비스 필요)
-		response.setCustomRecommend_prdt(customRecommendService.getCustomRecommendsByEmail(email));
+		// response.setCustomRecommend_prdt(customRecommendService.getCustomRecommendsByEmail(email));
 
 		// 3. ProductService를 통해 각 상품 데이터 조회 및 설정
 		response.setTimeDeposits(productsService.getAllTimeDeposits());

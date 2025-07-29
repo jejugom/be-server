@@ -1,4 +1,4 @@
-package org.scoula.products.dto;
+package org.scoula.product.dto;
 
 import java.util.List;
 

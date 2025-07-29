@@ -5,10 +5,10 @@
 <!--
     *** 중요: 이 namespace는 MortgageLoanMapper.java 인터페이스의 FQCN과 정확히 일치해야 합니다. ***
 -->
-<mapper namespace="org.scoula.products.mapper.MortgageLoanMapper">
+<mapper namespace="org.scoula.product.mapper.MortgageLoanMapper">
 
     <!-- MortgageLoanDTO를 위한 ResultMap -->
-    <resultMap id="MortgageLoanDTOMap" type="org.scoula.products.dto.MortgageLoanDto">
+    <resultMap id="MortgageLoanDTOMap" type="org.scoula.product.dto.MortgageLoanDto">
         <id property="fin_prdt_cd" column="fin_prdt_cd"/>
         <result property="fin_prdt_nm" column="fin_prdt_nm"/>
         <result property="prdt_feature" column="prdt_feature"/>
@@ -16,12 +16,12 @@
             optionListList는 별도의 쿼리를 통해 가져오도록 설정합니다.
             MortgageLoanDTO의 필드명에 맞춰 'optionListList'로 변경합니다.
         -->
-        <collection property="optionListList" ofType="org.scoula.products.dto.MortgageLoanDto$OptionList"
+        <collection property="optionListList" ofType="org.scoula.product.dto.MortgageLoanDto$OptionList"
                     select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
     </resultMap>
 
     <!-- OptionList Inner Class를 위한 ResultMap -->
-    <resultMap id="OptionListMap" type="org.scoula.products.dto.MortgageLoanDto$OptionList">
+    <resultMap id="OptionListMap" type="org.scoula.product.dto.MortgageLoanDto$OptionList">
         <result property="mrtg_type_nm" column="mrtg_type_nm"/>
         <result property="rpay_type_nm" column="rpay_type_nm"/>
         <result property="lend_rate_type_nm" column="lend_rate_type_nm"/>
