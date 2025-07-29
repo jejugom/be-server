@@ -52,6 +52,12 @@
         WHERE booking_id = #{bookingId}
     </delete>
 
+    <delete id="deleteByEmail">
+        DELETE
+        FROM booking
+        WHERE email = #{email}
+    </delete>
+
     <select id="countByBranchDateTime" resultType="int">
         SELECT COUNT(*)
         FROM booking

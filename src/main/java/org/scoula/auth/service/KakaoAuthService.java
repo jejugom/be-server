@@ -183,7 +183,6 @@ public class KakaoAuthService {
 			.build();
 		userMapper.save(newUser);
 
-
 		return newUser;
 	}
 
@@ -219,6 +218,6 @@ public class KakaoAuthService {
 	 */
 	public void logout(String userEmail) {
 		// ✅ provider 파라미터 없이 userEmail만 사용하여 토큰을 삭제합니다.
-		refreshTokenMapper.deleteRefreshToken(userEmail);
+		refreshTokenMapper.deleteByEmail(userEmail);
 	}
 }

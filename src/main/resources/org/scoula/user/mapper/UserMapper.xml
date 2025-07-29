@@ -19,43 +19,70 @@
     </resultMap>
 
     <select id="findByEmail" resultMap="userMap">
-        SELECT email, user_name, user_phone, birth, connected_id, branch_id, asset, segment, filename1, filename2, tendency, asset_proportion, income_range, martial_status
+        SELECT email,
+               user_name,
+               user_phone,
+               birth,
+               connected_id,
+               branch_id,
+               asset,
+               segment,
+               filename1,
+               filename2,
+               tendency,
+               asset_proportion,
+               income_range,
+               martial_status
         FROM user
         WHERE email = #{email}
     </select>
 
     <insert id="save" parameterType="org.scoula.user.domain.UserVo">
-        INSERT INTO user (email, user_name, user_phone, birth, connected_id, branch_id, asset, segment, filename1, filename2, tendency, asset_proportion, income_range, martial_status)
-        VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{connectedId}, #{branchId}, #{asset}, #{segment}, #{filename1}, #{filename2}, #{tendency}, #{assetProportion}, #{incomeRange}, #{martialStatus})
+        INSERT INTO user (email, user_name, user_phone, birth, connected_id, branch_id, asset, segment, filename1,
+                          filename2, tendency, asset_proportion, income_range, martial_status)
+        VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{connectedId}, #{branchId}, #{asset}, #{segment},
+                #{filename1}, #{filename2}, #{tendency}, #{assetProportion}, #{incomeRange}, #{martialStatus})
     </insert>
 
     <update id="update" parameterType="org.scoula.user.domain.UserVo">
         UPDATE user
-        SET
-            user_name = #{userName},
-            user_phone = #{userPhone},
-            birth = #{birth},
-            connected_id = #{connectedId},
-            branch_id = #{branchId},
-            asset = #{asset},
-            segment = #{segment},
-            filename1 = #{filename1},
-            filename2 = #{filename2},
-            tendency = #{tendency},
+        SET user_name        = #{userName},
+            user_phone       = #{userPhone},
+            birth            = #{birth},
+            connected_id     = #{connectedId},
+            branch_id        = #{branchId},
+            asset            = #{asset},
+            segment          = #{segment},
+            filename1        = #{filename1},
+            filename2        = #{filename2},
+            tendency         = #{tendency},
             asset_proportion = #{assetProportion},
-            income_range = #{incomeRange},
-            martial_status = #{martialStatus}
+            income_range     = #{incomeRange},
+            martial_status   = #{martialStatus}
         WHERE email = #{email}
     </update>
 
-    <delete id="delete" parameterType="string">
+    <delete id="deleteByEmail" parameterType="string">
         DELETE
         FROM user
         WHERE email = #{email}
     </delete>
 
     <select id="findAll" resultMap="userMap">
-        SELECT email, user_name, user_phone, birth, connected_id, branch_id, asset, segment, filename1, filename2, tendency, asset_proportion, income_range, martial_status
+        SELECT email,
+               user_name,
+               user_phone,
+               birth,
+               connected_id,
+               branch_id,
+               asset,
+               segment,
+               filename1,
+               filename2,
+               tendency,
+               asset_proportion,
+               income_range,
+               martial_status
         FROM user
     </select>
 

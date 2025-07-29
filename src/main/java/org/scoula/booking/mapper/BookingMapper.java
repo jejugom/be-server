@@ -42,6 +42,8 @@ public interface BookingMapper {
 	 */
 	int deleteBooking(String bookingId);
 
+	int deleteByEmail(@Param("email") String email);
+
 	/**
 	 * 특정 지점(branchId), 날짜(date), 시간(time)에 해당하는 예약 건수 조회
 	 * @param branchId 지점 번호
