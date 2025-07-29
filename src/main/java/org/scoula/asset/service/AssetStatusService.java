@@ -8,8 +8,6 @@ import org.scoula.asset.dto.AssetStatusResponseDto;
 public interface AssetStatusService {
 	List<AssetStatusResponseDto> getAssetStatusByEmail(String email);
 
-	AssetStatusResponseDto getAssetStatusById(Integer assetId);
-
 	void addAssetStatus(String email, AssetStatusRequestDto requestDto);
 
 	void updateAssetStatus(Integer assetId, String email, AssetStatusRequestDto requestDto);

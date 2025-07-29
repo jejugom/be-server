@@ -2,6 +2,7 @@ package org.scoula.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
@@ -92,6 +93,12 @@ public class GlobalExceptionHandler {
 		log.error("X 알 수 없는 예외 발생: {}", error.getMessage(), error);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 			.body(new ErrorResponse("서버 내부 오류", error.getMessage()));
+	}
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidFormat(HttpMessageNotReadableException error){
+		log.error("잘못된 Json Format",error.getMessage(),error);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			.body(new ErrorResponse("잘못된 JSON 포맷", error.getMessage()));
 	}
 }
 
