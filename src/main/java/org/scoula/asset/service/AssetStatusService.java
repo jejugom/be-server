@@ -11,8 +11,6 @@ public interface AssetStatusService {
 
 	List<AssetStatusSummaryDto> getAssetStatusSummaryByEmail(String email);
 
-	AssetStatusResponseDto getAssetStatusById(Integer assetId);
-
 	void addAssetStatus(String email, AssetStatusRequestDto requestDto);
 
 	void updateAssetStatus(Integer assetId, String email, AssetStatusRequestDto requestDto);

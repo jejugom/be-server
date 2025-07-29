@@ -34,12 +34,6 @@ public class AssetStatusController {
 		return ResponseEntity.ok(assetStatusResponseDtos);
 	}
 
-	@GetMapping("/{assetId}")
-	public ResponseEntity<AssetStatusResponseDto> getAssetStatusById(@PathVariable Integer assetId) {
-		// 권한 검사는 서비스 계층에서 수행하는 것이 좋습니다.
-		return ResponseEntity.ok(assetStatusService.getAssetStatusById(assetId));
-	}
-
 	@PostMapping
 	public ResponseEntity<Void> addAssetStatus(@RequestBody AssetStatusRequestDto requestDto) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,6 +41,7 @@ public class AssetStatusController {
 		assetStatusService.addAssetStatus(userEmail,requestDto);
 		return ResponseEntity.ok().build();
 	}
+
 
 	@PutMapping("/{assetId}")
 	public ResponseEntity<Void> updateAssetStatus(@PathVariable Integer assetId,

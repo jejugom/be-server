@@ -24,8 +24,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 		response.setContentType("application/json;charset=UTF-8");
 
 		Map<String, String> errorResponse = Map.of(
-			"error", "인증이 필요합니다.",
-			"message", authException.getMessage()
+			"detail", authException.getMessage(),
+			"error", "authentication 인증 누락."
 		);
 
 		response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
