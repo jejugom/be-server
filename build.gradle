@@ -50,12 +50,13 @@ dependencies {
     implementation("org.springframework.security:spring-security-config:${springSecurityVersion}")
     implementation("org.springframework.security:spring-security-core:${springSecurityVersion}")
     implementation("org.springframework.security:spring-security-taglibs:${springSecurityVersion}")
-    //
 
+    // 로깅
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
     implementation 'org.apache.logging.log4j:log4j-api:2.0.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.0.1'
-    //e데이터ㅏ 베이스
+
+    //데이터베이스
     implementation 'com.zaxxer:HikariCP:2.7.4'
     implementation 'com.mysql:mysql-connector-j:8.1.0'
 
@@ -74,32 +75,44 @@ dependencies {
             { exclude group: 'commons-logging', module: 'commons-logging' }
     implementation "org.springframework:spring-webmvc:${springVersion}"
     implementation 'javax.inject:javax.inject:1'
-// AOP
+
+    // AOP
     implementation 'org.aspectj:aspectjrt:1.9.20'
     implementation 'org.aspectj:aspectjweaver:1.9.20'
-// JSP, SERVLET, JSTL
+
+    // JSP, SERVLET, JSTL
     implementation('javax.servlet:javax.servlet-api:4.0.1')
-// compileOnly 'javax.servlet.jsp:jsp-api:2.1'
+
+    // compileOnly 'javax.servlet.jsp:jsp-api:2.1'
     compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
     implementation 'javax.servlet:jstl:1.2'
-// Log4j2 Logging
+
+    // Log4j2 Logging
     implementation 'org.apache.logging.log4j:log4j-api:2.18.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.18.0'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.18.0'
-// xml내 한글 처리
+
+    // xml내 한글 처리
     implementation 'xerces:xercesImpl:2.12.2'
+
     // Lombok
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-// Jackson - Json 처리
+
+    // Jackson - Json 처리
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
-// 테스트
+
+    // 테스트
     testImplementation "org.springframework:spring-test:${springVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-// Lombok
+
+    // Lombok
     implementation 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    // ULID
+    implementation 'com.github.f4b6a3:ulid-creator:5.2.0'
 
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
