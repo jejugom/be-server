@@ -6,8 +6,8 @@ import org.scoula.home.dto.HomeResponseDto;
 import org.scoula.home.dto.RecommendationDto;
 import org.scoula.home.dto.UserSummary;
 import org.scoula.user.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class HomeService {
 	private final UserService userService;
 
+	@Transactional
 	public HomeResponseDto getHomeData(String userEmail) {
 		// 추천은 항상 포함
 		List<RecommendationDto> hardcodedRecommends = List.of(
