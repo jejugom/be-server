@@ -9,7 +9,7 @@
         <result property="assetName" column="asset_name"/>
         <result property="businessType" column="business_type"/>
     </resultMap>
-    
+
     <select id="findAssetStatusByEmail" resultMap="assetStatusMap">
         SELECT *
         FROM asset_status
@@ -42,6 +42,11 @@
         FROM asset_status
         WHERE asset_id = #{assetId}
           AND email = #{userEmail}
+    </delete>
+    <delete id="deleteByEmail">
+        DELETE
+        FROM asset_status
+        WHERE email = #{email}
     </delete>
 </mapper>
 

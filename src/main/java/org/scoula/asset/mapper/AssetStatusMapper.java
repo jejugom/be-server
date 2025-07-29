@@ -16,7 +16,8 @@ public interface AssetStatusMapper {
 
 	int updateAssetStatus(AssetStatusVo assetStatus);
 
-	int deleteAssetStatus(@Param("assetId") Integer assetId, @Param("userEmail") String userEmail);
+	int deleteAssetStatus(@Param("assetId") Integer assetId, @Param("email") String email);
 
-	void deleteByEmail(@Param("email") String email);
+	// email로 모든 자산 정보를 삭제
+	int deleteByEmail(@Param("email") String email);
 }
