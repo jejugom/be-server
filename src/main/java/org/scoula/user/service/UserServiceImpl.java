@@ -1,12 +1,20 @@
 package org.scoula.user.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.mapper.AssetStatusMapper;
+import org.scoula.asset.service.AssetStatusService;
 import org.scoula.auth.mapper.RefreshTokenMapper;
+import org.scoula.booking.domain.BookingVo;
+import org.scoula.booking.dto.BookingDto;
 import org.scoula.booking.mapper.BookingMapper;
 import org.scoula.user.domain.UserVo;
+import org.scoula.user.dto.MyPageResponseDto;
+import org.scoula.user.dto.MyPageUserInfoDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -22,7 +30,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserAssetUpdater {
 
 	private final UserMapper userMapper;
 	private final RefreshTokenMapper refreshTokenMapper;
@@ -128,5 +136,43 @@ public class UserServiceImpl implements UserService {
 		if (affectedRows == 0) {
 			throw new NoSuchElementException("User not found with email: " + email);
 		}
+	}
+
+	@Override
+	public MyPageResponseDto getMyPageData(String email) {
+		// 1. 사용자 정보 조회
+		UserVo userVo = Optional.ofNullable(userMapper.findByEmail(email))
+			.orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다: " + email));
+
+		// 2. 자산 현황 목록 조회 및 DTO 변환
+		List<AssetStatusSummaryDto> assetList = assetStatusMapper.findAssetStatusSummaryByEmail(email)
+			.stream()
+			.map(AssetStatusSummaryDto::of)
+			.collect(Collectors.toList());
+
+		// 3. 예약 내역 목록 조회 및 DTO 변환 (핵심 변경 부분)
+		List<BookingVo> bookingVos = bookingMapper.findUpcomingByUserEmail(email);
+		List<BookingDto> bookingDtos = bookingVos.stream()
+			.map(BookingDto::of) // BookingDto의 of 메서드를 사용하여 변환
+			.collect(Collectors.toList());
+
+		// 4. 최종 DTO 조립
+		MyPageUserInfoDto userInfoDto = MyPageUserInfoDto.builder()
+			.email(userVo.getEmail())
+			.userName(userVo.getUserName())
+			.assetStatus(assetList)
+			.build();
+
+		return MyPageResponseDto.builder()
+			.userInfo(userInfoDto)
+			.bookingInfo(bookingDtos)
+			.build();
+	}
+
+	@Override
+	public void updateUserAsset(String email, long amount) {
+		UserDto userDto = getUser(email);
+		userDto.setAsset(userDto.getAsset() + amount);
+		updateUser(email, userDto);
 	}
 }

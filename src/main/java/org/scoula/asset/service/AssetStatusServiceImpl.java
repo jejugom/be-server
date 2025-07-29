@@ -10,6 +10,7 @@ import org.scoula.asset.dto.AssetStatusResponseDto;
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.mapper.AssetStatusMapper;
 import org.scoula.user.dto.UserDto;
+import org.scoula.user.service.UserAssetUpdater;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class AssetStatusServiceImpl implements AssetStatusService {
 
 	private final AssetStatusMapper assetStatusMapper;
-	private final UserService userService;
+	private final UserAssetUpdater userAssetUpdater;
 
 	@Override
 	public List<AssetStatusResponseDto> getAssetStatusByEmail(String email) {
@@ -44,14 +45,9 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 		AssetStatusVo assetStatusVo = requestDto.toVo();
 		assetStatusVo.setEmail(email);
 		assetStatusMapper.insertAssetStatus(assetStatusVo);
-		/***
-		 사용자 테이블에 총 자산에 추가된 자산 금액 저장
-		  userService를 호출해 requestDto 의 amount를 추가합니다.
-		 */
-		UserDto userDto = userService.getUser(email);
-		userDto.setAsset(userDto.getAsset() + requestDto.getAmount());
-		userService.updateUser(email,userDto);
 
+		// 자산 업데이트는 인터페이스를 통해 호출
+		userAssetUpdater.updateUserAsset(email, requestDto.getAmount());
 	}
 
 	@Override
