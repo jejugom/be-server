@@ -2,8 +2,8 @@ package org.scoula.asset.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.scoula.asset.domain.AssetStatusVo;
 
 @Mapper
@@ -18,5 +18,5 @@ public interface AssetStatusMapper {
 
 	int deleteAssetStatus(@Param("assetId") Integer assetId, @Param("userEmail") String userEmail);
 
-	int deleteByEmail(@Param("email") String email);
+	void deleteByEmail(@Param("email") String email);
 }

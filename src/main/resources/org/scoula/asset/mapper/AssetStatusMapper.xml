@@ -9,7 +9,7 @@
         <result property="assetName" column="asset_name"/>
         <result property="businessType" column="business_type"/>
     </resultMap>
-
+    
     <select id="findAssetStatusByEmail" resultMap="assetStatusMap">
         SELECT *
         FROM asset_status

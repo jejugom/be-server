@@ -73,7 +73,7 @@ public class UserController {
 		@ApiResponse(code = 204, message = "회원 탈퇴 성공"),
 		@ApiResponse(code = 403, message = "권한 없음")
 	})
-	@DeleteMapping
+	@DeleteMapping()
 	public ResponseEntity<Void> withdrawUser(Authentication authentication) {
 		String email = authentication.getName();
 		userService.withdrawUser(email);
