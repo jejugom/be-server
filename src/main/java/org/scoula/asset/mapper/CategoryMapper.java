@@ -2,8 +2,10 @@ package org.scoula.asset.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.scoula.asset.domain.CategoryVo;
 
+@Mapper
 public interface CategoryMapper {
 	List<CategoryVo> getAllCategories();
 

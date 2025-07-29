@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.scoula.booking.domain.BookingVo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,25 +15,38 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ApiModel(value = "BookingDto", description = "예약 정보 전체를 나타내는 DTO")
 public class BookingDto {
-	private int bookingId;
+
+	@ApiModelProperty(value = "예약 고유 ID (ULID)", example = "01HXYZABCDEF12345678")
+	private String bookingId;
+
+	@ApiModelProperty(value = "예약자 이메일", example = "user@example.com")
 	private String email;
-	private String prdtCode;
+
+	@ApiModelProperty(value = "금융 상품 코드", example = "FIN123456")
+	private String finPrdtCode;
+
+	@ApiModelProperty(value = "예약 날짜", example = "2025-07-28")
 	private Date date;
+
+	@ApiModelProperty(value = "예약 시간", example = "14:30")
 	private String time;
-	private String docInfo;
-	private String branchName;
+
+	@ApiModelProperty(value = "필요 서류 정보")
+	private DocInfoDto docInfo;
+
+	@ApiModelProperty(value = "사용자 이메일 (예비용)", example = "user@example.com")
 	private String userEmail;
 
 	public static BookingDto of(BookingVo booking) {
 		return BookingDto.builder()
 			.bookingId(booking.getBookingId())
 			.email(booking.getEmail())
-			.prdtCode(booking.getPrdtCode())
+			.finPrdtCode(booking.getFinPrdtCode())
 			.date(booking.getDate())
 			.time(booking.getTime())
 			.docInfo(booking.getDocInfo())
-			.branchName(booking.getBranchName())
 			.build();
 	}
 
@@ -39,11 +54,10 @@ public class BookingDto {
 		return BookingVo.builder()
 			.bookingId(bookingId)
 			.email(email)
-			.prdtCode(prdtCode)
+			.finPrdtCode(finPrdtCode)
 			.date(date)
 			.time(time)
 			.docInfo(docInfo)
-			.branchName(branchName)
 			.build();
 	}
 }

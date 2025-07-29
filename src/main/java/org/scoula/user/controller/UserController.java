@@ -1,9 +1,12 @@
 package org.scoula.user.controller;
 
+import org.scoula.user.dto.BranchIdUpdateRequestDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,5 +34,16 @@ public class UserController {
 	public ResponseEntity<UserDto> getUser(@PathVariable String email) {
 		UserDto user = userService.getUser(email);
 		return ResponseEntity.ok(user);
+	}
+
+	@PatchMapping("/branch")
+	public ResponseEntity<Void> updateBranchName(
+		Authentication authentication,
+		@RequestBody BranchIdUpdateRequestDto requestDto) {
+
+		String email = authentication.getName();
+		userService.updateBranchId(email, requestDto.getBranchId());
+
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -36,7 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.addFilterBefore(encodingFilter(), UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-		http.httpBasic().disable()
+
+		http
+			.httpBasic().disable()
 			.csrf().disable()
 			.formLogin().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -48,33 +50,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 			.authorizeRequests()
-			// --- 인증 없이 접근을 허용할 경로들 ---
-			.antMatchers(
+			// 💡 GET 요청 중 인증 없이 허용할 경로들
+			.antMatchers(HttpMethod.GET,
 				"/",
 				"/favicon.ico",
-				"/oauth/authorize", // 요청하신 경로 추가
-				"/api/faq/**",
-				"/api/sms/**" // SMS API 경로  임시 추가 - 로그인 구현 후 제거
+				"/api/home",
+				"/auth/kakao",
+				"/auth/kakao/callback",
+				"/api/sms/test" // SMS API 경로  임시 추가 - 로그인 구현 후 제거
 			).permitAll()
 			.antMatchers(HttpMethod.POST,
 				"/api/user/join",
 				"/auth/kakao",
-				"/auth/refresh"
+				"/auth/refresh",
+				"/api/sms/send" // SMS API 경로  임시 추가 - 로그인 구현 후 제거
 			).permitAll()
-			.antMatchers(HttpMethod.GET,
-				"/auth/kakao/callback",
-				"/api/home"
-				).permitAll()
-			.antMatchers(HttpMethod.OPTIONS).permitAll() // CORS Preflight 요청
-
-			// --- 인증이 필요한 경로 ---
-			.antMatchers("/api/codef/**").authenticated()
-
-			// --- 나머지 모든 경로는 인증 필수 ---
+			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.anyRequest().authenticated();
-
-
 	}
+
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {

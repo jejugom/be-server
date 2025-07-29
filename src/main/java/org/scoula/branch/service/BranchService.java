@@ -14,4 +14,6 @@ public interface BranchService {
 	void updateBranch(BranchDto branchDto);
 
 	void deleteBranch(String branchName);
+
+	String getBranchNameById(int branchId);
 }

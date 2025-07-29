@@ -39,4 +39,21 @@
         FROM faq
         WHERE faq_id = #{faqId}
     </delete>
+
+    <update id="updateFaqPartial">
+        UPDATE faq
+        <set>
+            <if test="updates['category'] != null">
+                category = #{updates.category},
+            </if>
+            <if test="updates['title'] != null">
+                title = #{updates.title},
+            </if>
+            <if test="updates['content'] != null">
+                content = #{updates.content},
+            </if>
+            <!-- 필요하면 다른 필드도 추가 -->
+        </set>
+        WHERE faq_id = #{faqId}
+    </update>
 </mapper>

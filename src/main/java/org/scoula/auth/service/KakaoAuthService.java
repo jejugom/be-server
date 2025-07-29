@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
-import org.scoula.asset.dto.AssetInfoDto;
-import org.scoula.asset.service.AssetInfoService;
 import org.scoula.auth.dto.KakaoLoginResponseDto;
 import org.scoula.auth.dto.KakaoTokenResponseDto;
 import org.scoula.auth.dto.KakaoUserInfoDto;
@@ -50,7 +48,6 @@ public class KakaoAuthService {
 	private final RestTemplate restTemplate = new RestTemplate();
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final JwtProcessor jwtProcessor;
-	private final AssetInfoService assetInfoService;
 
 	@Transactional
 	public KakaoLoginResponseDto processKakaoLogin(String code) {
@@ -66,7 +63,7 @@ public class KakaoAuthService {
 
 		// 4. 생성된 리프레시 토큰 정보를 DB에 저장 (핵심 변경 부분)
 		RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
-			.userEmail(user.getEmail())
+			.email(user.getEmail())
 			.tokenValue(refreshTokenValue)
 			.expiresAt(LocalDateTime.now().plusWeeks(2)) // 2주 후 만료
 			.build();
@@ -173,21 +170,20 @@ public class KakaoAuthService {
 			.userName(nickname)
 			.birth(birthDate)
 			.userPhone(null)
-			.branchName(null)
+			.branchId(null)
 			.connectedId(null)
+			.filename1(null)
+			.filename2(null)
+			.martialStatus(null)
+			.incomeRange(null)
+			.assetProportion(null)
+			.tendency(null)
+			.segment(null)
+			.asset(0L)
 			.build();
 		userMapper.save(newUser);
 
-		/**
-		 * 유저 생성후 assetInfoDTO도 생성
-		 */
-		AssetInfoDto assetInfoDto = new AssetInfoDto();
-		assetInfoDto.setEmail(email);
-		assetInfoDto.setAsset(0L);
-		assetInfoDto.setFilename1(null);
-		assetInfoDto.setFilename2(null);
-		assetInfoDto.setSegment(null);
-		assetInfoService.addAssetInfo(assetInfoDto);
+
 		return newUser;
 	}
 
@@ -207,7 +203,7 @@ public class KakaoAuthService {
 
 		// 3. DB에 새로운 Refresh Token으로 갱신
 		RefreshTokenDto newRefreshTokenDto = RefreshTokenDto.builder()
-			.userEmail(userEmail)
+			.email(userEmail)
 			.tokenValue(newRefreshToken)
 			.expiresAt(LocalDateTime.now().plusWeeks(2))
 			.build();
