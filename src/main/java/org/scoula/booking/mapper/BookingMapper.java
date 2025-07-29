@@ -62,13 +62,11 @@ public interface BookingMapper {
 	/**
 	 * 특정 지점의 현재 날짜와 시간 이후에 예약된 미래 예약 목록 조회
 	 * @param branchId 지점 번호
-	 * @param currentDate 현재 날짜 (java.util.Date)
 	 * @param currentTime 현재 시간 (HH:mm 형식)
 	 * @return 미래 예약 VO 리스트
 	 */
 	List<BookingVo> findFutureByBranch(
 		@Param("branchId") int branchId,
-		@Param("currentDate") Date currentDate,
 		@Param("currentTime") String currentTime
 	);
 

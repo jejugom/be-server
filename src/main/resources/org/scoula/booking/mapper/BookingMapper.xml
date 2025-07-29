@@ -65,9 +65,9 @@
         FROM booking
         WHERE branch_id = #{branchId}
           AND (
-            date > #{currentDate}
+            date > CURDATE()
             OR
-            (date = #{currentDate} AND time >= #{currentTime})
+            (date = CURDATE() AND time >= #{currentTime})
             )
         ORDER BY date, time
     </select>

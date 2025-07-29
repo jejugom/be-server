@@ -92,11 +92,9 @@ public class BookingServiceImpl implements BookingService {
 	 */
 	@Override
 	public ReservedSlotsResponseDto getReservedSlotsByBranch(int branchId) {
-		LocalDate today = LocalDate.now();
-		Date currentDate = new Date();
 		String currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
 
-		List<BookingVo> futureBookings = bookingMapper.findFutureByBranch(branchId, currentDate, currentTime);
+		List<BookingVo> futureBookings = bookingMapper.findFutureByBranch(branchId, currentTime);
 
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
