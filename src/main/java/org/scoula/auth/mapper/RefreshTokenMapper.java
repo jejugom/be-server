@@ -16,6 +16,5 @@ public interface RefreshTokenMapper {
 	// provider 파라미터 삭제
 	RefreshTokenDto findTokenByUserEmail(@Param("email") String email);
 
-	void deleteRefreshToken(@Param("email") String email);
-
+	int deleteByEmail(@Param("email") String email);
 }

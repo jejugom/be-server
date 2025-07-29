@@ -12,4 +12,6 @@ public interface UserService {
 	void updateConnectedId(String email, String connectedId);
 
 	void updateBranchId(String email, Integer branchId);
+
+	void withdrawUser(String email);
 }
