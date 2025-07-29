@@ -53,7 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				"/",
 				"/favicon.ico",
 				"/oauth/authorize", // 요청하신 경로 추가
-				"/api/faq/**"
+				"/api/faq/**",
+				"/api/sms/**" // SMS API 경로  임시 추가 - 로그인 구현 후 제거
 			).permitAll()
 			.antMatchers(HttpMethod.POST,
 				"/api/user/join",
