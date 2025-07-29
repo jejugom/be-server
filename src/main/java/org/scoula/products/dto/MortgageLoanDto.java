@@ -1,4 +1,4 @@
-package org.scoula.product.dto;
+package org.scoula.products.dto;
 
 import java.util.List;
 
@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MortgageLoanDTO {
+public class MortgageLoanDto {
 
 	/**
 	 * 주택담보대출(mortgageLoan) 상품 목록 조회 페이지에서 사용될 DTO입니다.
 	 */
-	private String fin_prdt_cd; //상품코드
-	private String fin_prdt_nm; //상품명
-	private String prdt_feature; //상품특징
-	private List<OptionList> optionListList; //옵션 목록
+	private String fin_prdt_cd;      // 상품코드
+	private String fin_prdt_nm;      // 상품명
+	private String prdt_feature;     // 상품특징
+	private List<OptionList> optionListList; // 옵션 목록
 
 
 	/**
@@ -26,6 +26,7 @@ public class MortgageLoanDTO {
 	 */
 	@Data
 	@AllArgsConstructor
+	@NoArgsConstructor // MyBatis가 객체를 생성할 때 필요
 	public static class OptionList {
 		private String mrtg_type_nm; //담보유형
 		private String rpay_type_nm; //대출상환유형

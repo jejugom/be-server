@@ -7,6 +7,9 @@ import org.scoula.asset.domain.AssetStatusVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface AssetStatusMapper {
+
+	List<AssetStatusVo> findAssetStatusSummaryByEmail(String email);
+
 	List<AssetStatusVo> findAssetStatusByEmail(String email);
 
 	AssetStatusVo findAssetStatusById(Integer id);

@@ -1,0 +1,12 @@
+package org.scoula.products.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/retirement/products")
+public class ProductsController {
+}

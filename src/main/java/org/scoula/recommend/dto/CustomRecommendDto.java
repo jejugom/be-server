@@ -12,26 +12,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CustomRecommendDto {
-	private String prdtId;
-	private String email;
-	private String recReason;
-	private String segment;
+	private String fin_prdt_cd;
+	private String rate; //적합률
 
 	public static CustomRecommendDto of(CustomRecommendVo customRecommend) {
 		return CustomRecommendDto.builder()
-			.prdtId(customRecommend.getPrdtId())
-			.email(customRecommend.getEmail())
-			.recReason(customRecommend.getRecReason())
-			.segment(customRecommend.getSegment())
+			.fin_prdt_cd(customRecommend.getFin_prdt_cd())
+			.rate(customRecommend.getRate())
 			.build();
 	}
 
 	public CustomRecommendVo toVo() {
 		return CustomRecommendVo.builder()
-			.prdtId(prdtId)
-			.email(email)
-			.recReason(recReason)
-			.segment(segment)
+			.fin_prdt_cd(fin_prdt_cd)
+			.rate(rate)
 			.build();
 	}
 }

@@ -10,6 +10,13 @@
         <result property="businessType" column="business_type"/>
     </resultMap>
 
+    <!-- 자산현황 간소화 데이터 -->
+    <select id="findAssetStatusSummaryByEmail" resultType="org.scoula.asset.domain.AssetStatusVo">
+        SELECT asset_category_code, amount
+        FROM asset_status
+        WHERE email = #{email}
+    </select>
+
     <select id="findAssetStatusByEmail" resultMap="assetStatusMap">
         SELECT *
         FROM asset_status
