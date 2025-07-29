@@ -114,7 +114,6 @@ dependencies {
     // ULID
     implementation 'com.github.f4b6a3:ulid-creator:5.2.0'
 
-
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
