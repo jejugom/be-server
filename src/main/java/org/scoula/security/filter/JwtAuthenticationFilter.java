@@ -37,6 +37,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		return new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
 	}
 
+	// 와일드카드 패턴 매칭을 위한 메서드
+	private boolean isWhitelistedPath(String uri, List<String> whitelist) {
+		return whitelist.stream().anyMatch(pattern -> {
+			if (pattern.endsWith("/**")) {
+				String basePattern = pattern.substring(0, pattern.length() - 3);
+				return uri.startsWith(basePattern);
+			}
+			return false;
+		});
+	}
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 		throws ServletException, IOException {
@@ -56,13 +67,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			"/auth/refresh",
 			"/api/faq/list",
 			"/api/faq/all",
-			"/api/home"
+			"/api/home",
+			"/api/sms/**" // SMS API 경로 추가
 		);
 
 		String uri = request.getRequestURI();
 		log.info("JwtAuthenticationFilter: doFilterInternal called for URI: {}", uri);
 
-		if (whitelist.contains(uri)) {
+		// 정확한 경로 매칭 또는 패턴 매칭 확인
+		if (whitelist.contains(uri) || isWhitelistedPath(uri, whitelist)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
