@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.scoula.asset.domain.AssetStatusVo;
 import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.dto.AssetStatusResponseDto;
+import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.mapper.AssetStatusMapper;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
@@ -77,15 +78,21 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 			.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<AssetStatusSummaryDto> getAssetStatusSummaryByEmail(String email) {
+		return assetStatusMapper.findAssetStatusSummaryByEmail(email).stream()
+			.map(AssetStatusSummaryDto::of)
+			.collect(Collectors.toList());
+	}
+
 	@Transactional
 	@Override
 	public void addAssetStatus(String email, AssetStatusRequestDto requestDto) {
 		AssetStatusVo assetStatusVo = requestDto.toVo();
 		assetStatusVo.setEmail(email);
 		assetStatusMapper.insertAssetStatus(assetStatusVo);
-		/***
-		 updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
-		 */
+
+		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
 		updateUserAssetSummary(email);
 	}
 
@@ -98,21 +105,18 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 		if (assetStatusMapper.updateAssetStatus(assetStatusVo) == 0) {
 			throw new NoSuchElementException("목록 번호 오기입 / 권한이 없습니다.");
 		}
-		/***
-		 updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
-		 */
+
+		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
 		updateUserAssetSummary(email);
 	}
 
 	@Override
 	public void deleteAssetStatus(Integer assetId, String email) {
-		Long deletedAsssetAmount = assetStatusMapper.findAssetStatusById(assetId).getAmount();
 		if (assetStatusMapper.deleteAssetStatus(assetId, email) == 0) {
 			throw new NoSuchElementException("해당 자산이 사용자 계정에 존재하지 않습니다. ");
 		}
-		/***
-		 updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
-		 */
+
+		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
 		updateUserAssetSummary(email);
 	}
 }
