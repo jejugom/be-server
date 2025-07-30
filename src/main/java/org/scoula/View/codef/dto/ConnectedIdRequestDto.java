@@ -1,4 +1,4 @@
-package org.scoula.codef.dto;
+package org.scoula.View.codef.dto;
 
 import java.util.List;
 import java.util.Map;

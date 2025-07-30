@@ -1,4 +1,4 @@
-package org.scoula.codef.util;
+package org.scoula.View.codef.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.Map;
 import javax.crypto.Cipher;
 
 import org.apache.commons.codec.binary.Base64;
-import org.scoula.codef.service.CodefTokenService;
+import org.scoula.View.codef.service.CodefTokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
