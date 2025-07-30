@@ -15,7 +15,7 @@ public class PreferenceServiceImpl implements PreferenceService{
 
 	@Override
 	public void setUserPreference(PreferenceRequestDto requestDto,String userEmail) {
-		int startPoint = 0;
+		double startPoint = 0;
 
 		int q1 = requestDto.getQ1();
 		int q2 = requestDto.getQ2();
@@ -23,10 +23,10 @@ public class PreferenceServiceImpl implements PreferenceService{
 		int q4 = requestDto.getQ4();
 		int q5 = requestDto.getQ5();
 		switch (q1){
-			case 1 : startPoint+=0.4;
-			case 2 : startPoint += 0.2;
-			case 3 : startPoint -=0.2;
-			case 4 : startPoint -=0.4;
+			case 1 : startPoint+=0.3;
+			case 2 : startPoint += 0.15;
+			case 3 : startPoint -=0.15;
+			case 4 : startPoint -=0.3;
 		}
 		switch (q2){
 			case 1 : startPoint += 0.3;
@@ -35,23 +35,23 @@ public class PreferenceServiceImpl implements PreferenceService{
 		}
 		switch (q3){
 			case 1: startPoint += 0.3;
-			case 2 : startPoint -=0.2;
+			case 2 : startPoint -=0.15;
 			case 3 : startPoint -=0.3;
 		}
 		switch (q4){
-			case 1 : startPoint += 0.4;
-			case 2 : startPoint += 0.2;
-			case 3 : startPoint -= 0.2;
-			case 4 : startPoint -= 0.4;
+			case 1 : startPoint += 0.3;
+			case 2 : startPoint += 0.15;
+			case 3 : startPoint -= 0.15;
+			case 4 : startPoint -= 0.3;
 		}
 		switch (q5){
-			case 1 : startPoint += 0.4;
+			case 1 : startPoint += 0.3;
 			case 2 : startPoint += 0 ;
-			case 3 : startPoint -= 0.4;
+			case 3 : startPoint -= 0.3;
 		}
 
 		if(startPoint > 1) startPoint = 1;
-		if(startPoint < -1) startPoint = 1;
+		if(startPoint < -1) startPoint = -1;
 		/**
 		 * -1 ~ 1 까지의 범위로 코사인 유사도 값을 내기 때문에, 1보다 크거나 -1 보다 작은 값은 조정
 		 */
