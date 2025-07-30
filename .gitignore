@@ -38,6 +38,7 @@ bin/
 
 ### API Keys & Sensitive Config ###
 application-local.properties
+application.properties
 .env
 **/secrets/
 **/*secret*

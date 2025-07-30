@@ -1,6 +1,7 @@
 package org.scoula.user.controller;
 
 import org.scoula.user.dto.BranchIdUpdateRequestDto;
+import org.scoula.user.dto.MyPageResponseDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -78,5 +79,17 @@ public class UserController {
 		String email = authentication.getName();
 		userService.withdrawUser(email);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/mypage")
+	public ResponseEntity<MyPageResponseDto> getMyPageInfo(Authentication authentication) {
+		// userDetails.getUsername()을 통해 현재 인증된 사용자의 ID(일반적으로 이메일 또는 회원번호)를 가져옵니다.
+		String email = authentication.getName();
+
+		// Service 계층에 사용자 ID를 전달하여 마이페이지에 필요한 데이터를 조회하고 DTO로 조합합니다.
+		MyPageResponseDto myPageData = userService.getMyPageData(email);
+
+		// 조회된 데이터를 ResponseEntity.ok()에 담아 200 OK 상태와 함께 반환합니다.
+		return ResponseEntity.ok(myPageData);
 	}
 }

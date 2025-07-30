@@ -23,7 +23,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Configuration
 @PropertySource({"classpath:/application.properties", "classpath:/application-local.properties"})
-@PropertySource({"classpath:/application.properties"})
 @MapperScan(basePackages = {
 	"org.scoula.user.mapper",
 	"org.scoula.asset.mapper",
@@ -32,7 +31,8 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.branch.mapper",
 	"org.scoula.booking.mapper",
 	"org.scoula.auth.mapper",
-	"org.scoula.product.mapper"})
+	"org.scoula.product.mapper"
+})
 @ComponentScan(basePackages = {
 	"org.scoula.user.service",
 	"org.scoula.asset.service",
@@ -43,9 +43,11 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.codef.util",
 	"org.scoula.codef.service",
 	"org.scoula.codef.dto",
+	"org.scoula.product.service",
 	"org.scoula.home.service",
 	"org.scoula.auth.service",
 	"org.scoula.product.service",
+	"org.scoula.sms.service"
 })
 @Log4j2
 @EnableTransactionManagement

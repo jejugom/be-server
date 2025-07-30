@@ -16,7 +16,7 @@ public class TimeDepositsDto {
 	private String fin_prdt_cd; //상품코드
 	private String fin_prdt_nm; //상품명
 	private String prdt_feature; //상품특징
-	private List<OptionList> optionList;    // 옵션 목록
+	private List<OptionList> optionList;   // 옵션 목록
 
 	/**
 	 * 예금(timeDeposits) 상품에 해당하는
@@ -24,10 +24,10 @@ public class TimeDepositsDto {
 	 */
 	@Data
 	@AllArgsConstructor
-	@NoArgsConstructor // MyBatis가 객체를 생성할 때 필요
+	@NoArgsConstructor
 	public static class OptionList {
 		private String save_trm;    // 저축 기간 [단위: 개월]
-		private Double intr_rate;    // 금리
-		private Double intr_rate2;    // 최고 우대금리
+		private Double intr_rate;   // 금리
+		private Double intr_rate2;  // 최고 우대금리
 	}
 }
