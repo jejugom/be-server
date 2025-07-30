@@ -3,8 +3,16 @@
 
 <mapper namespace="org.scoula.product.mapper.ProductMapper">
 
+    <!-- 상품 이름 조회 -->
     <select id="findNameByCode" parameterType="string" resultType="string">
         SELECT fin_prdt_nm
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <!-- 상품 카테고리 조회 -->
+    <select id="findCategoryByFinPrdtCd" parameterType="string" resultType="string">
+        SELECT fin_prdt_category
         FROM fin_prdt
         WHERE fin_prdt_cd = #{finPrdtCd}
     </select>

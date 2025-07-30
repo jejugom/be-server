@@ -1,39 +1,41 @@
 package org.scoula.retirement.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
-import org.scoula.asset.service.AssetStatusServiceImpl;
+import org.scoula.product.mapper.ProductMapper;
+import org.scoula.product.service.MortgageLoanService;
 import org.scoula.product.service.ProductsService; // ProductsService 임포트
-import org.scoula.recommend.service.CustomRecommendServiceImpl;
+import org.scoula.product.service.SavingDepositsService;
+import org.scoula.product.service.TimeDepositsService;
 import org.scoula.retirement.dto.RetirementMainResponseDto; // RetirementMainResponseDTO 경로 확인
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.dto.UserInfoDto;
 import org.scoula.user.service.UserService;
-import org.scoula.user.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/retirement")
 public class RetirementController {
 
-	@Autowired
-	private UserService userServiceImpl;
-
-	@Autowired
-	private AssetStatusService assetStatusService;
-
-	// @Autowired
+	private final UserService userServiceImpl;
+	private final AssetStatusService assetStatusService;
+	private final ProductsService productsService;
 	// private CustomRecommendServiceImpl customRecommendService;
-
-	@Autowired
-	private ProductsService productsService; // ProductService 하나만 주입
+	private final TimeDepositsService timeDepositsService;
+	private final SavingDepositsService savingsService;
+	private final MortgageLoanService mortgageLoansService;
+	private final ProductMapper productMapper;
 
 	/**
 	 * 노후 메인 페이지에 필요한 모든 데이터를 반환합니다.
@@ -69,5 +71,29 @@ public class RetirementController {
 
 
 		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * 상품 상세 조회
+	 */
+	@GetMapping("/{finPrdtCd}")
+	public ResponseEntity<?> getProductDetail(@PathVariable String finPrdtCd) {
+		String prdt = productMapper.findNameByCode(finPrdtCd);
+		String category = productMapper.findCategoryByFinPrdtCd(finPrdtCd);
+
+		if (prdt == null) {
+			throw new NoSuchElementException("상품을 찾을 수 없습니다: " + finPrdtCd);
+		}
+
+		switch (category) {
+			case "1": //예금
+				return ResponseEntity.ok(timeDepositsService.getDetail(finPrdtCd));
+			case "2": //적금
+				return ResponseEntity.ok(savingsService.getDetail(finPrdtCd));
+			case "3": //주택담보대출
+				return ResponseEntity.ok(mortgageLoansService.getDetail(finPrdtCd));
+			default:
+				throw new IllegalArgumentException("유효하지 않은 카테고리: " + category);
+		}
 	}
 }
