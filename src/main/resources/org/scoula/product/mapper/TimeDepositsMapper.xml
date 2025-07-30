@@ -18,25 +18,43 @@
         <result property="intr_rate2" column="intr_rate2"/>
     </resultMap>
 
-    <select id="findAllTimeDeposits" resultMap="TimeDepositsDTOMap">
+    <!-- 상세정보에서 쓰일 쿼리문 -->
+    <select id="findTimeDepositByFinPrdtCd" resultType="org.scoula.product.dto.TimeDepositsDetailDto">
         SELECT
-            fp.fin_prdt_cd,
-            fp.fin_prdt_nm,
-            fp.prdt_feature
-        FROM
-            fin_prdt fp
-        WHERE
-            fp.fin_prdt_category = '예금' </select>
+            fin_prdt_cd, fin_prdt_category, fin_prdt_nm, rec_reason,
+            kor_co_nm, prdt_feature, description, join_way, mtrt_int,
+            spcl_cnd, join_deny, join_member, etc_note, max_limit, tendency
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <select id="findDetailOptionByFinPrdtCd"
+            parameterType="string"
+            resultType="org.scoula.product.dto.TimeDepositsDetailDto$DetailOptionList">
+        SELECT
+            save_trm,
+            intr_rate_type_nm,
+            intr_rate,
+            intr_rate2
+        FROM fin_prdt_option
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <!-- 목록에서 쓰일 쿼리문 -->
+    <select id="findAllTimeDeposits" resultMap="TimeDepositsDTOMap">
+        SELECT fp.fin_prdt_cd,
+               fp.fin_prdt_nm,
+               fp.prdt_feature
+        FROM fin_prdt fp
+        WHERE fp.fin_prdt_category = '예금' </select>
 
     <select id="findOptionsByFinPrdtCd" resultMap="OptionListMap">
-        SELECT
-            fpo.save_trm,
-            fpo.intr_rate,
-            fpo.intr_rate2
-        FROM
-            fin_prdt_option fpo
-        WHERE
-            fpo.fin_prdt_cd = #{finPrdtCd}
+        SELECT fpo.save_trm,
+               fpo.intr_rate,
+               fpo.intr_rate2
+        FROM fin_prdt_option fpo
+        WHERE fpo.fin_prdt_cd = #{finPrdtCd}
           AND fpo.intr_rate_type_nm = '단리' </select>
+
 
 </mapper>

@@ -31,6 +31,36 @@
         <!-- lend_rate_avg는 DTO에 없으므로 매핑하지 않습니다. -->
     </resultMap>
 
+    <!-- 상세정보에서 쓰일 쿼리문 -->
+    <select id="findMortgageLoanByFinPrdtCd" resultType="org.scoula.product.dto.MortgageLoanDetailDto">
+        SELECT fin_prdt_cd,
+               fin_prdt_category,
+               kor_co_nm,
+               fin_prdt_nm,
+               rec_reason,
+               prdt_feature,
+               description,
+               join_way,
+               loan_inci_expn,
+               erly_rpay_fee,
+               dly_rate,
+               loan_lmt
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <select id="findDetailOptionByFinPrdtCd"
+            resultType="org.scoula.product.dto.MortgageLoanDetailDto$DetailOptionList">
+        SELECT mrtg_type_nm,
+               rpay_type_nm,
+               lend_rate_type_nm,
+               lend_rate_min,
+               lend_rate_max,
+               lend_rate_avg
+        FROM fin_prdt_option
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
     <!-- 모든 주택담보대출 상품의 기본 정보를 조회하는 쿼리 -->
     <!-- id는 MortgageLoanMapper.java의 findAllMortgageLoans 메서드 이름과 일치해야 합니다. -->
     <select id="findAllMortgageLoans" resultMap="MortgageLoanDTOMap">

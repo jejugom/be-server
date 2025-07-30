@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--
-    *** 중요: 이 namespace는 SavingsDepositsMapper.java 인터페이스의 FQCN과 정확히 일치해야 합니다. ***
--->
 <mapper namespace="org.scoula.product.mapper.SavingsDepositsMapper">
 
     <!-- SavingsDepositsDTO를 위한 ResultMap -->
@@ -26,6 +23,26 @@
         <result property="intr_rate" column="intr_rate"/>
         <result property="intr_rate2" column="intr_rate2"/>
     </resultMap>
+
+    <!-- 상세정보에서 쓰일 쿼리문 -->
+    <select id="findSavingsDepositByFinPrdtCd" resultType="org.scoula.product.dto.SavingsDepositsDetailDto">
+        SELECT
+            fin_prdt_cd, fin_prdt_category, fin_prdt_nm, rec_reason,
+            kor_co_nm, prdt_feature, description, join_way, mtrt_int,
+            spcl_cnd, join_deny, join_member, etc_note, max_limit, tendency
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <select id="findDetailOptionByFinPrdtCd" resultType="org.scoula.product.dto.SavingsDepositsDetailDto$DetailOptionList">
+        SELECT fpo.save_trm,
+               fpo.rsrv_type_nm,
+               fpo.save_trm,
+               fpo.intr_rate,
+               fpo.intr_rate2
+        FROM fin_prdt_option fpo
+        WHERE fpo.fin_prdt_cd = #{finPrdtCd}
+        </select>
 
     <!-- 모든 적금 상품의 기본 정보를 조회하는 쿼리 -->
     <!-- id는 SavingsDepositsMapper.java의 findAllSavingsDeposits 메서드 이름과 일치해야 합니다. -->
