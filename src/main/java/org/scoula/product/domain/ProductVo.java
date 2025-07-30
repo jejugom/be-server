@@ -80,4 +80,10 @@ public class ProductVo {
 
 	/** 자산 비중 (asset_proportion) */
 	private Double assetProportion;
+
+	/** 거래 단위 (lot) */
+	private String lot;
+
+	/** 거래 통화 (currency) */
+	private String currency;
 }

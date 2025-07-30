@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.product.mapper.GoldProductsMapper">
+    <resultMap id="GoldProductDetailMap" type="org.scoula.product.dto.GoldProductDetailDto">
+        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
+        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
+        <result property="prdt_feature" column="prdt_feature"/>
+        <result property="fin_prdt_category" column="fin_prdt_category"/>
+        <result property="kor_co_nm" column="kor_co_nm"/>
+        <result property="description" column="description"/>
+        <result property="join_way" column="join_way"/>
+        <result property="mtrt_int" column="mtrt_int"/>
+        <result property="lot" column="lot"/>
+        <result property="currency" column="currency"/>
+        <result property="join_member" column="join_member"/>
+        <result property="etc_note" column="etc_note"/>
+    </resultMap>
+
+    <resultMap id="GoldProductsMap" type="org.scoula.product.dto.GoldProductsDto">
+        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
+        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
+        <result property="prdt_feature" column="prdt_feature"/>
+    </resultMap>
+
+    <!-- 상세 보기 시 쓰일 쿼리문 -->
+    <select id="findGoldProductByFinPrdtCd" resultMap="GoldProductDetailMap">
+        SELECT
+            fin_prdt_cd, fin_prdt_category, fin_prdt_nm,
+            kor_co_nm, prdt_feature, description, join_way, mtrt_int,
+            lot, currency, join_member, etc_note
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <!-- 목록 보기 시 쓰일 쿼리문 -->
+    <select id="findAllGoldProducts" resultMap="GoldProductsMap">
+        SELECT
+            fin_prdt_cd, fin_prdt_nm, prdt_feature
+        FROM fin_prdt
+        WHERE fin_prdt_category = "4"
+    </select>
+
+
+</mapper>

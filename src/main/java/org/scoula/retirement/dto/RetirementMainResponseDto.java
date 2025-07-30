@@ -3,6 +3,7 @@ package org.scoula.retirement.dto;
 import java.util.List;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
+import org.scoula.product.dto.GoldProductsDto;
 import org.scoula.product.dto.MortgageLoanDto;
 import org.scoula.product.dto.SavingsDepositsDto;
 import org.scoula.product.dto.TimeDepositsDto;
@@ -28,6 +29,7 @@ public class RetirementMainResponseDto {
 	private List<TimeDepositsDto> timeDeposits; //예금
 	private List<SavingsDepositsDto> savingDeposits; //적금
 	private List<MortgageLoanDto> mortgageLoan; //주택담보대출
+	private List<GoldProductsDto> goldProducts; //금상품
 
 	@Data
 	@Builder

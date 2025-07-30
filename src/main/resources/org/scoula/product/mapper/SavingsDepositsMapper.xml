@@ -24,17 +24,58 @@
         <result property="intr_rate2" column="intr_rate2"/>
     </resultMap>
 
+
+    <resultMap id="savingsDepositDetailMap" type="org.scoula.product.dto.SavingsDepositsDetailDto">
+        <result column="fin_prdt_cd" property="fin_prdt_cd"/>
+        <result column="fin_prdt_category" property="fin_prdt_category"/>
+        <result column="fin_prdt_nm" property="fin_prdt_nm"/>
+        <result column="rec_reason" property="rec_reason"/>
+        <result column="kor_co_nm" property="kor_co_nm"/>
+        <result column="prdt_feature" property="prdt_feature"/>
+        <result column="description" property="description"/>
+        <result column="join_way" property="join_way"/>
+        <result column="mtrt_int" property="mtrt_int"/>
+        <result column="spcl_cnd" property="spcl_cnd"/>
+        <result column="join_deny" property="join_deny"/>
+        <result column="join_member" property="join_member"/>
+        <result column="etc_note" property="etc_note"/>
+        <result column="max_limit" property="max_limit"/>
+        <result column="tendency" property="tendency"/>
+
+        <collection property="optionList" ofType="org.scoula.product.dto.SavingsDepositsDetailDto$DetailOptionList"
+                    resultMap="savingsDetailOptionMap"/>
+    </resultMap>
+
+    <resultMap id="savingsDetailOptionMap" type="org.scoula.product.dto.SavingsDepositsDetailDto$DetailOptionList">
+        <result column="save_trm" property="save_trm"/>
+        <result column="rsrv_type_nm" property="rsrv_type_nm"/>
+        <result column="intr_rate_type_nm" property="intr_rate_type_nm"/>
+        <result column="intr_rate" property="intr_rate"/>
+        <result column="intr_rate2" property="intr_rate2"/>
+    </resultMap>
+
     <!-- 상세정보에서 쓰일 쿼리문 -->
-    <select id="findSavingsDepositByFinPrdtCd" resultType="org.scoula.product.dto.SavingsDepositsDetailDto">
-        SELECT
-            fin_prdt_cd, fin_prdt_category, fin_prdt_nm, rec_reason,
-            kor_co_nm, prdt_feature, description, join_way, mtrt_int,
-            spcl_cnd, join_deny, join_member, etc_note, max_limit, tendency
+    <select id="findSavingsDepositByFinPrdtCd" resultMap="savingsDepositDetailMap">
+        SELECT fin_prdt_cd,
+               fin_prdt_category,
+               fin_prdt_nm,
+               rec_reason,
+               kor_co_nm,
+               prdt_feature,
+               description,
+               join_way,
+               mtrt_int,
+               spcl_cnd,
+               join_deny,
+               join_member,
+               etc_note,
+               max_limit,
+               tendency
         FROM fin_prdt
         WHERE fin_prdt_cd = #{finPrdtCd}
     </select>
 
-    <select id="findDetailOptionByFinPrdtCd" resultType="org.scoula.product.dto.SavingsDepositsDetailDto$DetailOptionList">
+    <select id="findDetailOptionByFinPrdtCd" resultMap="savingsDetailOptionMap">
         SELECT fpo.save_trm,
                fpo.rsrv_type_nm,
                fpo.save_trm,
@@ -42,7 +83,7 @@
                fpo.intr_rate2
         FROM fin_prdt_option fpo
         WHERE fpo.fin_prdt_cd = #{finPrdtCd}
-        </select>
+    </select>
 
     <!-- 모든 적금 상품의 기본 정보를 조회하는 쿼리 -->
     <!-- id는 SavingsDepositsMapper.java의 findAllSavingsDeposits 메서드 이름과 일치해야 합니다. -->
@@ -54,7 +95,7 @@
         FROM
         fin_prdt fp
         WHERE
-        fp.fin_prdt_category = '적금' <!-- '적금' 카테고리 상품만 필터링 -->
+        fp.fin_prdt_category = '2' <!-- '적금' 카테고리 상품만 필터링 -->
     </select>
 
     <!-- 특정 적금 상품 코드에 해당하는 옵션 정보를 조회하는 쿼리 -->
