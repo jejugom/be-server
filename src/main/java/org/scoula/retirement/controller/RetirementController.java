@@ -14,6 +14,7 @@ import org.scoula.user.service.UserService;
 import org.scoula.user.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,7 +42,8 @@ public class RetirementController {
 	 * @return RetirementMainResponseDTO를 포함하는 ResponseEntity
 	 */
 	@GetMapping("/main")
-	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(@RequestParam String email) {
+	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(Authentication authentication) {
+		String email = authentication.getName();
 		RetirementMainResponseDto response = new RetirementMainResponseDto();
 
 		// 0. 사용자 정보 조회
