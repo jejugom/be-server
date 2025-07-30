@@ -14,10 +14,10 @@ public class MortgageLoanDto {
 	/**
 	 * 주택담보대출(mortgageLoan) 상품 목록 조회 페이지에서 사용될 DTO입니다.
 	 */
-	private String fin_prdt_cd; //상품코드
-	private String fin_prdt_nm; //상품명
-	private String prdt_feature; //상품특징
-	private List<OptionList> optionListList; //옵션 목록
+	private String fin_prdt_cd;      // 상품코드
+	private String fin_prdt_nm;      // 상품명
+	private String prdt_feature;     // 상품특징
+	private List<OptionList> optionListList; // 옵션 목록
 
 
 	/**
