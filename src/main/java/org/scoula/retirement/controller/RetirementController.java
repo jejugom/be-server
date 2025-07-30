@@ -16,6 +16,7 @@ import org.scoula.user.dto.UserDto;
 import org.scoula.user.dto.UserInfoDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,9 +46,10 @@ public class RetirementController {
 	 * @return RetirementMainResponseDTO를 포함하는 ResponseEntity
 	 */
 	@GetMapping("")
-	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(@RequestParam String email) {
+	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(Authentication authentication) {
 		RetirementMainResponseDto response = new RetirementMainResponseDto();
 
+		String email = authentication.getName();
 		// 0. 사용자 정보 조회
 		UserDto userDto = userServiceImpl.getUser(email);
 		UserInfoDto userInfoDto = UserInfoDto.of(userDto.toVo());
