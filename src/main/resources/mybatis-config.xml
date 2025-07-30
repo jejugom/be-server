@@ -16,6 +16,7 @@
         <package name="org.scoula.faq.domain"/>
         <package name="org.scoula.product.domain"/>
         <package name="org.scoula.recommend.domain"/>
+        <package name="org.scoula.gift.domain"/>
     </typeAliases>
 
     <typeHandlers>
@@ -27,7 +28,7 @@
         <mapper resource="org/scoula/product/mapper/ProductMapper.xml"/>
         <mapper resource="org/scoula/product/mapper/TimeDepositsMapper.xml"/>
         <mapper resource="org/scoula/asset/mapper/AssetStatusMapper.xml"/>
-        <mapper resource="org/scoula/product/mapper/TimeDepositsMapper.xml"/>
+        <mapper resource="org/scoula/gift/mapper/RecipientMapper.xml"/>
     </mappers>
 
 </configuration>
