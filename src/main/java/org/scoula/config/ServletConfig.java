@@ -22,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 	"org.scoula.home.controller",
 	"org.scoula.product.controller",
 	"org.scoula.retirement.controller"
+	"org.scoula.sms.controller", // sms 서비스 추가
 }) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
 public class ServletConfig implements WebMvcConfigurer {
 	@Override
