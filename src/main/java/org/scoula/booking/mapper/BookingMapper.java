@@ -42,6 +42,8 @@ public interface BookingMapper {
 	 */
 	int deleteBooking(String bookingId);
 
+	int deleteByEmail(@Param("email") String email);
+
 	/**
 	 * 특정 지점(branchId), 날짜(date), 시간(time)에 해당하는 예약 건수 조회
 	 * @param branchId 지점 번호
@@ -62,13 +64,11 @@ public interface BookingMapper {
 	/**
 	 * 특정 지점의 현재 날짜와 시간 이후에 예약된 미래 예약 목록 조회
 	 * @param branchId 지점 번호
-	 * @param currentDate 현재 날짜 (java.util.Date)
 	 * @param currentTime 현재 시간 (HH:mm 형식)
 	 * @return 미래 예약 VO 리스트
 	 */
 	List<BookingVo> findFutureByBranch(
 		@Param("branchId") int branchId,
-		@Param("currentDate") Date currentDate,
 		@Param("currentTime") String currentTime
 	);
 
@@ -79,4 +79,6 @@ public interface BookingMapper {
 	 * @return 예약 VO (존재하지 않으면 null 반환)
 	 */
 	BookingVo findByEmailAndFinPrdtCode(@Param("email") String email, @Param("finPrdtCode") String finPrdtCode);
+
+	List<BookingVo> findUpcomingByUserEmail(String email);
 }

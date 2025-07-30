@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = "Booking", description = "예약 관련 API")
+@Api(tags = "예약 API", description = "예약 관련 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/bookings")

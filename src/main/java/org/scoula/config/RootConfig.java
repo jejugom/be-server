@@ -23,7 +23,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Configuration
 @PropertySource({"classpath:/application.properties"})
-@Import({MongoConfig.class})
 @MapperScan(basePackages = {
 	"org.scoula.user.mapper",
 	"org.scoula.asset.mapper",
@@ -47,8 +46,9 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.product.service",
 	"org.scoula.View.home.service",
 	"org.scoula.auth.service",
-	"org.scoula.product.repository",
-	"org.scoula.View.preference.service" //
+	"org.scoula.product.service",
+	"org.scoula.sms.service",
+	"org.scoula.View.preference.service"
 })
 @Log4j2
 @EnableTransactionManagement

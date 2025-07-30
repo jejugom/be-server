@@ -35,6 +35,15 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
+	 * 요청하는 상품이 없거나 상품 테이블이 비었을 때 요청을 처리하는 핸들러
+	 */
+	@ExceptionHandler(ProductNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleProductNotFound(ProductNotFoundException ex) {
+		ErrorResponse error = new ErrorResponse("NOT_FOUND", ex.getMessage());
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	}
+
+	/**
 	 * 잘못된 파라미터 타입
 	 * @param error 에러 객체
 	 * */

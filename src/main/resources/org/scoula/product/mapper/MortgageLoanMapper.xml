@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    *** 중요: 이 namespace는 MortgageLoanMapper.java 인터페이스의 FQCN과 정확히 일치해야 합니다. ***
+-->
+<mapper namespace="org.scoula.product.mapper.MortgageLoanMapper">
+
+    <!-- MortgageLoanDTO를 위한 ResultMap -->
+    <resultMap id="MortgageLoanDTOMap" type="org.scoula.product.dto.MortgageLoanDto">
+        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
+        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
+        <result property="prdt_feature" column="prdt_feature"/>
+        <!--
+            optionListList는 별도의 쿼리를 통해 가져오도록 설정합니다.
+            MortgageLoanDTO의 필드명에 맞춰 'optionListList'로 변경합니다.
+        -->
+        <collection property="optionListList" ofType="org.scoula.product.dto.MortgageLoanDto$OptionList"
+                    select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
+    </resultMap>
+
+    <!-- OptionList Inner Class를 위한 ResultMap -->
+    <resultMap id="OptionListMap" type="org.scoula.product.dto.MortgageLoanDto$OptionList">
+        <result property="mrtg_type_nm" column="mrtg_type_nm"/>
+        <result property="rpay_type_nm" column="rpay_type_nm"/>
+        <result property="lend_rate_type_nm" column="lend_rate_type_nm"/>
+        <!-- DB는 DOUBLE 타입이지만 DTO는 String이므로, MyBatis가 자동으로 변환 시도 -->
+        <result property="lend_rate_min" column="lend_rate_min"/>
+        <result property="lend_rate_max" column="lend_rate_max"/>
+        <!-- lend_rate_avg는 DTO에 없으므로 매핑하지 않습니다. -->
+    </resultMap>
+
+    <!-- 상세정보에서 쓰일 쿼리문 -->
+    <select id="findMortgageLoanByFinPrdtCd" resultType="org.scoula.product.dto.MortgageLoanDetailDto">
+        SELECT fin_prdt_cd,
+               fin_prdt_category,
+               kor_co_nm,
+               fin_prdt_nm,
+               rec_reason,
+               prdt_feature,
+               description,
+               join_way,
+               loan_inci_expn,
+               erly_rpay_fee,
+               dly_rate,
+               loan_lmt
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <select id="findDetailOptionByFinPrdtCd"
+            resultType="org.scoula.product.dto.MortgageLoanDetailDto$DetailOptionList">
+        SELECT mrtg_type_nm,
+               rpay_type_nm,
+               lend_rate_type_nm,
+               lend_rate_min,
+               lend_rate_max,
+               lend_rate_avg
+        FROM fin_prdt_option
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <!-- 모든 주택담보대출 상품의 기본 정보를 조회하는 쿼리 -->
+    <!-- id는 MortgageLoanMapper.java의 findAllMortgageLoans 메서드 이름과 일치해야 합니다. -->
+    <select id="findAllMortgageLoans" resultMap="MortgageLoanDTOMap">
+        SELECT
+        fp.fin_prdt_cd,
+        fp.fin_prdt_nm,
+        fp.prdt_feature
+        FROM
+        fin_prdt fp
+        WHERE
+        fp.fin_prdt_category = '주택담보대출' <!-- '주택담보대출' 카테고리 상품만 필터링 -->
+    </select>
+
+    <!-- 특정 주택담보대출 상품 코드에 해당하는 옵션 정보를 조회하는 쿼리 -->
+    <!-- id는 MortgageLoanMapper.java의 findOptionsByFinPrdtCd 메서드 이름과 일치해야 합니다. -->
+    <select id="findOptionsByFinPrdtCd" resultMap="OptionListMap">
+        SELECT
+        fpo.mrtg_type_nm,
+        fpo.rpay_type_nm,
+        fpo.lend_rate_type_nm,
+        fpo.lend_rate_min,
+        fpo.lend_rate_max
+        <!-- fpo.lend_rate_avg는 DTO에 없으므로 가져오지 않습니다. -->
+        FROM
+        fin_prdt_option fpo
+        WHERE
+        fpo.fin_prdt_cd = #{finPrdtCd}
+        <!--
+            주택담보대출 상품의 옵션은 mrtg_type_nm (담보유형),
+            rpay_type_nm (대출상환유형), lend_rate_type_nm (대출금리유형)에 따라
+            여러 개가 있을 수 있습니다. 필요에 따라 특정 유형만 가져오도록 조건을 추가할 수 있습니다.
+            예: AND fpo.mrtg_type_nm = '아파트'
+            예: AND fpo.rpay_type_nm = '분할상환방식'
+            예: AND fpo.lend_rate_type_nm = '변동금리'
+        -->
+    </select>
+
+</mapper>

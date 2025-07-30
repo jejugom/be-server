@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CustomRecommendVo {
-	private String prdtId;
-	private String email;
-	private String recReason;
-	private String segment;
+	private String fin_prdt_cd;
+	private String rate;
 }

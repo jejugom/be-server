@@ -25,6 +25,9 @@
     <mappers>
         <mapper resource="org/scoula/user/mapper/UserMapper.xml"/>
         <mapper resource="org/scoula/product/mapper/ProductMapper.xml"/>
+        <mapper resource="org/scoula/product/mapper/TimeDepositsMapper.xml"/>
+        <mapper resource="org/scoula/asset/mapper/AssetStatusMapper.xml"/>
+        <mapper resource="org/scoula/product/mapper/TimeDepositsMapper.xml"/>
     </mappers>
 
 </configuration>

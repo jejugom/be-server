@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.product.mapper.SavingsDepositsMapper">
+
+    <!-- SavingsDepositsDTO를 위한 ResultMap -->
+    <resultMap id="SavingsDepositsDTOMap" type="org.scoula.product.dto.SavingsDepositsDto">
+        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
+        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
+        <result property="prdt_feature" column="prdt_feature"/>
+        <!--
+            optionList는 별도의 쿼리를 통해 가져오도록 설정합니다.
+            SavingsDepositsDTO의 필드명에 맞춰 'optionList'로 변경합니다.
+        -->
+        <collection property="optionList" ofType="org.scoula.product.dto.SavingsDepositsDto$OptionList"
+                    select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
+    </resultMap>
+
+    <!-- OptionList Inner Class를 위한 ResultMap -->
+    <resultMap id="OptionListMap" type="org.scoula.product.dto.SavingsDepositsDto$OptionList">
+        <result property="save_trm" column="save_trm"/>
+        <result property="intr_rate" column="intr_rate"/>
+        <result property="intr_rate2" column="intr_rate2"/>
+    </resultMap>
+
+    <!-- 상세정보에서 쓰일 쿼리문 -->
+    <select id="findSavingsDepositByFinPrdtCd" resultType="org.scoula.product.dto.SavingsDepositsDetailDto">
+        SELECT
+            fin_prdt_cd, fin_prdt_category, fin_prdt_nm, rec_reason,
+            kor_co_nm, prdt_feature, description, join_way, mtrt_int,
+            spcl_cnd, join_deny, join_member, etc_note, max_limit, tendency
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <select id="findDetailOptionByFinPrdtCd" resultType="org.scoula.product.dto.SavingsDepositsDetailDto$DetailOptionList">
+        SELECT fpo.save_trm,
+               fpo.rsrv_type_nm,
+               fpo.save_trm,
+               fpo.intr_rate,
+               fpo.intr_rate2
+        FROM fin_prdt_option fpo
+        WHERE fpo.fin_prdt_cd = #{finPrdtCd}
+        </select>
+
+    <!-- 모든 적금 상품의 기본 정보를 조회하는 쿼리 -->
+    <!-- id는 SavingsDepositsMapper.java의 findAllSavingsDeposits 메서드 이름과 일치해야 합니다. -->
+    <select id="findAllSavingsDeposits" resultMap="SavingsDepositsDTOMap">
+        SELECT
+        fp.fin_prdt_cd,
+        fp.fin_prdt_nm,
+        fp.prdt_feature
+        FROM
+        fin_prdt fp
+        WHERE
+        fp.fin_prdt_category = '적금' <!-- '적금' 카테고리 상품만 필터링 -->
+    </select>
+
+    <!-- 특정 적금 상품 코드에 해당하는 옵션 정보를 조회하는 쿼리 -->
+    <!-- id는 SavingsDepositsMapper.java의 findOptionsByFinPrdtCd 메서드 이름과 일치해야 합니다. -->
+    <select id="findOptionsByFinPrdtCd" resultMap="OptionListMap">
+        SELECT
+        fpo.save_trm,
+        fpo.intr_rate,
+        fpo.intr_rate2
+        FROM
+        fin_prdt_option fpo
+        WHERE
+        fpo.fin_prdt_cd = #{finPrdtCd}
+        <!--
+            적금 상품의 옵션은 intr_rate_type_nm (저축 금리 유형명)과
+            rsrv_type_nm (적립 유형명)에 따라 여러 개가 있을 수 있습니다.
+            필요에 따라 특정 유형만 가져오도록 조건을 추가할 수 있습니다.
+            예: AND fpo.intr_rate_type_nm = '단리'
+            예: AND fpo.rsrv_type_nm = '정액적립식'
+        -->
+    </select>
+
+</mapper>

@@ -8,8 +8,4 @@ public interface CustomRecommendService {
 	List<CustomRecommendDto> getCustomRecommendsByEmail(String email);
 
 	void addCustomRecommend(CustomRecommendDto customRecommendDto);
-
-	void updateCustomRecommend(CustomRecommendDto customRecommendDto);
-
-	void deleteCustomRecommend(String email, String prdtId);
 }
