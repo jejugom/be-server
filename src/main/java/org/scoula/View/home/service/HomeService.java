@@ -1,10 +1,10 @@
-package org.scoula.home.service;
+package org.scoula.View.home.service;
 
 import java.util.List;
 
-import org.scoula.home.dto.HomeResponseDto;
-import org.scoula.home.dto.RecommendationDto;
-import org.scoula.home.dto.UserSummary;
+import org.scoula.View.home.dto.HomeResponseDto;
+import org.scoula.View.home.dto.RecommendationDto;
+import org.scoula.View.home.dto.UserSummary;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

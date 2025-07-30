@@ -1,4 +1,4 @@
-package org.scoula.preference.dto;
+package org.scoula.View.preference.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

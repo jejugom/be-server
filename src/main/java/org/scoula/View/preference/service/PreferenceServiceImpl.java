@@ -1,6 +1,6 @@
-package org.scoula.preference.service;
+package org.scoula.View.preference.service;
 
-import org.scoula.preference.dto.PreferenceRequestDto;
+import org.scoula.View.preference.dto.PreferenceRequestDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;

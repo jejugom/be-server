@@ -1,7 +1,7 @@
-package org.scoula.preference.controller;
+package org.scoula.View.preference.controller;
 
-import org.scoula.preference.dto.PreferenceRequestDto;
-import org.scoula.preference.service.PreferenceService;
+import org.scoula.View.preference.service.PreferenceService;
+import org.scoula.View.preference.dto.PreferenceRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
