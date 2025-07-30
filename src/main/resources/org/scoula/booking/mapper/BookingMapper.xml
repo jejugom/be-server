@@ -11,6 +11,15 @@
         <result property="docInfo" column="doc_info" typeHandler="org.scoula.booking.config.JsonTypeHandler"/>
     </resultMap>
 
+    <select id="findUpcomingByUserEmail" resultMap="bookingMap">
+        SELECT *
+        FROM booking
+        WHERE email = #{email}
+          AND STR_TO_DATE(CONCAT(`date`, ' ', `time`), '%Y-%m-%d %H:%i') <![CDATA[ >= ]]> NOW()
+        ORDER BY `date` ASC, `time` ASC
+    </select>
+
+
     <!-- 2. ID로 예약을 조회하는 select 쿼리 추가 -->
     <select id="findById" resultMap="bookingMap">
         SELECT *

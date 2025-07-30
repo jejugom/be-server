@@ -25,10 +25,10 @@ public class SavingsDepositsDto {
 	 */
 	@Data
 	@AllArgsConstructor
-	@NoArgsConstructor // MyBatis가 객체를 생성할 때 필요
+	@NoArgsConstructor
 	public static class OptionList {
-		private String save_trm;      // 저축 기간 (개월)
-		private Double intr_rate;     // 금리
-		private Double intr_rate2;    // 최고 우대금리
+		private String save_trm;
+		private Double intr_rate;
+		private Double intr_rate2;
 	}
 }

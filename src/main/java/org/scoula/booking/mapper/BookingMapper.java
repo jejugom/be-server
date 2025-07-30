@@ -79,4 +79,6 @@ public interface BookingMapper {
 	 * @return 예약 VO (존재하지 않으면 null 반환)
 	 */
 	BookingVo findByEmailAndFinPrdtCode(@Param("email") String email, @Param("finPrdtCode") String finPrdtCode);
+
+	List<BookingVo> findUpcomingByUserEmail(String email);
 }

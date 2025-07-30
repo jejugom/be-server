@@ -1,7 +1,7 @@
-package org.scoula.home.controller;
+package org.scoula.View.home.controller;
 
-import org.scoula.home.dto.HomeResponseDto;
-import org.scoula.home.service.HomeService;
+import org.scoula.View.home.dto.HomeResponseDto;
+import org.scoula.View.home.service.HomeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
