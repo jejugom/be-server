@@ -22,7 +22,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.log4j.Log4j2;
 
 @Configuration
-@PropertySource({"classpath:/application.properties"})
+@PropertySource({"classpath:/application.properties", "classpath:/application-local.properties"})
 @MapperScan(basePackages = {
 	"org.scoula.user.mapper",
 	"org.scoula.asset.mapper",
@@ -47,8 +47,7 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.home.service",
 	"org.scoula.auth.service",
 	"org.scoula.product.service",
-	"org.scoula.sms.service",
-	"org.scoula.sms.util"
+	"org.scoula.sms.service"
 })
 @Log4j2
 @EnableTransactionManagement
