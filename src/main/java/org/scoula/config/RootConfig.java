@@ -46,6 +46,7 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.home.service",
 	"org.scoula.auth.service",
 	"org.scoula.product.service",
+	"org.scoula.sms.service"
 })
 @Log4j2
 @EnableTransactionManagement

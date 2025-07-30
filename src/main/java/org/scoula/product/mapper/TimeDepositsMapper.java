@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.scoula.product.dto.TimeDepositsDetailDto;
-import org.scoula.product.dto.TimeDepositsDetailDto.DetailOptionList;
 import org.scoula.product.dto.TimeDepositsDto;
 import org.scoula.product.dto.TimeDepositsDto.OptionList;
 

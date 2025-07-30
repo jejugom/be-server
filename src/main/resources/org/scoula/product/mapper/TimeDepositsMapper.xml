@@ -18,24 +18,63 @@
         <result property="intr_rate2" column="intr_rate2"/>
     </resultMap>
 
+    <resultMap id="timeDepositDetailMap" type="org.scoula.product.dto.TimeDepositsDetailDto">
+        <result column="fin_prdt_cd" property="fin_prdt_cd"/>
+        <result column="fin_prdt_category" property="fin_prdt_category"/>
+        <result column="fin_prdt_nm" property="fin_prdt_nm"/>
+        <result column="rec_reason" property="rec_reason"/>
+        <result column="kor_co_nm" property="kor_co_nm"/>
+        <result column="prdt_feature" property="prdt_feature"/>
+        <result column="description" property="description"/>
+        <result column="join_way" property="join_way"/>
+        <result column="mtrt_int" property="mtrt_int"/>
+        <result column="spcl_cnd" property="spcl_cnd"/>
+        <result column="join_deny" property="join_deny"/>
+        <result column="join_member" property="join_member"/>
+        <result column="etc_note" property="etc_note"/>
+        <result column="max_limit" property="max_limit"/>
+        <result column="tendency" property="tendency"/>
+
+        <collection property="optionList" ofType="org.scoula.product.dto.TimeDepositsDetailDto$DetailOptionList"
+                    resultMap="detailOptionMap"/>
+    </resultMap>
+
+    <resultMap id="detailOptionMap" type="org.scoula.product.dto.TimeDepositsDetailDto$DetailOptionList">
+        <result column="save_trm" property="save_trm"/>
+        <result column="intr_rate_type_nm" property="intr_rate_type_nm"/>
+        <result column="intr_rate" property="intr_rate"/>
+        <result column="intr_rate2" property="intr_rate2"/>
+    </resultMap>
+
+
     <!-- 상세정보에서 쓰일 쿼리문 -->
-    <select id="findTimeDepositByFinPrdtCd" resultType="org.scoula.product.dto.TimeDepositsDetailDto">
-        SELECT
-            fin_prdt_cd, fin_prdt_category, fin_prdt_nm, rec_reason,
-            kor_co_nm, prdt_feature, description, join_way, mtrt_int,
-            spcl_cnd, join_deny, join_member, etc_note, max_limit, tendency
+    <select id="findTimeDepositByFinPrdtCd" resultMap="timeDepositDetailMap">
+        SELECT fin_prdt_cd,
+               fin_prdt_category,
+               fin_prdt_nm,
+               rec_reason,
+               kor_co_nm,
+               prdt_feature,
+               description,
+               join_way,
+               mtrt_int,
+               spcl_cnd,
+               join_deny,
+               join_member,
+               etc_note,
+               max_limit,
+               tendency
         FROM fin_prdt
         WHERE fin_prdt_cd = #{finPrdtCd}
     </select>
 
     <select id="findDetailOptionByFinPrdtCd"
             parameterType="string"
-            resultType="org.scoula.product.dto.TimeDepositsDetailDto$DetailOptionList">
-        SELECT
-            save_trm,
-            intr_rate_type_nm,
-            intr_rate,
-            intr_rate2
+            resultMap="detailOptionMap">
+        SELECT save_trm,
+               intr_rate_type_nm,
+               intr_rate,
+               intr_rate2
         FROM fin_prdt_option
         WHERE fin_prdt_cd = #{finPrdtCd}
     </select>
@@ -46,7 +85,7 @@
                fp.fin_prdt_nm,
                fp.prdt_feature
         FROM fin_prdt fp
-        WHERE fp.fin_prdt_category = '예금' </select>
+        WHERE fp.fin_prdt_category = '1' </select>
 
     <select id="findOptionsByFinPrdtCd" resultMap="OptionListMap">
         SELECT fpo.save_trm,
@@ -54,7 +93,7 @@
                fpo.intr_rate2
         FROM fin_prdt_option fpo
         WHERE fpo.fin_prdt_cd = #{finPrdtCd}
-          AND fpo.intr_rate_type_nm = '단리' </select>
+    </select>
 
 
 </mapper>

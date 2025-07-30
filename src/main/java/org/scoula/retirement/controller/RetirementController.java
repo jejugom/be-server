@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.product.mapper.ProductMapper;
+import org.scoula.product.service.GoldProductService;
 import org.scoula.product.service.MortgageLoanService;
 import org.scoula.product.service.ProductsService; // ProductsService 임포트
 import org.scoula.product.service.SavingDepositsService;
@@ -25,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/retirement")
+@RequestMapping("/api/retirement")
 public class RetirementController {
 
 	private final UserService userServiceImpl;
@@ -35,6 +36,7 @@ public class RetirementController {
 	private final TimeDepositsService timeDepositsService;
 	private final SavingDepositsService savingsService;
 	private final MortgageLoanService mortgageLoansService;
+	private final GoldProductService goldProductService;
 	private final ProductMapper productMapper;
 
 	/**
@@ -42,7 +44,7 @@ public class RetirementController {
 	 * 자산 현황, 맞춤 상품, 전체 금융 상품 (예금, 적금, 주택담보대출)을 포함합니다.
 	 * @return RetirementMainResponseDTO를 포함하는 ResponseEntity
 	 */
-	@GetMapping("/main")
+	@GetMapping("")
 	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(@RequestParam String email) {
 		RetirementMainResponseDto response = new RetirementMainResponseDto();
 
@@ -68,6 +70,7 @@ public class RetirementController {
 		response.setTimeDeposits(productsService.getAllTimeDeposits());
 		response.setSavingDeposits(productsService.getAllSavingsDeposits());
 		response.setMortgageLoan(productsService.getAllMortgageLoans());
+		response.setGoldProducts(productsService.getAllGoldProducts());
 
 
 		return ResponseEntity.ok(response);
@@ -92,6 +95,9 @@ public class RetirementController {
 				return ResponseEntity.ok(savingsService.getDetail(finPrdtCd));
 			case "3": //주택담보대출
 				return ResponseEntity.ok(mortgageLoansService.getDetail(finPrdtCd));
+			case "4": //금
+				return ResponseEntity.ok(goldProductService.getDetail(finPrdtCd));
+			// case "5": //펀드
 			default:
 				throw new IllegalArgumentException("유효하지 않은 카테고리: " + category);
 		}
