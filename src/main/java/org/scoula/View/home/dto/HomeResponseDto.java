@@ -1,4 +1,4 @@
-package org.scoula.home.dto;
+package org.scoula.View.home.dto;
 
 import java.util.List;
 

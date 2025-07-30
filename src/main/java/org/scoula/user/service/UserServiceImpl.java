@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.mapper.AssetStatusMapper;
-import org.scoula.asset.service.AssetStatusService;
 import org.scoula.auth.mapper.RefreshTokenMapper;
 import org.scoula.booking.domain.BookingVo;
 import org.scoula.booking.dto.BookingDto;

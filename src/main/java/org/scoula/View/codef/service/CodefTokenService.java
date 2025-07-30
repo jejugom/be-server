@@ -1,6 +1,5 @@
-package org.scoula.codef.service;
+package org.scoula.View.codef.service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +8,10 @@ import javax.annotation.PostConstruct;
 
 
 import org.scoula.asset.dto.AssetStatusRequestDto;
-import org.scoula.asset.dto.AssetStatusResponseDto;
 
 import org.scoula.asset.service.AssetStatusService;
-import org.scoula.codef.dto.ConnectedIdRequestDto;
-import org.scoula.codef.util.CodefApiClient;
+import org.scoula.View.codef.dto.ConnectedIdRequestDto;
+import org.scoula.View.codef.util.CodefApiClient;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;

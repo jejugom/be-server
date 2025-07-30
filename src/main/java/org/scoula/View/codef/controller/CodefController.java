@@ -1,9 +1,9 @@
-package org.scoula.codef.controller;
+package org.scoula.View.codef.controller;
 
 import java.util.Map;
 
-import org.scoula.codef.dto.ConnectedIdRequestDto;
-import org.scoula.codef.service.CodefTokenService;
+import org.scoula.View.codef.dto.ConnectedIdRequestDto;
+import org.scoula.View.codef.service.CodefTokenService;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
