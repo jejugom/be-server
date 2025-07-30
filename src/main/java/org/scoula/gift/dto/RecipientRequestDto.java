@@ -1,6 +1,7 @@
 package org.scoula.gift.dto;
 
-import java.time.LocalDate;
+import java.util.Date;
+
 import org.scoula.gift.domain.RecipientVo;
 
 import lombok.AllArgsConstructor;
@@ -14,17 +15,12 @@ public class RecipientRequestDto {
 
 	private String relationship;
 	private String recipientName;
-	private LocalDate birthDate;      // 생년월일 (java.time.LocalDate)
+	private Date birthDate;           // 생년월일 (java.util.Date)
 	private Boolean isMarried;
 	private Boolean hasPriorGift;
 	private Long priorGiftAmount;
 	private String giftTaxPayer;
 
-	/**
-	 * DTO를 VO로 변환하는 메서드.
-	 * @param email 현재 로그인한 사용자의 이메일
-	 * @return RecipientVo 객체
-	 */
 	public RecipientVo toVo(String email) {
 		return new RecipientVo(
 			null, // recipientId는 DB에서 생성되므로 null

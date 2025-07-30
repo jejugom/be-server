@@ -1,7 +1,5 @@
 package org.scoula.gift.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecipientListResponseDto {
-	private List<RecipientResponseDto> recipients;
-	private int totalCount;
+public class RecipientIdResponseDto {
+	private Integer recipientId;
 }

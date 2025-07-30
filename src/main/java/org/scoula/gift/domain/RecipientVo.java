@@ -1,6 +1,7 @@
 package org.scoula.gift.domain;
 
-import java.time.LocalDate;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class RecipientVo {
 	private String email;             // 사용자 이메일 (FK)
 	private String relationship;      // 관계
 	private String recipientName;     // 수증자 이름
-	private LocalDate birthDate;      // 생년월일
+	private Date birthDate;           // 생년월일 (java.util.Date)
 	private Boolean isMarried;        // 결혼 여부
 	private Boolean hasPriorGift;     // 사전 증여 여부
 	private Long priorGiftAmount;     // 사전 증여 가액

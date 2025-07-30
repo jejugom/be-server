@@ -1,5 +1,6 @@
 package org.scoula.gift.service;
 
+import org.scoula.gift.dto.GiftPageResponseDto;
 import org.scoula.gift.dto.RecipientListResponseDto;
 import org.scoula.gift.dto.RecipientRequestDto;
 import org.scoula.gift.dto.RecipientResponseDto;
@@ -19,4 +20,6 @@ public interface RecipientService {
 
 	// 수증자 정보 삭제
 	boolean deleteRecipient(Integer recipientId, String email);
+
+	GiftPageResponseDto getGiftPageData(String email);
 }

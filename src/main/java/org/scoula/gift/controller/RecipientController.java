@@ -1,6 +1,7 @@
 package org.scoula.gift.controller;
 
-import org.scoula.gift.dto.RecipientListResponseDto;
+import org.scoula.gift.dto.GiftPageResponseDto;
+import org.scoula.gift.dto.RecipientIdResponseDto;
 import org.scoula.gift.dto.RecipientRequestDto;
 import org.scoula.gift.dto.RecipientResponseDto;
 import org.scoula.gift.service.RecipientService;
@@ -16,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// =================================================================
-// 1. Controller 계층
-// =================================================================
 @RestController
 @RequestMapping("/api/gift")
 public class RecipientController {
@@ -37,13 +35,20 @@ public class RecipientController {
 	 * @return 생성된 수증자 정보
 	 */
 	@PostMapping
-	public ResponseEntity<RecipientResponseDto> createRecipient(
+	public ResponseEntity<RecipientIdResponseDto> createRecipient(
 		@RequestBody RecipientRequestDto requestDto,
 		Authentication authentication) {
 
 		String email = authentication.getName();
-		RecipientResponseDto responseDto = recipientService.createRecipient(requestDto, email);
-		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+
+		// 1. Service는 여전히 전체 정보가 담긴 DTO를 반환합니다. (내부 로직은 변경 없음)
+		RecipientResponseDto fullResponseDto = recipientService.createRecipient(requestDto, email);
+
+		// 2. 응답에 사용할 ID 전용 DTO를 생성합니다.
+		RecipientIdResponseDto idResponse = new RecipientIdResponseDto(fullResponseDto.getRecipientId());
+
+		// 3. 201 Created 상태 코드와 함께, ID가 담긴 DTO를 body에 실어 반환합니다.
+		return ResponseEntity.status(HttpStatus.CREATED).body(idResponse);
 	}
 
 	/**
@@ -52,10 +57,11 @@ public class RecipientController {
 	 * @return 수증자 목록
 	 */
 	@GetMapping
-	public ResponseEntity<RecipientListResponseDto> getRecipients(Authentication authentication) {
+	public ResponseEntity<GiftPageResponseDto> getRecipients(Authentication authentication) {
 		String email = authentication.getName();
-		RecipientListResponseDto listResponseDto = recipientService.findRecipientsByEmail(email);
-		return ResponseEntity.ok(listResponseDto);
+		// 새로 만든 서비스 메서드 호출
+		GiftPageResponseDto responseDto = recipientService.getGiftPageData(email);
+		return ResponseEntity.ok(responseDto);
 	}
 
 	/**
@@ -94,7 +100,7 @@ public class RecipientController {
 		String email = authentication.getName();
 		RecipientResponseDto updatedDto = recipientService.updateRecipient(recipientId, requestDto, email);
 		if (updatedDto != null) {
-			return ResponseEntity.ok(updatedDto);
+			return ResponseEntity.noContent().build();
 		} else {
 			// 수정할 대상이 없거나 권한이 없는 경우
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
