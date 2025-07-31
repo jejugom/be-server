@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "ReservedSlotsResponseDto", description = "예약된 슬롯 목록을 날짜별로 반환하는 DTO")
+@ApiModel(value = "예약 확인 응답 DTO", description = "예약 존재 여부 및 상세 정보를 포함하는 응답 데이터")
 public class ReservedSlotsResponseDto {
 
 	@ApiModelProperty(
