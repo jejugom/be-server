@@ -1,7 +1,10 @@
 package org.scoula.product.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.scoula.product.domain.ProductVo;
 
 @Mapper
 public interface ProductMapper {
@@ -19,4 +22,5 @@ public interface ProductMapper {
 	 * @return String 상품 카테고리
 	 */
 	String findCategoryByFinPrdtCd(String finPrdtCd);
+	List<ProductVo> getAllProduct();
 }

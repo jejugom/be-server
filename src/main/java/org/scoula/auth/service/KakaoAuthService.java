@@ -176,8 +176,8 @@ public class KakaoAuthService {
 			.filename2(null)
 			.martialStatus(null)
 			.incomeRange(null)
-			.assetProportion(null)
-			.tendency(null)
+			.assetProportion(0.0)
+			.tendency(0.0)
 			.segment(null)
 			.asset(0L)
 			.build();

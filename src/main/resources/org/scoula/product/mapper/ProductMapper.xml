@@ -16,5 +16,8 @@
         FROM fin_prdt
         WHERE fin_prdt_cd = #{finPrdtCd}
     </select>
+    <select id="getAllProduct" resultType="org.scoula.product.domain.ProductVo">
+        SELECT * FROM fin_prdt;
+    </select>
 
 </mapper>
