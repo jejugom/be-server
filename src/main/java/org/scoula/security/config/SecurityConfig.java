@@ -57,14 +57,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				"/api/home",
 				"/auth/kakao",
 				"/auth/kakao/callback",
-				"/api/retirement",
-				"/api/sms/test" // SMS API 경로  임시 추가 - 로그인 구현 후 제거
+				"/api/retirement"
 			).permitAll()
 			.antMatchers(HttpMethod.POST,
 				"/api/user/join",
 				"/auth/kakao",
-				"/auth/refresh",
-				"/api/sms/send" // SMS API 경로  임시 추가 - 로그인 구현 후 제거
+				"/auth/refresh"
 			).permitAll()
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.anyRequest().authenticated();
