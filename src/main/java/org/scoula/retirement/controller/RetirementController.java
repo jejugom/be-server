@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.product.mapper.ProductMapper;
+import org.scoula.product.service.FundProductService;
 import org.scoula.product.service.GoldProductService;
 import org.scoula.product.service.MortgageLoanService;
 import org.scoula.product.service.ProductsService; // ProductsService 임포트
@@ -38,6 +39,7 @@ public class RetirementController {
 	private final SavingDepositsService savingsService;
 	private final MortgageLoanService mortgageLoansService;
 	private final GoldProductService goldProductService;
+	private final FundProductService fundProductService;
 	private final ProductMapper productMapper;
 
 	/**
@@ -73,6 +75,7 @@ public class RetirementController {
 		response.setSavingsDeposits(productsService.getAllSavingsDeposits());
 		response.setMortgageLoan(productsService.getAllMortgageLoans());
 		response.setGoldProducts(productsService.getAllGoldProducts());
+		response.setFundProducts(productsService.getAllFundProducts());
 
 		return ResponseEntity.ok(response);
 	}
@@ -98,7 +101,8 @@ public class RetirementController {
 				return ResponseEntity.ok(mortgageLoansService.getDetail(finPrdtCd));
 			case "4": //금
 				return ResponseEntity.ok(goldProductService.getDetail(finPrdtCd));
-			// case "5": //펀드
+			case "5": //펀드
+				return ResponseEntity.ok(fundProductService.getDetail(finPrdtCd));
 			default:
 				throw new IllegalArgumentException("유효하지 않은 카테고리: " + category);
 		}
