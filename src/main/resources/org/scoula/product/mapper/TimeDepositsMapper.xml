@@ -4,46 +4,53 @@
 
 <mapper namespace="org.scoula.product.mapper.TimeDepositsMapper">
 
+    <!-- 정기예금 리스트용 ResultMap -->
     <resultMap id="TimeDepositsDTOMap" type="org.scoula.product.dto.TimeDepositsDto">
-        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
-        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
-        <result property="prdt_feature" column="prdt_feature"/>
+        <id property="finPrdtCd" column="fin_prdt_cd"/> <!-- 상품 코드 -->
+        <result property="finPrdtNm" column="fin_prdt_nm"/> <!-- 상품명 -->
+        <result property="prdtFeature" column="prdt_feature"/> <!-- 상품 특성 -->
+
+        <!-- 옵션 리스트는 별도 쿼리로 조회 -->
         <collection property="optionList" ofType="org.scoula.product.dto.TimeDepositsDto$OptionList"
                     select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
     </resultMap>
 
+    <!-- 정기예금 옵션 리스트용 ResultMap -->
     <resultMap id="OptionListMap" type="org.scoula.product.dto.TimeDepositsDto$OptionList">
-        <result property="save_trm" column="save_trm"/>
-        <result property="intr_rate" column="intr_rate"/>
-        <result property="intr_rate2" column="intr_rate2"/>
+        <result property="saveTrm" column="save_trm"/> <!-- 저축 기간 -->
+        <result property="intrRate" column="intr_rate"/> <!-- 기본 금리 -->
+        <result property="intrRate2" column="intr_rate2"/> <!-- 최고 금리 -->
     </resultMap>
 
+    <!-- 정기예금 상세조회용 ResultMap -->
     <resultMap id="timeDepositDetailMap" type="org.scoula.product.dto.TimeDepositsDetailDto">
-        <result column="fin_prdt_cd" property="fin_prdt_cd"/>
-        <result column="fin_prdt_category" property="fin_prdt_category"/>
-        <result column="fin_prdt_nm" property="fin_prdt_nm"/>
-        <result column="rec_reason" property="rec_reason"/>
-        <result column="kor_co_nm" property="kor_co_nm"/>
-        <result column="prdt_feature" property="prdt_feature"/>
-        <result column="description" property="description"/>
-        <result column="join_way" property="join_way"/>
-        <result column="mtrt_int" property="mtrt_int"/>
-        <result column="spcl_cnd" property="spcl_cnd"/>
-        <result column="join_deny" property="join_deny"/>
-        <result column="join_member" property="join_member"/>
-        <result column="etc_note" property="etc_note"/>
-        <result column="max_limit" property="max_limit"/>
-        <result column="tendency" property="tendency"/>
+        <result column="fin_prdt_cd" property="finPrdtCd"/> <!-- 상품 코드 -->
+        <result column="fin_prdt_category" property="finPrdtCategory"/> <!-- 상품 분류 -->
+        <result column="fin_prdt_nm" property="finPrdtNm"/> <!-- 상품명 -->
+        <result column="rec_reason" property="recReason"/> <!-- 추천 사유 -->
+        <result column="kor_co_nm" property="korCoNm"/> <!-- 금융회사명 -->
+        <result column="prdt_feature" property="prdtFeature"/> <!-- 상품 특성 -->
+        <result column="description" property="description"/> <!-- 상품 설명 -->
+        <result column="join_way" property="joinWay"/> <!-- 가입 방법 -->
+        <result column="mtrt_int" property="mtrtInt"/> <!-- 만기 후 이자율 -->
+        <result column="spcl_cnd" property="spclCnd"/> <!-- 우대 조건 -->
+        <result column="join_deny" property="joinDeny"/> <!-- 가입 제한 여부 -->
+        <result column="join_member" property="joinMember"/> <!-- 가입 대상 -->
+        <result column="etc_note" property="etcNote"/> <!-- 기타 유의사항 -->
+        <result column="max_limit" property="maxLimit"/> <!-- 최고 한도 -->
+        <result column="tendency" property="tendency"/> <!-- 투자 성향 -->
 
+        <!-- 옵션 리스트 (정기예금 상세) -->
         <collection property="optionList" ofType="org.scoula.product.dto.TimeDepositsDetailDto$DetailOptionList"
                     resultMap="detailOptionMap"/>
     </resultMap>
 
+    <!-- 정기예금 상세 옵션 ResultMap -->
     <resultMap id="detailOptionMap" type="org.scoula.product.dto.TimeDepositsDetailDto$DetailOptionList">
-        <result column="save_trm" property="save_trm"/>
-        <result column="intr_rate_type_nm" property="intr_rate_type_nm"/>
-        <result column="intr_rate" property="intr_rate"/>
-        <result column="intr_rate2" property="intr_rate2"/>
+        <result column="save_trm" property="saveTrm"/> <!-- 저축 기간 -->
+        <result column="intr_rate_type_nm" property="intrRateTypeNm"/> <!-- 금리 유형명 -->
+        <result column="intr_rate" property="intrRate"/> <!-- 기본 금리 -->
+        <result column="intr_rate2" property="intrRate2"/> <!-- 최고 금리 -->
     </resultMap>
 
 
