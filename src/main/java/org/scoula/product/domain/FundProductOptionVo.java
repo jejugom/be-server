@@ -19,7 +19,7 @@ public class FundProductOptionVo {
 
 	private String finPrdtCd;      // 상품 코드
 	private String rate3mon;       // 3개월 수익률
-	private LocalDate startDate;   // 시작일
+	private String startDate;   // 시작일
 	private String assetTotal;     // 총자산
 	private String totalFee;       // 총보수
 	private String riskGrade;      // 위험등급

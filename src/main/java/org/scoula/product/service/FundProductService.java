@@ -1,8 +1,8 @@
 package org.scoula.product.service;
 
-import org.scoula.product.mapper.FundProductsMapper;
+import org.scoula.product.dto.FundProductsDetailDto;
 
 public interface FundProductService {
 
-	 // detail
+	 FundProductsDetailDto getDetail(String finPrdtCd);
 }

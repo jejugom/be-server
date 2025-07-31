@@ -15,76 +15,68 @@
                     select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
     </resultMap>
 
-    <!-- 정기예금 옵션 리스트용 ResultMap -->
+    <!-- 펀드 상품 옵션 리스트용 ResultMap -->
     <resultMap id="OptionListMap" type="org.scoula.product.dto.FundProductsDto$OptionList">
         <result property="rate3mon" column="rate_3mon"/> <!-- 3개월 수익률 -->
         <result property="riskGrade" column="risk_grade"/> <!-- 위험등급 -->
         <result property="priceStd" column="price_std"/> <!-- 기준가 -->
     </resultMap>
 
-    <!-- 정기예금 상세조회용 ResultMap -->
-<!--    <resultMap id="timeDepositDetailMap" type="org.scoula.product.dto.TimeDepositsDetailDto">-->
-<!--        <result column="fin_prdt_cd" property="finPrdtCd"/> &lt;!&ndash; 상품 코드 &ndash;&gt;-->
-<!--        <result column="fin_prdt_category" property="finPrdtCategory"/> &lt;!&ndash; 상품 분류 &ndash;&gt;-->
-<!--        <result column="fin_prdt_nm" property="finPrdtNm"/> &lt;!&ndash; 상품명 &ndash;&gt;-->
-<!--        <result column="rec_reason" property="recReason"/> &lt;!&ndash; 추천 사유 &ndash;&gt;-->
-<!--        <result column="kor_co_nm" property="korCoNm"/> &lt;!&ndash; 금융회사명 &ndash;&gt;-->
-<!--        <result column="prdt_feature" property="prdtFeature"/> &lt;!&ndash; 상품 특성 &ndash;&gt;-->
-<!--        <result column="description" property="description"/> &lt;!&ndash; 상품 설명 &ndash;&gt;-->
-<!--        <result column="join_way" property="joinWay"/> &lt;!&ndash; 가입 방법 &ndash;&gt;-->
-<!--        <result column="mtrt_int" property="mtrtInt"/> &lt;!&ndash; 만기 후 이자율 &ndash;&gt;-->
-<!--        <result column="spcl_cnd" property="spclCnd"/> &lt;!&ndash; 우대 조건 &ndash;&gt;-->
-<!--        <result column="join_deny" property="joinDeny"/> &lt;!&ndash; 가입 제한 여부 &ndash;&gt;-->
-<!--        <result column="join_member" property="joinMember"/> &lt;!&ndash; 가입 대상 &ndash;&gt;-->
-<!--        <result column="etc_note" property="etcNote"/> &lt;!&ndash; 기타 유의사항 &ndash;&gt;-->
-<!--        <result column="max_limit" property="maxLimit"/> &lt;!&ndash; 최고 한도 &ndash;&gt;-->
-<!--        <result column="tendency" property="tendency"/> &lt;!&ndash; 투자 성향 &ndash;&gt;-->
+    <!-- 펀드 상품 상세조회용 ResultMap -->
+    <resultMap id="FundProductsDetailMap" type="org.scoula.product.dto.FundProductsDetailDto">
+        <result column="fin_prdt_cd" property="finPrdtCd"/> <!-- 상품 코드 -->
+        <result column="fin_prdt_category" property="finPrdtCategory"/> <!-- 상품 분류 -->
+        <result column="fin_prdt_nm" property="finPrdtNm"/> <!-- 상품명 -->
+        <result column="rec_reason" property="recReason"/> <!-- 추천 사유 -->
+        <result column="kor_co_nm" property="korCoNm"/> <!-- 금융회사명 -->
+        <result column="prdt_feature" property="prdtFeature"/> <!-- 상품 특성 -->
+        <result column="description" property="description"/> <!-- 상품 설명 -->
+        <result column="tendency" property="tendency"/> <!-- 투자 성향 -->
 
-<!--        &lt;!&ndash; 옵션 리스트 (정기예금 상세) &ndash;&gt;-->
-<!--        <collection property="optionList" ofType="org.scoula.product.dto.TimeDepositsDetailDto$DetailOptionList"-->
-<!--                    resultMap="detailOptionMap"/>-->
-<!--    </resultMap>-->
+       <!-- 옵션 리스트 (정기예금 상세) &ndash;&gt;-->
+      <collection property="optionList" ofType="org.scoula.product.dto.FundProductsDetailDto$DetailOptionList"
+                    resultMap="detailOptionMap"/>
+    </resultMap>
 
-    <!-- 정기예금 상세 옵션 ResultMap -->
-<!--    <resultMap id="detailOptionMap" type="org.scoula.product.dto.TimeDepositsDetailDto$DetailOptionList">-->
-<!--        <result column="save_trm" property="saveTrm"/> &lt;!&ndash; 저축 기간 &ndash;&gt;-->
-<!--        <result column="intr_rate_type_nm" property="intrRateTypeNm"/> &lt;!&ndash; 금리 유형명 &ndash;&gt;-->
-<!--        <result column="intr_rate" property="intrRate"/> &lt;!&ndash; 기본 금리 &ndash;&gt;-->
-<!--        <result column="intr_rate2" property="intrRate2"/> &lt;!&ndash; 최고 금리 &ndash;&gt;-->
-<!--    </resultMap>-->
+    <!-- 펀드 상품 상세 옵션 ResultMap -->
+    <resultMap id="detailOptionMap" type="org.scoula.product.dto.FundProductsDetailDto$DetailOptionList">
+        <result column="rate_3mon" property="rate3mon"/>
+        <result column="start_date" property="startDate"/>
+        <result column="asset_total" property="assetTotal"/>
+        <result column="total_fee" property="totalFee"/>
+        <result column="risk_grade" property="riskGrade"/>
+        <result column="fee_first" property="feeFirst"/>
+        <result column="fee_redemp" property="feeRedemp"/>
+        <result column="price_std" property="priceStd"/>
+    </resultMap>
 
 
-<!--    &lt;!&ndash; 상세정보에서 쓰일 쿼리문 &ndash;&gt;-->
-<!--    <select id="findTimeDepositByFinPrdtCd" resultMap="timeDepositDetailMap">-->
-<!--        SELECT fin_prdt_cd,-->
-<!--               fin_prdt_category,-->
-<!--               fin_prdt_nm,-->
-<!--               rec_reason,-->
-<!--               kor_co_nm,-->
-<!--               prdt_feature,-->
-<!--               description,-->
-<!--               join_way,-->
-<!--               mtrt_int,-->
-<!--               spcl_cnd,-->
-<!--               join_deny,-->
-<!--               join_member,-->
-<!--               etc_note,-->
-<!--               max_limit,-->
-<!--               tendency-->
-<!--        FROM fin_prdt-->
-<!--        WHERE fin_prdt_cd = #{finPrdtCd}-->
-<!--    </select>-->
+    <!-- 상세정보에서 쓰일 쿼리문 -->
+    <select id="findFundProductsByFinPrdtCd" resultMap="FundProductsDetailMap">
+        SELECT fin_prdt_cd,
+               fin_prdt_category,
+               fin_prdt_nm,
+               rec_reason,
+               kor_co_nm,
+               prdt_feature,
+               description,
+               tendency
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
 
-<!--    <select id="findDetailOptionByFinPrdtCd"-->
-<!--            parameterType="string"-->
-<!--            resultMap="detailOptionMap">-->
-<!--        SELECT save_trm,-->
-<!--               intr_rate_type_nm,-->
-<!--               intr_rate,-->
-<!--               intr_rate2-->
-<!--        FROM fin_prdt_option-->
-<!--        WHERE fin_prdt_cd = #{finPrdtCd}-->
-<!--    </select>-->
+    <select id="findDetailOptionByFinPrdtCd" parameterType="string" resultMap="detailOptionMap">
+        SELECT rate_3mon,
+               start_date,
+               asset_total,
+               total_fee,
+               risk_grade,
+               fee_first,
+               fee_redemp,
+               price_std
+        FROM fund_prdt_option
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
 
     <!-- 목록에서 쓰일 쿼리문 -->
     <select id="findAllFundProducts" resultMap="FundProductsDtoMap">
