@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value = "RecipientVo", description = "DB의 recipient 테이블과 매핑되는 핵심 객체")
+@ApiModel(value = "수증자 VO", description = "DB의 recipient 테이블과 매핑되는 핵심 객체")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

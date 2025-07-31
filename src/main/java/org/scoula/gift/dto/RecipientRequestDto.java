@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value = "RecipientRequestDto", description = "수증자 생성 및 수정을 위한 요청 DTO")
+@ApiModel(value = "수증자 생성/수정 요청 DTO", description = "수증자 정보 생성 및 수정을 위해 클라이언트에서 받는 데이터")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

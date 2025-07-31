@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value = "RecipientIdResponseDto", description = "수증자 생성 후 ID만 반환하기 위한 응답 DTO")
+@ApiModel(value = "수증자 ID 응답 DTO", description = "수증자 생성 성공 시 생성된 ID를 반환하는 데이터")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

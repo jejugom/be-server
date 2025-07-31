@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value = "RecipientResponseDto", description = "수증자 정보 조회를 위한 응답 DTO")
+@ApiModel(value = "수증자 정보 응답 DTO", description = "수증자 정보 조회 시 클라이언트에 반환하는 데이터")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

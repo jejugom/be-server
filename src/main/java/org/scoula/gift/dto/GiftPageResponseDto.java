@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value = "GiftPageResponseDto", description = "증여 페이지 전체 데이터 응답 DTO")
+@ApiModel(value = "증여 페이지 데이터 응답 DTO", description = "증여 페이지에 필요한 전체 데이터를 담는 최종 응답 데이터")
 @Data
 @Builder
 @NoArgsConstructor
