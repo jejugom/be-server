@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "BookingCheckResponseDto", description = "예약 여부 및 상세 정보를 포함하는 응답 DTO")
+@ApiModel(value = "예약 확인 상세 DTO", description = "예약 확인 시 사용되는 상세 정보 객체")
 public class BookingCheckResponseDto {
 
 	@ApiModelProperty(value = "예약 존재 여부", example = "true")

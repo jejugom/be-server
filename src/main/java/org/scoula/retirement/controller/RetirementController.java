@@ -11,6 +11,7 @@ import org.scoula.product.service.MortgageLoanService;
 import org.scoula.product.service.ProductsService; // ProductsService 임포트
 import org.scoula.product.service.SavingDepositsService;
 import org.scoula.product.service.TimeDepositsService;
+import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.retirement.dto.RetirementMainResponseDto; // RetirementMainResponseDTO 경로 확인
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.dto.UserInfoDto;
@@ -20,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class RetirementController {
 	private final UserService userServiceImpl;
 	private final AssetStatusService assetStatusService;
 	private final ProductsService productsService;
-	// private CustomRecommendServiceImpl customRecommendService;
+	private final CustomRecommendService customRecommendService;
 	private final TimeDepositsService timeDepositsService;
 	private final SavingDepositsService savingsService;
 	private final MortgageLoanService mortgageLoansService;
@@ -59,21 +59,20 @@ public class RetirementController {
 
 		// 1-2. DTO 구조에 맞춰 user_info 세팅
 		RetirementMainResponseDto.UserInfo userInfo = RetirementMainResponseDto.UserInfo.builder()
-			.user_name(userInfoDto)
-			.asset_status(assetList)
+			.userName(userInfoDto)
+			.assetStatus(assetList)
 			.build();
 
-		response.setUser_info(List.of(userInfo));
+		response.setUserInfo(List.of(userInfo));
 
 		// 2. 맞춤 상품 데이터 조회 및 설정 (CustomRecommendDto 관련 서비스 필요)
-		// response.setCustomRecommend_prdt(customRecommendService.getCustomRecommendsByEmail(email));
+		response.setCustomRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email));
 
 		// 3. ProductService를 통해 각 상품 데이터 조회 및 설정
 		response.setTimeDeposits(productsService.getAllTimeDeposits());
-		response.setSavingDeposits(productsService.getAllSavingsDeposits());
+		response.setSavingsDeposits(productsService.getAllSavingsDeposits());
 		response.setMortgageLoan(productsService.getAllMortgageLoans());
 		response.setGoldProducts(productsService.getAllGoldProducts());
-
 
 		return ResponseEntity.ok(response);
 	}

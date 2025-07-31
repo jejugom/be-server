@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @Builder
-@ApiModel(value = "BookingCheckDetailDto", description = "예약 상세 정보를 제공하는 DTO")
+@ApiModel(value = "예약 확인 상세 DTO", description = "예약 확인 시 사용되는 상세 정보 객체")
 public class BookingCheckDetailDto {
 
 	@ApiModelProperty(value = "예약 ID", example = "bkg-1234abcd")

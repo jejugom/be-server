@@ -247,7 +247,6 @@ public class KakaoAuthService {
 			.connectedId(null)
 			.filename1(null)
 			.filename2(null)
-			.maritalStatus(null)
 			.incomeRange(null)
 			.assetProportion(null)
 			.tendency(null)

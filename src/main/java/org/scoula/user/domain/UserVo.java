@@ -25,5 +25,4 @@ public class UserVo {
 	private Double tendency;
 	private Double assetProportion;
 	private String incomeRange;
-	private Boolean maritalStatus;
 }
