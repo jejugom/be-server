@@ -248,8 +248,8 @@ public class KakaoAuthService {
 			.filename1(null)
 			.filename2(null)
 			.incomeRange(null)
-			.assetProportion(null)
-			.tendency(null)
+			.assetProportion(0.0)
+			.tendency(0.0)
 			.segment(null)
 			.asset(0L)                 // 초기 자산은 0으로 설정
 			.build();

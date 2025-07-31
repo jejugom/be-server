@@ -13,5 +13,5 @@ public interface CustomRecommendService {
 	 */
 	List<CustomRecommendDto> getCustomRecommendsByEmail(String email);
 
-	void addCustomRecommend(CustomRecommendDto customRecommendDto);
+	void addCustomRecommend(String email);
 }

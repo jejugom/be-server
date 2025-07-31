@@ -10,6 +10,7 @@ import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.dto.AssetStatusResponseDto;
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.mapper.AssetStatusMapper;
+import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 	 */
 	private final AssetStatusMapper assetStatusMapper;
 	private final UserService userService;
+	private final CustomRecommendService customRecommendService;
 
 	private static final Map<String, Double> assetWeights = Map.of(
 		"1", 0.4,// 부동산
@@ -72,6 +74,8 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 		userDto.setAsset((long)calculateTotalAsset(userEmail));
 		userDto.setAssetProportion(getUserAssetProportionRate(userEmail));
 		userService.updateUser(userEmail, userDto);
+		//자산 업데이트 시 추천 상품도 수정
+		customRecommendService.addCustomRecommend(userEmail);
 	}
 
 	@Override

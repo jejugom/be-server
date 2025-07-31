@@ -4,34 +4,40 @@
 <mapper namespace="org.scoula.recommend.mapper.CustomRecommendMapper">
 
     <resultMap id="customRecommendMap" type="org.scoula.recommend.domain.CustomRecommendVo">
-        <result property="user_email" column="user_email"/>
-        <result property="fin_prdt_cd" column="fin_prdt_cd"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="finPrdtCd" column="fin_prdt_cd"/>
         <result property="score" column="score"/>
     </resultMap>
 
     <select id="getCustomRecommendsByEmail" resultMap="customRecommendMap">
         SELECT user_email, fin_prdt_cd, score
         FROM custom_recommend_prdt
-        WHERE user_email = #{email}
+        WHERE user_email = #{userEmail}
     </select>
 
     <insert id="insertCustomRecommend">
-        INSERT INTO custom_recommand_prdt (prdt_id, email, rec_reason, segment)
-        VALUES (#{prdtId}, #{email}, #{recReason}, #{segment})
+        INSERT INTO custom_recommend_prdt (fin_prdt_cd, user_email, score)
+        VALUES (#{finPrdtCd}, #{userEmail}, #{score})
     </insert>
 
     <update id="updateCustomRecommend">
-        UPDATE custom_recommand_prdt
-        SET rec_reason = #{recReason},
-            segment    = #{segment}
-        WHERE prdt_id = #{prdtId}
-          AND email = #{email}
+        UPDATE custom_recommend_prdt
+        SET score = #{score}
+        WHERE fin_prdt_cd = #{finPrdtCd}
+          AND user_email = #{userEmail}
     </update>
 
     <delete id="deleteCustomRecommend">
         DELETE
-        FROM custom_recommand_prdt
-        WHERE prdt_id = #{prdtId}
-          AND email = #{email}
+        FROM custom_recommend_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+          AND user_email = #{userEmail}
     </delete>
+
+    <delete id="deleteAllProductsByEmail">
+        DELETE
+        FROM custom_recommend_prdt
+        WHERE user_email = #{userEmail}
+    </delete>
+
 </mapper>

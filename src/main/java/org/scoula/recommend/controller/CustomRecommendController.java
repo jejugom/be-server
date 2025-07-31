@@ -5,12 +5,8 @@ import java.util.List;
 import org.scoula.recommend.dto.CustomRecommendDto;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,11 +24,11 @@ public class CustomRecommendController {
 		return ResponseEntity.ok(customRecommendService.getCustomRecommendsByEmail(email));
 	}
 
-	@PostMapping
-	public ResponseEntity<Void> addCustomRecommend(@RequestBody CustomRecommendDto customRecommendDto) {
-		customRecommendService.addCustomRecommend(customRecommendDto);
-		return ResponseEntity.ok().build();
-	}
+	// @PostMapping
+	// public ResponseEntity<Void> addCustomRecommend(@RequestBody CustomRecommendDto customRecommendDto) {
+	// 	customRecommendService.addCustomRecommend(customRecommendDto);
+	// 	return ResponseEntity.ok().build();
+	// }
 
 	// @PutMapping("/{email}/{prdtId}")
 	// public ResponseEntity<Void> updateCustomRecommend(@PathVariable String email, @PathVariable String prdtId,

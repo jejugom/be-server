@@ -1,6 +1,7 @@
 package org.scoula.View.preference.service;
 
 import org.scoula.View.preference.dto.PreferenceRequestDto;
+import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class PreferenceServiceImpl implements PreferenceService{
 
 	private  final UserService userService;
+	private final CustomRecommendService customRecommendService;
 
 	@Override
 	public void setUserPreference(PreferenceRequestDto requestDto,String userEmail) {
@@ -56,8 +58,12 @@ public class PreferenceServiceImpl implements PreferenceService{
 		 * -1 ~ 1 까지의 범위로 코사인 유사도 값을 내기 때문에, 1보다 크거나 -1 보다 작은 값은 조정
 		 */
 		UserDto userDto = userService.getUser(userEmail);
+		//유저 질문 토대로 Tendency 수정 .
 		userDto.setTendency((double)startPoint);
 		userService.updateUser(userEmail,userDto);
-		//유저 질문 토대로 Tendency 수정 .
+
+		//추천 상품 수정
+		customRecommendService.addCustomRecommend(userEmail);
+
 	}
 }

@@ -35,4 +35,6 @@ public interface CustomRecommendMapper {
 	 * @return void
 	 */
 	int deleteCustomRecommend(String email, String code);
+
+	int deleteAllProductsByEmail(String email);
 }

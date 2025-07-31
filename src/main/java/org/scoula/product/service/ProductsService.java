@@ -2,6 +2,7 @@ package org.scoula.product.service;
 
 import java.util.List;
 
+import org.scoula.product.domain.ProductVo;
 import org.scoula.product.dto.FundProductsDto;
 import org.scoula.product.dto.GoldProductsDto;
 import org.scoula.product.dto.MortgageLoanDto;
@@ -10,6 +11,7 @@ import org.scoula.product.dto.TimeDepositsDto;
 import org.scoula.product.mapper.FundProductsMapper;
 import org.scoula.product.mapper.GoldProductsMapper;
 import org.scoula.product.mapper.MortgageLoanMapper;
+import org.scoula.product.mapper.ProductMapper;
 import org.scoula.product.mapper.SavingsDepositsMapper;
 import org.scoula.product.mapper.TimeDepositsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 @Service // Spring 서비스 빈으로 등록
+@RequiredArgsConstructor
 public class ProductsService {
 
 	@Autowired
@@ -28,6 +31,7 @@ public class ProductsService {
 	private MortgageLoanMapper mortgageLoanMapper; // 주택담보대출 Mapper 주입
 	@Autowired
 	private GoldProductsMapper goldProductsMapper; // 금 상품 Mapper 주입
+	private final ProductMapper productMapper;
 	@Autowired
 	private FundProductsMapper fundProductsMapper;
 
@@ -63,6 +67,11 @@ public class ProductsService {
 		return goldProductsMapper.findAllGoldProducts();
 	}
 
+	public List<ProductVo> getAllProducts(){return productMapper.getAllProduct();}
+
+	// public TimeDepositsDTO getTimeDepositsDetail(String finPrdtCd) {
+	//     // 상세 정보를 가져오는 Mapper 메서드 호출
+	// }
 	/**
 	 * 모든 금 상품 정보를 조회합니다.
 	 * @return 모든 금 상품의 DTO 리스트
