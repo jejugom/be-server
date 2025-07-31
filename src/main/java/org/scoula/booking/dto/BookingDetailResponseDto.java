@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @Builder
-@ApiModel(value = "BookingDetailResponseDto", description = "예약 상세 응답 DTO")
+@ApiModel(value = "예약 상세 응답 DTO", description = "예약 상세 정보 조회 시 클라이언트에 반환하는 데이터")
 public class BookingDetailResponseDto {
 
 	@ApiModelProperty(value = "예약 고유 ID (ULID)", example = "01HXYZABCDEF12345678")

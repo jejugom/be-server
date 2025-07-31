@@ -1,7 +1,6 @@
 package org.scoula.booking.dto;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.scoula.booking.domain.BookingVo;
 
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel(value = "BookingDto", description = "예약 정보 전체를 나타내는 DTO")
+@ApiModel(value = "예약 정보 DTO", description = "예약 정보 전체를 나타내는 객체")
 public class BookingDto {
 
 	@ApiModelProperty(value = "예약 고유 ID (ULID)", example = "01HXYZABCDEF12345678")

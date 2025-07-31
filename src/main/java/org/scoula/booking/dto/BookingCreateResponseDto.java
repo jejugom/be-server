@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Builder
-@ApiModel(value = "BookingCreateResponseDto", description = "예약 생성 응답 DTO")
+@ApiModel(value = "예약 생성 응답 DTO", description = "예약 생성 성공 시 생성된 ID를 반환하는 데이터")
 public class BookingCreateResponseDto {
 
 	@ApiModelProperty(value = "예약 고유 ID (ULID)", example = "01HXYZABCDEF12345678")
