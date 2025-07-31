@@ -9,41 +9,41 @@
 
     <!-- MortgageLoanDTO를 위한 ResultMap -->
     <resultMap id="MortgageLoanDTOMap" type="org.scoula.product.dto.MortgageLoanDto">
-        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
-        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
-        <result property="prdt_feature" column="prdt_feature"/>
+        <id property="finPrdtCd" column="fin_prdt_cd"/>
+        <result property="finPrdtNm" column="fin_prdt_nm"/>
+        <result property="prdtFeature" column="prdt_feature"/>
         <!--
             optionListList는 별도의 쿼리를 통해 가져오도록 설정합니다.
             MortgageLoanDTO의 필드명에 맞춰 'optionListList'로 변경합니다.
         -->
-        <collection property="optionListList" ofType="org.scoula.product.dto.MortgageLoanDto$OptionList"
+        <collection property="optionList" ofType="org.scoula.product.dto.MortgageLoanDto$OptionList"
                     select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
     </resultMap>
 
     <!-- OptionList Inner Class를 위한 ResultMap -->
     <resultMap id="OptionListMap" type="org.scoula.product.dto.MortgageLoanDto$OptionList">
-        <result property="mrtg_type_nm" column="mrtg_type_nm"/>
-        <result property="rpay_type_nm" column="rpay_type_nm"/>
-        <result property="lend_rate_type_nm" column="lend_rate_type_nm"/>
+        <result property="mrtgTypeNm" column="mrtg_type_nm"/>
+        <result property="rpayTypeNm" column="rpay_type_nm"/>
+        <result property="lendRateTypeNm" column="lend_rate_type_nm"/>
         <!-- DB는 DOUBLE 타입이지만 DTO는 String이므로, MyBatis가 자동으로 변환 시도 -->
-        <result property="lend_rate_min" column="lend_rate_min"/>
-        <result property="lend_rate_max" column="lend_rate_max"/>
-        <!-- lend_rate_avg는 DTO에 없으므로 매핑하지 않습니다. -->
+        <result property="lendRateMin" column="lend_rate_min"/>
+        <result property="lendRateMax" column="lend_rate_max"/>
+        <!-- lendRateAvg는 DTO에 없으므로 매핑하지 않습니다. -->
     </resultMap>
 
     <resultMap id="mortgageLoanDetailMap" type="org.scoula.product.dto.MortgageLoanDetailDto">
-        <result column="fin_prdt_cd" property="fin_prdt_cd"/>
-        <result column="fin_prdt_category" property="fin_prdt_category"/>
-        <result column="kor_co_nm" property="kor_co_nm"/>
-        <result column="fin_prdt_nm" property="fin_prdt_nm"/>
-        <result column="rec_reason" property="rec_reason"/>
-        <result column="prdt_feature" property="prdt_feature"/>
+        <result column="fin_prdt_cd" property="finPrdtCd"/>
+        <result column="fin_prdt_category" property="finPrdtCategory"/>
+        <result column="kor_co_nm" property="korCoNm"/>
+        <result column="fin_prdt_nm" property="finPrdtNm"/>
+        <result column="rec_reason" property="recReason"/>
+        <result column="prdt_feature" property="prdtFeature"/>
         <result column="description" property="description"/>
-        <result column="join_way" property="join_way"/>
-        <result column="loan_inci_expn" property="loan_inci_expn"/>
-        <result column="erly_rpay_fee" property="erly_rpay_fee"/>
-        <result column="dly_rate" property="dly_rate"/>
-        <result column="loan_lmt" property="loan_lmt"/>
+        <result column="join_way" property="joinWay"/>
+        <result column="loan_inci_expn" property="loanInciExpn"/>
+        <result column="erly_rpay_fee" property="erlyRpayFee"/>
+        <result column="dly_rate" property="dlyRate"/>
+        <result column="loan_lmt" property="loanLmt"/>
 
         <collection property="optionList"
                     ofType="org.scoula.product.dto.MortgageLoanDetailDto$DetailOptionList"
@@ -51,12 +51,12 @@
     </resultMap>
 
     <resultMap id="mortgageLoanDetailOptionMap" type="org.scoula.product.dto.MortgageLoanDetailDto$DetailOptionList">
-        <result column="mrtg_type_nm" property="mrtg_type_nm"/>
-        <result column="rpay_type_nm" property="rpay_type_nm"/>
-        <result column="lend_rate_type_nm" property="lend_rate_type_nm"/>
-        <result column="lend_rate_min" property="lend_rate_min"/>
-        <result column="lend_rate_max" property="lend_rate_max"/>
-        <result column="lend_rate_avg" property="lend_rate_avg"/>
+        <result column="mrtg_type_nm" property="mrtgTypeNm"/>
+        <result column="rpay_type_nm" property="rpayTypeNm"/>
+        <result column="lend_rate_type_nm" property="lendRateTypeNm"/>
+        <result column="lend_rate_min" property="lendRateMin"/>
+        <result column="lend_rate_max" property="lendRateMax"/>
+        <result column="lend_rate_avg" property="lendRateAvg"/>
     </resultMap>
 
     <!-- 상세정보에서 쓰일 쿼리문 -->

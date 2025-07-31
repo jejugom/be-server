@@ -4,24 +4,24 @@
 
 <mapper namespace="org.scoula.product.mapper.GoldProductsMapper">
     <resultMap id="GoldProductDetailMap" type="org.scoula.product.dto.GoldProductDetailDto">
-        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
-        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
-        <result property="prdt_feature" column="prdt_feature"/>
-        <result property="fin_prdt_category" column="fin_prdt_category"/>
-        <result property="kor_co_nm" column="kor_co_nm"/>
+        <id property="finPrdtCd" column="fin_prdt_cd"/>
+        <result property="finPrdtNm" column="fin_prdt_nm"/>
+        <result property="prdtFeature" column="prdt_feature"/>
+        <result property="finPrdtCategory" column="fin_prdt_category"/>
+        <result property="korCoNm" column="kor_co_nm"/>
         <result property="description" column="description"/>
-        <result property="join_way" column="join_way"/>
-        <result property="mtrt_int" column="mtrt_int"/>
+        <result property="joinWay" column="join_way"/>
+        <result property="mtrtInt" column="mtrt_int"/>
         <result property="lot" column="lot"/>
         <result property="currency" column="currency"/>
-        <result property="join_member" column="join_member"/>
-        <result property="etc_note" column="etc_note"/>
+        <result property="joinMember" column="join_member"/>
+        <result property="etcNote" column="etc_note"/>
     </resultMap>
 
     <resultMap id="GoldProductsMap" type="org.scoula.product.dto.GoldProductsDto">
-        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
-        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
-        <result property="prdt_feature" column="prdt_feature"/>
+        <id property="finPrdtCd" column="fin_prdt_cd"/>
+        <result property="finPrdtNm" column="fin_prdt_nm"/>
+        <result property="prdtFeature" column="prdt_feature"/>
     </resultMap>
 
     <!-- 상세 보기 시 쓰일 쿼리문 -->

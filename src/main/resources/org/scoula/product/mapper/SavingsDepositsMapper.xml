@@ -6,9 +6,9 @@
 
     <!-- SavingsDepositsDTO를 위한 ResultMap -->
     <resultMap id="SavingsDepositsDTOMap" type="org.scoula.product.dto.SavingsDepositsDto">
-        <id property="fin_prdt_cd" column="fin_prdt_cd"/>
-        <result property="fin_prdt_nm" column="fin_prdt_nm"/>
-        <result property="prdt_feature" column="prdt_feature"/>
+        <id property="finPrdtCd" column="fin_prdt_cd"/>
+        <result property="finPrdtNm" column="fin_prdt_nm"/>
+        <result property="prdtFeature" column="prdt_feature"/>
         <!--
             optionList는 별도의 쿼리를 통해 가져오도록 설정합니다.
             SavingsDepositsDTO의 필드명에 맞춰 'optionList'로 변경합니다.
@@ -19,27 +19,26 @@
 
     <!-- OptionList Inner Class를 위한 ResultMap -->
     <resultMap id="OptionListMap" type="org.scoula.product.dto.SavingsDepositsDto$OptionList">
-        <result property="save_trm" column="save_trm"/>
-        <result property="intr_rate" column="intr_rate"/>
-        <result property="intr_rate2" column="intr_rate2"/>
+        <result property="saveTrm" column="save_trm"/>
+        <result property="intrRate" column="intr_rate"/>
+        <result property="intrRate2" column="intr_rate2"/>
     </resultMap>
 
-
     <resultMap id="savingsDepositDetailMap" type="org.scoula.product.dto.SavingsDepositsDetailDto">
-        <result column="fin_prdt_cd" property="fin_prdt_cd"/>
-        <result column="fin_prdt_category" property="fin_prdt_category"/>
-        <result column="fin_prdt_nm" property="fin_prdt_nm"/>
-        <result column="rec_reason" property="rec_reason"/>
-        <result column="kor_co_nm" property="kor_co_nm"/>
-        <result column="prdt_feature" property="prdt_feature"/>
+        <result column="fin_prdt_cd" property="finPrdtCd"/>
+        <result column="fin_prdt_category" property="finPrdtCategory"/>
+        <result column="fin_prdt_nm" property="finPrdtNm"/>
+        <result column="rec_reason" property="recReason"/>
+        <result column="kor_co_nm" property="korCoNm"/>
+        <result column="prdt_feature" property="prdtFeature"/>
         <result column="description" property="description"/>
-        <result column="join_way" property="join_way"/>
-        <result column="mtrt_int" property="mtrt_int"/>
-        <result column="spcl_cnd" property="spcl_cnd"/>
-        <result column="join_deny" property="join_deny"/>
-        <result column="join_member" property="join_member"/>
-        <result column="etc_note" property="etc_note"/>
-        <result column="max_limit" property="max_limit"/>
+        <result column="join_way" property="joinWay"/>
+        <result column="mtrt_int" property="mtrtInt"/>
+        <result column="spcl_cnd" property="spclCnd"/>
+        <result column="join_deny" property="joinDeny"/>
+        <result column="join_member" property="joinMember"/>
+        <result column="etc_note" property="etcNote"/>
+        <result column="max_limit" property="maxLimit"/>
         <result column="tendency" property="tendency"/>
 
         <collection property="optionList" ofType="org.scoula.product.dto.SavingsDepositsDetailDto$DetailOptionList"
@@ -47,11 +46,11 @@
     </resultMap>
 
     <resultMap id="savingsDetailOptionMap" type="org.scoula.product.dto.SavingsDepositsDetailDto$DetailOptionList">
-        <result column="save_trm" property="save_trm"/>
-        <result column="rsrv_type_nm" property="rsrv_type_nm"/>
-        <result column="intr_rate_type_nm" property="intr_rate_type_nm"/>
-        <result column="intr_rate" property="intr_rate"/>
-        <result column="intr_rate2" property="intr_rate2"/>
+        <result column="save_trm" property="saveTrm"/>
+        <result column="rsrv_type_nm" property="rsrvTypeNm"/>
+        <result column="intr_rate_type_nm" property="intrRateTypeNm"/>
+        <result column="intr_rate" property="intrRate"/>
+        <result column="intr_rate2" property="intrRate2"/>
     </resultMap>
 
     <!-- 상세정보에서 쓰일 쿼리문 -->
