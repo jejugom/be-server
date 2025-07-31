@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 		user.setTendency(userDto.getTendency());
 		user.setAssetProportion(userDto.getAssetProportion());
 		user.setIncomeRange(userDto.getIncomeRange());
-		user.setMartialStatus(userDto.getMartialStatus());
 
 		userMapper.update(user);
 	}

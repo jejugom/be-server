@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel(value = "BookingCreateRequestDto", description = "예약 생성 요청 DTO")
+@ApiModel(value = "예약 생성 요청 DTO", description = "예약 생성을 위해 클라이언트에서 받는 데이터")
 public class BookingCreateRequestDto {
 
 	@ApiModelProperty(value = "지점 ID", example = "101", required = true)

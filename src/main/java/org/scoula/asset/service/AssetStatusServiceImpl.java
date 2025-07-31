@@ -30,24 +30,26 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 	private final AssetStatusMapper assetStatusMapper;
 	private final UserService userService;
 
-	private static final Map<String,Double> assetWeights = Map.of(
+	private static final Map<String, Double> assetWeights = Map.of(
 		"1", 0.4,// 부동산
 		"2", 1.0, //예적금
 		"3", 0.7, //현금
 		"4", -1.0, //주신 및 펀드
-		"5" , -0.8,//사업체 및 지분
+		"5", -0.8,//사업체 및 지분
 		"6", 0.0 //기타
 	);
-	private double getUserAssetProportionRate(String userEmail){
+
+	private double getUserAssetProportionRate(String userEmail) {
 		List<AssetStatusVo> assets = assetStatusMapper.findAssetStatusByEmail(userEmail);
 		double totalAmount = assets.stream().mapToDouble(AssetStatusVo::getAmount).sum();
-		if(totalAmount == 0 ) return 0.0;
+		if (totalAmount == 0)
+			return 0.0;
 
 		double weightedSum = assets.stream()
-			.mapToDouble(vo -> vo.getAmount() * assetWeights.getOrDefault(vo.getAssetCategoryCode(),0.0))
+			.mapToDouble(vo -> vo.getAmount() * assetWeights.getOrDefault(vo.getAssetCategoryCode(), 0.0))
 			.sum();
 
-		return weightedSum/totalAmount;
+		return weightedSum / totalAmount;
 	}
 
 	private double calculateTotalAsset(String email) {
@@ -55,7 +57,8 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 
 		for (AssetStatusVo vo : assets) {
 			if (vo.getAmount() == null) {
-				throw new IllegalArgumentException("자산 금액(amount)이 null입니다.해당 자산 삭제/변경 필요. \n assetId: " + vo.getAssetId());
+				throw new IllegalArgumentException(
+					"자산 금액(amount)이 null입니다.해당 자산 삭제/변경 필요. \n assetId: " + vo.getAssetId());
 			}
 		}
 
@@ -64,11 +67,11 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 			.sum();
 	}
 
-	private void updateUserAssetSummary(String userEmail){
+	private void updateUserAssetSummary(String userEmail) {
 		UserDto userDto = userService.getUser(userEmail);
 		userDto.setAsset((long)calculateTotalAsset(userEmail));
 		userDto.setAssetProportion(getUserAssetProportionRate(userEmail));
-		userService.updateUser(userEmail,userDto);
+		userService.updateUser(userEmail, userDto);
 	}
 
 	@Override
@@ -78,7 +81,6 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 			.collect(Collectors.toList());
 	}
 
-	// 노후 페이지에서 보여질 자산현황에 쓰일 메서드입니다.
 	@Override
 	public List<AssetStatusSummaryDto> getAssetStatusSummaryByEmail(String email) {
 		return assetStatusMapper.findAssetStatusSummaryByEmail(email).stream()
@@ -92,9 +94,8 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 		AssetStatusVo assetStatusVo = requestDto.toVo();
 		assetStatusVo.setEmail(email);
 		assetStatusMapper.insertAssetStatus(assetStatusVo);
-		/***
-		 updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
-		 */
+
+		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
 		updateUserAssetSummary(email);
 	}
 
@@ -107,21 +108,18 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 		if (assetStatusMapper.updateAssetStatus(assetStatusVo) == 0) {
 			throw new NoSuchElementException("목록 번호 오기입 / 권한이 없습니다.");
 		}
-		/***
-		 updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
-		 */
+
+		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
 		updateUserAssetSummary(email);
 	}
 
 	@Override
 	public void deleteAssetStatus(Integer assetId, String email) {
-		Long deletedAsssetAmount = assetStatusMapper.findAssetStatusById(assetId).getAmount();
 		if (assetStatusMapper.deleteAssetStatus(assetId, email) == 0) {
 			throw new NoSuchElementException("해당 자산이 사용자 계정에 존재하지 않습니다. ");
 		}
-		/***
-		 updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
-		 */
+
+		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
 		updateUserAssetSummary(email);
 	}
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "DocInfoDto", description = "예약 시 필요한 서류 정보 DTO")
+@ApiModel(value = "서류 정보 DTO", description = "예약 시 필요한 서류 정보를 담는 객체")
 public class DocInfoDto {
 
 	@ApiModelProperty(
