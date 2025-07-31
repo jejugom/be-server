@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.scoula.recommend.mapper.CustomRecommendMapper">
+
     <resultMap id="customRecommendMap" type="org.scoula.recommend.domain.CustomRecommendVo">
-        <id property="prdtId" column="prdt_id"/>
-        <id property="email" column="email"/>
-        <result property="recReason" column="rec_reason"/>
-        <result property="segment" column="segment"/>
+        <result property="user_email" column="user_email"/>
+        <result property="fin_prdt_cd" column="fin_prdt_cd"/>
+        <result property="score" column="score"/>
     </resultMap>
 
     <select id="getCustomRecommendsByEmail" resultMap="customRecommendMap">
-        SELECT *
-        FROM custom_recommand_prdt
-        WHERE email = #{email}
+        SELECT user_email, fin_prdt_cd, score
+        FROM custom_recommend_prdt
+        WHERE user_email = #{email}
     </select>
 
     <insert id="insertCustomRecommend">
