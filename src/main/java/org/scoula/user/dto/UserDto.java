@@ -58,7 +58,7 @@ public class UserDto {
 	private String incomeRange;
 
 	@ApiModelProperty(value = "결혼 여부", example = "true")
-	private Boolean martialStatus;
+	private Boolean maritalStatus;
 
 	// 변환 메서드
 	public static UserDto of(UserVo user) {
@@ -76,7 +76,7 @@ public class UserDto {
 			.tendency(user.getTendency())
 			.assetProportion(user.getAssetProportion())
 			.incomeRange(user.getIncomeRange())
-			.martialStatus(user.getMartialStatus())
+			.maritalStatus(user.getMaritalStatus())
 			.build();
 	}
 
@@ -95,7 +95,7 @@ public class UserDto {
 			.tendency(tendency)
 			.assetProportion(assetProportion)
 			.incomeRange(incomeRange)
-			.martialStatus(martialStatus)
+			.maritalStatus(maritalStatus)
 			.build();
 	}
 }

@@ -15,7 +15,7 @@
         <result property="tendency" column="tendency"/>
         <result property="assetProportion" column="asset_proportion"/>
         <result property="incomeRange" column="income_range"/>
-        <result property="martialStatus" column="martial_status"/>
+        <result property="maritalStatus" column="marital_status"/>
     </resultMap>
 
     <select id="findByEmail" resultMap="userMap">
@@ -32,16 +32,16 @@
                tendency,
                asset_proportion,
                income_range,
-               martial_status
+               marital_status
         FROM user
         WHERE email = #{email}
     </select>
 
     <insert id="save" parameterType="org.scoula.user.domain.UserVo">
         INSERT INTO user (email, user_name, user_phone, birth, connected_id, branch_id, asset, segment, filename1,
-                          filename2, tendency, asset_proportion, income_range, martial_status)
+                          filename2, tendency, asset_proportion, income_range, marital_status)
         VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{connectedId}, #{branchId}, #{asset}, #{segment},
-                #{filename1}, #{filename2}, #{tendency}, #{assetProportion}, #{incomeRange}, #{martialStatus})
+                #{filename1}, #{filename2}, #{tendency}, #{assetProportion}, #{incomeRange}, #{maritalStatus})
     </insert>
 
     <update id="update" parameterType="org.scoula.user.domain.UserVo">
@@ -58,7 +58,7 @@
             tendency         = #{tendency},
             asset_proportion = #{assetProportion},
             income_range     = #{incomeRange},
-            martial_status   = #{martialStatus}
+            marital_status   = #{maritalStatus}
         WHERE email = #{email}
     </update>
 
@@ -82,7 +82,7 @@
                tendency,
                asset_proportion,
                income_range,
-               martial_status
+               marital_status
         FROM user
     </select>
 
