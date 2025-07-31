@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.scoula.asset.domain.AssetStatusVo;
 import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.dto.AssetStatusResponseDto;
+import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.mapper.AssetStatusMapper;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
@@ -74,6 +75,14 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 	public List<AssetStatusResponseDto> getAssetStatusByEmail(String email) {
 		return assetStatusMapper.findAssetStatusByEmail(email).stream()
 			.map(AssetStatusResponseDto::of)
+			.collect(Collectors.toList());
+	}
+
+	// 노후 페이지에서 보여질 자산현황에 쓰일 메서드입니다.
+	@Override
+	public List<AssetStatusSummaryDto> getAssetStatusSummaryByEmail(String email) {
+		return assetStatusMapper.findAssetStatusSummaryByEmail(email).stream()
+			.map(AssetStatusSummaryDto::of)
 			.collect(Collectors.toList());
 	}
 
