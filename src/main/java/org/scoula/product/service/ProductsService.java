@@ -3,10 +3,12 @@ package org.scoula.product.service;
 import java.util.List;
 
 import org.scoula.product.domain.ProductVo;
+import org.scoula.product.dto.FundProductsDto;
 import org.scoula.product.dto.GoldProductsDto;
 import org.scoula.product.dto.MortgageLoanDto;
 import org.scoula.product.dto.SavingsDepositsDto;
 import org.scoula.product.dto.TimeDepositsDto;
+import org.scoula.product.mapper.FundProductsMapper;
 import org.scoula.product.mapper.GoldProductsMapper;
 import org.scoula.product.mapper.MortgageLoanMapper;
 import org.scoula.product.mapper.ProductMapper;
@@ -30,6 +32,8 @@ public class ProductsService {
 	@Autowired
 	private GoldProductsMapper goldProductsMapper; // 금 상품 Mapper 주입
 	private final ProductMapper productMapper;
+	@Autowired
+	private FundProductsMapper fundProductsMapper;
 
 	/**
 	 * 모든 예금 상품 정보를 조회합니다.
@@ -68,4 +72,11 @@ public class ProductsService {
 	// public TimeDepositsDTO getTimeDepositsDetail(String finPrdtCd) {
 	//     // 상세 정보를 가져오는 Mapper 메서드 호출
 	// }
+	/**
+	 * 모든 금 상품 정보를 조회합니다.
+	 * @return 모든 금 상품의 DTO 리스트
+	 */
+	public List<FundProductsDto> getAllFundProducts() {
+		return fundProductsMapper.findAllFundProducts();
+	}
 }
