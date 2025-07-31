@@ -1,5 +1,6 @@
 package org.scoula.gift.controller;
 
+import org.scoula.exception.ErrorResponse;
 import org.scoula.gift.dto.GiftPageResponseDto;
 import org.scoula.gift.dto.RecipientIdResponseDto;
 import org.scoula.gift.dto.RecipientRequestDto;
@@ -17,62 +18,64 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
+@Api(tags = "수증자 API", description = "증여 시뮬레이션 수증자 관련 API")
 @RestController
 @RequestMapping("/api/gift")
 public class RecipientController {
 
 	private final RecipientService recipientService;
 
-	// 생성자를 통한 의존성 주입
 	public RecipientController(RecipientService recipientService) {
 		this.recipientService = recipientService;
 	}
 
-	/**
-	 * 수증자 정보 생성 (POST)
-	 * @param requestDto 수증자 생성을 위한 DTO
-	 * @param authentication 현재 인증된 사용자 정보
-	 * @return 생성된 수증자 정보
-	 */
+	@ApiOperation(value = "수증자 정보 생성", notes = "새로운 수증자 정보를 등록합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 201, message = "생성 성공", response = RecipientIdResponseDto.class),
+		@ApiResponse(code = 400, message = "잘못된 요청 형식", response = ErrorResponse.class),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
+	})
 	@PostMapping
 	public ResponseEntity<RecipientIdResponseDto> createRecipient(
-		@RequestBody RecipientRequestDto requestDto,
+		@ApiParam(value = "수증자 생성 정보", required = true) @RequestBody RecipientRequestDto requestDto,
 		Authentication authentication) {
 
 		String email = authentication.getName();
-
-		// 1. Service는 여전히 전체 정보가 담긴 DTO를 반환합니다. (내부 로직은 변경 없음)
 		RecipientResponseDto fullResponseDto = recipientService.createRecipient(requestDto, email);
-
-		// 2. 응답에 사용할 ID 전용 DTO를 생성합니다.
 		RecipientIdResponseDto idResponse = new RecipientIdResponseDto(fullResponseDto.getRecipientId());
-
-		// 3. 201 Created 상태 코드와 함께, ID가 담긴 DTO를 body에 실어 반환합니다.
 		return ResponseEntity.status(HttpStatus.CREATED).body(idResponse);
 	}
 
-	/**
-	 * 특정 사용자의 전체 수증자 목록 조회 (GET)
-	 * @param authentication 현재 인증된 사용자 정보
-	 * @return 수증자 목록
-	 */
+	@ApiOperation(value = "증여 페이지 데이터 조회", notes = "로그인한 사용자의 전체 수증자 목록과 자산 요약 정보를 조회합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "조회 성공", response = GiftPageResponseDto.class),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
+	})
 	@GetMapping
 	public ResponseEntity<GiftPageResponseDto> getRecipients(Authentication authentication) {
 		String email = authentication.getName();
-		// 새로 만든 서비스 메서드 호출
 		GiftPageResponseDto responseDto = recipientService.getGiftPageData(email);
 		return ResponseEntity.ok(responseDto);
 	}
 
-	/**
-	 * 특정 수증자 정보 상세 조회 (GET)
-	 * @param recipientId 조회할 수증자 ID
-	 * @param authentication 현재 인증된 사용자 정보
-	 * @return 특정 수증자 정보
-	 */
+	@ApiOperation(value = "특정 수증자 정보 상세 조회", notes = "수증자 ID로 특정 수증자의 상세 정보를 조회합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "조회 성공", response = RecipientResponseDto.class),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 404, message = "존재하지 않는 수증자 또는 접근 권한 없음"),
+		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
+	})
 	@GetMapping("/{recipientId}")
 	public ResponseEntity<RecipientResponseDto> getRecipient(
-		@PathVariable Integer recipientId,
+		@ApiParam(value = "수증자 ID", required = true, example = "1") @PathVariable Integer recipientId,
 		Authentication authentication) {
 
 		String email = authentication.getName();
@@ -84,17 +87,18 @@ public class RecipientController {
 		}
 	}
 
-	/**
-	 * 수증자 정보 수정 (PUT)
-	 * @param recipientId 수정할 수증자 ID
-	 * @param requestDto 수정할 내용을 담은 DTO
-	 * @param authentication 현재 인증된 사용자 정보
-	 * @return 수정된 수증자 정보
-	 */
+	@ApiOperation(value = "수증자 정보 수정", notes = "특정 수증자의 정보를 수정합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "수정 성공 (No Content)"),
+		@ApiResponse(code = 400, message = "잘못된 요청 형식", response = ErrorResponse.class),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 404, message = "존재하지 않는 수증자 또는 접근 권한 없음"),
+		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
+	})
 	@PutMapping("/{recipientId}")
-	public ResponseEntity<RecipientResponseDto> updateRecipient(
-		@PathVariable Integer recipientId,
-		@RequestBody RecipientRequestDto requestDto,
+	public ResponseEntity<Void> updateRecipient( // ### 반환 타입을 ResponseEntity<Void>로 수정하여 오류 해결 ###
+		@ApiParam(value = "수증자 ID", required = true, example = "1") @PathVariable Integer recipientId,
+		@ApiParam(value = "수증자 수정 정보", required = true) @RequestBody RecipientRequestDto requestDto,
 		Authentication authentication) {
 
 		String email = authentication.getName();
@@ -102,28 +106,28 @@ public class RecipientController {
 		if (updatedDto != null) {
 			return ResponseEntity.noContent().build();
 		} else {
-			// 수정할 대상이 없거나 권한이 없는 경우
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
-	/**
-	 * 수증자 정보 삭제 (DELETE)
-	 * @param recipientId 삭제할 수증자 ID
-	 * @param authentication 현재 인증된 사용자 정보
-	 * @return 성공 여부
-	 */
+	@ApiOperation(value = "수증자 정보 삭제", notes = "특정 수증자의 정보를 삭제합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "삭제 성공 (No Content)"),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 404, message = "존재하지 않는 수증자 또는 접근 권한 없음"),
+		@ApiResponse(code = 500, message = "서버 내부 오류", response = ErrorResponse.class)
+	})
 	@DeleteMapping("/{recipientId}")
 	public ResponseEntity<Void> deleteRecipient(
-		@PathVariable Integer recipientId,
+		@ApiParam(value = "수증자 ID", required = true, example = "1") @PathVariable Integer recipientId,
 		Authentication authentication) {
 
 		String email = authentication.getName();
 		boolean success = recipientService.deleteRecipient(recipientId, email);
 		if (success) {
-			return ResponseEntity.noContent().build(); // 성공 시 204 No Content
+			return ResponseEntity.noContent().build();
 		} else {
-			return ResponseEntity.notFound().build(); // 삭제할 대상이 없거나 권한이 없는 경우
+			return ResponseEntity.notFound().build();
 		}
 	}
 }
