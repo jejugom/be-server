@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.product.mapper.ProductMapper;
+import org.scoula.product.service.FundProductService;
 import org.scoula.product.service.GoldProductService;
 import org.scoula.product.service.MortgageLoanService;
 import org.scoula.product.service.ProductsService; // ProductsService 임포트
@@ -38,6 +39,7 @@ public class RetirementController {
 	private final SavingDepositsService savingsService;
 	private final MortgageLoanService mortgageLoansService;
 	private final GoldProductService goldProductService;
+	// private final FundProductService fundProductService;
 	private final ProductMapper productMapper;
 
 	/**
@@ -73,6 +75,7 @@ public class RetirementController {
 		response.setSavingsDeposits(productsService.getAllSavingsDeposits());
 		response.setMortgageLoan(productsService.getAllMortgageLoans());
 		response.setGoldProducts(productsService.getAllGoldProducts());
+		response.setFundProducts(productsService.getAllFundProducts());
 
 		return ResponseEntity.ok(response);
 	}
