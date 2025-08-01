@@ -24,36 +24,47 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.log4j.Log4j2;
 
+/**
+ * CODEF API와 직접 통신하는 클라이언트 클래스입니다.
+ * 토큰 발급, ConnectedId 생성, 계좌 정보 조회 등 API 호출 로직을 담당합니다.
+ */
 @Component
 @Log4j2
 public class CodefApiClient {
 
+	// application.properties에서 주입받는 CODEF 설정 값들
 	@Value("${codef.oauth.domain}")
 	private String oauthDomain;
-
 	@Value("${codef.api.domain}")
 	private String apiDomain;
-
 	@Value("${codef.client.id}")
 	private String clientId;
-
 	@Value("${codef.client.secret}")
 	private String clientSecret;
-
 	@Value("${codef.public.key}")
 	private String publicKey;
 
+	// CODEF API 엔드포인트 경로 상수
 	private static final String GET_TOKEN_PATH = "/oauth/token";
 	private static final String CREATE_ACCOUNT_PATH = "/v1/account/create";
 	private static final String KR_BK_1_P_001_PATH = "/v1/kr/bank/p/account/account-list";
 	private static final ObjectMapper mapper = new ObjectMapper();
 
+	/** 토큰 관리를 담당하는 서비스 (순환 참조 해결을 위해 setter로 주입) */
 	private CodefTokenService codefTokenService;
 
+	/**
+	 * CodefTokenService의 인스턴스를 설정합니다. (순환 참조 해결용)
+	 * @param codefTokenService 주입할 서비스 객체
+	 */
 	public void setCodefTokenService(CodefTokenService codefTokenService) {
 		this.codefTokenService = codefTokenService;
 	}
 
+	/**
+	 * CodefTokenService를 통해 현재 유효한 Access Token을 가져옵니다.
+	 * @return Access Token 문자열
+	 */
 	private String getAccessToken() {
 		if (codefTokenService != null) {
 			return codefTokenService.getAccessToken();
@@ -61,6 +72,10 @@ public class CodefApiClient {
 		return null;
 	}
 
+	/**
+	 * CODEF OAuth 서버로부터 새로운 Access Token을 발급받습니다.
+	 * @return 발급된 토큰 정보를 담은 Map 객체
+	 */
 	public Map<String, Object> publishToken() {
 		BufferedReader br = null;
 		try {
@@ -71,6 +86,7 @@ public class CodefApiClient {
 			con.setRequestMethod("POST");
 			con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
+			// Basic 인증 헤더 생성
 			String auth = clientId + ":" + clientSecret;
 			String authHeader = "Basic " + Base64.encodeBase64String(auth.getBytes());
 			con.setRequestProperty("Authorization", authHeader);
@@ -110,6 +126,11 @@ public class CodefApiClient {
 		}
 	}
 
+	/**
+	 * CODEF API를 호출하여 ConnectedId를 생성합니다.
+	 * @param bodyMap 요청 본문에 포함될 데이터
+	 * @return API 응답 결과를 담은 Map 객체
+	 */
 	public Map<String, Object> createConnectedId(Map<String, Object> bodyMap) {
 		BufferedReader br = null;
 		try {
@@ -163,6 +184,12 @@ public class CodefApiClient {
 		}
 	}
 
+	/**
+	 * CODEF API를 호출하여 특정 기관의 계좌 목록 정보를 조회합니다.
+	 * @param connectedId 조회할 사용자의 ConnectedId
+	 * @param organization 조회할 기관 코드
+	 * @return API 응답 결과를 담은 Map 객체
+	 */
 	public Map<String, Object> getAccountInfo(String connectedId, String organization) {
 		BufferedReader br = null;
 		try {
@@ -220,6 +247,13 @@ public class CodefApiClient {
 		}
 	}
 
+	/**
+	 * 주어진 평문을 RSA 공개키로 암호화합니다.
+	 * @param plainText 암호화할 문자열
+	 * @param base64PublicKey Base64로 인코딩된 공개키 문자열
+	 * @return Base64로 인코딩된 암호문 문자열
+	 * @throws Exception 암호화 과정에서 발생할 수 있는 예외
+	 */
 	public String encryptRSA(String plainText, String base64PublicKey) throws Exception {
 		byte[] bytePublicKey = java.util.Base64.getDecoder().decode(base64PublicKey);
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -232,8 +266,11 @@ public class CodefApiClient {
 		return java.util.Base64.getEncoder().encodeToString(cipher.doFinal(bytePlain));
 	}
 
+	/**
+	 * 설정 파일에서 주입받은 공개키를 반환합니다.
+	 * @return 공개키 문자열
+	 */
 	public String getPublicKey() {
 		return publicKey;
 	}
 }
-
