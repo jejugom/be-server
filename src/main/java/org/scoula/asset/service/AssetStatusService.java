@@ -17,5 +17,4 @@ public interface AssetStatusService {
 	void updateAssetStatus(Integer assetId, String email, AssetStatusRequestDto requestDto);
 
 	void deleteAssetStatus(Integer assetId, String email);
-
 }

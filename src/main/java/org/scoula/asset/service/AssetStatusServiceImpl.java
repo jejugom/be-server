@@ -11,6 +11,7 @@ import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.dto.AssetStatusResponseDto;
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.mapper.AssetStatusMapper;
+import org.scoula.exception.AssetNotFoundException;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 @Transactional //2개 이상의 DB조회가 이루어지기 때문에 항상 Transactional 처리가 되도록.
@@ -71,11 +74,32 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 	}
 
 	private void updateUserAssetSummary(String userEmail) {
+		// 1. 자산 목록을 DB에서 한 번만 조회합니다.
+		List<AssetStatusVo> assets = assetStatusMapper.findAssetStatusByEmail(userEmail);
+
+		double totalAmount = 0;
+		double weightedSum = 0;
+
+		for (AssetStatusVo vo : assets) {
+			if (vo.getAmount() == null) {
+				throw new IllegalArgumentException(
+					"자산 금액(amount)이 null입니다. 해당 자산 삭제/변경 필요. \n assetId: " + vo.getAssetId());
+			}
+			double amount = vo.getAmount().doubleValue();
+			totalAmount += amount;
+			weightedSum += amount * assetWeights.getOrDefault(vo.getAssetCategoryCode(), 0.0);
+		}
+
+		// 2. 계산을 수행합니다.
+		double assetProportionRate = (totalAmount == 0) ? 0.0 : weightedSum / totalAmount;
+
+		// 3. 사용자 정보를 업데이트합니다.
 		UserDto userDto = userService.getUser(userEmail);
-		userDto.setAsset((long)calculateTotalAsset(userEmail));
-		userDto.setAssetProportion(getUserAssetProportionRate(userEmail));
+		userDto.setAsset((long) totalAmount);
+		userDto.setAssetProportion(assetProportionRate);
 		userService.updateUser(userEmail, userDto);
-		//자산 업데이트 시 추천 상품도 수정
+
+		// 4. 추천 상품을 업데이트합니다.
 		customRecommendService.addCustomRecommend(userEmail);
 	}
 
@@ -113,37 +137,28 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 
 	@Override
 	public void updateAssetStatus(Integer assetId, String email, AssetStatusRequestDto requestDto) {
-		AssetStatusVo assetStatusVo = AssetStatusVo.builder()
-			.assetId(assetId)
-			.email(email)
-			.assetCategoryCode(requestDto.getAssetCategoryCode())
-			.amount(requestDto.getAmount())
-			.assetName(requestDto.getAssetName())
-			.businessType(requestDto.getBusinessType())
-			.build();
+		// toVo()를 사용해 기본 객체를 생성하고, 추가 정보만 설정
+		AssetStatusVo assetStatusVo = requestDto.toVo();
+		assetStatusVo.setAssetId(assetId);
+		assetStatusVo.setEmail(email);
 
 		if (assetStatusMapper.updateAssetStatus(assetStatusVo) == 0) {
-			throw new NoSuchElementException("목록 번호 오기입 / 권한이 없습니다.");
+			throw new AssetNotFoundException("ID가 " + assetId + "인 자산을 찾을 수 없거나 삭제할 권한이 없습니다.");
 		}
 
-		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
 		updateUserAssetSummary(email);
 	}
 
-	@Override
 	public void deleteAssetStatus(Integer assetId, String email) {
-		System.out.println("=== DELETE ASSET DEBUG ===");
-		System.out.println("assetId: " + assetId);
-		System.out.println("email: " + email);
-		
+		log.debug("Deleting asset. assetId: {}, email: {}", assetId, email);
+
 		int deleteResult = assetStatusMapper.deleteAssetStatus(assetId, email);
-		System.out.println("deleteResult: " + deleteResult);
-		
+		log.debug("Deletion result count: {}", deleteResult);
+
 		if (deleteResult == 0) {
-			throw new NoSuchElementException("해당 자산이 사용자 계정에 존재하지 않습니다. ");
+			throw new NoSuchElementException("해당 자산이 사용자 계정에 존재하지 않습니다.");
 		}
 
-		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
 		updateUserAssetSummary(email);
 	}
 }
