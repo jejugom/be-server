@@ -35,6 +35,8 @@ public class RecipientServiceImpl implements RecipientService {
 	@Override
 	public RecipientResponseDto createRecipient(RecipientRequestDto requestDto, String email) {
 		RecipientVo vo = requestDto.toVo(email);
+		// email 정보가 필요하다면 vo에 설정하는 로직 추가
+		// vo.setEmail(email);
 		recipientMapper.insertRecipient(vo);
 
 		// 생성 후 즉시 조회하여 데이터 무결성 확인
@@ -43,6 +45,8 @@ public class RecipientServiceImpl implements RecipientService {
 			// 이 경우는 거의 없지만, 발생 시 서버 내부 문제임
 			throw new IllegalStateException("수증자 정보 생성 후 데이터를 조회할 수 없습니다.");
 		}
+
+		// 포맷팅 로직이 포함된 from 메서드를 호출
 		return RecipientResponseDto.from(createdVo);
 	}
 
@@ -57,6 +61,7 @@ public class RecipientServiceImpl implements RecipientService {
 	 */
 	@Override
 	public RecipientResponseDto findRecipientByIdAndEmail(Integer recipientId, String email) {
+		// 이 메서드는 DB에서 recipientId와 email을 모두 사용하여 데이터를 조회해야 합니다.
 		RecipientVo vo = recipientMapper.findByIdAndEmail(recipientId, email);
 		if (vo == null) {
 			// null을 반환하는 대신, 예외를 던져 GlobalExceptionHandler가 404로 처리하도록 함
@@ -87,8 +92,15 @@ public class RecipientServiceImpl implements RecipientService {
 		// 3. DB 업데이트
 		recipientMapper.updateRecipient(voToUpdate);
 
-		// 4. 업데이트된 정보를 DTO로 변환하여 반환
-		return RecipientResponseDto.from(voToUpdate);
+		// 4. 업데이트된 정보를 DB에서 다시 조회하여 완전한 객체를 얻음
+		RecipientVo updatedVo = recipientMapper.findById(recipientId);
+		if (updatedVo == null) {
+			// 업데이트 직후 조회가 안되는 경우는 심각한 문제
+			throw new IllegalStateException("수증자 정보 수정 후 데이터를 조회할 수 없습니다.");
+		}
+
+		// 5. 조회된 완전한 객체를 DTO로 변환하여 반환 (날짜 포맷팅 포함)
+		return RecipientResponseDto.from(updatedVo);
 	}
 
 	/**
