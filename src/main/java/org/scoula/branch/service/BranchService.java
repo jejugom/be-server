@@ -7,7 +7,7 @@ import org.scoula.branch.dto.BranchDto;
 public interface BranchService {
 	List<BranchDto> getAllBranches();
 
-	BranchDto getBranchByName(String branchName);
+	BranchDto getBranchById(Integer branchName);
 
 	void addBranch(BranchDto branchDto);
 

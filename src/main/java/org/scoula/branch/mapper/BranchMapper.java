@@ -2,12 +2,13 @@ package org.scoula.branch.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.scoula.branch.domain.BranchVo;
 
 public interface BranchMapper {
 	List<BranchVo> getAllBranches();
 
-	BranchVo getBranchByName(String branchName);
+	BranchVo getBranchById(@Param("branchId") Integer branchId);
 
 	void insertBranch(BranchVo branch);
 

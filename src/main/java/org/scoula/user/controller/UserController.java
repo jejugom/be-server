@@ -60,7 +60,7 @@ public class UserController {
 		@ApiResponse(code = 403, message = "권한 없음")
 	})
 	@PatchMapping("/branch")
-	public ResponseEntity<Void> updateBranchName(
+	public ResponseEntity<Void> updateBranchId(
 		Authentication authentication,
 		@RequestBody BranchIdUpdateRequestDto requestDto) {
 

@@ -112,6 +112,10 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 	@Transactional
 	@Override
 	public void updateBranchId(String email, Integer branchId) {
+		System.out.println("=== UPDATE BRANCH DEBUG ===");
+		System.out.println("email: " + email);
+		System.out.println("branchId = " + branchId);
+
 		userMapper.updateBranchId(email, branchId);
 	}
 

@@ -25,10 +25,10 @@ public class BranchServiceImpl implements BranchService {
 	}
 
 	@Override
-	public BranchDto getBranchByName(String branchName) {
-		return Optional.ofNullable(branchMapper.getBranchByName(branchName))
+	public BranchDto getBranchById(Integer branchId) {
+		return Optional.ofNullable(branchMapper.getBranchById(branchId))
 			.map(BranchDto::of)
-			.orElseThrow(() -> new NoSuchElementException("Branch not found with name: " + branchName));
+			.orElseThrow(() -> new NoSuchElementException("Branch not found with name: " + branchId));
 	}
 
 	@Override

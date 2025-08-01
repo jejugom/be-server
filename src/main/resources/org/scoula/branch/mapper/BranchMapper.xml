@@ -16,10 +16,10 @@
         FROM branch
     </select>
 
-    <select id="getBranchByName" resultMap="branchMap">
+    <select id="getBranchById" resultMap="branchMap">
         SELECT *
         FROM branch
-        WHERE branch_name = #{branchName}
+        WHERE branch_id = #{branchId}
     </select>
 
     <insert id="insertBranch">

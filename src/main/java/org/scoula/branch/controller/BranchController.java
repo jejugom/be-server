@@ -29,8 +29,8 @@ public class BranchController {
 	}
 
 	@GetMapping("/{branchName}")
-	public ResponseEntity<BranchDto> getBranchByCode(@PathVariable String branchName) {
-		return ResponseEntity.ok(branchService.getBranchByName(branchName));
+	public ResponseEntity<BranchDto> getBranchById(@PathVariable Integer branchName) {
+		return ResponseEntity.ok(branchService.getBranchById(branchName));
 	}
 
 	@PostMapping
