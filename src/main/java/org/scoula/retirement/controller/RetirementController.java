@@ -15,7 +15,7 @@ import org.scoula.product.service.TimeDepositsService;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.retirement.dto.RetirementMainResponseDto; // RetirementMainResponseDTO 경로 확인
 import org.scoula.user.dto.UserDto;
-import org.scoula.user.dto.UserInfoDto;
+import org.scoula.user.dto.UserGraphDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -50,27 +50,25 @@ public class RetirementController {
 	@GetMapping("")
 	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(Authentication authentication) {
 		RetirementMainResponseDto response = new RetirementMainResponseDto();
-
 		String email = authentication.getName();
+
 		// 0. 사용자 정보 조회
 		UserDto userDto = userServiceImpl.getUser(email);
-		UserInfoDto userInfoDto = UserInfoDto.of(userDto.toVo());
 
-		// 1. 자산 현황 데이터 조회 및 설정
+		// 1. 자산 현황 데이터 조회
 		List<AssetStatusSummaryDto> assetList = assetStatusService.getAssetStatusSummaryByEmail(email);
 
-		// 1-2. DTO 구조에 맞춰 user_info 세팅
-		RetirementMainResponseDto.UserInfo userInfo = RetirementMainResponseDto.UserInfo.builder()
-			.userName(userInfoDto)
+		// 1-2. DTO 구조에 맞춰 UserGraphDto 생성 (핵심 수정 부분)
+		UserGraphDto userGraphDto = UserGraphDto.builder()
+			.userName(userDto.getUserName())
 			.assetStatus(assetList)
 			.build();
 
-		response.setUserInfo(List.of(userInfo));
+		// 수정된 DTO에 단일 객체로 설정
+		response.setUserInfo(userGraphDto);
 
-		// 2. 맞춤 상품 데이터 조회 및 설정 (CustomRecommendDto 관련 서비스 필요)
+		// 2. 나머지 데이터 조회 및 설정 (기존과 동일)
 		response.setCustomRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email));
-
-		// 3. ProductService를 통해 각 상품 데이터 조회 및 설정
 		response.setTimeDeposits(productsService.getAllTimeDeposits());
 		response.setSavingsDeposits(productsService.getAllSavingsDeposits());
 		response.setMortgageLoan(productsService.getAllMortgageLoans());

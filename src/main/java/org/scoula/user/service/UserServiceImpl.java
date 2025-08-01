@@ -13,7 +13,7 @@ import org.scoula.booking.dto.BookingDto;
 import org.scoula.booking.mapper.BookingMapper;
 import org.scoula.user.domain.UserVo;
 import org.scoula.user.dto.MyPageResponseDto;
-import org.scoula.user.dto.MyPageUserInfoDto;
+import org.scoula.user.dto.UserGraphDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 			.collect(Collectors.toList());
 
 		// 4. 최종 DTO 조립
-		MyPageUserInfoDto userInfoDto = MyPageUserInfoDto.builder()
+		UserGraphDto userInfoDto = UserGraphDto.builder()
 			.userName(userVo.getUserName())
 			.assetStatus(assetList)
 			.build();

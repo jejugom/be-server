@@ -9,6 +9,7 @@ import org.scoula.product.dto.MortgageLoanDto;
 import org.scoula.product.dto.SavingsDepositsDto;
 import org.scoula.product.dto.TimeDepositsDto;
 import org.scoula.recommend.dto.CustomRecommendDto;
+import org.scoula.user.dto.UserGraphDto;
 import org.scoula.user.dto.UserInfoDto;
 
 import lombok.AllArgsConstructor;
@@ -25,20 +26,11 @@ import lombok.NoArgsConstructor;
  * {자산현황}, {맞춤상품}, {전체금융상품}
  */
 public class RetirementMainResponseDto {
-	private List<UserInfo> userInfo; // asset_status 포함
+	private UserGraphDto userInfo;
 	private List<CustomRecommendDto> customRecommendPrdt; //맞춤상품
 	private List<TimeDepositsDto> timeDeposits; //예금
 	private List<SavingsDepositsDto> savingsDeposits; //적금
 	private List<MortgageLoanDto> mortgageLoan; //주택담보대출
 	private List<GoldProductsDto> goldProducts; //금상품
 	private List<FundProductsDto> fundProducts; //펀드상품
-
-	@Data
-	@Builder
-	@NoArgsConstructor
-	@AllArgsConstructor
-	public static class UserInfo {
-		private UserInfoDto userName;
-		private List<AssetStatusSummaryDto> assetStatus; //자산현황
-	}
 }
