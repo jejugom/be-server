@@ -22,7 +22,7 @@
         WHERE asset_id = #{id}
     </select>
 
-    <insert id="insertAssetStatus" parameterType="org.scoula.asset.domain.AssetStatusVo">
+    <insert id="insertAssetStatus" parameterType="org.scoula.asset.domain.AssetStatusVo" useGeneratedKeys="true" keyProperty="assetId" keyColumn="asset_id">
         INSERT INTO asset_status (email, asset_category_code, amount, asset_name, business_type)
         VALUES (#{email}, #{assetCategoryCode}, #{amount}, #{assetName}, #{businessType})
     </insert>

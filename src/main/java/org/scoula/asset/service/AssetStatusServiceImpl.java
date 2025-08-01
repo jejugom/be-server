@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.scoula.asset.domain.AssetStatusVo;
+import org.scoula.asset.dto.AssetStatusIdDto;
 import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.dto.AssetStatusResponseDto;
 import org.scoula.asset.dto.AssetStatusSummaryDto;
@@ -94,13 +95,20 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 
 	@Transactional
 	@Override
-	public void addAssetStatus(String email, AssetStatusRequestDto requestDto) {
+	public AssetStatusIdDto addAssetStatus(String email, AssetStatusRequestDto requestDto) {
+		// 1. assetStatusVo 객체 생성 (이때 assetId는 null 또는 0)
 		AssetStatusVo assetStatusVo = requestDto.toVo();
 		assetStatusVo.setEmail(email);
+
+		// 2. mapper 메서드 호출. 이 메서드는 void지만,
+		//    내부적으로 assetStatusVo 객체의 assetId를 채워줍니다.
 		assetStatusMapper.insertAssetStatus(assetStatusVo);
 
-		// updateUserAssetSummary를 호출해 사용자 테이블에 총 자산에 추가된 자산 금액 저장
+		// 3. 이 시점에는 assetStatusVo.getAssetId()를 호출하면
+		//    DB에 생성된 ID 값이 정상적으로 나옵니다.
 		updateUserAssetSummary(email);
+
+		return new AssetStatusIdDto(assetStatusVo.getAssetId());
 	}
 
 	@Override

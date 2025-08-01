@@ -2,9 +2,11 @@ package org.scoula.asset.controller;
 
 import java.util.List;
 
+import org.scoula.asset.dto.AssetStatusIdDto;
 import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.dto.AssetStatusResponseDto;
 import org.scoula.asset.service.AssetStatusService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,10 +35,13 @@ public class AssetStatusController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> addAssetStatus(@RequestBody AssetStatusRequestDto requestDto, Authentication authentication) {
+	public ResponseEntity<AssetStatusIdDto> addAssetStatus(@RequestBody AssetStatusRequestDto requestDto, Authentication authentication) {
 		String userEmail = authentication.getName();
-		assetStatusService.addAssetStatus(userEmail,requestDto);
-		return ResponseEntity.ok().build();
+		AssetStatusIdDto responseDto = assetStatusService.addAssetStatus(userEmail, requestDto);
+
+		// 리소스가 성공적으로 생성되었음을 의미하는 201 Created 상태와 함께
+		// 생성된 ID를 응답 본문에 담아 반환합니다.
+		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 	}
 
 
