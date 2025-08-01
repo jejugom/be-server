@@ -7,7 +7,6 @@ import org.scoula.asset.dto.AssetStatusResponseDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,16 +26,14 @@ public class AssetStatusController {
 	private final AssetStatusService assetStatusService;
 
 	@GetMapping()
-	public ResponseEntity<List<AssetStatusResponseDto>> getAssetStatusByEmail() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	public ResponseEntity<List<AssetStatusResponseDto>> getAssetStatusByEmail(Authentication authentication) {
 		String userEmail = authentication.getName();
 		List<AssetStatusResponseDto> assetStatusResponseDtos = assetStatusService.getAssetStatusByEmail(userEmail);
 		return ResponseEntity.ok(assetStatusResponseDtos);
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> addAssetStatus(@RequestBody AssetStatusRequestDto requestDto) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	public ResponseEntity<Void> addAssetStatus(@RequestBody AssetStatusRequestDto requestDto, Authentication authentication) {
 		String userEmail = authentication.getName();
 		assetStatusService.addAssetStatus(userEmail,requestDto);
 		return ResponseEntity.ok().build();
@@ -45,16 +42,14 @@ public class AssetStatusController {
 
 	@PutMapping("/{assetId}")
 	public ResponseEntity<Void> updateAssetStatus(@PathVariable Integer assetId,
-		@RequestBody AssetStatusRequestDto requestDto) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		@RequestBody AssetStatusRequestDto requestDto, Authentication authentication) {
 		String userEmail = authentication.getName();
 		assetStatusService.updateAssetStatus(assetId, userEmail, requestDto);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping("/{assetId}")
-	public ResponseEntity<Void> deleteAssetStatus(@PathVariable Integer assetId) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	public ResponseEntity<Void> deleteAssetStatus(@PathVariable Integer assetId, Authentication authentication) {
 		String userEmail = authentication.getName();
 		assetStatusService.deleteAssetStatus(assetId, userEmail);
 		return ResponseEntity.ok().build();

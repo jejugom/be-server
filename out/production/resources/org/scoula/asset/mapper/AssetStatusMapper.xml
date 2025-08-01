@@ -41,7 +41,7 @@
         DELETE
         FROM asset_status
         WHERE asset_id = #{assetId}
-          AND email = #{userEmail}
+          AND email = #{email}
     </delete>
 
     <delete id="deleteByEmail">
