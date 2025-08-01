@@ -52,40 +52,72 @@ public class CustomRecommendServiceImpl implements CustomRecommendService {
 
 	/**
 	 * 새로운 추천 정보를 DB에 추가
-	 * @param customRecommendDto
+	 * 사용자가 성향이나 자산 정보를 업데이트 할 때 마다 추천상품을 바꿔줘야 하므로,
+	 * addCustomRecommned 메서드는 기존 table 데이터의 삭제 후 새로운 추천 상품을 추가하는 방향으로
+	 */
+	/**
+	 * 새로운 추천 정보를 DB에 추가
 	 * 사용자가 성향이나 자산 정보를 업데이트 할 때 마다 추천상품을 바꿔줘야 하므로,
 	 * addCustomRecommned 메서드는 기존 table 데이터의 삭제 후 새로운 추천 상품을 추가하는 방향으로
 	 */
 	@Override
 	public void addCustomRecommend(String email) {
-		/**
-		 * 상품 | 사용자
-		 */
-		List<ProductVo> products = productsService.getAllProducts();
+		// 1. 사용자 정보와 전체 상품 목록을 가져옵니다.
 		UserDto user = userService.getUser(email);
-		/**
-		 * 유저가 정보를 업데이트 할 때마다 추천 목록을 바꿔줘야 되므로 기존 테이블 정보 삭제
-		 */
+		List<ProductVo> products = productsService.getAllProducts();
+
+		// 2. 사용자 정보나 상품 목록이 없으면, 오류를 방지하기 위해 함수를 종료합니다.
+		if (user == null || products == null || products.isEmpty()) {
+			// 또는 log.warn("추천 상품을 생성할 사용자나 상품 정보가 없습니다."); 등으로 로깅할 수 있습니다.
+			return;
+		}
+
+		// 3. 기존 추천 목록을 삭제합니다.
 		customRecommendMapper.deleteAllProductsByEmail(email);
 
 		List<CustomRecommendVo> recommendVoList = new ArrayList<>();
 
-		for(ProductVo vo : products){
-			double productTendency = vo.getTendency();
-			double productAssetProportion = vo.getAssetProportion();
-			double userTendency = user.getTendency();
-			double userAssetProportion = user.getAssetProportion();
-			double score = cosineSimilarity(userTendency,userAssetProportion,productTendency,productAssetProportion);
-			CustomRecommendVo customRecommendVo = new CustomRecommendVo(email,vo.getFinPrdtCd(),score+"");
+		// 4. Null-safe하게 사용자 성향/자산 비율을 가져옵니다. null일 경우 0.0을 기본값으로 사용합니다.
+		double userTendency = (user.getTendency() != null) ? user.getTendency() : 0.0;
+		double userAssetProportion = (user.getAssetProportion() != null) ? user.getAssetProportion() : 0.0;
+
+		for (ProductVo vo : products) {
+			// 상품 정보도 null일 수 있으므로 방어적으로 코드를 작성합니다.
+			if (vo == null || vo.getFinPrdtCd() == null) {
+				continue; // 필수 정보가 없는 상품은 건너뜁니다.
+			}
+
+			// Null-safe하게 상품 성향/자산 비율을 가져옵니다.
+			double productTendency = (vo.getTendency() != null) ? vo.getTendency() : 0.0;
+			double productAssetProportion = (vo.getAssetProportion() != null) ? vo.getAssetProportion() : 0.0;
+
+			// 코사인 유사도 점수를 계산합니다.
+			double score = cosineSimilarity(userTendency, userAssetProportion, productTendency, productAssetProportion);
+
+			// 추천 목록에 추가합니다.
+			CustomRecommendVo customRecommendVo = new CustomRecommendVo(email, vo.getFinPrdtCd(), String.valueOf(score));
 			recommendVoList.add(customRecommendVo);
 		}
-		//유사도 내림차순 정렬
-		recommendVoList.sort((a, b) -> Double.compare(Double.parseDouble(b.getScore()), Double.parseDouble(a.getScore())));
-		//  상위 8개 저장
+
+		// 5. 유사도 점수를 기준으로 내림차순 정렬합니다.
+		recommendVoList.sort((a, b) -> {
+			// score가 null이거나 숫자가 아닐 경우를 대비합니다.
+			try {
+				double scoreA = Double.parseDouble(a.getScore());
+				double scoreB = Double.parseDouble(b.getScore());
+				return Double.compare(scoreB, scoreA);
+			} catch (NumberFormatException e) {
+				return 0;
+			}
+		});
+
+		// 6. 상위 8개의 추천 상품을 DB에 저장합니다.
 		for (int i = 0; i < Math.min(8, recommendVoList.size()); i++) {
 			customRecommendMapper.insertCustomRecommend(recommendVoList.get(i));
 		}
 	}
+
+
 	private double cosineSimilarity(double t1, double a1, double t2, double a2) {
 		double dot = t1 * t2 + a1 * a2;
 		double normA = Math.sqrt(t1 * t1 + a1 * a1);

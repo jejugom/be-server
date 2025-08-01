@@ -13,5 +13,4 @@ public class PreferenceRequestDto {
 	private int q3;
 	private int q4;
 	private int q5;
-
 }

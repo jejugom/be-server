@@ -23,6 +23,6 @@ public class PreferenceController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userName = authentication.getName();
 		preferenceService.setUserPreference(requestDto,userName);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -24,6 +24,7 @@ public class PreferenceServiceImpl implements PreferenceService{
 		int q3 = requestDto.getQ3();
 		int q4 = requestDto.getQ4();
 		int q5 = requestDto.getQ5();
+
 		switch (q1){
 			case 1 : startPoint+=0.3;
 			case 2 : startPoint += 0.15;
@@ -64,6 +65,5 @@ public class PreferenceServiceImpl implements PreferenceService{
 
 		//추천 상품 수정
 		customRecommendService.addCustomRecommend(userEmail);
-
 	}
 }
