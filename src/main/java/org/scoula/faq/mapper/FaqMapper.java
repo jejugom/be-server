@@ -11,10 +11,5 @@ public interface FaqMapper {
 
 	FaqVo getFaqById(Integer id);
 
-	// void insertFaq(FaqVo faq);
-	//
-	// int updateFaq(FaqVo faq);
-	//
-	// int deleteFaq(Integer id);
 	void updateFaqPartial(@Param("faqId") Integer faqId, @Param("updates") Map<String, Object> updates);
 }

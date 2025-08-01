@@ -1,7 +1,5 @@
 package org.scoula.faq.dto;
 
-import java.util.Date;
-
 import org.scoula.faq.domain.FaqVo;
 
 import io.swagger.annotations.ApiModel;
@@ -30,16 +28,12 @@ public class FaqDto {
 	@ApiModelProperty(value = "답변 내용", required = true, example = "비밀번호를 다시 확인해주세요.")
 	private String content;
 
-	@ApiModelProperty(value = "작성일", required = true)
-	private Date date;
-
 	public static FaqDto from(FaqVo faq) {
 		return FaqDto.builder()
 			.faqId(faq.getFaqId())
 			.category(faq.getCategory())
 			.title(faq.getTitle())
 			.content(faq.getContent())
-			.date(faq.getDate())
 			.build();
 	}
 
@@ -49,7 +43,6 @@ public class FaqDto {
 			.category(category)
 			.title(title)
 			.content(content)
-			.date(date)
 			.build();
 	}
 }
