@@ -9,11 +9,5 @@ public interface BranchService {
 
 	BranchDto getBranchById(Integer branchName);
 
-	void addBranch(BranchDto branchDto);
-
-	void updateBranch(BranchDto branchDto);
-
-	void deleteBranch(String branchName);
-
 	String getBranchNameById(int branchId);
 }

@@ -22,11 +22,6 @@
         WHERE branch_id = #{branchId}
     </select>
 
-    <insert id="insertBranch">
-        INSERT INTO branch (branch_name, branch_phone, address_name, road_address_name, x, y, distance)
-        VALUES (#{branchName}, #{branchPhone}, #{addressName}, #{roadAddressName}, #{x}, #{y}, #{distance})
-    </insert>
-
     <update id="updateBranch">
         UPDATE branch
         SET branch_phone      = #{branchPhone},

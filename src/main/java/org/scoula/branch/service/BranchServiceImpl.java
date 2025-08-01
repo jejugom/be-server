@@ -31,25 +31,6 @@ public class BranchServiceImpl implements BranchService {
 			.orElseThrow(() -> new NoSuchElementException("Branch not found with name: " + branchId));
 	}
 
-	@Override
-	public void addBranch(BranchDto branchDto) {
-		branchMapper.insertBranch(branchDto.toVo());
-	}
-
-	@Override
-	public void updateBranch(BranchDto branchDto) {
-		if (branchMapper.updateBranch(branchDto.toVo()) == 0) {
-			throw new NoSuchElementException("Branch not found with name: " + branchDto.getBranchName());
-		}
-	}
-
-	@Override
-	public void deleteBranch(String branchName) {
-		if (branchMapper.deleteBranch(branchName) == 0) {
-			throw new NoSuchElementException("Branch not found with name: " + branchName);
-		}
-	}
-
 	/**
 	 * branchId로 branchName을 조회하는 메소드
 	 */
@@ -59,5 +40,4 @@ public class BranchServiceImpl implements BranchService {
 		return Optional.ofNullable(branchMapper.findBranchNameById(branchId))
 			.orElseThrow(() -> new NoSuchElementException("Branch not found with id: " + branchId));
 	}
-
 }

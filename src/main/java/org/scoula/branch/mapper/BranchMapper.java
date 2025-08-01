@@ -10,12 +10,6 @@ public interface BranchMapper {
 
 	BranchVo getBranchById(@Param("branchId") Integer branchId);
 
-	void insertBranch(BranchVo branch);
-
-	int updateBranch(BranchVo branch);
-
-	int deleteBranch(String code);
-
 	/**
 	 * ID를 통해 지점 이름을 조회
 	 * @param branchId

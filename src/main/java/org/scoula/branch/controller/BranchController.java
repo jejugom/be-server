@@ -32,23 +32,4 @@ public class BranchController {
 	public ResponseEntity<BranchDto> getBranchById(@PathVariable Integer branchName) {
 		return ResponseEntity.ok(branchService.getBranchById(branchName));
 	}
-
-	@PostMapping
-	public ResponseEntity<Void> addBranch(@RequestBody BranchDto branchDto) {
-		branchService.addBranch(branchDto);
-		return ResponseEntity.ok().build();
-	}
-
-	@PutMapping("/{branchName}")
-	public ResponseEntity<Void> updateBranch(@PathVariable String branchName, @RequestBody BranchDto branchDto) {
-		branchDto.setBranchName(branchName);
-		branchService.updateBranch(branchDto);
-		return ResponseEntity.ok().build();
-	}
-
-	@DeleteMapping("/{branchName}")
-	public ResponseEntity<Void> deleteBranch(@PathVariable String branchName) {
-		branchService.deleteBranch(branchName);
-		return ResponseEntity.ok().build();
-	}
 }
