@@ -5,7 +5,8 @@ import org.scoula.user.dto.MyPageResponseDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,24 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
-@Api(tags = "사용자 API", description = "사용자 관련 API")
+@RequestMapping("/api/users") // 'user' -> 'users'로 RESTful하게 변경
+@Api(tags = "사용자 API", description = "사용자 정보 조회, 가입, 수정, 탈퇴 등 관련 API")
 public class UserController {
 
 	private final UserService userService;
 
-	@ApiOperation(value = "회원 가입", notes = "사용자가 회원 가입을 진행합니다.")
+	@ApiOperation(value = "회원 가입", notes = "새로운 사용자를 등록합니다.")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "회원 가입 성공"),
-		@ApiResponse(code = 400, message = "잘못된 요청")
+		@ApiResponse(code = 400, message = "잘못된 요청 데이터")
 	})
 	@PostMapping("/join")
 	public ResponseEntity<Void> join(@RequestBody UserDto userDto) {
@@ -42,29 +42,28 @@ public class UserController {
 		return ResponseEntity.ok().build();
 	}
 
-	@ApiOperation(value = "회원 정보 조회", notes = "이메일을 기반으로 사용자 정보를 조회합니다.")
+	@ApiOperation(value = "특정 회원 정보 조회 (관리자용)", notes = "이메일을 기반으로 특정 사용자 정보를 조회합니다.")
 	@ApiResponses({
-		@ApiResponse(code = 200, message = "회원 정보 조회 성공"),
-		@ApiResponse(code = 404, message = "해당 이메일의 회원 없음")
+		@ApiResponse(code = 200, message = "조회 성공"),
+		@ApiResponse(code = 404, message = "사용자를 찾을 수 없음")
 	})
 	@GetMapping("/{email}")
-	public ResponseEntity<UserDto> getUser(@PathVariable String email) {
+	public ResponseEntity<UserDto> getUser(@ApiParam(value="조회할 사용자의 이메일", required=true) @PathVariable String email) {
 		UserDto user = userService.getUser(email);
 		return ResponseEntity.ok(user);
 	}
 
-	@ApiOperation(value = "지점 ID 수정", notes = "로그인된 사용자의 지점 ID(branchId)를 수정합니다.")
+	@ApiOperation(value = "내 지점 ID 수정", notes = "현재 로그인한 사용자의 선호 지점 ID를 수정합니다.")
 	@ApiResponses({
-		@ApiResponse(code = 204, message = "지점 ID 수정 성공"),
-		@ApiResponse(code = 400, message = "잘못된 요청"),
-		@ApiResponse(code = 403, message = "권한 없음")
+		@ApiResponse(code = 204, message = "수정 성공"),
+		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
 	})
-	@PatchMapping("/branch")
-	public ResponseEntity<Void> updateBranchId(
-		Authentication authentication,
+	@PatchMapping("/me/branch") // '나'의 정보를 수정하는 엔드포인트
+	public ResponseEntity<Void> updateMyBranchId(
+		@AuthenticationPrincipal UserDetails userDetails,
 		@RequestBody BranchIdUpdateRequestDto requestDto) {
 
-		String email = authentication.getName();
+		String email = userDetails.getUsername();
 		userService.updateBranchId(email, requestDto.getBranchId());
 		return ResponseEntity.noContent().build();
 	}
@@ -72,24 +71,25 @@ public class UserController {
 	@ApiOperation(value = "회원 탈퇴", notes = "현재 로그인한 사용자의 계정을 탈퇴 처리합니다.")
 	@ApiResponses({
 		@ApiResponse(code = 204, message = "회원 탈퇴 성공"),
-		@ApiResponse(code = 403, message = "권한 없음")
+		@ApiResponse(code = 401, message = "인증되지 않은 사용자"),
+		@ApiResponse(code = 404, message = "사용자를 찾을 수 없음")
 	})
-	@DeleteMapping()
-	public ResponseEntity<Void> withdrawUser(Authentication authentication) {
-		String email = authentication.getName();
+	@DeleteMapping("/me") // '나'의 계정을 삭제하는 엔드포인트
+	public ResponseEntity<Void> withdrawUser(@AuthenticationPrincipal UserDetails userDetails) {
+		String email = userDetails.getUsername();
 		userService.withdrawUser(email);
 		return ResponseEntity.noContent().build();
 	}
 
+	@ApiOperation(value = "마이페이지 정보 조회", notes = "현재 로그인한 사용자의 마이페이지 데이터를 조회합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "조회 성공"),
+		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
+	})
 	@GetMapping("/mypage")
-	public ResponseEntity<MyPageResponseDto> getMyPageInfo(Authentication authentication) {
-		// userDetails.getUsername()을 통해 현재 인증된 사용자의 ID(일반적으로 이메일 또는 회원번호)를 가져옵니다.
-		String email = authentication.getName();
-
-		// Service 계층에 사용자 ID를 전달하여 마이페이지에 필요한 데이터를 조회하고 DTO로 조합합니다.
+	public ResponseEntity<MyPageResponseDto> getMyPageInfo(@AuthenticationPrincipal UserDetails userDetails) {
+		String email = userDetails.getUsername();
 		MyPageResponseDto myPageData = userService.getMyPageData(email);
-
-		// 조회된 데이터를 ResponseEntity.ok()에 담아 200 OK 상태와 함께 반환합니다.
 		return ResponseEntity.ok(myPageData);
 	}
 }
