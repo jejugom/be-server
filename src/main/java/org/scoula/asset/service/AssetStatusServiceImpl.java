@@ -105,9 +105,14 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 
 	@Override
 	public void updateAssetStatus(Integer assetId, String email, AssetStatusRequestDto requestDto) {
-		AssetStatusVo assetStatusVo = requestDto.toVo();
-		assetStatusVo.setAssetId(assetId);
-		assetStatusVo.setEmail(email);
+		AssetStatusVo assetStatusVo = AssetStatusVo.builder()
+			.assetId(assetId)
+			.email(email)
+			.assetCategoryCode(requestDto.getAssetCategoryCode())
+			.amount(requestDto.getAmount())
+			.assetName(requestDto.getAssetName())
+			.businessType(requestDto.getBusinessType())
+			.build();
 
 		if (assetStatusMapper.updateAssetStatus(assetStatusVo) == 0) {
 			throw new NoSuchElementException("목록 번호 오기입 / 권한이 없습니다.");
@@ -119,7 +124,14 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 
 	@Override
 	public void deleteAssetStatus(Integer assetId, String email) {
-		if (assetStatusMapper.deleteAssetStatus(assetId, email) == 0) {
+		System.out.println("=== DELETE ASSET DEBUG ===");
+		System.out.println("assetId: " + assetId);
+		System.out.println("email: " + email);
+		
+		int deleteResult = assetStatusMapper.deleteAssetStatus(assetId, email);
+		System.out.println("deleteResult: " + deleteResult);
+		
+		if (deleteResult == 0) {
 			throw new NoSuchElementException("해당 자산이 사용자 계정에 존재하지 않습니다. ");
 		}
 
