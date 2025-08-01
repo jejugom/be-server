@@ -12,9 +12,15 @@
 
     <!-- 자산현황 간소화 데이터 -->
     <select id="findAssetStatusSummaryByEmail" resultType="org.scoula.asset.domain.AssetStatusVo">
-        SELECT asset_category_code, amount
-        FROM asset_status
-        WHERE email = #{email}
+        SELECT
+            asset_category_code,
+            SUM(amount) AS amount
+        FROM
+            asset_status
+        WHERE
+            email = #{email}
+        GROUP BY
+            asset_category_code
     </select>
 
     <select id="findAssetStatusByEmail" resultMap="assetStatusMap">

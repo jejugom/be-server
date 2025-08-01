@@ -156,7 +156,6 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 
 		// 4. 최종 DTO 조립
 		MyPageUserInfoDto userInfoDto = MyPageUserInfoDto.builder()
-			.email(userVo.getEmail())
 			.userName(userVo.getUserName())
 			.assetStatus(assetList)
 			.build();
