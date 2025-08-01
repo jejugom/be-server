@@ -50,8 +50,8 @@ public class AssetStatusController {
 
 	@DeleteMapping("/{assetId}")
 	public ResponseEntity<Void> deleteAssetStatus(@PathVariable Integer assetId, Authentication authentication) {
-		String userEmail = authentication.getName();
-		assetStatusService.deleteAssetStatus(assetId, userEmail);
-		return ResponseEntity.ok().build();
+		String email = authentication.getName();
+		assetStatusService.deleteAssetStatus(assetId, email);
+		return ResponseEntity.noContent().build();
 	}
 }
