@@ -60,12 +60,4 @@ public class FaqController {
 		@PathVariable Integer faqId) {
 		return ResponseEntity.ok(faqService.getFaqById(faqId));
 	}
-
-	@PatchMapping("/{faqId}")
-	public ResponseEntity<Void> updateFaqPartial(
-		@PathVariable Integer faqId,
-		@RequestBody Map<String, Object> updates) {
-		faqService.updateFaqPartial(faqId, updates);
-		return ResponseEntity.noContent().build();
-	}
 }

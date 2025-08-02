@@ -42,6 +42,11 @@ public interface BookingMapper {
 	 */
 	int deleteBooking(String bookingId);
 
+	/**
+	 * 특정 사용자의 모든 예약 정보를 삭제합니다. (주로 회원 탈퇴 시 사용)
+	 * @param email 삭제할 예약 정보의 소유자 이메일
+	 * @return 삭제된 행(row)의 수
+	 */
 	int deleteByEmail(@Param("email") String email);
 
 	/**
@@ -80,5 +85,17 @@ public interface BookingMapper {
 	 */
 	BookingVo findByEmailAndFinPrdtCode(@Param("email") String email, @Param("finPrdtCode") String finPrdtCode);
 
+	/**
+	 * 특정 사용자의 다가오는 예약 목록을 조회합니다. (오늘 및 미래의 예약)
+	 * @param email 사용자 이메일
+	 * @return 다가오는 예약 정보 리스트
+	 */
 	List<BookingVo> findUpcomingByUserEmail(String email);
+
+	/**
+	 * 예약 ID로 예약의 상세 정보(상품명, 지점명 등)를 함께 조회합니다. (N+1 문제 해결용)
+	 * @param bookingId 조회할 예약의 ULID
+	 * @return 상품명과 지점명이 포함된 예약 정보 객체
+	 */
+	// BookingVo findByIdWithDetails(String bookingId);
 }

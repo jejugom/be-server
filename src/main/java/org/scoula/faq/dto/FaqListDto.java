@@ -21,6 +21,11 @@ public class FaqListDto {
 	@ApiModelProperty(value = "질문 제목", required = true, example = "로그인이 안 돼요.")
 	private String title;
 
+	/**
+	 * FaqVo 객체를 FaqListDto로 변환합니다.
+	 * @param faq FaqVo 객체
+	 * @return 변환된 FaqListDto 객체
+	 */
 	public static FaqListDto from(FaqVo faq) {
 		return FaqListDto.builder()
 			.faqId(faq.getFaqId())

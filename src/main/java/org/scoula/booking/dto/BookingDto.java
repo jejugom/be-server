@@ -24,14 +24,11 @@ public class BookingDto {
 	@ApiModelProperty(value = "지점 번호", example = "1")
 	private int branchId;
 
-	@ApiModelProperty(value = "예약자 이메일", example = "user@example.com")
-	private String email;
-
 	@ApiModelProperty(value = "금융 상품 코드", example = "FIN123456")
 	private String finPrdtCode;
 
 	@ApiModelProperty(value = "예약 날짜 (yyyy-MM-dd 형식)", example = "2025-07-28")
-	private String date; // 👈 타입을 Date에서 String으로 변경
+	private String date; // 타입을 Date에서 String으로 변경
 
 	@ApiModelProperty(value = "예약 시간 (HH:mm 형식)", example = "14:30")
 	private String time;
@@ -62,7 +59,6 @@ public class BookingDto {
 		return BookingDto.builder()
 			.bookingId(booking.getBookingId())
 			.branchId(booking.getBranchId())
-			.email(booking.getEmail())
 			.finPrdtCode(booking.getFinPrdtCode())
 			.date(formattedDate) // 포맷팅된 날짜 사용
 			.time(formattedTime) // 포맷팅된 시간 사용
