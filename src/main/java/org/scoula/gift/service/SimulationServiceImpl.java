@@ -36,11 +36,11 @@ public class SimulationServiceImpl implements SimulationService {
 		TaxCalculationResult taxResult = calculateGiftTaxInternal(requestDto);
 
 		// 2단계: 절세 전략 생성 (private 헬퍼 메서드 호출) - 향후 확장될 부분
-		// List<String> strategies = generateTaxSavingStrategies(requestDto, taxResult);
+		List<String> strategies = generateTaxSavingStrategies(requestDto, taxResult);
 
 		// 3단계: 결과들을 조합하여 최종 응답 생성
-		// return new SimulationResponseDto(taxResult.getTotalEstimatedTax(), taxResult.getRecipientDetails(), strategies);
-		return new SimulationResponseDto(taxResult.getTotalEstimatedTax(), taxResult.getRecipientDetails());
+		return new SimulationResponseDto(taxResult.getTotalEstimatedTax(), taxResult.getRecipientDetails(), strategies);
+		// return new SimulationResponseDto(taxResult.getTotalEstimatedTax(), taxResult.getRecipientDetails());
 	}
 
 	// --- Private Helper Methods (향후 이 부분들의 로직을 구현) ---
