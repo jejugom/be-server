@@ -123,10 +123,10 @@ public class BookingController {
 
 	@ApiOperation(value = "특정 상품에 대한 예약 존재 여부 확인", notes = "현재 사용자가 특정 금융 상품을 이미 예약했는지 확인합니다.")
 	@ApiResponse(code = 200, message = "조회 성공 (예약이 있으면 isBooked=true, 없으면 isBooked=false)")
-	@GetMapping("/check/{fin_prdt_code}")
+	@GetMapping("/check/{finPrdtCode}")
 	public ResponseEntity<BookingCheckResponseDto> checkBookingExists(
 		@ApiParam(value = "확인할 금융 상품의 코드", required = true, example = "LN200300000002")
-		@PathVariable("fin_prdt_code") String finPrdtCode,
+		@PathVariable String finPrdtCode,
 		Authentication authentication) {
 
 		String email = authentication.getName();
