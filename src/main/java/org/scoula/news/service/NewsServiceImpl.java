@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,6 +20,7 @@ import org.scoula.news.mapper.NewsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 public class NewsServiceImpl implements NewsService {
 
@@ -104,7 +106,7 @@ public class NewsServiceImpl implements NewsService {
       }
 
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error("IOException occurred while crawling and saving news", e);
     }
     return updatedCategories;
   }
