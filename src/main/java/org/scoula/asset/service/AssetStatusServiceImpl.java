@@ -95,7 +95,7 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 
 		// 3. 사용자 정보를 업데이트합니다.
 		UserDto userDto = userService.getUser(userEmail);
-		userDto.setAsset((long) totalAmount);
+		userDto.setAsset((long)totalAmount);
 		userDto.setAssetProportion(assetProportionRate);
 		userService.updateUser(userEmail, userDto);
 
@@ -160,5 +160,17 @@ public class AssetStatusServiceImpl implements AssetStatusService {
 		}
 
 		updateUserAssetSummary(email);
+	}
+
+	/**
+	 * 특정 사용자의 모든 자산 목록을 조회합니다.
+	 * DB 조회를 위해 AssetStatusMapper를 호출합니다.
+	 * @param email 사용자 이메일
+	 * @return AssetStatusVo 객체 리스트
+	 */
+	@Override
+	public List<AssetStatusVo> getFullAssetStatusByEmail(String email) {
+		// 매퍼에 이미 존재하는 findAssetStatusByEmail 메소드를 그대로 호출합니다.
+		return assetStatusMapper.findAssetStatusByEmail(email);
 	}
 }
