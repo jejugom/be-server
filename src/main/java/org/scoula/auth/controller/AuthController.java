@@ -47,7 +47,7 @@ public class AuthController {
 	/** 카카오 인증 서비스 - 카카오 로그인 로직 처리 */
 	private final KakaoAuthService kakaoAuthService;
 
-	/** 프론트엔드 URL - application.properties에서 주입 */
+	/** 프론트엔드 URL - application-dev.properties에서 주입 */
 	@Value("${frontend.url}")
 	private String frontendUrl;
 
