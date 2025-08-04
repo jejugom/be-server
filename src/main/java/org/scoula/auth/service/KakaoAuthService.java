@@ -312,15 +312,14 @@ public class KakaoAuthService {
 	 * 신규 회원 여부 판단
 	 * 
 	 * 사용자가 신규 회원인지 기존 회원인지 판단합니다.
-	 * 첫 개인 설정 정보가 입력되지 않은 경우 신규 회원으로 간주하는 로직 추가가 필요합니다.
+	 * 사용자가 존재하지 않거나 성향(tendency) 정보가 입력되지 않은 경우 신규 회원으로 간주합니다.
 	 * 
 	 * @param userEmail 사용자 이메일
 	 * @return 신규 회원이면 true, 기존 회원이면 false
 	 */
 	public boolean isNewUser(String userEmail) {
 		UserVo user = userMapper.findByEmail(userEmail);
-		// 사용자가 존재하지 않으면 신규 회원으로 판단
-		// (TODO: 추가 정보를 입력하지 않은 상태도 신규 회원으로 판단하도록 로직 추가)
-		return user == null;
+		// 사용자가 존재하지 않거나 성향(tendency) 정보가 null 인 경우 신규 회원으로 판단
+		return user == null || user.getTendency() == null;
 	}
 }
