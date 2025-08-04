@@ -2,8 +2,6 @@ package org.scoula.gift.dto;
 
 import java.util.List;
 
-import org.scoula.asset.dto.AssetStatusSummaryDto;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,9 +15,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GiftPageResponseDto {
+
 	@ApiModelProperty(value = "수증자 목록 정보")
 	private List<RecipientResponseDto> recipients;
 
-	@ApiModelProperty(value = "자산 현황 요약 정보")
-	private List<AssetStatusSummaryDto> assetSummary;
+	@ApiModelProperty(value = "카테고리별로 그룹화된 자산 현황 정보")
+	private List<GiftAssetCategoryDto> assetCategories; // 이 필드로 변경됩니다.
 }
