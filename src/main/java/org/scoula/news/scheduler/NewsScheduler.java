@@ -13,7 +13,9 @@ public class NewsScheduler {
   @Autowired
   private NewsService newsService;
 
-  @Scheduled(cron = "0 0 12 * * *")
+  @Scheduled(cron = "0 0 12 * * *") // 매일 정오에 실행
+
+//  스케줄링 작업
   public void scheduleNewsCrawling() {
     newsService.crawlAndSaveNews();
   }
