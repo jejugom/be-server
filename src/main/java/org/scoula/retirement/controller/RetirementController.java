@@ -18,8 +18,7 @@ import org.scoula.user.dto.UserDto;
 import org.scoula.user.dto.UserGraphDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,9 +54,9 @@ public class RetirementController {
 		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
 	})
 	@GetMapping("")
-	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(@AuthenticationPrincipal UserDetails userDetails) {
+	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(Authentication authentication) {
 		RetirementMainResponseDto response = new RetirementMainResponseDto();
-		String email = userDetails.getUsername();
+		String email = authentication.getName();
 
 		// 0. 사용자 정보 조회
 		UserDto userDto = userServiceImpl.getUser(email);
