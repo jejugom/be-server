@@ -12,12 +12,4 @@ public interface FaqService {
 	List<FaqDto> getAllFaqsWithContent();
 
 	FaqDto getFaqById(Integer faqId);
-
-	// void addFaq(FaqDto faqDto);
-	//
-	// void updateFaq(FaqDto faqDto);
-	//
-	// void deleteFaq(Integer faqId);
-
-	void updateFaqPartial(Integer faqId, Map<String, Object> updates);
 }

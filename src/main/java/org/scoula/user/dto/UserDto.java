@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel(description = "사용자 정보 DTO")
+@ApiModel(description = "사용자 정보를 전송하기 위한 데이터 객체(DTO)")
 public class UserDto {
 
 	@ApiModelProperty(value = "이메일", example = "user@example.com", required = true)
@@ -33,13 +33,13 @@ public class UserDto {
 	@ApiModelProperty(value = "연결된 금융기관 ID", example = "connect123")
 	private String connectedId;
 
-	@ApiModelProperty(value = "지점 ID", example = "101")
+	@ApiModelProperty(value = "선호 지점 ID", example = "101")
 	private Integer branchId;
 
 	@ApiModelProperty(value = "자산 총액", example = "100000000")
 	private Long asset;
 
-	@ApiModelProperty(value = "세그먼트", example = "High Net Worth")
+	@ApiModelProperty(value = "고객 구분", example = "High Net Worth")
 	private String segment;
 
 	@ApiModelProperty(value = "첫 번째 파일 이름", example = "profile1.png")
@@ -57,7 +57,11 @@ public class UserDto {
 	@ApiModelProperty(value = "소득 구간", example = "5000만원~7000만원")
 	private String incomeRange;
 
-	// 변환 메서드
+	/**
+	 * UserVo(도메인 객체)를 UserDto(데이터 전송 객체)로 변환합니다.
+	 * @param user UserVo 객체
+	 * @return 변환된 UserDto 객체
+	 */
 	public static UserDto of(UserVo user) {
 		return UserDto.builder()
 			.email(user.getEmail())
@@ -76,6 +80,10 @@ public class UserDto {
 			.build();
 	}
 
+	/**
+	 * 현재 UserDto 객체를 UserVo(도메인 객체)로 변환합니다.
+	 * @return 변환된 UserVo 객체
+	 */
 	public UserVo toVo() {
 		return UserVo.builder()
 			.email(email)

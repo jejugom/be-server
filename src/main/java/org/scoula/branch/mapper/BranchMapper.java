@@ -2,23 +2,30 @@ package org.scoula.branch.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.scoula.branch.domain.BranchVo;
 
+/**
+ * 지점 정보 관련 데이터베이스 작업을 위한 MyBatis 매퍼 인터페이스
+ */
 public interface BranchMapper {
+	/**
+	 * 모든 지점 목록을 조회합니다.
+	 * @return 지점 정보(BranchVo) 리스트
+	 */
 	List<BranchVo> getAllBranches();
 
-	BranchVo getBranchByName(String branchName);
-
-	void insertBranch(BranchVo branch);
-
-	int updateBranch(BranchVo branch);
-
-	int deleteBranch(String code);
+	/**
+	 * 지점 ID로 특정 지점 정보를 조회합니다.
+	 * @param branchId 조회할 지점의 ID
+	 * @return 해당 지점 정보(BranchVo) 객체
+	 */
+	BranchVo getBranchById(@Param("branchId") Integer branchId);
 
 	/**
-	 * ID를 통해 지점 이름을 조회
-	 * @param branchId
-	 * @return String branchName
+	 * ID를 통해 지점 이름을 조회합니다.
+	 * @param branchId 조회할 지점의 ID
+	 * @return 지점 이름(String)
 	 */
 	String findBranchNameById(int branchId);
 }

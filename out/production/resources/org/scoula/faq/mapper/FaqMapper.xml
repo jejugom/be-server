@@ -6,7 +6,6 @@
         <result property="category" column="category"/>
         <result property="title" column="title"/>
         <result property="content" column="content"/>
-        <result property="date" column="date"/>
     </resultMap>
 
     <select id="getAllFaqs" resultMap="faqMap">
@@ -21,16 +20,15 @@
     </select>
 
     <insert id="insertFaq" useGeneratedKeys="true" keyProperty="faqId">
-        INSERT INTO faq (category, title, content, date)
-        VALUES (#{category}, #{title}, #{content}, #{date})
+        INSERT INTO faq (category, title, content)
+        VALUES (#{category}, #{title}, #{content})
     </insert>
 
     <update id="updateFaq">
         UPDATE faq
         SET category = #{category},
             title    = #{title},
-            content  = #{content},
-            date     = #{date}
+            content  = #{content}
         WHERE faq_id = #{faqId}
     </update>
 

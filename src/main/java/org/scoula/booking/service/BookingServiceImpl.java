@@ -46,7 +46,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
 	private final BookingMapper bookingMapper;
-	// private final ProductsService productsService;
 	private final ProductService productService;
 	private final BranchService branchService;
 

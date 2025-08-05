@@ -12,9 +12,15 @@
 
     <!-- 자산현황 간소화 데이터 -->
     <select id="findAssetStatusSummaryByEmail" resultType="org.scoula.asset.domain.AssetStatusVo">
-        SELECT asset_category_code, amount
-        FROM asset_status
-        WHERE email = #{email}
+        SELECT
+            asset_category_code,
+            SUM(amount) AS amount
+        FROM
+            asset_status
+        WHERE
+            email = #{email}
+        GROUP BY
+            asset_category_code
     </select>
 
     <select id="findAssetStatusByEmail" resultMap="assetStatusMap">
@@ -29,7 +35,7 @@
         WHERE asset_id = #{id}
     </select>
 
-    <insert id="insertAssetStatus" parameterType="org.scoula.asset.domain.AssetStatusVo">
+    <insert id="insertAssetStatus" parameterType="org.scoula.asset.domain.AssetStatusVo" useGeneratedKeys="true" keyProperty="assetId" keyColumn="asset_id">
         INSERT INTO asset_status (email, asset_category_code, amount, asset_name, business_type)
         VALUES (#{email}, #{assetCategoryCode}, #{amount}, #{assetName}, #{businessType})
     </insert>
