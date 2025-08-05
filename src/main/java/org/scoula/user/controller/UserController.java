@@ -48,7 +48,8 @@ public class UserController {
 		@ApiResponse(code = 404, message = "사용자를 찾을 수 없음")
 	})
 	@GetMapping("/{email}")
-	public ResponseEntity<UserDto> getUser(@ApiParam(value="조회할 사용자의 이메일", required=true) @PathVariable String email) {
+	public ResponseEntity<UserDto> getUser(
+		@ApiParam(value = "조회할 사용자의 이메일", required = true) @PathVariable String email) {
 		UserDto user = userService.getUser(email);
 		return ResponseEntity.ok(user);
 	}
