@@ -16,16 +16,11 @@
         FROM branch
     </select>
 
-    <select id="getBranchByName" resultMap="branchMap">
+    <select id="getBranchById" resultMap="branchMap">
         SELECT *
         FROM branch
-        WHERE branch_name = #{branchName}
+        WHERE branch_id = #{branchId}
     </select>
-
-    <insert id="insertBranch">
-        INSERT INTO branch (branch_name, branch_phone, address_name, road_address_name, x, y, distance)
-        VALUES (#{branchName}, #{branchPhone}, #{addressName}, #{roadAddressName}, #{x}, #{y}, #{distance})
-    </insert>
 
     <update id="updateBranch">
         UPDATE branch
@@ -43,4 +38,10 @@
         FROM branch
         WHERE branch_name = #{branchName}
     </delete>
+
+    <select id="findBranchNameById" parameterType="int" resultType="string">
+        SELECT branch_name
+        FROM branch
+        WHERE branch_id = #{branchId}
+    </select>
 </mapper>
