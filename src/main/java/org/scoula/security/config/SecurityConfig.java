@@ -67,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/",
             "/favicon.ico",
             "/api/home",
+            "/api/home/test",
             "/auth/kakao",
             "/auth/kakao/callback",
             "/api/retirement",
