@@ -5,8 +5,7 @@ import java.util.List;
 import org.scoula.recommend.dto.CustomRecommendDto;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,8 +30,8 @@ public class CustomRecommendController {
 		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
 	})
 	@GetMapping("/me") // 경로를 '나'를 의미하는 /me로 변경하여 보안 강화
-	public ResponseEntity<List<CustomRecommendDto>> getMyCustomRecommends(@AuthenticationPrincipal UserDetails userDetails) {
-		String email = userDetails.getUsername(); // 인증 정보에서 이메일 추출
+	public ResponseEntity<List<CustomRecommendDto>> getMyCustomRecommends(Authentication authentication) {
+		String email = authentication.getName(); // 인증 정보에서 이메일 추출
 		return ResponseEntity.ok(customRecommendService.getCustomRecommendsByEmail(email));
 	}
 }

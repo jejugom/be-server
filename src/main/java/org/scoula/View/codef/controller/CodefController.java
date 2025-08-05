@@ -7,7 +7,6 @@ import org.scoula.View.codef.service.CodefTokenService;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +51,8 @@ public class CodefController {
 		@ApiResponse(code = 500, message = "서버 오류 (CODEF 응답 오류 등)")
 	})
 	@PostMapping("/connected-id")
-	public ResponseEntity<?> createConnectedId(@RequestBody ConnectedIdRequestDto requestDto) {
+	public ResponseEntity<?> createConnectedId(@RequestBody ConnectedIdRequestDto requestDto,
+		Authentication authentication) {
 		log.info("📩 ConnectedId 생성 요청: {}", requestDto);
 
 		if (requestDto.getAccountList() == null || requestDto.getAccountList().isEmpty()) {
@@ -80,13 +80,12 @@ public class CodefController {
 		Map<String, Object> data = (Map<String, Object>)result.get("data");
 		String connectedId = (String)data.get("connectedId");
 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userEmail = authentication.getName();
 
 		if (userEmail != null && connectedId != null) {
 			log.info("✅ ConnectedId 저장 - userEmail: {}, connectedId: {}", userEmail, connectedId);
 			userService.updateConnectedId(userEmail, connectedId);
-			codefTokenService.saveAccountInfo(userEmail,connectedId);
+			codefTokenService.saveAccountInfo(userEmail, connectedId);
 			return ResponseEntity.ok(200);
 		} else {
 			log.error("❌ userEmail 또는 connectedId null - {}, {}", userEmail, connectedId);
