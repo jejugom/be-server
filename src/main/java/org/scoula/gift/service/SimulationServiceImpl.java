@@ -58,8 +58,9 @@ public class SimulationServiceImpl implements SimulationService {
 
 		for (RecipientGiftRequestDto giftRequest : requestDto.getSimulationList()) {
 			RecipientVo recipient = recipientMapper.findById(giftRequest.getRecipientId());
-			if (recipient == null)
+			if (recipient == null) {
 				continue;
+			}
 			recipientsInSim.add(recipient);
 
 			long currentGiftAmount = giftRequest.getCategoriesToGift().stream()
@@ -75,16 +76,17 @@ public class SimulationServiceImpl implements SimulationService {
 			long taxableBase = Math.max(0, totalCumulativeGiftAmount - deductionAmount);
 
 			long calculatedTax = 0L;
-			if (taxableBase <= 100_000_000L)
+			if (taxableBase <= 100_000_000L) {
 				calculatedTax = (long)(taxableBase * 0.10);
-			else if (taxableBase <= 500_000_000L)
+			} else if (taxableBase <= 500_000_000L) {
 				calculatedTax = (long)(taxableBase * 0.20) - 10_000_000L;
-			else if (taxableBase <= 1_000_000_000L)
+			} else if (taxableBase <= 1_000_000_000L) {
 				calculatedTax = (long)(taxableBase * 0.30) - 60_000_000L;
-			else if (taxableBase <= 3_000_000_000L)
+			} else if (taxableBase <= 3_000_000_000L) {
 				calculatedTax = (long)(taxableBase * 0.40) - 160_000_000L;
-			else
+			} else {
 				calculatedTax = (long)(taxableBase * 0.50) - 460_000_000L;
+			}
 
 			if ("손자녀".equals(recipient.getRelationship())) {
 				calculatedTax = (long)(calculatedTax * 1.3);
@@ -116,18 +118,21 @@ public class SimulationServiceImpl implements SimulationService {
 
 	private void checkTotalAssetRules(List<String> recommendations, List<StrategyVo> rules,
 		TaxCalculationResult taxResult) {
-		if (rules == null)
+		if (rules == null) {
 			return;
+		}
 		long totalGiftAmount = taxResult.getTotalCurrentGiftAmount();
 		for (StrategyVo rule : rules) {
 			switch (rule.getStrategyCode()) {
 				case "TOTAL_ASSET_GT_1B":
-					if (totalGiftAmount >= 1_000_000_000L)
+					if (totalGiftAmount >= 1_000_000_000L) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 				case "TOTAL_ASSET_GT_5B":
-					if (totalGiftAmount >= 5_000_000_000L)
+					if (totalGiftAmount >= 5_000_000_000L) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 			}
 		}
@@ -135,8 +140,9 @@ public class SimulationServiceImpl implements SimulationService {
 
 	private void checkRecipientRules(List<String> recommendations, List<StrategyVo> rules,
 		TaxCalculationResult taxResult) {
-		if (rules == null)
+		if (rules == null) {
 			return;
+		}
 		List<RecipientVo> recipients = taxResult.getRecipientsInSim();
 		boolean hasSpouse = recipients.stream().anyMatch(r -> "배우자".equals(r.getRelationship()));
 		boolean hasGrandChild = recipients.stream().anyMatch(r -> "손자녀".equals(r.getRelationship()));
@@ -145,16 +151,19 @@ public class SimulationServiceImpl implements SimulationService {
 		for (StrategyVo rule : rules) {
 			switch (rule.getStrategyCode()) {
 				case "NOT_EXIST_SPOUSE": // 최종 코드로 수정
-					if (!hasSpouse)
+					if (!hasSpouse) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 				case "EXIST_GRANDCHILD": // 최종 코드로 수정
-					if (hasGrandChild)
+					if (hasGrandChild) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 				case "EXIST_MINOR_CHILD": // 최종 코드로 수정
-					if (hasMinor)
+					if (hasMinor) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 			}
 		}
@@ -162,22 +171,25 @@ public class SimulationServiceImpl implements SimulationService {
 
 	private void checkGiftHistoryRules(List<String> recommendations, List<StrategyVo> rules,
 		TaxCalculationResult taxResult) {
-		if (rules == null)
+		if (rules == null) {
 			return;
+		}
 		for (StrategyVo rule : rules) {
 			switch (rule.getStrategyCode()) {
 				case "PRIOR_GIFT_EXISTS":
 					if (taxResult.getRecipientsInSim()
 						.stream()
-						.anyMatch(r -> r.getHasPriorGift() != null && r.getHasPriorGift()))
+						.anyMatch(r -> r.getHasPriorGift() != null && r.getHasPriorGift())) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 				case "CUMULATIVE_GIFT_EXCEEDS_DEDUCTION":
 					if (taxResult.getRecipientsInSim().stream().anyMatch(r -> {
 						long prior = (r.getPriorGiftAmount() != null) ? r.getPriorGiftAmount() : 0L;
 						return prior > getDeductionAmount(r);
-					}))
+					})) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 			}
 		}
@@ -185,8 +197,9 @@ public class SimulationServiceImpl implements SimulationService {
 
 	private void checkTaxPayerRules(List<String> recommendations, List<StrategyVo> rules,
 		TaxCalculationResult taxResult) {
-		if (rules == null)
+		if (rules == null) {
 			return;
+		}
 		boolean gifterPaysTax = taxResult.getRecipientsInSim()
 			.stream()
 			.anyMatch(r -> "증여자".equals(r.getGiftTaxPayer()));
@@ -198,8 +211,9 @@ public class SimulationServiceImpl implements SimulationService {
 
 	private void checkAssetTypeRules(List<String> recommendations, List<StrategyVo> rules,
 		SimulationRequestDto requestDto) {
-		if (rules == null)
+		if (rules == null) {
 			return;
+		}
 
 		// --- 1. 일반 자산 유형 확인 ---
 		Set<String> assetCategoryCodes = requestDto.getSimulationList().stream()
@@ -270,8 +284,9 @@ public class SimulationServiceImpl implements SimulationService {
 
 	private void checkMaritalStatusRules(List<String> recommendations, List<StrategyVo> rules,
 		SimulationRequestDto requestDto, TaxCalculationResult taxResult) {
-		if (rules == null || rules.isEmpty())
+		if (rules == null || rules.isEmpty()) {
 			return;
+		}
 		List<RecipientVo> recipients = taxResult.getRecipientsInSim();
 		boolean hasGrandChild = recipients.stream().anyMatch(r -> "손자녀".equals(r.getRelationship()));
 		boolean hasUnmarriedChild = recipients.stream()
@@ -284,41 +299,40 @@ public class SimulationServiceImpl implements SimulationService {
 		for (StrategyVo rule : rules) {
 			switch (rule.getStrategyCode()) {
 				case "EXIST_UNMARRIED_CHILD":
-					if (hasUnmarriedChild)
+					if (hasUnmarriedChild) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 				case "HAS_GIFT_REAL_ESTATE_AND_EXIST_GRANDCHILD":
-					if (hasRealEstate && hasGrandChild)
+					if (hasRealEstate && hasGrandChild) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 				case "HAS_GIFT_REAL_ESTATE_AND_EXIST_UNMARRIED_CHILD":
-					if (hasRealEstate && hasUnmarriedChild)
+					if (hasRealEstate && hasUnmarriedChild) {
 						recommendations.add(rule.getMessage());
+					}
 					break;
 			}
 		}
 	}
 
 	private long getDeductionAmount(RecipientVo recipient) {
-		if (recipient == null || recipient.getRelationship() == null)
+		if (recipient == null || recipient.getRelationship() == null) {
 			return 0L;
-		switch (recipient.getRelationship()) {
-			case "배우자":
-				return 600_000_000L;
-			case "자녀":
-			case "손자녀":
-				return isMinor(recipient.getBirthDate()) ? 20_000_000L : 50_000_000L;
-			case "기타친족":
-			case "형제자매":
-				return 10_000_000L;
-			default:
-				return 0L;
 		}
+		return switch (recipient.getRelationship()) {
+			case "배우자" -> 600_000_000L;
+			case "자녀", "손자녀" -> isMinor(recipient.getBirthDate()) ? 20_000_000L : 50_000_000L;
+			case "기타친족", "형제자매" -> 10_000_000L;
+			default -> 0L;
+		};
 	}
 
 	private boolean isMinor(Date birthDate) {
-		if (birthDate == null)
+		if (birthDate == null) {
 			return false;
+		}
 		return Period.between(birthDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now())
 			.getYears() < 19;
 	}
