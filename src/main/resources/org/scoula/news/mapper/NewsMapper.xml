@@ -16,6 +16,13 @@
     WHERE category = #{category}
   </select>
 
+  <select id="findByCategoryAndTitle" resultType="org.scoula.news.domain.NewsVo">
+    SELECT *
+    FROM news
+    WHERE category = #{category}
+      AND title = #{title}
+  </select>
+
   <select id="findAll" resultType="NewsVo">
     SELECT *
     FROM news

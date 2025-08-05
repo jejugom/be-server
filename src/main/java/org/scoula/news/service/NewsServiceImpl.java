@@ -1,14 +1,9 @@
 package org.scoula.news.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
 import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,33 +19,48 @@ import org.springframework.stereotype.Service;
 @Service
 public class NewsServiceImpl implements NewsService {
 
-  private static final Map<Integer, String> CATEGORY_KEYWORDS = Map.of(
-      1, "예금",
-      2, "적금",
-      3, "주택담보",
-      4, "금",
-      5, "펀드"
+  private static final Map<Integer, List<String>> CATEGORY_KEYWORDS = Map.of(
+      1, List.of("예금"),
+      2, List.of("적금"),
+      3, List.of("주택", "담보", "대출"),
+      4, List.of("\\b금\\b", "순금", "골드바", "금 투자", "금 시세"),
+      5, List.of("펀드")
   );
+
   @Autowired
   private NewsMapper newsMapper;
 
   @Override
   public List<Integer> crawlAndSaveNews() {
     List<Integer> updatedCategories = new ArrayList<>();
+
     try {
       Document doc = Jsoup.connect(
           "https://www.newswire.co.kr/?md=A10&act=article&no=199&perpage=100").get();
       Elements newsList = doc.select(".news-column");
 
-      // 카테고리별 키워드 리스트 (복수 키워드)
-      Map<Integer, List<String>> CATEGORY_KEYWORDS = Map.of(
-          1, List.of("예금"),
-          2, List.of("적금"),
-          3, List.of("주택", "담보", "대출"),
-          4, List.of("\\b금\\b", "순금", "골드바", "금 투자", "금 시세"),
-          5, List.of("펀드")
-      );
+      // category 0: 최신 뉴스 5개 저장
+      int savedCount = 0;
+      for (Element news : newsList) {
+        if (savedCount >= 5) {
+          break;
+        }
 
+        String title = news.select("h5 a").text();
+        String link = news.select("h5 a").attr("href");
+        String summary = news.select(".content a").text();
+        String date = news.select(".info .mdate").text();
+
+        NewsVo existing = newsMapper.findByCategoryAndTitle(0, title);
+        if (existing == null) {
+          NewsVo newNews = new NewsVo(null, 0, title, link, date, summary, null);
+          newsMapper.insertNews(newNews);
+          updatedCategories.add(0);
+          savedCount++;
+        }
+      }
+
+      // category 1~5: 키워드 기반 뉴스 저장
       for (Map.Entry<Integer, List<String>> entry : CATEGORY_KEYWORDS.entrySet()) {
         Integer category = entry.getKey();
         List<String> keywords = entry.getValue();
@@ -60,20 +70,19 @@ public class NewsServiceImpl implements NewsService {
 
           boolean isMatch = false;
 
-          // 5번 카테고리는 2개 이상 키워드가 포함돼야 true
           if (category == 3) {
             long count = keywords.stream().filter(title::contains).count();
             if (count >= 1) {
               isMatch = true;
             }
-          } else if (category == 4) { // 금 관련 정규식 처리
+          } else if (category == 4) {
             for (String keyword : keywords) {
               if (title.matches(".*" + keyword + ".*")) {
                 isMatch = true;
                 break;
               }
             }
-          } else { // 나머지는 단순 포함
+          } else {
             for (String keyword : keywords) {
               if (title.contains(keyword)) {
                 isMatch = true;
@@ -101,13 +110,14 @@ public class NewsServiceImpl implements NewsService {
             updatedCategories.add(category);
           }
 
-          break; // 다음 카테고리로 이동
+          break; // 카테고리당 1개만 저장
         }
       }
 
     } catch (IOException e) {
       log.error("IOException occurred while crawling and saving news", e);
     }
+
     return updatedCategories;
   }
 

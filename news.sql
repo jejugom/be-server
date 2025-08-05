@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS news;
 CREATE TABLE news
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    category   INT UNIQUE   NOT NULL,
+    category   INT          NOT NULL,
     title      VARCHAR(255) NOT NULL,
     link       TEXT         NOT NULL,
     date       VARCHAR(50),
