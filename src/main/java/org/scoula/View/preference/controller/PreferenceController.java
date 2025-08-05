@@ -1,10 +1,9 @@
 package org.scoula.View.preference.controller;
 
-import org.scoula.View.preference.service.PreferenceService;
 import org.scoula.View.preference.dto.PreferenceRequestDto;
+import org.scoula.View.preference.service.PreferenceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +31,10 @@ public class PreferenceController {
 		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
 	})
 	@PostMapping()
-	public ResponseEntity<Void> setUserPreference(@RequestBody PreferenceRequestDto requestDto){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	public ResponseEntity<Void> setUserPreference(@RequestBody PreferenceRequestDto requestDto,
+		Authentication authentication) {
 		String userName = authentication.getName(); // Spring Security 컨텍스트에서 사용자 이메일(ID)을 가져옴
-		preferenceService.setUserPreference(requestDto,userName);
+		preferenceService.setUserPreference(requestDto, userName);
 		return ResponseEntity.noContent().build(); // 성공 시 204 No Content 응답
 	}
 }

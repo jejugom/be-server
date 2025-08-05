@@ -1,18 +1,17 @@
 package org.scoula.View.home.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.scoula.View.home.dto.HomeResponseDto;
 import org.scoula.View.home.service.HomeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -31,15 +30,14 @@ public class HomeController {
 		@ApiResponse(code = 200, message = "조회 성공")
 	})
 	@GetMapping()
-	public ResponseEntity<HomeResponseDto> getHome(){
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
+	public ResponseEntity<HomeResponseDto> getHome(Authentication authentication) {
 		// 인증 정보가 없거나, 인증되지 않았거나, 익명 사용자인 경우 비로그인 상태로 처리
-		if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+		if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal()
+			.equals("anonymousUser")) {
 			return ResponseEntity.ok(homeService.getHomeData(null)); // 비로그인 대응
 		}
 
-		String email = auth.getName();
+		String email = authentication.getName();
 		return ResponseEntity.ok(homeService.getHomeData(email));
 	}
 }

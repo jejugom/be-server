@@ -5,8 +5,7 @@ import org.scoula.user.dto.MyPageResponseDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -61,10 +60,10 @@ public class UserController {
 	})
 	@PatchMapping("/me/branch") // '나'의 정보를 수정하는 엔드포인트
 	public ResponseEntity<Void> updateMyBranchId(
-		@AuthenticationPrincipal UserDetails userDetails,
+		Authentication authentication,
 		@RequestBody BranchIdUpdateRequestDto requestDto) {
 
-		String email = userDetails.getUsername();
+		String email = authentication.getName();
 		userService.updateBranchId(email, requestDto.getBranchId());
 		return ResponseEntity.noContent().build();
 	}
@@ -76,8 +75,9 @@ public class UserController {
 		@ApiResponse(code = 404, message = "사용자를 찾을 수 없음")
 	})
 	@DeleteMapping("/me") // '나'의 계정을 삭제하는 엔드포인트
-	public ResponseEntity<Void> withdrawUser(@AuthenticationPrincipal UserDetails userDetails) {
-		String email = userDetails.getUsername();
+	public ResponseEntity<Void> withdrawUser(Authentication authentication) {
+		String email = authentication.getName();
+		;
 		userService.withdrawUser(email);
 		return ResponseEntity.noContent().build();
 	}
@@ -88,8 +88,8 @@ public class UserController {
 		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
 	})
 	@GetMapping("/mypage")
-	public ResponseEntity<MyPageResponseDto> getMyPageInfo(@AuthenticationPrincipal UserDetails userDetails) {
-		String email = userDetails.getUsername();
+	public ResponseEntity<MyPageResponseDto> getMyPageInfo(Authentication authentication) {
+		String email = authentication.getName();
 		MyPageResponseDto myPageData = userService.getMyPageData(email);
 		return ResponseEntity.ok(myPageData);
 	}
