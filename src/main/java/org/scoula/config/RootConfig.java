@@ -23,16 +23,16 @@ import lombok.extern.log4j.Log4j2;
 @Configuration
 @PropertySource({"classpath:/application-dev.properties"})
 @MapperScan(basePackages = {
-    "org.scoula.user.mapper",
-    "org.scoula.asset.mapper",
-    "org.scoula.recommend.mapper",
-    "org.scoula.faq.mapper",
-    "org.scoula.branch.mapper",
-    "org.scoula.booking.mapper",
-    "org.scoula.auth.mapper",
-    "org.scoula.product.mapper",
-    "org.scoula.gift.mapper",
-    "org.scoula.news.mapper"
+	"org.scoula.user.mapper",
+	"org.scoula.asset.mapper",
+	"org.scoula.recommend.mapper",
+	"org.scoula.faq.mapper",
+	"org.scoula.branch.mapper",
+	"org.scoula.booking.mapper",
+	"org.scoula.auth.mapper",
+	"org.scoula.product.mapper",
+	"org.scoula.gift.mapper",
+	"org.scoula.news.mapper"
 })
 @ComponentScan(basePackages = {
 	"org.scoula.user.service",
@@ -50,7 +50,8 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.product.service",
 	"org.scoula.sms.service",
 	"org.scoula.View.preference.service",
-	"org.scoula.gift.service"
+	"org.scoula.gift.service",
+	"org.scoula.news.service"
 })
 @Log4j2
 @EnableTransactionManagement
@@ -60,6 +61,7 @@ import lombok.extern.log4j.Log4j2;
  * 구현체를 동적으로 자동으로 생성
  */
 public class RootConfig {
+
 	@Autowired
 	ApplicationContext applicationContext;
 	@Value("${jdbc.driver}")
@@ -87,9 +89,10 @@ public class RootConfig {
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
-		sqlSessionFactory.setConfigLocation(applicationContext.getResource("classpath:/mybatis-config.xml"));
+		sqlSessionFactory.setConfigLocation(
+			applicationContext.getResource("classpath:/mybatis-config.xml"));
 		sqlSessionFactory.setDataSource(dataSource());
-		return (SqlSessionFactory)sqlSessionFactory.getObject();
+		return sqlSessionFactory.getObject();
 	}
 
 	@Bean
