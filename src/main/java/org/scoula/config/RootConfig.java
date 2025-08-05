@@ -21,7 +21,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.log4j.Log4j2;
 
 @Configuration
-@PropertySource({"classpath:/application.properties", "classpath:/application-local.properties"})
+@PropertySource({"classpath:/application-dev.properties"})
 @MapperScan(basePackages = {
     "org.scoula.user.mapper",
     "org.scoula.asset.mapper",

@@ -32,7 +32,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class CodefApiClient {
 
-	// application.properties에서 주입받는 CODEF 설정 값들
+	// application-dev.properties에서 주입받는 CODEF 설정 값들
 	@Value("${codef.oauth.domain}")
 	private String oauthDomain;
 	@Value("${codef.api.domain}")
