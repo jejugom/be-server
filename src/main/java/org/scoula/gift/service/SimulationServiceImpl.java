@@ -202,7 +202,7 @@ public class SimulationServiceImpl implements SimulationService {
 		}
 		boolean gifterPaysTax = taxResult.getRecipientsInSim()
 			.stream()
-			.anyMatch(r -> "증여자".equals(r.getGiftTaxPayer()));
+			.anyMatch(r -> "본인".equals(r.getGiftTaxPayer()));
 		if (gifterPaysTax) {
 			rules.stream().filter(r -> "EXIST_GIFTER_PAYS_TAX".equals(r.getStrategyCode())) // 최종 코드로 수정
 				.findFirst().ifPresent(rule -> recommendations.add(rule.getMessage()));
@@ -242,10 +242,10 @@ public class SimulationServiceImpl implements SimulationService {
 				// AssetStatusMapper를 통해 자산의 상세 정보(business_type 포함)를 조회합니다.
 				AssetStatusVo assetInfo = assetStatusMapper.findAssetStatusById(assetId);
 				if (assetInfo != null && assetInfo.getBusinessType() != null) {
-					if ("개인 사업체".equals(assetInfo.getBusinessType())) {
+					if ("개인 사업자".equals(assetInfo.getBusinessType())) {
 						isGiftingToSoleProprietorship = true;
 					}
-					if ("법인 사업체".equals(assetInfo.getBusinessType())) {
+					if ("법인 사업자".equals(assetInfo.getBusinessType())) {
 						isGiftingToCorporation = true;
 					}
 				}
@@ -262,7 +262,7 @@ public class SimulationServiceImpl implements SimulationService {
 					}
 					break;
 				case "HAS_BIZ_TO_CORPORATION":
-					// 법인 사업체를 증여하는 경우에만 이 전략을 추천합니다.
+					// 법인 사업자 경우에만 이 전략을 추천합니다.
 					if (isGiftingToCorporation) {
 						recommendations.add(rule.getMessage());
 					}
@@ -324,7 +324,7 @@ public class SimulationServiceImpl implements SimulationService {
 		return switch (recipient.getRelationship()) {
 			case "배우자" -> 600_000_000L;
 			case "자녀", "손자녀" -> isMinor(recipient.getBirthDate()) ? 20_000_000L : 50_000_000L;
-			case "기타친족", "형제자매" -> 10_000_000L;
+			case "기타", "형제자매" -> 10_000_000L;
 			default -> 0L;
 		};
 	}
