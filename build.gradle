@@ -14,7 +14,7 @@ ext {
     junitVersion = '5.9.1'
     springVersion = '5.3.37'
     lombokVersion = '1.18.30'
-    springSecurityVersion='5.8.13'
+    springSecurityVersion = '5.8.13'
 }
 
 sourceCompatibility = "16"
@@ -25,16 +25,23 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+    implementation 'log4j:log4j:1.2.17'
+
     //codec
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
+    // Nurigo SMS SDK
+    implementation 'net.nurigo:sdk:4.3.2'
+
 
     //H2 의존성
     runtimeOnly 'com.h2database:h2:2.2.224' // 버전 명시!!
-    // swagger
-    implementation 'io.springfox:springfox-swagger2:2.9.2'
-    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    // Swagger 관련 의존성
+    implementation 'io.springfox:springfox-swagger2:2.9.2'       // Swagger 핵심 라이브러리
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'     // Swagger UI 웹 인터페이스
+
     //JWT 의존성
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     implementation 'org.projectlombok:lombok:1.18.22'
@@ -46,12 +53,13 @@ dependencies {
     implementation("org.springframework.security:spring-security-config:${springSecurityVersion}")
     implementation("org.springframework.security:spring-security-core:${springSecurityVersion}")
     implementation("org.springframework.security:spring-security-taglibs:${springSecurityVersion}")
-    //
 
+    // 로깅
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
     implementation 'org.apache.logging.log4j:log4j-api:2.0.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.0.1'
-    //e데이터ㅏ 베이스
+
+    //데이터베이스
     implementation 'com.zaxxer:HikariCP:2.7.4'
     implementation 'com.mysql:mysql-connector-j:8.1.0'
 
@@ -66,42 +74,57 @@ dependencies {
     implementation 'org.mybatis:mybatis-spring:1.3.2'
 
     // 스프링
-    implementation ("org.springframework:spring-context:${springVersion}")
+    implementation("org.springframework:spring-context:${springVersion}")
             { exclude group: 'commons-logging', module: 'commons-logging' }
     implementation "org.springframework:spring-webmvc:${springVersion}"
     implementation 'javax.inject:javax.inject:1'
-// AOP
+
+    // AOP
     implementation 'org.aspectj:aspectjrt:1.9.20'
     implementation 'org.aspectj:aspectjweaver:1.9.20'
-// JSP, SERVLET, JSTL
+
+    // JSP, SERVLET, JSTL
     implementation('javax.servlet:javax.servlet-api:4.0.1')
-// compileOnly 'javax.servlet.jsp:jsp-api:2.1'
+
+    // compileOnly 'javax.servlet.jsp:jsp-api:2.1'
     compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
     implementation 'javax.servlet:jstl:1.2'
-// Log4j2 Logging
+
+    // Log4j2 Logging
     implementation 'org.apache.logging.log4j:log4j-api:2.18.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.18.0'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.18.0'
-// xml내 한글 처리
+
+    // xml내 한글 처리
     implementation 'xerces:xercesImpl:2.12.2'
+
     // Lombok
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-// Jackson - Json 처리
+
+    // Jackson - Json 처리
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
-// 테스트
+
+    // 테스트
     testImplementation "org.springframework:spring-test:${springVersion}"
-    testCompileOnly"org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-// Lombok
+
+    // Lombok
     implementation 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
 
+    // ULID
+    implementation 'com.github.f4b6a3:ulid-creator:5.2.0'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+//    jsoup
+    implementation 'org.jsoup:jsoup:1.16.1'
 }
 
 test {
     useJUnitPlatform()
+    systemProperty 'file.encoding', 'UTF-8'
 }

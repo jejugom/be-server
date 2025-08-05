@@ -1,11 +1,14 @@
 .gradle
 build/
+out/
+*.class
+
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
 ### IntelliJ IDEA ###
-/.idea
+.idea
 *.iml
 
 ### Eclipse ###
@@ -32,3 +35,10 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### API Keys & Sensitive Config ###
+application-local.properties
+application-dev.properties
+.env
+**/secrets/
+**/*secret*

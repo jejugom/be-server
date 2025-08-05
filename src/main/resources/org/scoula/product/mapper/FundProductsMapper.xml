@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scoula.product.mapper.FundProductsMapper">
+
+    <!-- 펀드 리스트용 ResultMap -->
+    <resultMap id="FundProductsDtoMap" type="org.scoula.product.dto.FundProductsDto">
+        <id property="finPrdtCd" column="fin_prdt_cd"/> <!-- 상품 코드 -->
+        <result property="finPrdtNm" column="fin_prdt_nm"/> <!-- 상품명 -->
+        <result property="prdtFeature" column="prdt_feature"/> <!-- 상품 특성 -->
+
+        <!-- 옵션 리스트는 별도 쿼리로 조회 -->
+        <collection property="optionList" ofType="org.scoula.product.dto.FundProductsDto$OptionList"
+                    select="findOptionsByFinPrdtCd" column="fin_prdt_cd"/>
+    </resultMap>
+
+    <!-- 펀드 상품 옵션 리스트용 ResultMap -->
+    <resultMap id="OptionListMap" type="org.scoula.product.dto.FundProductsDto$OptionList">
+        <result property="rate3mon" column="rate_3mon"/> <!-- 3개월 수익률 -->
+        <result property="riskGrade" column="risk_grade"/> <!-- 위험등급 -->
+        <result property="priceStd" column="price_std"/> <!-- 기준가 -->
+    </resultMap>
+
+    <!-- 펀드 상품 상세조회용 ResultMap -->
+    <resultMap id="FundProductsDetailMap" type="org.scoula.product.dto.FundProductsDetailDto">
+        <result column="fin_prdt_cd" property="finPrdtCd"/> <!-- 상품 코드 -->
+        <result column="fin_prdt_category" property="finPrdtCategory"/> <!-- 상품 분류 -->
+        <result column="fin_prdt_nm" property="finPrdtNm"/> <!-- 상품명 -->
+        <result column="rec_reason" property="recReason"/> <!-- 추천 사유 -->
+        <result column="kor_co_nm" property="korCoNm"/> <!-- 금융회사명 -->
+        <result column="prdt_feature" property="prdtFeature"/> <!-- 상품 특성 -->
+        <result column="description" property="description"/> <!-- 상품 설명 -->
+        <result column="tendency" property="tendency"/> <!-- 투자 성향 -->
+
+       <!-- 옵션 리스트 (정기예금 상세) &ndash;&gt;-->
+      <collection property="optionList" ofType="org.scoula.product.dto.FundProductsDetailDto$DetailOptionList"
+                    resultMap="detailOptionMap"/>
+    </resultMap>
+
+    <!-- 펀드 상품 상세 옵션 ResultMap -->
+    <resultMap id="detailOptionMap" type="org.scoula.product.dto.FundProductsDetailDto$DetailOptionList">
+        <result column="rate_3mon" property="rate3mon"/>
+        <result column="start_date" property="startDate"/>
+        <result column="asset_total" property="assetTotal"/>
+        <result column="total_fee" property="totalFee"/>
+        <result column="risk_grade" property="riskGrade"/>
+        <result column="fee_first" property="feeFirst"/>
+        <result column="fee_redemp" property="feeRedemp"/>
+        <result column="price_std" property="priceStd"/>
+    </resultMap>
+
+
+    <!-- 상세정보에서 쓰일 쿼리문 -->
+    <select id="findFundProductsByFinPrdtCd" resultMap="FundProductsDetailMap">
+        SELECT fin_prdt_cd,
+               fin_prdt_category,
+               fin_prdt_nm,
+               rec_reason,
+               kor_co_nm,
+               prdt_feature,
+               description,
+               tendency
+        FROM fin_prdt
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <select id="findDetailOptionByFinPrdtCd" parameterType="string" resultMap="detailOptionMap">
+        SELECT rate_3mon,
+               start_date,
+               asset_total,
+               total_fee,
+               risk_grade,
+               fee_first,
+               fee_redemp,
+               price_std
+        FROM fund_prdt_option
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+    <!-- 목록에서 쓰일 쿼리문 -->
+    <select id="findAllFundProducts" resultMap="FundProductsDtoMap">
+        SELECT fin_prdt_cd,
+               fin_prdt_nm,
+               prdt_feature
+        FROM fin_prdt
+        WHERE fin_prdt_category = '5' </select>
+
+    <select id="findOptionsByFinPrdtCd" resultMap="OptionListMap">
+        SELECT rate_3mon,
+               risk_grade,
+               price_std
+        FROM fund_prdt_option
+        WHERE fin_prdt_cd = #{finPrdtCd}
+    </select>
+
+
+</mapper>
