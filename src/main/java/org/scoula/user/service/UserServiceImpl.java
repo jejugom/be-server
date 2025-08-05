@@ -1,5 +1,7 @@
 package org.scoula.user.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -61,12 +63,10 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 		user.setConnectedId(userDto.getConnectedId());
 		user.setBranchId(userDto.getBranchId());
 		user.setAsset(userDto.getAsset());
-		user.setSegment(userDto.getSegment());
 		user.setFilename1(userDto.getFilename1());
 		user.setFilename2(userDto.getFilename2());
 		user.setTendency(userDto.getTendency());
 		user.setAssetProportion(userDto.getAssetProportion());
-		user.setIncomeRange(userDto.getIncomeRange());
 
 		userMapper.update(user);
 	}
@@ -108,19 +108,22 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 		UserVo userVo = Optional.ofNullable(userMapper.findByEmail(email))
 			.orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다: " + email));
 
-		// 2. 자산 현황 요약 목록 조회
+		// 2. 자산 현황 요약 목록 조회 (기존 코드)
 		List<AssetStatusSummaryDto> assetList = assetStatusMapper.findAssetStatusSummaryByEmail(email)
 			.stream()
 			.map(AssetStatusSummaryDto::of)
 			.collect(Collectors.toList());
 
-		// 3. 다가오는 예약 내역 목록 조회
+		// 3. 다가오는 예약 내역 목록 조회 (기존 코드)
 		List<BookingVo> bookingVos = bookingMapper.findUpcomingByUserEmail(email);
 		List<BookingDto> bookingDtos = bookingVos.stream()
 			.map(BookingDto::of)
 			.collect(Collectors.toList());
 
-		// 4. 최종 DTO 조립
+		// --- [4. 자산 상위 백분위 계산 로직 추가] ---
+		Double percentile = calculateAssetPercentile(userVo.getAsset());
+
+		// 5. 최종 DTO 조립
 		UserGraphDto userInfoDto = UserGraphDto.builder()
 			.userName(userVo.getUserName())
 			.assetStatus(assetList)
@@ -129,7 +132,40 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 		return MyPageResponseDto.builder()
 			.userInfo(userInfoDto)
 			.bookingInfo(bookingDtos)
+			.assetPercentile(percentile) // 계산된 백분위 값 추가
 			.build();
+	}
+
+	/**
+	 * 자산의 상위 백분위를 계산하는 private 헬퍼 메소드
+	 * @param myAsset 현재 사용자의 자산
+	 * @return 소수점 첫째 자리까지 계산된 상위 백분위 (%), 자산이 없거나 사용자가 적을 경우 null 반환
+	 */
+	private Double calculateAssetPercentile(Long myAsset) {
+		// 사용자의 자산 정보가 없으면 계산 불가
+		if (myAsset == null) {
+			return null;
+		}
+
+		// 자산 정보가 있는 전체 사용자 수 조회
+		long totalUsers = userMapper.countAllUsersWithAsset();
+
+		// 비교 대상 사용자가 1명 이하면 백분위 의미 없음
+		if (totalUsers <= 1) {
+			return 100.0; // 혼자일 경우 상위 100%로 표시
+		}
+
+		// 나보다 자산이 많은 사용자 수 조회
+		long usersWithMoreAsset = userMapper.countUsersWithMoreAsset(myAsset);
+
+		// 상위 백분위 계산: (나의 등수 / 전체 인원) * 100
+		double myRank = (double)(usersWithMoreAsset + 1);
+		double rawPercentile = (myRank / totalUsers) * 100.0;
+
+		// 소수점 첫째 자리까지 반올림하여 반환
+		return new BigDecimal(rawPercentile)
+			.setScale(1, RoundingMode.HALF_UP)
+			.doubleValue();
 	}
 
 	/**

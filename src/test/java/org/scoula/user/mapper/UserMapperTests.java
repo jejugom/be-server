@@ -1,5 +1,9 @@
 package org.scoula.user.mapper;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Date;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,12 +15,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = { RootConfig.class, SecurityConfig.class })
+@ContextConfiguration(classes = {RootConfig.class, SecurityConfig.class})
 @Transactional
 public class UserMapperTests {
 
@@ -32,7 +32,6 @@ public class UserMapperTests {
 			.userName("테스트유저")
 			.userPhone("010-1234-5678")
 			.birth(new Date())
-			.segment("직장인")
 			.build();
 
 		// when - 사용자 저장

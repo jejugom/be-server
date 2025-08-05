@@ -10,6 +10,19 @@
         <result property="businessType" column="business_type"/>
     </resultMap>
 
+    <!-- 자산현황 간소화 데이터 -->
+    <select id="findAssetStatusSummaryByEmail" resultType="org.scoula.asset.domain.AssetStatusVo">
+        SELECT
+            asset_category_code,
+            SUM(amount) AS amount
+        FROM
+            asset_status
+        WHERE
+            email = #{email}
+        GROUP BY
+            asset_category_code
+    </select>
+
     <select id="findAssetStatusByEmail" resultMap="assetStatusMap">
         SELECT *
         FROM asset_status
@@ -43,7 +56,6 @@
         WHERE asset_id = #{assetId}
           AND email = #{email}
     </delete>
-
     <delete id="deleteByEmail">
         DELETE
         FROM asset_status
