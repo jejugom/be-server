@@ -3,6 +3,7 @@ package org.scoula.booking.service;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
+import org.scoula.booking.dto.BankBookingRequestDto;
 import org.scoula.booking.dto.BookingCheckResponseDto;
 import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
@@ -15,6 +16,7 @@ public interface BookingService {
 	List<BookingDto> getBookingsByEmail(String email);
 
 	BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto);
+	void sendBookingToBank(String email, BookingCreateRequestDto requestDto, BookingCreateResponseDto responseDto); // 은행 서버 전송
 
 	void deleteBooking(String bookingId, String currentUserEmail) throws AccessDeniedException;
 
@@ -35,4 +37,5 @@ public interface BookingService {
 	BookingDetailResponseDto patchBooking(String bookingId, String currentUserEmail,
 		BookingPatchRequestDto patchDto) throws
 		AccessDeniedException;
+
 }

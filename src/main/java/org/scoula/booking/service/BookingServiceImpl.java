@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.scoula.booking.domain.BookingVo;
+import org.scoula.booking.dto.BankBookingRequestDto;
 import org.scoula.booking.dto.BookingCheckDetailDto;
 import org.scoula.booking.dto.BookingCheckResponseDto;
 import org.scoula.booking.dto.BookingCreateRequestDto;
@@ -30,8 +31,12 @@ import org.scoula.branch.service.BranchService;
 import org.scoula.exception.DuplicateBookingException;
 import org.scoula.exception.InvalidBookingDateException;
 import org.scoula.product.service.ProductService;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.github.f4b6a3.ulid.UlidCreator;
 
@@ -170,6 +175,36 @@ public class BookingServiceImpl implements BookingService {
 		bookingMapper.insertBooking(bookingVo);
 
 		return BookingCreateResponseDto.of(bookingVo);
+	}
+
+	@Override
+	public void sendBookingToBank(String email, BookingCreateRequestDto requestDto, BookingCreateResponseDto responseDto) {
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			String bankApiUrl = "http://localhost:8000/api/bookings"; // 은행 서버 endpoint
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+
+			// String -> java.sql.Date 변환
+			java.sql.Date sqlDate = java.sql.Date.valueOf(requestDto.getDate());
+
+			// 은행 서버 DTO 생성
+			BankBookingRequestDto bankDto = BankBookingRequestDto.builder()
+				.email(email)
+				.branchId(requestDto.getBranchId())
+				.finPrdtCode(requestDto.getFinPrdtCode())
+				.date(java.sql.Date.valueOf(requestDto.getDate()))
+				.time(requestDto.getTime())
+				.docInfo(responseDto.getDocInfo())
+				.build();
+
+			HttpEntity<BankBookingRequestDto> requestEntity = new HttpEntity<>(bankDto, headers);
+			restTemplate.postForEntity(bankApiUrl, requestEntity, Void.class);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// ------------------- 예약 수정 -------------------
