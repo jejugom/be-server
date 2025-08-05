@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
+import org.scoula.news.service.NewsService;
 import org.scoula.product.mapper.ProductMapper;
 import org.scoula.product.service.FundProductService;
 import org.scoula.product.service.GoldProductService;
@@ -47,6 +48,7 @@ public class RetirementController {
 	private final GoldProductService goldProductService;
 	private final FundProductService fundProductService;
 	private final ProductMapper productMapper;
+	private final NewsService newsService;
 
 	@ApiOperation(value = "노후 메인 페이지 데이터 조회", notes = "현재 로그인한 사용자의 노후 메인 페이지에 필요한 모든 데이터를 조회합니다.")
 	@ApiResponses({
@@ -79,6 +81,7 @@ public class RetirementController {
 		response.setMortgageLoan(productsService.getAllMortgageLoans());
 		response.setGoldProducts(productsService.getAllGoldProducts());
 		response.setFundProducts(productsService.getAllFundProducts());
+		response.setNews(newsService.getAllNews());
 
 		return ResponseEntity.ok(response);
 	}

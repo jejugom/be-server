@@ -28,7 +28,7 @@ public class SmsServiceImpl implements SmsService {
     private String fromNumber;
 
     /**
-     * 생성자에서 application.properties의 API 키와 시크릿 키를 주입받아
+     * 생성자에서 application-dev.properties의 API 키와 시크릿 키를 주입받아
      * Nurigo 메시지 서비스를 초기화합니다.
      * @param apiKey CoolSMS API 키
      * @param apiSecret CoolSMS API 시크릿 키

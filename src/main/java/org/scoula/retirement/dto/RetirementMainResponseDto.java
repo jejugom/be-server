@@ -2,6 +2,7 @@ package org.scoula.retirement.dto;
 
 import java.util.List;
 
+import org.scoula.news.dto.NewsDto;
 import org.scoula.product.dto.FundProductsDto;
 import org.scoula.product.dto.GoldProductsDto;
 import org.scoula.product.dto.MortgageLoanDto;
@@ -43,4 +44,7 @@ public class RetirementMainResponseDto {
 
 	@ApiModelProperty(value = "전체 펀드 상품 목록")
 	private List<FundProductsDto> fundProducts;
+
+	@ApiModelProperty(value = "뉴스 목록")
+	private List<NewsDto> news;
 }
