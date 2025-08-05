@@ -3,6 +3,7 @@ package org.scoula.booking.service;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
+import org.scoula.booking.dto.BankBookingRequestDto;
 import org.scoula.booking.dto.BookingCheckResponseDto;
 import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
@@ -29,6 +30,14 @@ public interface BookingService {
 	 * @return 생성된 예약의 정보가 담긴 응답 DTO
 	 */
 	BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto);
+
+	/**
+	 * 은행 서버로 예약 정보를 전달합니다.
+	 * @param email
+	 * @param requestDto
+	 * @param responseDto
+	 */
+	void sendBookingToBank(String email, BookingCreateRequestDto requestDto, BookingCreateResponseDto responseDto); // 은행 서버 전송
 
 	/**
 	 * 특정 예약을 삭제합니다.
@@ -71,4 +80,5 @@ public interface BookingService {
 	BookingDetailResponseDto patchBooking(String bookingId, String currentUserEmail,
 		BookingPatchRequestDto patchDto) throws
 		AccessDeniedException;
+
 }
