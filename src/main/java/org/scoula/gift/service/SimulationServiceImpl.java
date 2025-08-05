@@ -1,5 +1,6 @@
 package org.scoula.gift.service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.scoula.asset.domain.AssetStatusVo;
 import org.scoula.asset.mapper.AssetStatusMapper;
+import org.scoula.exception.UserNotFoundException;
 import org.scoula.gift.domain.RecipientVo;
 import org.scoula.gift.domain.StrategyVo;
 import org.scoula.gift.dto.AssetGiftRequestDto;
@@ -20,9 +22,13 @@ import org.scoula.gift.dto.RecipientGiftRequestDto;
 import org.scoula.gift.dto.RecipientTaxDetailDto;
 import org.scoula.gift.dto.SimulationRequestDto;
 import org.scoula.gift.dto.SimulationResponseDto;
+import org.scoula.gift.dto.WillPageResponseDto;
 import org.scoula.gift.mapper.RecipientMapper;
 import org.scoula.gift.mapper.StrategyMapper;
+import org.scoula.user.domain.UserVo;
+import org.scoula.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +44,7 @@ public class SimulationServiceImpl implements SimulationService {
 	private final RecipientMapper recipientMapper;
 	private final StrategyMapper strategyMapper;
 	private final AssetStatusMapper assetStatusMapper;
+	private final UserMapper userMapper;
 
 	@Override
 	public SimulationResponseDto runGiftTaxSimulation(SimulationRequestDto requestDto, String email) {
@@ -344,5 +351,39 @@ public class SimulationServiceImpl implements SimulationService {
 		private final List<RecipientTaxDetailDto> recipientTaxDetails;
 		private final List<RecipientVo> recipientsInSim;
 		private final long totalCurrentGiftAmount;
+	}
+
+	/**
+	 * 유언장 결과 페이지에 필요한 사용자 기본 정보를 조회합니다.
+	 * @param email 조회할 사용자의 이메일 (현재 로그인한 사용자)
+	 * @return WillPageResponseDto 페이지에 필요한 사용자 정보 DTO
+	 * @throws UserNotFoundException 해당 이메일의 사용자가 존재하지 않을 경우
+	 */
+	@Transactional(readOnly = true)
+	public WillPageResponseDto getUserInfoForWillPage(String email) {
+		// UserMapper를 통해 이메일로 사용자 정보를 조회합니다.
+		UserVo userVo = userMapper.findByEmail(email);
+
+		// 사용자가 존재하지 않으면 예외를 발생시킵니다.
+		if (userVo == null) {
+			throw new UserNotFoundException("사용자를 찾을 수 없습니다. email: " + email);
+		}
+
+		// 1. DB에서 가져온 Date 객체를 변수에 담습니다.
+		Date birthDate = userVo.getBirth();
+		String formattedBirthDate = null; // 기본값은 null로 설정
+
+		// 2. birthDate가 null이 아닐 경우에만 포맷팅을 수행합니다. (NullPointerException 방지)
+		if (birthDate != null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			formattedBirthDate = sdf.format(birthDate);
+		}
+
+		// 3. 조회된 사용자 정보(UserVo)와 포맷팅된 날짜를 DTO로 변환하여 반환합니다.
+		return WillPageResponseDto.builder()
+			.email(userVo.getEmail())
+			.name(userVo.getUserName())
+			.birth(formattedBirthDate) // 포맷팅된 문자열을 전달
+			.build();
 	}
 }
