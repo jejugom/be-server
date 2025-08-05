@@ -46,6 +46,11 @@ jobs:
       - name: Build WAR file
         run: ./gradlew clean build -x test
 
+      - name: Add runner user to docker group
+        run: |
+          sudo usermod -aG docker $USER
+          newgrp docker
+
       - name: DockerHub Login & Push
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
