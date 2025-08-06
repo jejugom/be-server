@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user") // 'user' -> 'users'로 RESTful하게 변경
+@RequestMapping("/api/user")
 @Api(tags = "사용자 API", description = "사용자 정보 조회, 가입, 수정, 탈퇴 등 관련 API")
 public class UserController {
 
