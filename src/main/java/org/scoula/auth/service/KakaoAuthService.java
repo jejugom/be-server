@@ -35,10 +35,10 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * 카카오 OAuth 2.0 인증 서비스
- * 
+ *
  * 카카오 로그인 플로우를 처리하는 핵심 서비스 클래스입니다.
  * 카카오 API와의 통신, JWT 토큰 생성, 사용자 정보 관리 등을 담당합니다.
- * 
+ *
  * 주요 기능:
  * - 카카오 API를 통한 사용자 정보 조회
  * - JWT Access/Refresh Token 생성 및 관리
@@ -59,31 +59,31 @@ public class KakaoAuthService {
 
 	/** 사용자 정보 데이터베이스 매퍼 */
 	private final UserMapper userMapper;
-	
+
 	/** 리프레시 토큰 데이터베이스 매퍼 */
 	private final RefreshTokenMapper refreshTokenMapper;
-	
+
 	/** HTTP 요청을 위한 RestTemplate */
 	private final RestTemplate restTemplate = new RestTemplate();
-	
+
 	/** JSON 파싱을 위한 ObjectMapper */
 	private final ObjectMapper objectMapper = new ObjectMapper();
-	
+
 	/** JWT 토큰 생성 및 검증 프로세서 */
 	private final JwtProcessor jwtProcessor;
 
 	/**
 	 * 카카오 로그인 전체 플로우를 처리하는 메인 메서드
-	 * 
+	 *
 	 * 인가 코드를 받아 카카오 API 호출부터 JWT 토큰 생성까지의 전체 과정을 처리합니다.
-	 * 
+	 *
 	 * 처리 단계:
 	 * 1. 카카오 액세스 토큰 획득
 	 * 2. 카카오 사용자 정보 조회
 	 * 3. 기존 회원 확인 또는 신규 회원 생성
 	 * 4. JWT 토큰 쌍 생성
 	 * 5. 리프레시 토큰 DB 저장
-	 * 
+	 *
 	 * @param code 카카오에서 발급한 인가 코드
 	 * @return JWT 토큰과 사용자 정보를 포함한 로그인 응답 DTO
 	 */
@@ -119,10 +119,10 @@ public class KakaoAuthService {
 
 	/**
 	 * 카카오 액세스 토큰 획득
-	 * 
+	 *
 	 * 인가 코드를 사용하여 카카오 인증 서버로부터 액세스 토큰을 요청합니다.
 	 * OAuth 2.0 Authorization Code Grant 플로우의 두 번째 단계입니다.
-	 * 
+	 *
 	 * @param code 카카오에서 발급한 인가 코드
 	 * @return 카카오 액세스 토큰 및 관련 정보
 	 */
@@ -157,10 +157,10 @@ public class KakaoAuthService {
 
 	/**
 	 * 카카오 사용자 정보 조회
-	 * 
+	 *
 	 * 카카오 액세스 토큰을 사용하여 사용자의 기본 정보를 조회합니다.
 	 * 이메일, 닉네임, 생년월일 등의 정보를 가져옵니다.
-	 * 
+	 *
 	 * @param accessToken 카카오 액세스 토큰
 	 * @return 카카오 사용자 정보 DTO
 	 */
@@ -193,10 +193,10 @@ public class KakaoAuthService {
 
 	/**
 	 * 사용자 조회 또는 신규 생성
-	 * 
+	 *
 	 * 카카오 사용자 정보를 바탕으로 기존 회원을 조회하거나 신규 회원을 생성합니다.
 	 * 이메일을 기준으로 중복 가입을 방지합니다.
-	 * 
+	 *
 	 * @param userInfo 카카오로부터 조회한 사용자 정보
 	 * @return 기존 또는 새로 생성된 사용자 정보
 	 */
@@ -247,10 +247,8 @@ public class KakaoAuthService {
 			.connectedId(null)
 			.filename1(null)
 			.filename2(null)
-			.incomeRange(null)
 			.assetProportion(0.0)
 			.tendency(0.0)
-			.segment(null)
 			.asset(0L)                 // 초기 자산은 0으로 설정
 			.build();
 		userMapper.save(newUser);
@@ -260,10 +258,10 @@ public class KakaoAuthService {
 
 	/**
 	 * JWT 토큰 재발급
-	 * 
+	 *
 	 * 만료된 Access Token을 Refresh Token을 사용하여 재발급합니다.
 	 * Refresh Token도 함께 갱신하여 Refresh Token Rotation을 구현합니다.
-	 * 
+	 *
 	 * @param refreshToken 클라이언트에서 전송한 Refresh Token
 	 * @return 새로 발급된 Access Token과 Refresh Token
 	 * @throws RuntimeException Refresh Token이 유효하지 않은 경우
@@ -297,10 +295,10 @@ public class KakaoAuthService {
 
 	/**
 	 * 로그아웃 처리
-	 * 
+	 *
 	 * 데이터베이스에서 사용자의 Refresh Token을 삭제하여 로그아웃을 처리합니다.
 	 * 클라이언트는 별도로 로컬 저장소의 토큰을 제거해야 합니다.
-	 * 
+	 *
 	 * @param userEmail 로그아웃할 사용자의 이메일
 	 */
 	public void logout(String userEmail) {
@@ -310,10 +308,10 @@ public class KakaoAuthService {
 
 	/**
 	 * 신규 회원 여부 판단
-	 * 
+	 *
 	 * 사용자가 신규 회원인지 기존 회원인지 판단합니다.
 	 * 사용자가 존재하지 않거나 성향(tendency) 정보가 입력되지 않은 경우 신규 회원으로 간주합니다.
-	 * 
+	 *
 	 * @param userEmail 사용자 이메일
 	 * @return 신규 회원이면 true, 기존 회원이면 false
 	 */

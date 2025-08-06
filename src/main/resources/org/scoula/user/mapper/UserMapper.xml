@@ -9,12 +9,10 @@
         <result property="connectedId" column="connected_id"/>
         <result property="branchId" column="branch_id"/>
         <result property="asset" column="asset"/>
-        <result property="segment" column="segment"/>
         <result property="filename1" column="filename1"/>
         <result property="filename2" column="filename2"/>
         <result property="tendency" column="tendency"/>
         <result property="assetProportion" column="asset_proportion"/>
-        <result property="incomeRange" column="income_range"/>
     </resultMap>
 
     <select id="findByEmail" resultMap="userMap">
@@ -25,21 +23,19 @@
                connected_id,
                branch_id,
                asset,
-               segment,
                filename1,
                filename2,
                tendency,
-               asset_proportion,
-               income_range
+               asset_proportion
         FROM user
         WHERE email = #{email}
     </select>
 
     <insert id="save" parameterType="org.scoula.user.domain.UserVo">
-        INSERT INTO user (email, user_name, user_phone, birth, connected_id, branch_id, asset, segment, filename1,
-                          filename2, tendency, asset_proportion, income_range)
-        VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{connectedId}, #{branchId}, #{asset}, #{segment},
-                #{filename1}, #{filename2}, #{tendency}, #{assetProportion}, #{incomeRange})
+        INSERT INTO user (email, user_name, user_phone, birth, connected_id, branch_id, asset, filename1,
+                          filename2, tendency, asset_proportion)
+        VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{connectedId}, #{branchId}, #{asset},
+                #{filename1}, #{filename2}, #{tendency}, #{assetProportion})
     </insert>
 
     <update id="update" parameterType="org.scoula.user.domain.UserVo">
@@ -50,12 +46,10 @@
             connected_id     = #{connectedId},
             branch_id        = #{branchId},
             asset            = #{asset},
-            segment          = #{segment},
             filename1        = #{filename1},
             filename2        = #{filename2},
             tendency         = #{tendency},
-            asset_proportion = #{assetProportion},
-            income_range     = #{incomeRange}
+            asset_proportion = #{assetProportion}
         WHERE email = #{email}
     </update>
 
@@ -73,12 +67,10 @@
                connected_id,
                branch_id,
                asset,
-               segment,
                filename1,
                filename2,
                tendency,
-               asset_proportion,
-               income_range
+               asset_proportion
         FROM user
     </select>
 
@@ -93,4 +85,16 @@
         SET branch_id = #{branchId}
         WHERE email = #{email}
     </update>
+
+    <select id="countAllUsersWithAsset" resultType="long">
+        SELECT count(*)
+        FROM user
+        WHERE asset IS NOT NULL
+    </select>
+
+    <select id="countUsersWithMoreAsset" parameterType="long" resultType="long">
+        SELECT count(*)
+        FROM user
+        WHERE asset > #{asset}
+    </select>
 </mapper>

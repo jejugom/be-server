@@ -52,4 +52,17 @@ public interface UserMapper {
 	 * @return 수정된 행의 수
 	 */
 	int updateBranchId(@Param("email") String email, @Param("branchId") Integer branchId);
+
+	/**
+	 * 자산 정보가 있는 전체 사용자 수를 조회합니다.
+	 * @return 전체 사용자 수
+	 */
+	long countAllUsersWithAsset();
+
+	/**
+	 * 주어진 자산보다 더 많은 자산을 가진 사용자 수를 조회합니다.
+	 * @param asset 비교 기준이 되는 자산 금액
+	 * @return 기준보다 자산이 많은 사용자 수
+	 */
+	long countUsersWithMoreAsset(@Param("asset") Long asset);
 }

@@ -29,8 +29,6 @@ public class UserVo {
 	private Integer branchId;
 	/** 총 자산 */
 	private Long asset;
-	/** 고객 구분 (예: 직장인, 주부) */
-	private String segment;
 	/** 프로필 이미지 파일명 1 */
 	private String filename1;
 	/** 프로필 이미지 파일명 2 */
@@ -39,6 +37,4 @@ public class UserVo {
 	private Double tendency;
 	/** 자산 비율 */
 	private Double assetProportion;
-	/** 소득 범위 */
-	private String incomeRange;
 }

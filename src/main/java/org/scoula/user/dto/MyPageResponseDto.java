@@ -18,4 +18,7 @@ public class MyPageResponseDto {
 
 	@ApiModelProperty(value = "다가오는 예약 내역 요약 리스트")
 	private List<BookingDto> bookingInfo;
+
+	@ApiModelProperty(value = "내 자산의 상위 백분위 (단위: %)", example = "15.5")
+	private Double assetPercentile;
 }

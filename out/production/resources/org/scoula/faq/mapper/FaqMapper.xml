@@ -18,40 +18,4 @@
         FROM faq
         WHERE faq_id = #{faqId}
     </select>
-
-    <insert id="insertFaq" useGeneratedKeys="true" keyProperty="faqId">
-        INSERT INTO faq (category, title, content)
-        VALUES (#{category}, #{title}, #{content})
-    </insert>
-
-    <update id="updateFaq">
-        UPDATE faq
-        SET category = #{category},
-            title    = #{title},
-            content  = #{content}
-        WHERE faq_id = #{faqId}
-    </update>
-
-    <delete id="deleteFaq">
-        DELETE
-        FROM faq
-        WHERE faq_id = #{faqId}
-    </delete>
-
-    <update id="updateFaqPartial">
-        UPDATE faq
-        <set>
-            <if test="updates['category'] != null">
-                category = #{updates.category},
-            </if>
-            <if test="updates['title'] != null">
-                title = #{updates.title},
-            </if>
-            <if test="updates['content'] != null">
-                content = #{updates.content},
-            </if>
-            <!-- 필요하면 다른 필드도 추가 -->
-        </set>
-        WHERE faq_id = #{faqId}
-    </update>
 </mapper>
