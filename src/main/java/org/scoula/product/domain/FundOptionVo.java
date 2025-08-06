@@ -1,23 +1,13 @@
 package org.scoula.product.domain;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 금융 상품 옵션 정보를 담는 VO (Value Object) 클래스
- * fund_prdt_option 테이블의 레코드와 매핑됩니다.
- */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class FundProductOptionVo {
+public class FundOptionVo {
 
-	private String finPrdtCd;      // 상품 코드
 	private String rate3mon;       // 3개월 수익률
 	private String startDate;   // 시작일
 	private String assetTotal;     // 총자산
