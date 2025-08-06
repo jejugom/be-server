@@ -85,4 +85,16 @@
         SET branch_id = #{branchId}
         WHERE email = #{email}
     </update>
+
+    <select id="countAllUsersWithAsset" resultType="long">
+        SELECT count(*)
+        FROM user
+        WHERE asset IS NOT NULL
+    </select>
+
+    <select id="countUsersWithMoreAsset" parameterType="long" resultType="long">
+        SELECT count(*)
+        FROM user
+        WHERE asset > #{asset}
+    </select>
 </mapper>

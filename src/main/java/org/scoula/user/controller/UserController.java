@@ -77,8 +77,9 @@ public class UserController {
 	@DeleteMapping("/me") // '나'의 계정을 삭제하는 엔드포인트
 	public ResponseEntity<Void> withdrawUser(Authentication authentication) {
 		String email = authentication.getName();
-		;
+
 		userService.withdrawUser(email);
+
 		return ResponseEntity.noContent().build();
 	}
 
