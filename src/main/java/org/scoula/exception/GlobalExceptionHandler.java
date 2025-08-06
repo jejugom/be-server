@@ -43,6 +43,14 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 
+	/**
+	 * UserNotFoundException 발생 시 처리하는 핸들러
+	 */
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleUserNotFound(ProductNotFoundException ex) {
+		ErrorResponse error = new ErrorResponse("NOT_FOUND", ex.getMessage());
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	}
 
 	/**
 	 * 잘못된 파라미터 타입
@@ -104,9 +112,10 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 			.body(new ErrorResponse("서버 내부 오류", error.getMessage()));
 	}
+
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<ErrorResponse> handleInvalidFormat(HttpMessageNotReadableException error){
-		log.error("잘못된 Json Format",error.getMessage(),error);
+	public ResponseEntity<ErrorResponse> handleInvalidFormat(HttpMessageNotReadableException error) {
+		log.error("잘못된 Json Format", error.getMessage(), error);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 			.body(new ErrorResponse("잘못된 JSON 포맷", error.getMessage()));
 	}
