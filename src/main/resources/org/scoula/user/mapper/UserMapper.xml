@@ -35,7 +35,7 @@
         INSERT INTO user (email, user_name, user_phone, birth, connected_id, branch_id, asset, filename1,
                           filename2, tendency, asset_proportion)
         VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{connectedId}, #{branchId}, #{asset},
-                #{filename1}, #{filename2}, #{tendency}, #{assetProportion}) -- #{incomeRange} 삭제
+                #{filename1}, #{filename2}, #{tendency}, #{assetProportion})
     </insert>
 
     <update id="update" parameterType="org.scoula.user.domain.UserVo">

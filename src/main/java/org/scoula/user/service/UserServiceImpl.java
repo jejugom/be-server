@@ -108,19 +108,19 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 		UserVo userVo = Optional.ofNullable(userMapper.findByEmail(email))
 			.orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다: " + email));
 
-		// 2. 자산 현황 요약 목록 조회 (기존 코드)
+		// 2. 자산 현황 요약 목록 조회
 		List<AssetStatusSummaryDto> assetList = assetStatusMapper.findAssetStatusSummaryByEmail(email)
 			.stream()
 			.map(AssetStatusSummaryDto::of)
 			.collect(Collectors.toList());
 
-		// 3. 다가오는 예약 내역 목록 조회 (기존 코드)
+		// 3. 다가오는 예약 내역 목록 조회
 		List<BookingVo> bookingVos = bookingMapper.findUpcomingByUserEmail(email);
 		List<BookingDto> bookingDtos = bookingVos.stream()
 			.map(BookingDto::of)
 			.collect(Collectors.toList());
 
-		// --- [4. 자산 상위 백분위 계산 로직 추가] ---
+		// 4. 자산 상위 백분위 계산 로직
 		Double percentile = calculateAssetPercentile(userVo.getAsset());
 
 		// 5. 최종 DTO 조립
