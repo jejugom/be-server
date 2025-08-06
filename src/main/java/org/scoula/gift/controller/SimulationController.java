@@ -7,6 +7,7 @@ import org.scoula.gift.service.SimulationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class SimulationController { // 컨트롤러 이름도 조금 더 명확�
 
 	private final SimulationService simulationService;
 
-	@GetMapping("/simulation")
+	@PostMapping("/simulation")
 	public ResponseEntity<SimulationResponseDto> runSimulation(
 		@RequestBody SimulationRequestDto requestDto, Authentication authentication) {
 
