@@ -24,11 +24,20 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users") // 'user' -> 'users'로 RESTful하게 변경
+@RequestMapping("/api/user")
 @Api(tags = "사용자 API", description = "사용자 정보 조회, 가입, 수정, 탈퇴 등 관련 API")
 public class UserController {
 
 	private final UserService userService;
+
+	// 사용자 이메일 조회를 위한 비공개 헬퍼 메소드
+	private String getUserEmail(Authentication authentication) {
+		// 인증 정보가 없을 경우를 대비한 방어 코드
+		if (authentication == null || authentication.getName() == null) {
+			throw new SecurityException("인증 정보가 없습니다.");
+		}
+		return authentication.getName();
+	}
 
 	@ApiOperation(value = "회원 가입", notes = "새로운 사용자를 등록합니다.")
 	@ApiResponses({
@@ -47,8 +56,7 @@ public class UserController {
 		@ApiResponse(code = 404, message = "사용자를 찾을 수 없음")
 	})
 	@GetMapping("/{email}")
-	public ResponseEntity<UserDto> getUser(
-		@ApiParam(value = "조회할 사용자의 이메일", required = true) @PathVariable String email) {
+	public ResponseEntity<UserDto> getUser(@ApiParam(value="조회할 사용자의 이메일", required=true) @PathVariable String email) {
 		UserDto user = userService.getUser(email);
 		return ResponseEntity.ok(user);
 	}
@@ -63,7 +71,7 @@ public class UserController {
 		Authentication authentication,
 		@RequestBody BranchIdUpdateRequestDto requestDto) {
 
-		String email = authentication.getName();
+		String email = getUserEmail(authentication);
 		userService.updateBranchId(email, requestDto.getBranchId());
 		return ResponseEntity.noContent().build();
 	}
@@ -76,8 +84,7 @@ public class UserController {
 	})
 	@DeleteMapping("/me") // '나'의 계정을 삭제하는 엔드포인트
 	public ResponseEntity<Void> withdrawUser(Authentication authentication) {
-		String email = authentication.getName();
-		;
+		String email = getUserEmail(authentication);
 		userService.withdrawUser(email);
 		return ResponseEntity.noContent().build();
 	}
@@ -89,7 +96,7 @@ public class UserController {
 	})
 	@GetMapping("/mypage")
 	public ResponseEntity<MyPageResponseDto> getMyPageInfo(Authentication authentication) {
-		String email = authentication.getName();
+		String email = getUserEmail(authentication);
 		MyPageResponseDto myPageData = userService.getMyPageData(email);
 		return ResponseEntity.ok(myPageData);
 	}
