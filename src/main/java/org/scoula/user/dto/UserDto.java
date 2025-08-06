@@ -30,6 +30,9 @@ public class UserDto {
 	@ApiModelProperty(value = "생년월일", example = "1990-01-01", required = true)
 	private Date birth;
 
+	@ApiModelProperty(value = "포인트", example = "1000")
+	private Integer point;
+
 	@ApiModelProperty(value = "연결된 금융기관 ID", example = "connect123")
 	private String connectedId;
 
@@ -62,6 +65,7 @@ public class UserDto {
 			.userName(user.getUserName())
 			.userPhone(user.getUserPhone())
 			.birth(user.getBirth())
+			.point(user.getPoint())
 			.connectedId(user.getConnectedId())
 			.branchId(user.getBranchId())
 			.asset(user.getAsset())
@@ -82,6 +86,7 @@ public class UserDto {
 			.userName(userName)
 			.userPhone(userPhone)
 			.birth(birth)
+			.point(point)
 			.connectedId(connectedId)
 			.branchId(branchId)
 			.asset(asset)

@@ -1,10 +1,7 @@
 package org.scoula.auth.service;
 
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 
 import org.scoula.auth.dto.KakaoLoginResponseDto;
@@ -202,30 +199,17 @@ public class KakaoAuthService {
 	 */
 	private UserVo findOrCreateUser(KakaoUserInfoDto userInfo) {
 		// 카카오 계정에서 이메일 추출
-		String email = null;
-		if (userInfo.getKakaoAccount() != null) {
-			email = userInfo.getKakaoAccount().getEmail();
+		if (userInfo == null || userInfo.getKakaoAccount() == null) {
+			log.error("카카오 사용자 정보를 가져올 수 없습니다.");
+			throw new IllegalArgumentException("유효하지 않은 카카오 사용자 정보입니다.");
 		}
+
+		String email = userInfo.getKakaoAccount().getEmail();
 
 		// 기존 회원 확인
 		Optional<UserVo> existingUser = Optional.ofNullable(userMapper.findByEmail(email));
 		if (existingUser.isPresent()) {
 			return existingUser.get();
-		}
-
-		// 생년월일 파싱 (YYYY + MMDD 형식)
-		Date birthDate = null;
-		if (userInfo.getKakaoAccount() != null && userInfo.getKakaoAccount().getBirthyear() != null
-			&& userInfo.getKakaoAccount().getBirthday() != null) {
-
-			String birthString = userInfo.getKakaoAccount().getBirthyear()
-				+ userInfo.getKakaoAccount().getBirthday();
-			try {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-				birthDate = sdf.parse(birthString);
-			} catch (ParseException e) {
-				log.warn("생년월일 파싱 실패: " + birthString, e);
-			}
 		}
 
 		// 닉네임 추출 (properties → kakao_account.profile 순서로 우선순위)
@@ -241,15 +225,6 @@ public class KakaoAuthService {
 		UserVo newUser = UserVo.builder()
 			.email(email)
 			.userName(nickname)
-			.birth(birthDate)
-			.userPhone(null)           // 추후 입력받을 정보들은 null로 초기화
-			.branchId(null)
-			.connectedId(null)
-			.filename1(null)
-			.filename2(null)
-			.assetProportion(0.0)
-			.tendency(0.0)
-			.asset(0L)                 // 초기 자산은 0으로 설정
 			.build();
 		userMapper.save(newUser);
 
