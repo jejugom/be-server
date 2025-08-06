@@ -37,4 +37,6 @@ public class UserVo {
 	private Double tendency;
 	/** 자산 비율 */
 	private Double assetProportion;
+	/** 사용자의 포인트 */
+	private int point;
 }

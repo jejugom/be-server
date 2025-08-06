@@ -6,6 +6,7 @@
         <result property="userName" column="user_name"/>
         <result property="userPhone" column="user_phone"/>
         <result property="birth" column="birth"/>
+        <result property="point" column="point"/>
         <result property="connectedId" column="connected_id"/>
         <result property="branchId" column="branch_id"/>
         <result property="asset" column="asset"/>
@@ -15,11 +16,50 @@
         <result property="assetProportion" column="asset_proportion"/>
     </resultMap>
 
+    <!--
+      [수정 핵심] 동적 INSERT 구문:
+      - UserVo 객체에서 값이 null이 아닌 필드만 INSERT 쿼리에 동적으로 포함시킵니다.
+      - 이렇게 하면 user_phone, birth 등이 null일 때 쿼리에서 제외되어,
+        DB 테이블에 설정된 DEFAULT 값이 자동으로 적용됩니다.
+    -->
+    <insert id="save" parameterType="org.scoula.user.domain.UserVo">
+        INSERT INTO user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="email != null">email,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="userPhone != null">user_phone,</if>
+            <if test="birth != null">birth,</if>
+            <if test="point != null">point,</if>
+            <if test="connectedId != null">connected_id,</if>
+            <if test="branchId != null">branch_id,</if>
+            <if test="asset != null">asset,</if>
+            <if test="filename1 != null">filename1,</if>
+            <if test="filename2 != null">filename2,</if>
+            <if test="tendency != null">tendency,</if>
+            <if test="assetProportion != null">asset_proportion,</if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="email != null">#{email},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="userPhone != null">#{userPhone},</if>
+            <if test="birth != null">#{birth},</if>
+            <if test="point != null">#{point},</if>
+            <if test="connectedId != null">#{connectedId},</if>
+            <if test="branchId != null">#{branchId},</if>
+            <if test="asset != null">#{asset},</if>
+            <if test="filename1 != null">#{filename1},</if>
+            <if test="filename2 != null">#{filename2},</if>
+            <if test="tendency != null">#{tendency},</if>
+            <if test="assetProportion != null">#{assetProportion},</if>
+        </trim>
+    </insert>
+
     <select id="findByEmail" resultMap="userMap">
         SELECT email,
                user_name,
                user_phone,
                birth,
+               point,
                connected_id,
                branch_id,
                asset,
@@ -31,25 +71,25 @@
         WHERE email = #{email}
     </select>
 
-    <insert id="save" parameterType="org.scoula.user.domain.UserVo">
-        INSERT INTO user (email, user_name, user_phone, birth, connected_id, branch_id, asset, filename1,
-                          filename2, tendency, asset_proportion)
-        VALUES (#{email}, #{userName}, #{userPhone}, #{birth}, #{connectedId}, #{branchId}, #{asset},
-                #{filename1}, #{filename2}, #{tendency}, #{assetProportion})
-    </insert>
-
+    <!--
+      [수정 권장] 동적 UPDATE 구문:
+      - save와 마찬가지로, 값이 변경된 필드만 UPDATE 하도록 동적 쿼리를 사용하는 것이 효율적입니다.
+    -->
     <update id="update" parameterType="org.scoula.user.domain.UserVo">
         UPDATE user
-        SET user_name        = #{userName},
-            user_phone       = #{userPhone},
-            birth            = #{birth},
-            connected_id     = #{connectedId},
-            branch_id        = #{branchId},
-            asset            = #{asset},
-            filename1        = #{filename1},
-            filename2        = #{filename2},
-            tendency         = #{tendency},
-            asset_proportion = #{assetProportion}
+        <set>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="userPhone != null">user_phone = #{userPhone},</if>
+            <if test="birth != null">birth = #{birth},</if>
+            <if test="point != null">point = #{point},</if>
+            <if test="connectedId != null">connected_id = #{connectedId},</if>
+            <if test="branchId != null">branch_id = #{branchId},</if>
+            <if test="asset != null">asset = #{asset},</if>
+            <if test="filename1 != null">filename1 = #{filename1},</if>
+            <if test="filename2 != null">filename2 = #{filename2},</if>
+            <if test="tendency != null">tendency = #{tendency},</if>
+            <if test="assetProportion != null">asset_proportion = #{assetProportion},</if>
+        </set>
         WHERE email = #{email}
     </update>
 
@@ -64,6 +104,7 @@
                user_name,
                user_phone,
                birth,
+               point,
                connected_id,
                branch_id,
                asset,
