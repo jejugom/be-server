@@ -1,6 +1,6 @@
 package org.scoula.user.dto;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import org.scoula.user.domain.UserVo;
 
@@ -24,14 +24,20 @@ public class UserInfoResponseDto {
 	private String userPhone;
 
 	@ApiModelProperty(value = "생년월일", example = "1995-08-07")
-	private Date birth;
+	private String birth; // Date -> String
 
 	public static UserInfoResponseDto of(UserVo user) {
+		String formattedBirth = null;
+		if (user.getBirth() != null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			formattedBirth = sdf.format(user.getBirth());
+		}
+
 		return UserInfoResponseDto.builder()
 			.email(user.getEmail())
 			.userName(user.getUserName())
 			.userPhone(user.getUserPhone())
-			.birth(user.getBirth())
+			.birth(formattedBirth)
 			.build();
 	}
 }
