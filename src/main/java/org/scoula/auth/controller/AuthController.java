@@ -189,8 +189,8 @@ public class AuthController {
 	@PostMapping("/logout")
 	public ResponseEntity<Void> logout(Authentication authentication) {
 		// JWT에서 추출된 사용자 이메일로 Refresh Token 삭제
-		String userEmail = authentication.getName();
-		kakaoAuthService.logout(userEmail);
+		String email = authentication.getName();
+		kakaoAuthService.logout(email);
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -1,6 +1,7 @@
 package org.scoula.user.service;
 
 import org.scoula.user.dto.MyPageResponseDto;
+import org.scoula.user.dto.UserBranchNameDto;
 import org.scoula.user.dto.UserDto;
 
 /**
@@ -33,6 +34,8 @@ public interface UserService {
 	 * @param connectedId 수정할 연동 ID
 	 */
 	void updateConnectedId(String email, String connectedId);
+
+	UserBranchNameDto getBranchInfo(String email);
 
 	/**
 	 * 사용자의 선호 지점 ID를 수정합니다.

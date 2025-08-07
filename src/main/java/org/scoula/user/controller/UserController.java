@@ -1,7 +1,8 @@
 package org.scoula.user.controller;
 
-import org.scoula.user.dto.BranchIdUpdateRequestDto;
 import org.scoula.user.dto.MyPageResponseDto;
+import org.scoula.user.dto.UserBranchIdDto;
+import org.scoula.user.dto.UserBranchNameDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -53,15 +54,31 @@ public class UserController {
 		return ResponseEntity.ok(user);
 	}
 
+	/**
+	 * 내 지점 정보 조회 컨트롤러
+	 */
+	@ApiOperation(value = "내 지점 정보 조회", notes = "현재 로그인한 사용자의 선호 지점 이름을 조회합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "조회 성공", response = UserBranchNameDto.class), // response 클래스 변경
+		@ApiResponse(code = 401, message = "인증되지 않은 사용자"),
+		@ApiResponse(code = 404, message = "사용자 또는 지점 정보 없음")
+	})
+	@GetMapping("/branch")
+	public ResponseEntity<UserBranchNameDto> getMyBranchInfo(Authentication authentication) {
+		String email = authentication.getName();
+		UserBranchNameDto branchNameDto = userService.getBranchInfo(email);
+		return ResponseEntity.ok(branchNameDto);
+	}
+
 	@ApiOperation(value = "내 지점 ID 수정", notes = "현재 로그인한 사용자의 선호 지점 ID를 수정합니다.")
 	@ApiResponses({
 		@ApiResponse(code = 204, message = "수정 성공"),
 		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
 	})
-	@PatchMapping("/me/branch") // '나'의 정보를 수정하는 엔드포인트
+	@PatchMapping("/branch") // '나'의 정보를 수정하는 엔드포인트
 	public ResponseEntity<Void> updateMyBranchId(
 		Authentication authentication,
-		@RequestBody BranchIdUpdateRequestDto requestDto) {
+		@RequestBody UserBranchIdDto requestDto) {
 
 		String email = authentication.getName();
 		userService.updateBranchId(email, requestDto.getBranchId());
