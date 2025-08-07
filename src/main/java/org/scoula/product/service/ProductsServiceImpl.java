@@ -6,7 +6,11 @@ import java.util.Map;
 
 import org.scoula.product.domain.DepositVo;
 import org.scoula.product.domain.FundVo;
+import org.scoula.product.domain.GoldVo;
+import org.scoula.product.domain.MortgageVo;
 import org.scoula.product.domain.ProductVo;
+import org.scoula.product.domain.SavingVo;
+import org.scoula.product.domain.TrustVo;
 import org.scoula.product.dto.DepositDto;
 import org.scoula.product.dto.FundDto;
 import org.scoula.product.dto.GoldDto;
@@ -37,22 +41,31 @@ public class ProductsServiceImpl {
 
 		//VO -> DTO
 		for (ProductVo p : list) {
-			if (p instanceof ProductVo) {
+			if (p instanceof DepositVo) {
 				//                // 예금 상품 처리 VO -> DTO
-				depositList.add(ProductVoToMapper.toDepositDto((DepositVo) p));
+				depositList.add(ProductVoToMapper.toDepositDto((DepositVo)p));
+
+			} else if (p instanceof SavingVo) {
+				savingList.add(ProductVoToMapper.toSavingDto((SavingVo)p));
+			} else if (p instanceof MortgageVo) {
+				mortgageList.add(ProductVoToMapper.toMortgageDto((MortgageVo)p));
 			} else if (p instanceof FundVo) {
 				//                // 펀드 상품 처리 VO -> DTO
-				fundList.add(ProductVoToMapper.toFundDTO((FundVo) p));
+				fundList.add(ProductVoToMapper.toFundDto((FundVo) p));
+			} else if (p instanceof GoldVo) {
+				goldList.add(ProductVoToMapper.toGoldDto((GoldVo) p));
+			} else if (p instanceof TrustVo) {
+				trustList.add(ProductVoToMapper.toTrustDto((TrustVo) p));
 			}
 		}
 
 		return Map.of(
 			"deposit", depositList,
-			// "saving", savingList,
-			// "mortgage", mortgageList,
-			"fund", fundList
-			// "gold", goldList,
-			// "trust", trustList
+			"saving", savingList,
+			"mortgage", mortgageList,
+			"fund", fundList,
+			"gold", goldList,
+			"trust", trustList
 		);
 	}
 }

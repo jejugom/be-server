@@ -8,6 +8,7 @@ import org.scoula.product.domain.FundVo;
 import org.scoula.product.domain.GoldVo;
 import org.scoula.product.domain.MortgageVo;
 import org.scoula.product.domain.SavingVo;
+import org.scoula.product.domain.TrustVo;
 import org.scoula.product.dto.DepositDto;
 import org.scoula.product.dto.DepositOptionDto;
 import org.scoula.product.dto.FundDto;
@@ -17,6 +18,7 @@ import org.scoula.product.dto.MortgageDto;
 import org.scoula.product.dto.MortgageOptionDto;
 import org.scoula.product.dto.SavingDto;
 import org.scoula.product.dto.SavingOptionDto;
+import org.scoula.product.dto.TrustDto;
 
 public class ProductVoToMapper {
 	/**
@@ -181,6 +183,11 @@ public class ProductVoToMapper {
 			.build();
 	}
 
+	/**
+	 * 금 상품 VO를 DTO로 변환
+	 * @param vo
+	 * @return
+	 */
 	public static GoldDto toGoldDto(GoldVo vo) {
 		return GoldDto.builder()
 			// 공통 정보 -부모
@@ -194,5 +201,40 @@ public class ProductVoToMapper {
 			.description(vo.getDescription())
 			.joinWay(vo.getJoinWay())
 			.recReason(vo.getRecReason())
+
+			// 금 상품 전용 정보
+			.lot(vo.getLot())
+			.currency(vo.getCurrency())
+			.etcNote(vo.getEtcNote())
+
+			.build();
+	}
+
+	public static TrustDto toTrustDto(TrustVo vo) {
+		return TrustDto.builder()
+			// 공통 정보 -부모
+			.finPrdtCd(vo.getFinPrdtCd())
+			.finPrdtNm(vo.getFinPrdtNm())
+			.prdtFeature(vo.getPrdtFeature())
+
+			// 공통 정보 -중간부모
+			.korCoNm(vo.getKorCoNm())
+			.finPrdtCategory(vo.getFinPrdtCategory())
+			.description(vo.getDescription())
+			.joinWay(vo.getJoinWay())
+			.recReason(vo.getRecReason())
+
+			// 신탁 전용 정보
+			.basePrice(vo.getBasePrice())
+			.yieldRate(vo.getYieldRate())
+			.fundType(vo.getFundType())
+			.fundStructure(vo.getFundStructure())
+			.taxBenefit(vo.getTaxBenefit())
+			.saleStartDate(vo.getSaleStartDate())
+			.trustFee(vo.getTrustFee())
+			.earlyTerminationFee(vo.getEarlyTerminationFee())
+			.depositProtection(vo.getDepositProtection())
+
+			.build();
 	}
 }

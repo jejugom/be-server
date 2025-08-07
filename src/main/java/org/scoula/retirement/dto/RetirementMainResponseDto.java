@@ -1,11 +1,13 @@
 package org.scoula.retirement.dto;
 
 import java.util.List;
+import java.util.Map;
 
 import org.scoula.news.dto.NewsDto;
 import org.scoula.product.dto.FundProductsDto;
 import org.scoula.product.dto.GoldProductsDto;
 import org.scoula.product.dto.MortgageLoanDto;
+import org.scoula.product.dto.ProductDto;
 import org.scoula.product.dto.SavingsDepositsDto;
 import org.scoula.product.dto.TimeDepositsDto;
 import org.scoula.recommend.dto.CustomRecommendDto;
@@ -30,20 +32,23 @@ public class RetirementMainResponseDto {
 	@ApiModelProperty(value = "맞춤 추천 상품 목록")
 	private List<CustomRecommendDto> customRecommendPrdt;
 
-	@ApiModelProperty(value = "전체 예금 상품 목록")
-	private List<TimeDepositsDto> timeDeposits;
+	@ApiModelProperty(value = "전체 상품 목록 (예금, 적금, 주택담보대출, 펀드, 금, 신탁)")
+	private Map<String, List<? extends ProductDto>> allProducts;
 
-	@ApiModelProperty(value = "전체 적금 상품 목록")
-	private List<SavingsDepositsDto> savingsDeposits;
-
-	@ApiModelProperty(value = "전체 주택담보대출 상품 목록")
-	private List<MortgageLoanDto> mortgageLoan;
-
-	@ApiModelProperty(value = "전체 금 상품 목록")
-	private List<GoldProductsDto> goldProducts;
-
-	@ApiModelProperty(value = "전체 펀드 상품 목록")
-	private List<FundProductsDto> fundProducts;
+	// @ApiModelProperty(value = "전체 예금 상품 목록")
+	// private List<TimeDepositsDto> timeDeposits;
+	//
+	// @ApiModelProperty(value = "전체 적금 상품 목록")
+	// private List<SavingsDepositsDto> savingsDeposits;
+	//
+	// @ApiModelProperty(value = "전체 주택담보대출 상품 목록")
+	// private List<MortgageLoanDto> mortgageLoan;
+	//
+	// @ApiModelProperty(value = "전체 금 상품 목록")
+	// private List<GoldProductsDto> goldProducts;
+	//
+	// @ApiModelProperty(value = "전체 펀드 상품 목록")
+	// private List<FundProductsDto> fundProducts;
 
 	@ApiModelProperty(value = "뉴스 목록")
 	private List<NewsDto> news;

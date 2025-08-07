@@ -1,17 +1,20 @@
 package org.scoula.retirement.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.news.service.NewsService;
 import org.scoula.product.domain.ProductVo;
+import org.scoula.product.dto.ProductDto;
 import org.scoula.product.mapper.ProductMapper;
 import org.scoula.product.service.FundProductService;
 import org.scoula.product.service.GoldProductService;
 import org.scoula.product.service.MortgageLoanService;
 import org.scoula.product.service.ProductsService;
+import org.scoula.product.service.ProductsServiceImpl;
 import org.scoula.product.service.SavingDepositsService;
 import org.scoula.product.service.TimeDepositsService;
 import org.scoula.recommend.service.CustomRecommendService;
@@ -41,7 +44,7 @@ public class RetirementController {
 
 	private final UserService userServiceImpl;
 	private final AssetStatusService assetStatusService;
-	private final ProductsService productsService;
+	private final ProductsServiceImpl productsServiceImpl;
 	private final CustomRecommendService customRecommendService;
 	private final TimeDepositsService timeDepositsService;
 	private final SavingDepositsService savingsService;
@@ -58,7 +61,7 @@ public class RetirementController {
 	})
 	@GetMapping("")
 	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(Authentication authentication) {
-		RetirementMainResponseDto response = new RetirementMainResponseDto();
+		// RetirementMainResponseDto response = new RetirementMainResponseDto();
 		String email = authentication.getName();
 
 		// 0. 사용자 정보 조회
@@ -72,31 +75,39 @@ public class RetirementController {
 			.userName(userDto.getUserName())
 			.assetStatus(assetList)
 			.build();
-
-		response.setUserInfo(userGraphDto);
+		// response.setUserInfo(userGraphDto);
 
 		// 2. 나머지 데이터 조회 및 설정
-		response.setCustomRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email));
-		response.setTimeDeposits(productsService.getAllTimeDeposits());
-		response.setSavingsDeposits(productsService.getAllSavingsDeposits());
-		response.setMortgageLoan(productsService.getAllMortgageLoans());
-		response.setGoldProducts(productsService.getAllGoldProducts());
-		response.setFundProducts(productsService.getAllFundProducts());
-		response.setNews(newsService.getAllNews());
+		Map<String, List<? extends ProductDto>> allProducts = productsServiceImpl.findAllProduct();
+
+		// response.setCustomRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email));
+		// response.setTimeDeposits(productsService.getAllTimeDeposits());
+		// response.setSavingsDeposits(productsService.getAllSavingsDeposits());
+		// response.setMortgageLoan(productsService.getAllMortgageLoans());
+		// response.setGoldProducts(productsService.getAllGoldProducts());
+		// response.setFundProducts(productsService.getAllFundProducts());
+		// response.setNews(newsService.getAllNews());
+		// 응답 DTO 생성
+		RetirementMainResponseDto response = RetirementMainResponseDto.builder()
+			.userInfo(userGraphDto)
+			.allProducts(allProducts)
+			.customRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email))
+			.news(newsService.getAllNews())
+			.build();
 
 		return ResponseEntity.ok(response);
 	}
 
-	@ApiOperation(value = "금융 상품 상세 조회", notes = "금융 상품 코드로 특정 상품의 상세 정보를 조회합니다.")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "조회 성공"),
-		@ApiResponse(code = 404, message = "존재하지 않는 상품 코드"),
-		@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
-	})
-	@GetMapping("/{finPrdtCd}")
-	public ResponseEntity<ProductVo> getProductDetail(@PathVariable String finPrdtCd) {
-		return ResponseEntity.ok(productsService.getProductDetail(finPrdtCd));
-	}
+	// @ApiOperation(value = "금융 상품 상세 조회", notes = "금융 상품 코드로 특정 상품의 상세 정보를 조회합니다.")
+	// @ApiResponses({
+	// 	@ApiResponse(code = 200, message = "조회 성공"),
+	// 	@ApiResponse(code = 404, message = "존재하지 않는 상품 코드"),
+	// 	@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
+	// })
+	// @GetMapping("/{finPrdtCd}")
+	// public ResponseEntity<ProductVo> getProductDetail(@PathVariable String finPrdtCd) {
+	// 	return ResponseEntity.ok(productsServiceImpl.getProductDetail(finPrdtCd));
+	// }
 	// public ResponseEntity<?> getProductDetail(
 	// 	@ApiParam(value = "조회할 금융 상품의 코드", required = true, example = "PRD001")
 	// 	@PathVariable String finPrdtCd) {

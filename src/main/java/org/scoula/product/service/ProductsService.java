@@ -56,6 +56,8 @@ public class ProductsService {
 //============================================================================	
 //============================================================================	
 
+
+
 	
 	/**
 	 * 모든 적금 상품 정보를 조회합니다.
@@ -92,5 +94,9 @@ public class ProductsService {
 	 */
 	public List<FundProductsDto> getAllFundProducts() {
 		return fundProductsMapper.findAllFundProducts();
+	}
+
+	public List<? extends ProductVo> getAllProducts() {
+		return productMapper.findAllProduct();
 	}
 }
