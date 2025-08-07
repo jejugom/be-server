@@ -4,6 +4,7 @@ import org.scoula.user.dto.MyPageResponseDto;
 import org.scoula.user.dto.UserBranchIdDto;
 import org.scoula.user.dto.UserBranchNameDto;
 import org.scoula.user.dto.UserDto;
+import org.scoula.user.dto.UserInfoResponseDto;
 import org.scoula.user.dto.UserInfoUpdateRequestDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +54,19 @@ public class UserController {
 		@ApiParam(value = "조회할 사용자의 이메일", required = true) @PathVariable String email) {
 		UserDto user = userService.getUser(email);
 		return ResponseEntity.ok(user);
+	}
+
+	@ApiOperation(value = "내 기본 정보 조회", notes = "현재 로그인한 사용자의 이메일, 이름, 전화번호, 생년월일을 조회합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "조회 성공"),
+		@ApiResponse(code = 401, message = "인증되지 않은 사용자"),
+		@ApiResponse(code = 404, message = "사용자를 찾을 수 없음")
+	})
+	@GetMapping("/me")
+	public ResponseEntity<UserInfoResponseDto> getMyInfo(Authentication authentication) {
+		String email = authentication.getName();
+		UserInfoResponseDto userInfo = userService.getUserInfo(email);
+		return ResponseEntity.ok(userInfo);
 	}
 
 	@ApiOperation(value = "내 정보 수정", notes = "현재 로그인한 사용자의 이름, 전화번호, 생년월일을 수정합니다.")

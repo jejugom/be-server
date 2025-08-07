@@ -3,6 +3,7 @@ package org.scoula.user.service;
 import org.scoula.user.dto.MyPageResponseDto;
 import org.scoula.user.dto.UserBranchNameDto;
 import org.scoula.user.dto.UserDto;
+import org.scoula.user.dto.UserInfoResponseDto;
 import org.scoula.user.dto.UserInfoUpdateRequestDto;
 
 /**
@@ -28,6 +29,13 @@ public interface UserService {
 	 * @param userDto 수정할 정보가 담긴 DTO
 	 */
 	void updateUser(String email, UserDto userDto);
+
+	/**
+	 * 사용자의 기본 정보(이메일, 이름, 전화번호, 생년월일)를 조회합니다.
+	 * @param email 조회할 사용자의 이메일
+	 * @return 사용자의 기본 정보가 담긴 DTO
+	 */
+	UserInfoResponseDto getUserInfo(String email);
 
 	/**
 	 * 사용자의 개인 정보(이름, 전화번호, 생년월일)를 수정합니다.
