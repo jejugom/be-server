@@ -4,6 +4,7 @@ import org.scoula.user.dto.MyPageResponseDto;
 import org.scoula.user.dto.UserBranchIdDto;
 import org.scoula.user.dto.UserBranchNameDto;
 import org.scoula.user.dto.UserDto;
+import org.scoula.user.dto.UserInfoUpdateRequestDto;
 import org.scoula.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -52,6 +53,22 @@ public class UserController {
 		@ApiParam(value = "조회할 사용자의 이메일", required = true) @PathVariable String email) {
 		UserDto user = userService.getUser(email);
 		return ResponseEntity.ok(user);
+	}
+
+	@ApiOperation(value = "내 정보 수정", notes = "현재 로그인한 사용자의 이름, 전화번호, 생년월일을 수정합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 204, message = "수정 성공"),
+		@ApiResponse(code = 401, message = "인증되지 않은 사용자"),
+		@ApiResponse(code = 404, message = "사용자를 찾을 수 없음")
+	})
+	@PatchMapping("/me") // '나'의 정보를 수정하므로 /me 엔드포인트와 PATCH 메소드 사용
+	public ResponseEntity<Void> updateMyInfo(
+		Authentication authentication,
+		@RequestBody UserInfoUpdateRequestDto requestDto) {
+
+		String email = authentication.getName(); // Spring Security를 통해 현재 사용자 이메일 획득
+		userService.updateUserInfo(email, requestDto);
+		return ResponseEntity.noContent().build(); // 성공 시 204 No Content 응답
 	}
 
 	/**

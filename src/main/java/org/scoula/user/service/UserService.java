@@ -3,6 +3,7 @@ package org.scoula.user.service;
 import org.scoula.user.dto.MyPageResponseDto;
 import org.scoula.user.dto.UserBranchNameDto;
 import org.scoula.user.dto.UserDto;
+import org.scoula.user.dto.UserInfoUpdateRequestDto;
 
 /**
  * 사용자 관련 비즈니스 로직을 처리하는 서비스 인터페이스
@@ -27,6 +28,13 @@ public interface UserService {
 	 * @param userDto 수정할 정보가 담긴 DTO
 	 */
 	void updateUser(String email, UserDto userDto);
+
+	/**
+	 * 사용자의 개인 정보(이름, 전화번호, 생년월일)를 수정합니다.
+	 * @param email 수정할 사용자의 이메일
+	 * @param requestDto 수정할 정보가 담긴 DTO
+	 */
+	void updateUserInfo(String email, UserInfoUpdateRequestDto requestDto);
 
 	/**
 	 * 사용자의 마이데이터 연동 ID를 수정합니다.

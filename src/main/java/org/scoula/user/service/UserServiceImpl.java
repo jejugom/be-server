@@ -23,6 +23,7 @@ import org.scoula.user.dto.MyPageResponseDto;
 import org.scoula.user.dto.UserBranchNameDto;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.dto.UserGraphDto;
+import org.scoula.user.dto.UserInfoUpdateRequestDto;
 import org.scoula.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +79,22 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 		user.setAssetProportion(userDto.getAssetProportion());
 
 		userMapper.update(user);
+	}
+
+	@Transactional
+	@Override
+	public void updateUserInfo(String email, UserInfoUpdateRequestDto requestDto) {
+		// 1. 수정 요청을 한 사용자가 DB에 존재하는지 확인
+		UserVo user = Optional.ofNullable(userMapper.findByEmail(email))
+			.orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다: " + email));
+
+		// 2. DTO의 데이터로 기존 UserVo 객체의 필드를 업데이트
+		user.setUserName(requestDto.getUserName());
+		user.setUserPhone(requestDto.getUserPhone());
+		user.setBirth(requestDto.getBirth());
+
+		// 3. Mapper를 호출하여 DB에 변경사항 저장
+		userMapper.updateUserInfo(user);
 	}
 
 	@Transactional
