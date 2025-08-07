@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class FundOptionDto extends ProductDetailDto<Object> {
+public class FundOptionDto {
 
 	private String rate3mon;       // 3개월 수익률
 	private String startDate;   // 시작일

@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.news.service.NewsService;
+import org.scoula.product.domain.ProductVo;
 import org.scoula.product.mapper.ProductMapper;
 import org.scoula.product.service.FundProductService;
 import org.scoula.product.service.GoldProductService;
@@ -93,29 +94,31 @@ public class RetirementController {
 		@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
 	})
 	@GetMapping("/{finPrdtCd}")
-	public ResponseEntity<?> getProductDetail(
-		@ApiParam(value = "조회할 금융 상품의 코드", required = true, example = "PRD001")
-		@PathVariable String finPrdtCd) {
-
-		String category = productMapper.findCategoryByFinPrdtCd(finPrdtCd);
-
-		if (category == null) {
-			throw new NoSuchElementException("상품을 찾을 수 없습니다: " + finPrdtCd);
-		}
-
-		switch (category) {
-			case "1": //예금
-				return ResponseEntity.ok(timeDepositsService.getDetail(finPrdtCd));
-			case "2": //적금
-				return ResponseEntity.ok(savingsService.getDetail(finPrdtCd));
-			case "3": //주택담보대출
-				return ResponseEntity.ok(mortgageLoansService.getDetail(finPrdtCd));
-			case "4": //금
-				return ResponseEntity.ok(goldProductService.getDetail(finPrdtCd));
-			case "5": //펀드
-				return ResponseEntity.ok(fundProductService.getDetail(finPrdtCd));
-			default:
-				throw new IllegalArgumentException("유효하지 않은 카테고리: " + category);
-		}
+	public ResponseEntity<ProductVo> getProductDetail(@PathVariable String finPrdtCd) {
+		return ResponseEntity.ok(productsService.getProductDetail(finPrdtCd));
 	}
+	// public ResponseEntity<?> getProductDetail(
+	// 	@ApiParam(value = "조회할 금융 상품의 코드", required = true, example = "PRD001")
+	// 	@PathVariable String finPrdtCd) {
+	//
+	// 	String category = productMapper.findCategoryByFinPrdtCd(finPrdtCd);
+	//
+	// 	if (category == null) {
+	// 		throw new NoSuchElementException("상품을 찾을 수 없습니다: " + finPrdtCd);
+	// 	}
+	//
+	// 	switch (category) {
+	// 		case "1": //예금
+	// 			return ResponseEntity.ok(timeDepositsService.getDetail(finPrdtCd));
+	// 		case "2": //적금
+	// 			return ResponseEntity.ok(savingsService.getDetail(finPrdtCd));
+	// 		case "3": //주택담보대출
+	// 			return ResponseEntity.ok(mortgageLoansService.getDetail(finPrdtCd));
+	// 		case "4": //금
+	// 			return ResponseEntity.ok(goldProductService.getDetail(finPrdtCd));
+	// 		case "5": //펀드
+	// 			return ResponseEntity.ok(fundProductService.getDetail(finPrdtCd));
+	// 		default:
+	// 			throw new IllegalArgumentException("유효하지 않은 카테고리: " + category);
+	// 	}
 }

@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString(callSuper = true)
 @Getter
-public class SavingDto extends ProductDto<SavingOptionDto> {
+public class SavingDto extends ProductDetailDto<SavingOptionDto> {
 
 	private String mtrtInt; //만기 후 이자율
 	private String spclCnd; //우대조건

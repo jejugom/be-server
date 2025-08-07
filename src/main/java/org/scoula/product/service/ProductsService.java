@@ -44,6 +44,20 @@ public class ProductsService {
 	}
 
 	/**
+	 * 상품 코드를 가지고 상품의 상세정보를 조회합니다.
+	 * @param finPrdtCd
+	 * @return
+	 */
+	public ProductVo getProductDetail(String finPrdtCd) {
+		return productMapper.findProductDetail(finPrdtCd);
+	}
+
+
+//============================================================================	
+//============================================================================	
+
+	
+	/**
 	 * 모든 적금 상품 정보를 조회합니다.
 	 * @return 모든 적금 상품의 DTO 리스트
 	 */
@@ -67,7 +81,7 @@ public class ProductsService {
 		return goldProductsMapper.findAllGoldProducts();
 	}
 
-	public List<ProductVo> getAllProducts(){return productMapper.getAllProduct();}
+	// public List<ProductVo> getAllProducts(){return productMapper.getAllProduct();}
 
 	// public TimeDepositsDTO getTimeDepositsDetail(String finPrdtCd) {
 	//     // 상세 정보를 가져오는 Mapper 메서드 호출
