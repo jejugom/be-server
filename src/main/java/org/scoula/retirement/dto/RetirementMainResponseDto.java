@@ -4,12 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.scoula.news.dto.NewsDto;
-import org.scoula.product.dto.FundProductsDto;
-import org.scoula.product.dto.GoldProductsDto;
-import org.scoula.product.dto.MortgageLoanDto;
 import org.scoula.product.dto.ProductDto;
-import org.scoula.product.dto.SavingsDepositsDto;
-import org.scoula.product.dto.TimeDepositsDto;
 import org.scoula.recommend.dto.CustomRecommendDto;
 import org.scoula.user.dto.UserGraphDto;
 

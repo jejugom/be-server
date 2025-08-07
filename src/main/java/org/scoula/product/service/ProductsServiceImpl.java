@@ -3,6 +3,7 @@ package org.scoula.product.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.scoula.product.domain.DepositVo;
 import org.scoula.product.domain.FundVo;
@@ -26,10 +27,10 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductsServiceImpl {
+public class ProductsServiceImpl implements ProductService {
 	private final ProductMapper productMapper;
 
-	public Map<String, List<? extends ProductDto>> findAllProduct() {
+	public Map<String, List<? extends ProductDto>> findAllProducts() {
 		List<? extends ProductVo> list = productMapper.findAllProduct();
 
 		List<DepositDto> depositList = new ArrayList<>();
@@ -42,7 +43,7 @@ public class ProductsServiceImpl {
 		//VO -> DTO
 		for (ProductVo p : list) {
 			if (p instanceof DepositVo) {
-				//                // 예금 상품 처리 VO -> DTO
+				// 예금 상품 처리 VO -> DTO
 				depositList.add(ProductVoToMapper.toDepositDto((DepositVo)p));
 
 			} else if (p instanceof SavingVo) {
@@ -68,4 +69,18 @@ public class ProductsServiceImpl {
 			"trust", trustList
 		);
 	}
+
+	public ProductVo getProductDetail(String finPrdtCd) {
+		ProductVo product = productMapper.findProductDetail(finPrdtCd);
+		if (product == null) {
+			throw new NoSuchElementException("해당 상품을 찾을 수 없습니다: " + finPrdtCd);
+		}
+		return product;
+	}
+
+	@Override
+	public String getProductNameByCode(String finPrdtCode) {
+		return "";
+	}
+
 }

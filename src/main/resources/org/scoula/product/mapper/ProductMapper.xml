@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--<mapper namespace="org.scoula.product.mapper.ProductMapper">-->
-
-<!--    &lt;!&ndash; 상품 이름 조회 &ndash;&gt;-->
-<!--    <select id="findNameByCode" parameterType="string" resultType="string">-->
-<!--        SELECT fin_prdt_nm-->
-<!--        FROM fin_prdt-->
-<!--        WHERE fin_prdt_cd = #{finPrdtCd}-->
-<!--    </select>-->
-
-<!--    &lt;!&ndash; 상품 카테고리 조회 &ndash;&gt;-->
-<!--    <select id="findCategoryByFinPrdtCd" parameterType="string" resultType="string">-->
-<!--        SELECT fin_prdt_category-->
-<!--        FROM fin_prdt-->
-<!--        WHERE fin_prdt_cd = #{finPrdtCd}-->
-<!--    </select>-->
-<!--    <select id="getAllProduct" resultType="org.scoula.product.domain.ProductVo">-->
-<!--        SELECT * FROM fin_prdt;-->
-<!--    </select>-->
-
-<!-- -->
 <mapper namespace="org.scoula.product.mapper.ProductMapper">
     <!-- 예금 상세 조회 -->
     <select id="findDepositByFinPrdtCd" resultMap="depositResultMap">

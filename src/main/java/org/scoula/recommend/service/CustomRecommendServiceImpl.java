@@ -4,26 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.scoula.product.service.ProductService;
 import org.scoula.recommend.dto.CustomRecommendDto;
 import org.scoula.recommend.mapper.CustomRecommendMapper;
-import org.scoula.recommend.service.CustomRecommendService;
-
-
-import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.scoula.product.domain.ProductVo;
 import org.scoula.product.mapper.ProductMapper;
-import org.scoula.product.service.ProductsService;
 import org.scoula.recommend.domain.CustomRecommendVo;
-import org.scoula.user.dto.UserDto;
-import org.scoula.user.service.UserService;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-import org.scoula.recommend.dto.CustomRecommendDto;
-import org.scoula.recommend.mapper.CustomRecommendMapper;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -36,7 +23,7 @@ public class CustomRecommendServiceImpl implements CustomRecommendService {
 
 	private final CustomRecommendMapper customRecommendMapper;
  	private final UserService userService;
- 	private final ProductsService productsService;
+ 	private final ProductService productService;
 
  	@Override
  	public List<CustomRecommendDto> getCustomRecommendsByEmail(String email) {
@@ -64,7 +51,8 @@ public class CustomRecommendServiceImpl implements CustomRecommendService {
 
 		// 1. 추천 계산에 필요한 사용자 정보와 전체 상품 목록을 가져옵니다.
 		UserDto user = userService.getUser(email);
-		List<? extends ProductVo> products = productsService.getAllProducts();
+		List<? extends ProductVo> products = productMapper.findAllProduct();
+		// List<? extends ProductVo> products = productService.findAllProducts();
 		// List<? extends ProductVo> prdtList = productMapper.findAllProduct();
 
 		// 2. 필수 정보가 없으면 로직을 중단합니다.

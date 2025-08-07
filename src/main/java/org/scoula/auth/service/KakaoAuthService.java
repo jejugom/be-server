@@ -241,8 +241,8 @@ public class KakaoAuthService {
 		UserVo newUser = UserVo.builder()
 			.email(email)
 			.userName(nickname)
-			.birth(birthDate)
-			.userPhone(null)           // 추후 입력받을 정보들은 null로 초기화
+			// .birth(birthDate)
+			// .userPhone(null)           // 추후 입력받을 정보들은 null로 초기화
 			.branchId(null)
 			.connectedId(null)
 			.filename1(null)

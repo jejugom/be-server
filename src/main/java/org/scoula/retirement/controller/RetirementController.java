@@ -2,7 +2,6 @@ package org.scoula.retirement.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
@@ -10,13 +9,8 @@ import org.scoula.news.service.NewsService;
 import org.scoula.product.domain.ProductVo;
 import org.scoula.product.dto.ProductDto;
 import org.scoula.product.mapper.ProductMapper;
-import org.scoula.product.service.FundProductService;
-import org.scoula.product.service.GoldProductService;
-import org.scoula.product.service.MortgageLoanService;
-import org.scoula.product.service.ProductsService;
+import org.scoula.product.service.ProductService;
 import org.scoula.product.service.ProductsServiceImpl;
-import org.scoula.product.service.SavingDepositsService;
-import org.scoula.product.service.TimeDepositsService;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.retirement.dto.RetirementMainResponseDto;
 import org.scoula.user.dto.UserDto;
@@ -31,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -44,13 +37,8 @@ public class RetirementController {
 
 	private final UserService userServiceImpl;
 	private final AssetStatusService assetStatusService;
-	private final ProductsServiceImpl productsServiceImpl;
+	private final ProductService productService;
 	private final CustomRecommendService customRecommendService;
-	private final TimeDepositsService timeDepositsService;
-	private final SavingDepositsService savingsService;
-	private final MortgageLoanService mortgageLoansService;
-	private final GoldProductService goldProductService;
-	private final FundProductService fundProductService;
 	private final ProductMapper productMapper;
 	private final NewsService newsService;
 
@@ -78,15 +66,8 @@ public class RetirementController {
 		// response.setUserInfo(userGraphDto);
 
 		// 2. 나머지 데이터 조회 및 설정
-		Map<String, List<? extends ProductDto>> allProducts = productsServiceImpl.findAllProduct();
+		Map<String, List<? extends ProductDto>> allProducts = productService.findAllProducts();
 
-		// response.setCustomRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email));
-		// response.setTimeDeposits(productsService.getAllTimeDeposits());
-		// response.setSavingsDeposits(productsService.getAllSavingsDeposits());
-		// response.setMortgageLoan(productsService.getAllMortgageLoans());
-		// response.setGoldProducts(productsService.getAllGoldProducts());
-		// response.setFundProducts(productsService.getAllFundProducts());
-		// response.setNews(newsService.getAllNews());
 		// 응답 DTO 생성
 		RetirementMainResponseDto response = RetirementMainResponseDto.builder()
 			.userInfo(userGraphDto)
@@ -98,38 +79,14 @@ public class RetirementController {
 		return ResponseEntity.ok(response);
 	}
 
-	// @ApiOperation(value = "금융 상품 상세 조회", notes = "금융 상품 코드로 특정 상품의 상세 정보를 조회합니다.")
-	// @ApiResponses({
-	// 	@ApiResponse(code = 200, message = "조회 성공"),
-	// 	@ApiResponse(code = 404, message = "존재하지 않는 상품 코드"),
-	// 	@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
-	// })
-	// @GetMapping("/{finPrdtCd}")
-	// public ResponseEntity<ProductVo> getProductDetail(@PathVariable String finPrdtCd) {
-	// 	return ResponseEntity.ok(productsServiceImpl.getProductDetail(finPrdtCd));
-	// }
-	// public ResponseEntity<?> getProductDetail(
-	// 	@ApiParam(value = "조회할 금융 상품의 코드", required = true, example = "PRD001")
-	// 	@PathVariable String finPrdtCd) {
-	//
-	// 	String category = productMapper.findCategoryByFinPrdtCd(finPrdtCd);
-	//
-	// 	if (category == null) {
-	// 		throw new NoSuchElementException("상품을 찾을 수 없습니다: " + finPrdtCd);
-	// 	}
-	//
-	// 	switch (category) {
-	// 		case "1": //예금
-	// 			return ResponseEntity.ok(timeDepositsService.getDetail(finPrdtCd));
-	// 		case "2": //적금
-	// 			return ResponseEntity.ok(savingsService.getDetail(finPrdtCd));
-	// 		case "3": //주택담보대출
-	// 			return ResponseEntity.ok(mortgageLoansService.getDetail(finPrdtCd));
-	// 		case "4": //금
-	// 			return ResponseEntity.ok(goldProductService.getDetail(finPrdtCd));
-	// 		case "5": //펀드
-	// 			return ResponseEntity.ok(fundProductService.getDetail(finPrdtCd));
-	// 		default:
-	// 			throw new IllegalArgumentException("유효하지 않은 카테고리: " + category);
-	// 	}
+	@ApiOperation(value = "금융 상품 상세 조회", notes = "금융 상품 코드로 특정 상품의 상세 정보를 조회합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "조회 성공"),
+		@ApiResponse(code = 404, message = "존재하지 않는 상품 코드"),
+		@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
+	})
+	@GetMapping("/{finPrdtCd}")
+	public ResponseEntity<ProductVo> getProductDetail(@PathVariable String finPrdtCd) {
+		return ResponseEntity.ok(productService.getProductDetail(finPrdtCd));
+	}
 }
