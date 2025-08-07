@@ -53,6 +53,17 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
+	 * 존재하지 않는 지점 ID로 요청 시 처리하는 핸들러
+	 * @param ex 예외 객체
+	 */
+	@ExceptionHandler(BranchNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleBranchNotFound(BranchNotFoundException ex) {
+		log.warn("Branch not found: {}", ex.getMessage());
+		ErrorResponse response = new ErrorResponse("BRANCH_NOT_FOUND", ex.getMessage());
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 Not Found
+	}
+
+	/**
 	 * 잘못된 파라미터 타입
 	 * @param error 에러 객체
 	 * */

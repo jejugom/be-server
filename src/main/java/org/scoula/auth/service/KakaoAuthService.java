@@ -274,11 +274,11 @@ public class KakaoAuthService {
 	 * 데이터베이스에서 사용자의 Refresh Token을 삭제하여 로그아웃을 처리합니다.
 	 * 클라이언트는 별도로 로컬 저장소의 토큰을 제거해야 합니다.
 	 *
-	 * @param userEmail 로그아웃할 사용자의 이메일
+	 * @param email 로그아웃할 사용자의 이메일
 	 */
-	public void logout(String userEmail) {
+	public void logout(String email) {
 		// DB에서 해당 사용자의 Refresh Token 삭제
-		refreshTokenMapper.deleteByEmail(userEmail);
+		refreshTokenMapper.deleteByEmail(email);
 	}
 
 	/**

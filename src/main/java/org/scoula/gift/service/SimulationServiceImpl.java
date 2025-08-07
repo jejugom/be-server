@@ -77,34 +77,47 @@ public class SimulationServiceImpl implements SimulationService {
 			totalCurrentGiftAmount += currentGiftAmount;
 
 			long priorGiftAmount = (recipient.getPriorGiftAmount() != null) ? recipient.getPriorGiftAmount() : 0L;
+
+			// 1. (과거 증여액 + 현재 증여액)에 대한 총 세금 계산
 			long totalCumulativeGiftAmount = currentGiftAmount + priorGiftAmount;
-
 			long deductionAmount = getDeductionAmount(recipient);
-			long taxableBase = Math.max(0, totalCumulativeGiftAmount - deductionAmount);
+			long cumulativeTaxableBase = Math.max(0, totalCumulativeGiftAmount - deductionAmount);
+			long taxOnCumulative = calculateTax(cumulativeTaxableBase); // 세금 계산 헬퍼 메서드 호출
 
-			long calculatedTax = 0L;
-			if (taxableBase <= 100_000_000L) {
-				calculatedTax = (long)(taxableBase * 0.10);
-			} else if (taxableBase <= 500_000_000L) {
-				calculatedTax = (long)(taxableBase * 0.20) - 10_000_000L;
-			} else if (taxableBase <= 1_000_000_000L) {
-				calculatedTax = (long)(taxableBase * 0.30) - 60_000_000L;
-			} else if (taxableBase <= 3_000_000_000L) {
-				calculatedTax = (long)(taxableBase * 0.40) - 160_000_000L;
-			} else {
-				calculatedTax = (long)(taxableBase * 0.50) - 460_000_000L;
-			}
+			// 2. (과거 증여액)에 대한 세금 계산
+			long priorTaxableBase = Math.max(0, priorGiftAmount - deductionAmount);
+			long taxOnPrior = calculateTax(priorTaxableBase); // 세금 계산 헬퍼 메서드 호출
 
+			// 3. (총 세금) - (과거 세금) = 현재 증여분에 대한 최종 세금
+			long finalTaxForCurrentGift = taxOnCumulative - taxOnPrior;
+
+			// 손자녀 할증은 최종 계산된 세액에 적용
 			if ("손자녀".equals(recipient.getRelationship())) {
-				calculatedTax = (long)(calculatedTax * 1.3);
+				finalTaxForCurrentGift = (long)(finalTaxForCurrentGift * 1.3);
 			}
 
 			recipientTaxDetails.add(
-				new RecipientTaxDetailDto(recipient.getRecipientName(), currentGiftAmount, calculatedTax));
-			totalEstimatedTax += calculatedTax;
+				new RecipientTaxDetailDto(recipient.getRecipientName(), currentGiftAmount, finalTaxForCurrentGift));
+			totalEstimatedTax += finalTaxForCurrentGift;
 		}
 		return new TaxCalculationResult(totalEstimatedTax, recipientTaxDetails, recipientsInSim,
 			totalCurrentGiftAmount);
+	}
+
+	private long calculateTax(long taxableBase) {
+		long calculatedTax;
+		if (taxableBase <= 100_000_000L) {
+			calculatedTax = (long)(taxableBase * 0.10);
+		} else if (taxableBase <= 500_000_000L) {
+			calculatedTax = (long)(taxableBase * 0.20) - 10_000_000L;
+		} else if (taxableBase <= 1_000_000_000L) {
+			calculatedTax = (long)(taxableBase * 0.30) - 60_000_000L;
+		} else if (taxableBase <= 3_000_000_000L) {
+			calculatedTax = (long)(taxableBase * 0.40) - 160_000_000L;
+		} else {
+			calculatedTax = (long)(taxableBase * 0.50) - 460_000_000L;
+		}
+		return calculatedTax;
 	}
 
 	private List<String> generateTaxSavingStrategies(SimulationRequestDto requestDto, TaxCalculationResult taxResult) {
