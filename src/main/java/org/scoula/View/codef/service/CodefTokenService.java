@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.scoula.asset.domain.AssetStatusVo;
 import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.View.codef.dto.ConnectedIdRequestDto;
@@ -145,6 +146,19 @@ public class CodefTokenService {
 				asset.setAssetName((String)account.get("resAccountName")); // 통장 이름
 				asset.setAmount(Long.parseLong((String)account.get("resAccountBalance")));
 				asset.setBusinessType(null);
+
+				/**
+				 * 자산 재연동 시엔, 이미 연동한 자산을 삭제 후 업데이트 하도록 수정
+				 */
+				List<AssetStatusVo> vos = assetStatusService.getFullAssetStatusByEmail(userEmail);
+				Long minusBalance = 0L; //사용자 Table에서 차감해야 할 금액
+				for(AssetStatusVo vo : vos){
+					if(vo.getAssetCategoryCode().equals("2")) {
+						assetStatusService.deleteAssetStatus(vo.getAssetId(), userEmail);
+						minusBalance += vo.getAmount();
+					}
+				}
+
 				assetStatusService.addAssetStatus(userEmail,asset);
 
 				/**
@@ -153,6 +167,7 @@ public class CodefTokenService {
 				UserDto userDto = userService.getUser(userEmail);
 				Long curBalance = userDto.getAsset();
 				curBalance += Long.parseLong((String)account.get("resAccountBalance"));
+				curBalance -= minusBalance;
 				userDto.setAsset(curBalance);
 				userService.updateUser(userEmail,userDto);
 
