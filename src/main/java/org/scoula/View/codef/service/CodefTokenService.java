@@ -111,8 +111,6 @@ public class CodefTokenService {
 		}
 	}
 
-	// CodefTokenService.java
-
 	/**
 	 * 발급받은 ConnectedId를 사용하여 사용자의 계좌 정보를 조회하고,
 	 * AssetStatusService를 통해 자산 현황을 갱신합니다.
@@ -166,8 +164,6 @@ public class CodefTokenService {
 
 			} catch (Exception e) {
 				log.error("❗ 신규 계좌 저장 요청 실패: {}", e.getMessage(), e);
-				// 전체 로직을 중단할 필요가 있다면 예외를 던집니다.
-				// throw new RuntimeException("신규 계좌 저장에 실패했습니다.");
 			}
 		}
 		log.info("새 예적금 자산 추가 요청 완료.");
