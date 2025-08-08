@@ -41,10 +41,10 @@ public class GptServiceImpl implements GptService {
 
 			// 2. OpenAI API에 보낼 요청 객체를 생성합니다.
 			ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
-				.model("gpt-3.5-turbo") // 사용할 AI 모델을 지정합니다.
+				.model("gpt-4o-mini") // 사용할 AI 모델을 지정합니다.
 				.messages(messages)
-				.maxTokens(1024) // 응답의 최대 길이를 설정합니다.
-				.temperature(0.7) // 답변의 창의성, 0에 가까울수록 결정론적
+				.maxTokens(150) // 응답의 최대 길이를 설정합니다.
+				.temperature(0.2) // 답변의 창의성, 0에 가까울수록 결정론적
 				.build();
 
 			// 3. API를 호출하고 응답을 받습니다.
