@@ -69,6 +69,12 @@ public class KakaoAuthService {
 	/** JWT 토큰 생성 및 검증 프로세서 */
 	private final JwtProcessor jwtProcessor;
 
+	/** 최근 로그인 처리한 사용자의 신규 회원 여부 */
+	private boolean lastProcessedUserIsNew = false;
+
+	/** 최근 로그인 처리한 사용자의 성향 미정의 여부 */
+	private boolean lastProcessedUserTendencyNotDefined = false;
+
 	/**
 	 * 카카오 로그인 전체 플로우를 처리하는 메인 메서드
 	 *
@@ -89,14 +95,25 @@ public class KakaoAuthService {
 		// 1. 카카오 API를 통해 사용자 정보 받아오기
 		KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(getKakaoAccessToken(code).getAccessToken());
 
-		// 2. DB에서 사용자를 찾거나 새로 가입시키기
+		// 2. 이메일 추출 및 신규 회원 여부 확인 (DB 저장 전)
+		String email = extractEmailFromKakaoInfo(kakaoUserInfo);
+		UserVo existingUser = userMapper.findByEmail(email);
+		lastProcessedUserIsNew = (existingUser == null);
+
+		// 3. DB에서 사용자를 찾거나 새로 가입시키기
 		UserVo user = findOrCreateUser(kakaoUserInfo);
 
-		// 3. 우리 서비스의 Access Token과 Refresh Token 생성
+		// 4. 성향 미정의 여부 확인 (기존 회원인 경우에만)
+		lastProcessedUserTendencyNotDefined = false;
+		if (!lastProcessedUserIsNew) {
+			lastProcessedUserTendencyNotDefined = (user.getTendency() == 0.0);
+		}
+
+		// 5. 우리 서비스의 Access Token과 Refresh Token 생성
 		String accessToken = jwtProcessor.generateAccessToken(user.getEmail());
 		String refreshTokenValue = jwtProcessor.generateRefreshToken(user.getEmail());
 
-		// 4. 생성된 리프레시 토큰 정보를 DB에 저장
+		// 6. 생성된 리프레시 토큰 정보를 DB에 저장
 		RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder()
 			.email(user.getEmail())
 			.tokenValue(refreshTokenValue)
@@ -105,13 +122,52 @@ public class KakaoAuthService {
 
 		refreshTokenMapper.saveRefreshToken(refreshTokenDto);
 
-		// 5. 클라이언트에게 전달할 최종 응답 DTO 생성
+		// 7. 클라이언트에게 전달할 최종 응답 DTO 생성
 		return KakaoLoginResponseDto.builder()
 			.accessToken(accessToken)
 			.refreshToken(refreshTokenValue)
 			.userId(user.getEmail())
 			.userName(user.getUserName())
 			.build();
+	}
+
+	/**
+	 * 카카오 로그인 처리 후 신규 회원 여부 확인
+	 *
+	 * 인가 코드로 카카오 사용자 정보를 조회하여 신규 회원 여부를 사전에 확인합니다.
+	 * DB 저장 전에 신규 회원 여부를 판단하여 올바른 결과를 반환합니다.
+	 *
+	 * @param code 카카오에서 발급한 인가 코드
+	 * @return 신규 회원이면 true, 기존 회원이면 false
+	 */
+	public boolean checkIsNewUserByCode(String code) {
+		// 1. 카카오 API를 통해 사용자 정보 받아오기
+		KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(getKakaoAccessToken(code).getAccessToken());
+		
+		// 2. 이메일 추출
+		String email = extractEmailFromKakaoInfo(kakaoUserInfo);
+		
+		// 3. DB에서 사용자 존재 여부 확인 (DB 저장 전)
+		UserVo existingUser = userMapper.findByEmail(email);
+		
+		// 4. 사용자가 존재하지 않으면, 신규 회원으로 판단
+		return existingUser == null;
+	}
+
+	/**
+	 * 카카오 사용자 이메일 추출
+	 *
+	 * 카카오 사용자 정보에서 이메일을 안전하게 추출합니다.
+	 *
+	 * @param userInfo 카카오 사용자 정보
+	 * @return 사용자 이메일
+	 */
+	private String extractEmailFromKakaoInfo(KakaoUserInfoDto userInfo) {
+		if (userInfo == null || userInfo.getKakaoAccount() == null) {
+			log.error("카카오 사용자 정보를 가져올 수 없습니다.");
+			throw new IllegalArgumentException("유효하지 않은 카카오 사용자 정보입니다.");
+		}
+		return userInfo.getKakaoAccount().getEmail();
 	}
 
 	/**
@@ -282,17 +338,32 @@ public class KakaoAuthService {
 	}
 
 	/**
-	 * 신규 회원 여부 판단
-	 *
-	 * 사용자가 신규 회원인지 기존 회원인지 판단합니다.
 	 * 사용자가 존재하지 않거나 성향(tendency) 정보가 입력되지 않은 경우 신규 회원으로 간주합니다.
 	 *
 	 * @param userEmail 사용자 이메일
+	 * @return 성향(tendency) 정보 미입력회원이면 true, 입력회원이라면 false
+	 */
+	public boolean isTendencyNotDefined(String userEmail) {
+		UserVo user = userMapper.findByEmail(userEmail);
+		// 성향(tendency) 정보가 0.0인 경우
+		return user.getTendency() == 0.0;
+	}
+
+	/**
+	 * 최근 processKakaoLogin에서 처리한 사용자의 신규 회원 여부 반환
+	 *
 	 * @return 신규 회원이면 true, 기존 회원이면 false
 	 */
-	public boolean isNewUser(String userEmail) {
-		UserVo user = userMapper.findByEmail(userEmail);
-		// 사용자가 존재하지 않거나 성향(tendency) 정보가 null 인 경우 신규 회원으로 판단
-		return user == null || user.getTendency() == null;
+	public boolean getLastProcessedUserIsNew() {
+		return lastProcessedUserIsNew;
+	}
+
+	/**
+	 * 최근 processKakaoLogin에서 처리한 사용자의 성향 미정의 여부 반환
+	 *
+	 * @return 성향 미정의면 true, 정의됨이면 false
+	 */
+	public boolean getLastProcessedUserTendencyNotDefined() {
+		return lastProcessedUserTendencyNotDefined;
 	}
 }
