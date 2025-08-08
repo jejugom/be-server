@@ -40,4 +40,10 @@ public class HomeController {
 		String email = authentication.getName();
 		return ResponseEntity.ok(homeService.getHomeData(email));
 	}
+  
+	@ApiOperation(value = "테스트 엔드포인트", notes = "배포 테스트용 간단한 GET 엔드포인트입니다.")
+	@GetMapping("/test")
+	public ResponseEntity<String> test(){
+		return ResponseEntity.ok("Hello from JejuGom Server! Deployment test successful.");
+	}
 }
