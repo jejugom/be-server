@@ -1,18 +1,16 @@
 package org.scoula.retirement.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Map;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.news.service.NewsService;
+import org.scoula.product.domain.ProductVo;
+import org.scoula.product.dto.ProductDto;
 import org.scoula.product.mapper.ProductMapper;
-import org.scoula.product.service.FundProductService;
-import org.scoula.product.service.GoldProductService;
-import org.scoula.product.service.MortgageLoanService;
-import org.scoula.product.service.ProductsService;
-import org.scoula.product.service.SavingDepositsService;
-import org.scoula.product.service.TimeDepositsService;
+import org.scoula.product.service.ProductService;
+import org.scoula.product.service.ProductsServiceImpl;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.retirement.dto.RetirementMainResponseDto;
 import org.scoula.user.dto.UserDto;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -40,13 +37,8 @@ public class RetirementController {
 
 	private final UserService userServiceImpl;
 	private final AssetStatusService assetStatusService;
-	private final ProductsService productsService;
+	private final ProductService productService;
 	private final CustomRecommendService customRecommendService;
-	private final TimeDepositsService timeDepositsService;
-	private final SavingDepositsService savingsService;
-	private final MortgageLoanService mortgageLoansService;
-	private final GoldProductService goldProductService;
-	private final FundProductService fundProductService;
 	private final ProductMapper productMapper;
 	private final NewsService newsService;
 
@@ -57,7 +49,7 @@ public class RetirementController {
 	})
 	@GetMapping("")
 	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(Authentication authentication) {
-		RetirementMainResponseDto response = new RetirementMainResponseDto();
+		// RetirementMainResponseDto response = new RetirementMainResponseDto();
 		String email = authentication.getName();
 
 		// 0. 사용자 정보 조회
@@ -71,17 +63,18 @@ public class RetirementController {
 			.userName(userDto.getUserName())
 			.assetStatus(assetList)
 			.build();
-
-		response.setUserInfo(userGraphDto);
+		// response.setUserInfo(userGraphDto);
 
 		// 2. 나머지 데이터 조회 및 설정
-		response.setCustomRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email));
-		response.setTimeDeposits(productsService.getAllTimeDeposits());
-		response.setSavingsDeposits(productsService.getAllSavingsDeposits());
-		response.setMortgageLoan(productsService.getAllMortgageLoans());
-		response.setGoldProducts(productsService.getAllGoldProducts());
-		response.setFundProducts(productsService.getAllFundProducts());
-		response.setNews(newsService.getAllNews());
+		Map<String, List<? extends ProductDto>> allProducts = productService.findAllProducts();
+
+		// 응답 DTO 생성
+		RetirementMainResponseDto response = RetirementMainResponseDto.builder()
+			.userInfo(userGraphDto)
+			.allProducts(allProducts)
+			.customRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email))
+			.news(newsService.getAllNews())
+			.build();
 
 		return ResponseEntity.ok(response);
 	}
@@ -93,29 +86,7 @@ public class RetirementController {
 		@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
 	})
 	@GetMapping("/{finPrdtCd}")
-	public ResponseEntity<?> getProductDetail(
-		@ApiParam(value = "조회할 금융 상품의 코드", required = true, example = "PRD001")
-		@PathVariable String finPrdtCd) {
-
-		String category = productMapper.findCategoryByFinPrdtCd(finPrdtCd);
-
-		if (category == null) {
-			throw new NoSuchElementException("상품을 찾을 수 없습니다: " + finPrdtCd);
-		}
-
-		switch (category) {
-			case "1": //예금
-				return ResponseEntity.ok(timeDepositsService.getDetail(finPrdtCd));
-			case "2": //적금
-				return ResponseEntity.ok(savingsService.getDetail(finPrdtCd));
-			case "3": //주택담보대출
-				return ResponseEntity.ok(mortgageLoansService.getDetail(finPrdtCd));
-			case "4": //금
-				return ResponseEntity.ok(goldProductService.getDetail(finPrdtCd));
-			case "5": //펀드
-				return ResponseEntity.ok(fundProductService.getDetail(finPrdtCd));
-			default:
-				throw new IllegalArgumentException("유효하지 않은 카테고리: " + category);
-		}
+	public ResponseEntity<ProductVo> getProductDetail(@PathVariable String finPrdtCd) {
+		return ResponseEntity.ok(productService.getProductDetail(finPrdtCd));
 	}
 }

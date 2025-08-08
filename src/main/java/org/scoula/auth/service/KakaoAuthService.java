@@ -143,13 +143,13 @@ public class KakaoAuthService {
 	public boolean checkIsNewUserByCode(String code) {
 		// 1. 카카오 API를 통해 사용자 정보 받아오기
 		KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(getKakaoAccessToken(code).getAccessToken());
-		
+
 		// 2. 이메일 추출
 		String email = extractEmailFromKakaoInfo(kakaoUserInfo);
-		
+
 		// 3. DB에서 사용자 존재 여부 확인 (DB 저장 전)
 		UserVo existingUser = userMapper.findByEmail(email);
-		
+
 		// 4. 사용자가 존재하지 않으면, 신규 회원으로 판단
 		return existingUser == null;
 	}
