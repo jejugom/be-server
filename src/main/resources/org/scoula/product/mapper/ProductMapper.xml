@@ -19,7 +19,7 @@
     </select>
 
     <!-- 주담대 상세 조회 -->
-    <select id="findMortgageByFinPrdtCd" resultMap="savingResultMap">
+    <select id="findMortgageByFinPrdtCd" resultMap="mortgageResultMap">
         SELECT *
         FROM mortgage m
                  JOIN mortgage_option mo ON m.fin_prdt_cd = mo.fin_prdt_cd
@@ -27,7 +27,7 @@
     </select>
 
     <!-- 펀드 상세 조회 -->
-    <select id="findFundByFinPrdtCd" resultMap="savingResultMap">
+    <select id="findFundByFinPrdtCd" resultMap="fundResultMap">
         SELECT *
         FROM fund f
                  JOIN fund_option fo ON f.fin_prdt_cd = fo.fin_prdt_cd
@@ -35,14 +35,14 @@
     </select>
 
     <!-- 금 상세 조회 -->
-    <select id="findGoldByFinPrdtCd" resultMap="savingResultMap">
+    <select id="findGoldByFinPrdtCd" resultMap="goldResultMap">
         SELECT *
         FROM gold m
         WHERE m.fin_prdt_cd = #{finPrdtCd};
     </select>
 
     <!-- 신탁 상세 조회 -->
-    <select id="findTrustByFinPrdtCd" resultMap="savingResultMap">
+    <select id="findTrustByFinPrdtCd" resultMap="trustResultMap">
         SELECT *
         FROM trust t
         WHERE t.fin_prdt_cd = #{finPrdtCd};
@@ -52,39 +52,58 @@
     <resultMap id="depositResultMap" type="DepositVo" extends="allProductResultMap" autoMapping="true">
         <id property="finPrdtCd" column="fin_prdt_cd"/>
         <collection property="optionList"
-                    ofType="DepositOptionVo" autoMapping="true"/>
+                    ofType="DepositOptionVo" autoMapping="true">
+            <result property="saveTrm" column="save_trm"/>
+            <result property="intrRate" column="intr_rate"/>
+            <result property="intrRate2" column="intr_rate2"/>
+        </collection>
     </resultMap>
 
     <!-- 적금 전용 매핑 -->
     <resultMap id="savingResultMap" type="SavingVo" extends="allProductResultMap" autoMapping="true">
         <id property="finPrdtCd" column="fin_prdt_cd"/>
         <collection property="optionList"
-                    ofType="SavingOptionVo" autoMapping="true"/>
+                    ofType="SavingOptionVo" autoMapping="true">
+            <result property="saveTrm" column="save_trm"/>
+            <result property="intrRate" column="intr_rate"/>
+            <result property="intrRate2" column="intr_rate2"/>
+        </collection>
     </resultMap>
 
     <!-- 주택담보대출 전용 매핑 -->
     <resultMap id="mortgageResultMap" type="MortgageVo" extends="allProductResultMap" autoMapping="true">
         <id property="finPrdtCd" column="fin_prdt_cd"/>
         <collection property="optionList"
-                    ofType="MortgageOptionVo" autoMapping="true"/>
+                    ofType="MortgageOptionVo" autoMapping="true">
+            <result property="mrtgTypeNm" column="mrtg_type_nm"/>
+            <result property="rpayTypeNm" column="rpay_type"/>
+            <result property="lendRateTypeNm" column="lend_rate_type_nm"/>
+            <result property="lendRateMin" column="lend_rate_min"/>
+            <result property="lendRateMax" column="lend_rate_max"/>
+        </collection>
     </resultMap>
 
     <!-- 금 전용 매핑 -->
     <resultMap id="goldResultMap" type="GoldVo" extends="allProductResultMap" autoMapping="true">
         <id property="finPrdtCd" column="fin_prdt_cd"/>
-        <!-- 금은 옵션 테이블이 없을 수도 있음 -->
+        <!-- 금은 옵션 테이블이 없음 -->
     </resultMap>
 
     <!-- 펀드 전용 매핑 -->
     <resultMap id="fundResultMap" type="FundVo" extends="allProductResultMap" autoMapping="true">
         <id property="finPrdtCd" column="fin_prdt_cd"/>
         <collection property="optionList"
-                    ofType="FundOptionVo" autoMapping="true"/>
+                    ofType="FundOptionVo" autoMapping="true">
+            <result property="rate3mon" column="rate_3mon"/>
+            <result property="riskGrade" column="risk_grade"/>
+            <result property="priceStd" column="price_std"/>
+        </collection>
     </resultMap>
 
     <!-- 신탁 전용 매핑 -->
     <resultMap id="trustResultMap" type="TrustVo" extends="allProductResultMap" autoMapping="true">
         <id property="finPrdtCd" column="fin_prdt_cd"/>
+        <!-- 신탁은 옵션 테이블이 없음 -->
     </resultMap>
 
     <!-- 상품 매핑 -->
@@ -102,8 +121,13 @@
 
     <!--모든 상품종류(예금, 적금, 주담, 펀드, 금, 신탁)를  전체검색하기-->
     <select id="findAllProduct" resultMap="allProductResultMap">
+            SELECT * FROM v_all_products;
+    </select>
+
+    <!-- 모든 상품 종류의 목록 조회를 위한 검색 -->
+    <select id="findAllProductList" resultMap="allProductResultMap">
         SELECT *
-        FROM v_all_products
+        FROM v_product_list;
     </select>
 
     <!-- 상품 코드로 검색하기 -->
@@ -112,6 +136,4 @@
         FROM v_all_products
         WHERE fin_prdt_cd = #{finPrdtCd}
     </select>
-
-
 </mapper>

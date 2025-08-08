@@ -36,4 +36,6 @@ public interface ProductMapper {
 	//  */
 	// String findCategoryByFinPrdtCd(String finPrdtCd);
 	// List<ProductVo> getAllProduct();
+
+	// List<? extends ProductVo> findDepositSimple();
 }

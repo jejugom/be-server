@@ -37,12 +37,11 @@
                 <if test="tendency != null">tendency,</if>
                 <if test="assetProportion != null">asset_proportion,</if>
             </trim>
-            <if prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
                 <if test="email != null">#{email},</if>
-                <if test="userName != null”>#{userName},</if>
-    <if test=" userPhone
-                != null">#{userPhone},
-            </if>
+                <if test="userName != null">#{userName},</if>
+                <if test=" userPhone != null">#{userPhone},</if>
+            </trim>
                 <if test="birth != null">#{birth},</if>
                 <if test="point != null">#{point},</if>
                 <if test="connectedId != null">#{connectedId},</if>

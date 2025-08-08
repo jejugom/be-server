@@ -15,5 +15,5 @@ public class FundOptionDto {
 	private String feeFirst;       // 선취수수료
 	private String feeRedemp;      // 환매수수료
 	private String priceStd;       // 기준가
-	private Double tendency; //투자성향
+	// private Double tendency; //투자성향
 }

@@ -13,11 +13,17 @@ import org.scoula.product.domain.ProductVo;
 import org.scoula.product.domain.SavingVo;
 import org.scoula.product.domain.TrustVo;
 import org.scoula.product.dto.DepositDto;
+import org.scoula.product.dto.DepositOptionDto;
+import org.scoula.product.dto.DepositSavingOptionDto;
 import org.scoula.product.dto.FundDto;
+import org.scoula.product.dto.FundOptionDto;
+import org.scoula.product.dto.FundSimpleOptionDto;
 import org.scoula.product.dto.GoldDto;
 import org.scoula.product.dto.MortgageDto;
+import org.scoula.product.dto.MortgageOptionDto;
 import org.scoula.product.dto.ProductDto;
 import org.scoula.product.dto.SavingDto;
+import org.scoula.product.dto.SavingOptionDto;
 import org.scoula.product.dto.TrustDto;
 import org.scoula.product.mapper.ProductMapper;
 import org.scoula.product.struct.ProductVoToMapper;
@@ -30,33 +36,36 @@ import lombok.RequiredArgsConstructor;
 public class ProductsServiceImpl implements ProductService {
 	private final ProductMapper productMapper;
 
+	/**
+	 * 전체 상품 목록으로 조회
+	 * @return
+	 */
 	public Map<String, List<? extends ProductDto>> findAllProducts() {
 		List<? extends ProductVo> list = productMapper.findAllProduct();
 
-		List<DepositDto> depositList = new ArrayList<>();
-		List<SavingDto> savingList = new ArrayList<>();
-		List<MortgageDto> mortgageList = new ArrayList<>();
-		List<FundDto> fundList = new ArrayList<>();
-		List<GoldDto> goldList = new ArrayList<>();
-		List<TrustDto> trustList = new ArrayList<>();
+		List<ProductDto<DepositSavingOptionDto>> depositList = new ArrayList<>();
+		List<ProductDto<DepositSavingOptionDto>> savingList = new ArrayList<>();
+		List<ProductDto<MortgageOptionDto>> mortgageList = new ArrayList<>();
+		List<ProductDto<FundSimpleOptionDto>> fundList = new ArrayList<>();
+		List<ProductDto<Void>> goldList = new ArrayList<>();
+		List<ProductDto<Void>> trustList = new ArrayList<>();
 
 		//VO -> DTO
 		for (ProductVo p : list) {
 			if (p instanceof DepositVo) {
 				// 예금 상품 처리 VO -> DTO
-				depositList.add(ProductVoToMapper.toDepositDto((DepositVo)p));
-
+				depositList.add(ProductVoToMapper.toDepositSimpleDto((DepositVo)p));
 			} else if (p instanceof SavingVo) {
-				savingList.add(ProductVoToMapper.toSavingDto((SavingVo)p));
+				savingList.add(ProductVoToMapper.toSavingSimpleDto((SavingVo)p));
 			} else if (p instanceof MortgageVo) {
-				mortgageList.add(ProductVoToMapper.toMortgageDto((MortgageVo)p));
+				mortgageList.add(ProductVoToMapper.toMortgageSimpleDto((MortgageVo)p));
 			} else if (p instanceof FundVo) {
 				//                // 펀드 상품 처리 VO -> DTO
-				fundList.add(ProductVoToMapper.toFundDto((FundVo) p));
+				fundList.add(ProductVoToMapper.toFundSimpleDto((FundVo) p));
 			} else if (p instanceof GoldVo) {
-				goldList.add(ProductVoToMapper.toGoldDto((GoldVo) p));
+				goldList.add(ProductVoToMapper.toGoldSimpleDto((GoldVo) p));
 			} else if (p instanceof TrustVo) {
-				trustList.add(ProductVoToMapper.toTrustDto((TrustVo) p));
+				trustList.add(ProductVoToMapper.toTrustSimpleDto((TrustVo) p));
 			}
 		}
 
@@ -70,6 +79,11 @@ public class ProductsServiceImpl implements ProductService {
 		);
 	}
 
+	/**
+	 * 상품 코드로 상세정보 가져오기
+	 * @param finPrdtCd
+	 * @return
+	 */
 	public ProductVo getProductDetail(String finPrdtCd) {
 		ProductVo product = productMapper.findProductDetail(finPrdtCd);
 		if (product == null) {
