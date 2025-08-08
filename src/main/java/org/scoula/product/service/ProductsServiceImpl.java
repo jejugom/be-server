@@ -6,25 +6,18 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.scoula.product.domain.DepositVo;
+import org.scoula.product.domain.FundDailyReturnVo;
 import org.scoula.product.domain.FundVo;
 import org.scoula.product.domain.GoldVo;
 import org.scoula.product.domain.MortgageVo;
 import org.scoula.product.domain.ProductVo;
 import org.scoula.product.domain.SavingVo;
 import org.scoula.product.domain.TrustVo;
-import org.scoula.product.dto.DepositDto;
-import org.scoula.product.dto.DepositOptionDto;
 import org.scoula.product.dto.DepositSavingOptionDto;
-import org.scoula.product.dto.FundDto;
-import org.scoula.product.dto.FundOptionDto;
 import org.scoula.product.dto.FundSimpleOptionDto;
-import org.scoula.product.dto.GoldDto;
-import org.scoula.product.dto.MortgageDto;
 import org.scoula.product.dto.MortgageOptionDto;
 import org.scoula.product.dto.ProductDto;
-import org.scoula.product.dto.SavingDto;
-import org.scoula.product.dto.SavingOptionDto;
-import org.scoula.product.dto.TrustDto;
+import org.scoula.product.mapper.FundDailyReturnMapper;
 import org.scoula.product.mapper.ProductMapper;
 import org.scoula.product.struct.ProductVoToMapper;
 import org.springframework.stereotype.Service;
@@ -35,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductsServiceImpl implements ProductService {
 	private final ProductMapper productMapper;
+	private final FundDailyReturnMapper fundDailyReturnMapper;
 
 	/**
 	 * 전체 상품 목록으로 조회
@@ -97,4 +91,8 @@ public class ProductsServiceImpl implements ProductService {
 		return "";
 	}
 
+	@Override
+	public List<FundDailyReturnVo> getFundDailyReturnByCode(String finPrdtCd){
+		return fundDailyReturnMapper.findByFundCode(finPrdtCd);
+	}
 }
