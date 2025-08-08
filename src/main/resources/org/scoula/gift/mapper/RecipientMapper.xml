@@ -56,4 +56,10 @@
         WHERE recipient_id = #{recipientId}
     </delete>
 
+    <delete id="deleteByEmail">
+        DELETE
+        FROM recipient
+        WHERE email = #{email}
+    </delete>
+
 </mapper>

@@ -44,4 +44,8 @@
         FROM branch
         WHERE branch_id = #{branchId}
     </select>
+
+    <select id="existsById" parameterType="int" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM branch WHERE branch_id = #{branchId})
+    </select>
 </mapper>
