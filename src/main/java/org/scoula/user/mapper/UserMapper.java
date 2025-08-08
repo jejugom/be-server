@@ -31,6 +31,13 @@ public interface UserMapper {
 	int update(UserVo user);
 
 	/**
+	 * 사용자의 개인 정보(이름, 전화번호, 생년월일)를 수정합니다.
+	 * @param user 수정할 정보가 담긴 UserVo 객체 (email 필드는 WHERE절에서 사용)
+	 * @return 수정된 행의 수
+	 */
+	int updateUserInfo(UserVo user);
+
+	/**
 	 * 이메일로 사용자를 삭제합니다.
 	 * @param email 삭제할 사용자의 이메일
 	 * @return 삭제된 행의 수

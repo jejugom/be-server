@@ -93,6 +93,22 @@
         WHERE email = #{email}
     </update>
 
+    <update id="updateUserInfo" parameterType="org.scoula.user.domain.UserVo">
+        UPDATE user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone},
+            </if>
+            <if test="birth != null">
+                birth = #{birth},
+            </if>
+        </set>
+        WHERE email = #{email}
+    </update>
+
     <delete id="deleteByEmail" parameterType="string">
         DELETE
         FROM user
