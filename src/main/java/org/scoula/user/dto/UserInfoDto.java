@@ -1,6 +1,7 @@
 package org.scoula.user.dto;
 
 import org.scoula.user.domain.UserVo;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

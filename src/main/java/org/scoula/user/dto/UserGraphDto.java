@@ -1,7 +1,9 @@
 package org.scoula.user.dto;
 
 import java.util.List;
+
 import org.scoula.asset.dto.AssetStatusSummaryDto;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;

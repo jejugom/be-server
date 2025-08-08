@@ -30,56 +30,49 @@ public class PreferenceServiceImpl implements PreferenceService{
 	 * @param userEmail 성향을 설정할 사용자의 이메일
 	 */
 	@Override
-	public void setUserPreference(PreferenceRequestDto requestDto,String userEmail) {
+	public void setUserPreference(PreferenceRequestDto requestDto, String userEmail) {
 		double startPoint = 0;
 
-		int q1 = requestDto.getQ1();
-		int q2 = requestDto.getQ2();
-		int q3 = requestDto.getQ3();
-		int q4 = requestDto.getQ4();
-		int q5 = requestDto.getQ5();
+		startPoint += mapScore(requestDto.getQ1(), 3); // 3점 척도 기준
+		startPoint += mapScore(requestDto.getQ2(), 2);
+		startPoint += mapScore(requestDto.getQ3(), 3);
+		startPoint += mapScore(requestDto.getQ4(), 3);
+		startPoint += mapScore(requestDto.getQ5(), 2);
 
-		// ⚠️ 주의: 각 case 끝에 break;가 없어 fall-through가 발생합니다.
-		switch (q1){
-			case 1 : startPoint+=0.3;
-			case 2 : startPoint += 0.15;
-			case 3 : startPoint -=0.15;
-			case 4 : startPoint -=0.3;
-		}
-		switch (q2){
-			case 1 : startPoint += 0.3;
-			case 2 : startPoint -=0;
-			case 3 : startPoint -= 0.3;
-		}
-		switch (q3){
-			case 1: startPoint += 0.3;
-			case 2 : startPoint -=0.15;
-			case 3 : startPoint -=0.3;
-		}
-		switch (q4){
-			case 1 : startPoint += 0.3;
-			case 2 : startPoint += 0.15;
-			case 3 : startPoint -= 0.15;
-			case 4 : startPoint -= 0.3;
-		}
-		switch (q5){
-			case 1 : startPoint += 0.3;
-			case 2 : startPoint += 0 ;
-			case 3 : startPoint -= 0.3;
-		}
+		if (Double.isNaN(startPoint)) startPoint = 0.0;
 
-		if(startPoint > 1) startPoint = 1;
-		if(startPoint < -1) startPoint = -1;
-		/**
-		 * -1 ~ 1 까지의 범위로 코사인 유사도 값을 내기 때문에, 1보다 크거나 -1 보다 작은 값은 조정
-		 */
-
-		// 사용자 정보를 가져와서 계산된 성향 점수를 업데이트합니다.
 		UserDto userDto = userService.getUser(userEmail);
 		userDto.setTendency(startPoint);
-		userService.updateUser(userEmail,userDto);
+		userService.updateUser(userEmail, userDto);
 
-		// 변경된 성향을 바탕으로 추천 상품 목록을 다시 생성합니다.
 		customRecommendService.addCustomRecommend(userEmail);
+
+		// 점수 보정
+		if(startPoint > 1) startPoint = 1;
+		if(startPoint < -1) startPoint = -1;
+
+
 	}
+
+	/**
+	 * 선택지 번호와 척도 크기를 기반으로 점수를 계산해주는 메서드
+	 *
+	 * @param answer 사용자가 고른 선택지 번호 (1부터 시작)
+	 * @param scale 해당 문항의 선택지 개수 (3, 5, 7 등)
+	 * @return -0.3 ~ +0.3 사이 점수
+	 */
+	private double mapScore(Integer answer, int scale) {
+		if (answer == null || answer < 1 || answer > scale) return 0.0;
+
+		if (scale == 2) {
+			return (answer == 1) ? 0.3 : -0.3; // 1번이 보수적, 2번이 공격적
+		}
+
+		if (scale < 2) return 0.0;
+
+		double t = 1.0 - ((double)(answer - 1) / (scale - 1)); // 보수적일수록 높게
+
+		return -0.3 + (t * 0.6); // 최종 점수: -0.3 ~ +0.3
+	}
+
 }

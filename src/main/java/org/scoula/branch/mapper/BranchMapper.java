@@ -28,4 +28,11 @@ public interface BranchMapper {
 	 * @return 지점 이름(String)
 	 */
 	String findBranchNameById(int branchId);
+
+	/**
+	 * ID에 해당하는 지점이 존재하는지 확인합니다.
+	 * @param branchId 확인할 지점 ID
+	 * @return 존재하면 true, 그렇지 않으면 false
+	 */
+	boolean existsById(Integer branchId);
 }

@@ -52,4 +52,11 @@ public interface RecipientMapper {
 	 * @return 영향을 받은 행의 수
 	 */
 	int deleteById(Integer recipientId);
+
+	/**
+	 * 특정 이메일에 해당하는 모든 수증자 정보를 삭제합니다. (회원 탈퇴 시 사용)
+	 * @param email 삭제할 사용자의 이메일
+	 * @return 삭제된 행의 수
+	 */
+	int deleteByEmail(String email);
 }
