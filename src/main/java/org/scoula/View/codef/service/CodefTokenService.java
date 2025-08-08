@@ -6,12 +6,11 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.scoula.View.codef.dto.ConnectedIdRequestDto;
+import org.scoula.View.codef.util.CodefApiClient;
 import org.scoula.asset.domain.AssetStatusVo;
 import org.scoula.asset.dto.AssetStatusRequestDto;
 import org.scoula.asset.service.AssetStatusService;
-import org.scoula.View.codef.dto.ConnectedIdRequestDto;
-import org.scoula.View.codef.util.CodefApiClient;
-import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -112,10 +111,14 @@ public class CodefTokenService {
 		}
 	}
 
+	// CodefTokenService.java
+
 	/**
 	 * 발급받은 ConnectedId를 사용하여 사용자의 계좌 정보를 조회하고,
-	 * 해당 정보를 시스템의 자산 현황으로 저장합니다.
-	 * @param userEmail 자산 정보를 저장할 사용자의 이메일
+	 * AssetStatusService를 통해 자산 현황을 갱신합니다.
+	 * 총자산 계산 및 업데이트는 AssetStatusService가 담당합니다.
+	 *
+	 * @param userEmail   자산 정보를 저장할 사용자의 이메일
 	 * @param connectedId 계좌 정보 조회를 위한 ConnectedId
 	 */
 	public void saveAccountInfo(String userEmail, String connectedId) {
@@ -131,51 +134,43 @@ public class CodefTokenService {
 		Map<String, Object> data = (Map<String, Object>)result.get("data");
 		List<Map<String, Object>> resDepositTrust = (List<Map<String, Object>>)data.get("resDepositTrust");
 
+		// 1. 기존 '예적금' 자산을 AssetStatusService를 통해 모두 삭제합니다.
+		//    삭제 후 총자산 업데이트는 AssetStatusService가 내부적으로 처리합니다.
+		List<AssetStatusVo> existingAssets = assetStatusService.getFullAssetStatusByEmail(userEmail);
+		for (AssetStatusVo vo : existingAssets) {
+			if ("2".equals(vo.getAssetCategoryCode())) { // "2"가 예적금 카테고리
+				// deleteAssetStatus를 호출하면 내부적으로 updateUserAssetSummary가 호출됩니다.
+				assetStatusService.deleteAssetStatus(vo.getAssetId(), userEmail);
+			}
+		}
+		log.info("기존 예적금 자산 삭제 요청 완료.");
+
+		// CODEF에서 가져온 계좌가 없을 경우 여기서 로직이 종료될 수 있습니다.
 		if (resDepositTrust == null || resDepositTrust.isEmpty()) {
-			log.info("🔎 계좌는 조회 성공했으나 예금/신탁 내역이 없음");
-			return; // 200 OK + 내용 없음
+			log.info("🔎 CODEF에서 가져온 새 예금/신탁 내역이 없어, 기존 자산 삭제 후 종료합니다.");
+			return;
 		}
 
-		log.info("💾 예금 자산 저장 - 사용자: {}, 계좌 수: {}", userEmail, resDepositTrust.size());
-
+		// 2. CODEF에서 가져온 새 계좌를 AssetStatusService를 통해 추가합니다.
+		//    추가 후 총자산 업데이트 역시 AssetStatusService가 내부적으로 처리합니다.
 		for (Map<String, Object> account : resDepositTrust) {
 			try {
-				// 자산 현황 DTO를 생성하여 서비스에 저장 요청
 				AssetStatusRequestDto asset = new AssetStatusRequestDto();
-				asset.setAssetCategoryCode("2"); // 예적금
-				asset.setAssetName((String)account.get("resAccountName")); // 통장 이름
+				asset.setAssetCategoryCode("2");
+				asset.setAssetName((String)account.get("resAccountName"));
 				asset.setAmount(Long.parseLong((String)account.get("resAccountBalance")));
 				asset.setBusinessType(null);
 
-				/**
-				 * 자산 재연동 시엔, 이미 연동한 자산을 삭제 후 업데이트 하도록 수정
-				 */
-				List<AssetStatusVo> vos = assetStatusService.getFullAssetStatusByEmail(userEmail);
-				Long minusBalance = 0L; //사용자 Table에서 차감해야 할 금액
-				for(AssetStatusVo vo : vos){
-					if(vo.getAssetCategoryCode().equals("2")) {
-						assetStatusService.deleteAssetStatus(vo.getAssetId(), userEmail);
-						minusBalance += vo.getAmount();
-					}
-				}
-
-				assetStatusService.addAssetStatus(userEmail,asset);
-
-				/**
-				 * 사용자 총 자산에 Codef에서 불러온 계좌 자산 금액 추가
-				 */
-				UserDto userDto = userService.getUser(userEmail);
-				Long curBalance = userDto.getAsset();
-				curBalance += Long.parseLong((String)account.get("resAccountBalance"));
-				curBalance -= minusBalance;
-				userDto.setAsset(curBalance);
-				userService.updateUser(userEmail,userDto);
+				// addAssetStatus를 호출하면 내부적으로 updateUserAssetSummary가 호출됩니다.
+				assetStatusService.addAssetStatus(userEmail, asset);
 
 			} catch (Exception e) {
-				log.error("❗ 계좌 저장 실패: {}", e.getMessage(), e);
-				throw new RuntimeException("계좌 저장에 실패했습니다.");
+				log.error("❗ 신규 계좌 저장 요청 실패: {}", e.getMessage(), e);
+				// 전체 로직을 중단할 필요가 있다면 예외를 던집니다.
+				// throw new RuntimeException("신규 계좌 저장에 실패했습니다.");
 			}
 		}
+		log.info("새 예적금 자산 추가 요청 완료.");
 	}
 
 	/**
