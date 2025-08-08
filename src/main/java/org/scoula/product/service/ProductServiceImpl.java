@@ -21,6 +21,14 @@ public class ProductServiceImpl implements ProductService {
 	 */
 	@Override
 	public String getProductNameByCode(String finPrdtCd) {
+		// 특수 코드 처리 (시나리오 설계 서비스)
+		if ("inheritance".equals(finPrdtCd)) {
+			return "상속 시나리오 설계";
+		}
+		if ("gift".equals(finPrdtCd)) {
+			return "증여 시나리오 설계";
+		}
+
 		// 1. 매퍼를 호출하여 DB에서 상품 이름을 조회합니다.
 		String productName = productMapper.findNameByCode(finPrdtCd);
 
