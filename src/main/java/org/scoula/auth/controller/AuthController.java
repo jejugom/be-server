@@ -79,19 +79,21 @@ public class AuthController {
 		@RequestParam("code") String code) {
 
 		try {
-			// 1. 카카오 로그인 처리 - 토큰 생성 및 사용자 정보 저장
+			// 1. 카카오 로그인 처리 - 토큰 생성, 사용자 정보 저장 및 신규/성향 여부 판단 (인가코드 한번만 사용)
 			KakaoLoginResponseDto loginResponse = kakaoAuthService.processKakaoLogin(code);
 
-			// 2. 신규 회원 여부 판단 - 전화번호 등 추가 정보가 없으면 신규 회원으로 판단
-			boolean isNew = kakaoAuthService.isNewUser(loginResponse.getUserId());
+			// 2. processKakaoLogin에서 처리된 신규 회원 여부 및 성향 미정의 여부 가져오기
+			boolean isNew = kakaoAuthService.getLastProcessedUserIsNew();
+			boolean isTendencyNotDefined = kakaoAuthService.getLastProcessedUserTendencyNotDefined();
 
-			// 3. 프론트엔드로 리다이렉트 (토큰과 신규 회원 여부를 URL 파라미터로 전달)
+			// 3. 프론트엔드로 리다이렉트 (토큰, 신규 회원 여부, 성향 미입력 여부를 URL 파라미터로 전달)
 			// !!! 고도화 기간에 보안상의 이유로 httpOnly 쿠키로 변경 예정
-			String redirectUrl = String.format("%s/auth/success?token=%s&refreshToken=%s&isNew=%s",
+			String redirectUrl = String.format("%s/auth/success?token=%s&refreshToken=%s&isNew=%s&isTendencyNotDefined=%s",
 				frontendUrl,
 				loginResponse.getAccessToken(),
 				loginResponse.getRefreshToken(),
-				isNew);
+				isNew,
+				isTendencyNotDefined);
 
 			// 4. HTTP 302 Found 상태로 리다이렉트 응답
 			return ResponseEntity.status(HttpStatus.FOUND)
