@@ -22,6 +22,7 @@ import org.scoula.gift.dto.RecipientGiftRequestDto;
 import org.scoula.gift.dto.RecipientTaxDetailDto;
 import org.scoula.gift.dto.SimulationRequestDto;
 import org.scoula.gift.dto.SimulationResponseDto;
+import org.scoula.gift.dto.StrategyResponseDto;
 import org.scoula.gift.dto.WillPageResponseDto;
 import org.scoula.gift.mapper.RecipientMapper;
 import org.scoula.gift.mapper.StrategyMapper;
@@ -49,7 +50,7 @@ public class SimulationServiceImpl implements SimulationService {
 	@Override
 	public SimulationResponseDto runGiftTaxSimulation(SimulationRequestDto requestDto, String email) {
 		TaxCalculationResult taxResult = calculateGiftTaxInternal(requestDto);
-		List<String> strategies = generateTaxSavingStrategies(requestDto, taxResult);
+		List<StrategyResponseDto> strategies = generateTaxSavingStrategies(requestDto, taxResult);
 		return new SimulationResponseDto(
 			taxResult.getTotalEstimatedTax(),
 			taxResult.getRecipientTaxDetails(),
@@ -120,8 +121,9 @@ public class SimulationServiceImpl implements SimulationService {
 		return calculatedTax;
 	}
 
-	private List<String> generateTaxSavingStrategies(SimulationRequestDto requestDto, TaxCalculationResult taxResult) {
-		List<String> recommendations = new ArrayList<>();
+	private List<StrategyResponseDto> generateTaxSavingStrategies(SimulationRequestDto requestDto,
+		TaxCalculationResult taxResult) {
+		List<StrategyResponseDto> recommendations = new ArrayList<>();
 		List<StrategyVo> allRules = strategyMapper.findAll();
 		Map<String, List<StrategyVo>> rulesByCategory = allRules.stream()
 			.collect(Collectors.groupingBy(StrategyVo::getRuleCategory));
@@ -136,7 +138,7 @@ public class SimulationServiceImpl implements SimulationService {
 		return recommendations;
 	}
 
-	private void checkTotalAssetRules(List<String> recommendations, List<StrategyVo> rules,
+	private void checkTotalAssetRules(List<StrategyResponseDto> recommendations, List<StrategyVo> rules,
 		TaxCalculationResult taxResult) {
 		if (rules == null) {
 			return;
@@ -146,19 +148,19 @@ public class SimulationServiceImpl implements SimulationService {
 			switch (rule.getStrategyCode()) {
 				case "TOTAL_ASSET_GT_1B":
 					if (totalGiftAmount >= 1_000_000_000L) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "TOTAL_ASSET_GT_5B":
 					if (totalGiftAmount >= 5_000_000_000L) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 			}
 		}
 	}
 
-	private void checkRecipientRules(List<String> recommendations, List<StrategyVo> rules,
+	private void checkRecipientRules(List<StrategyResponseDto> recommendations, List<StrategyVo> rules,
 		TaxCalculationResult taxResult) {
 		if (rules == null) {
 			return;
@@ -172,24 +174,24 @@ public class SimulationServiceImpl implements SimulationService {
 			switch (rule.getStrategyCode()) {
 				case "NOT_EXIST_SPOUSE": // 최종 코드로 수정
 					if (!hasSpouse) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "EXIST_GRANDCHILD": // 최종 코드로 수정
 					if (hasGrandChild) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "EXIST_MINOR_CHILD": // 최종 코드로 수정
 					if (hasMinor) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 			}
 		}
 	}
 
-	private void checkGiftHistoryRules(List<String> recommendations, List<StrategyVo> rules,
+	private void checkGiftHistoryRules(List<StrategyResponseDto> recommendations, List<StrategyVo> rules,
 		TaxCalculationResult taxResult) {
 		if (rules == null) {
 			return;
@@ -200,7 +202,7 @@ public class SimulationServiceImpl implements SimulationService {
 					if (taxResult.getRecipientsInSim()
 						.stream()
 						.anyMatch(r -> r.getHasPriorGift() != null && r.getHasPriorGift())) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "CUMULATIVE_GIFT_EXCEEDS_DEDUCTION":
@@ -208,14 +210,14 @@ public class SimulationServiceImpl implements SimulationService {
 						long prior = (r.getPriorGiftAmount() != null) ? r.getPriorGiftAmount() : 0L;
 						return prior > getDeductionAmount(r);
 					})) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 			}
 		}
 	}
 
-	private void checkTaxPayerRules(List<String> recommendations, List<StrategyVo> rules,
+	private void checkTaxPayerRules(List<StrategyResponseDto> recommendations, List<StrategyVo> rules,
 		TaxCalculationResult taxResult) {
 		if (rules == null) {
 			return;
@@ -224,12 +226,15 @@ public class SimulationServiceImpl implements SimulationService {
 			.stream()
 			.anyMatch(r -> "본인".equals(r.getGiftTaxPayer()));
 		if (gifterPaysTax) {
-			rules.stream().filter(r -> "EXIST_GIFTER_PAYS_TAX".equals(r.getStrategyCode())) // 최종 코드로 수정
-				.findFirst().ifPresent(rule -> recommendations.add(rule.getMessage()));
+			rules.stream()
+				.filter(r -> "EXIST_GIFTER_PAYS_TAX".equals(r.getStrategyCode())) // 최종 코드로 수정
+				.findFirst()
+				.ifPresent(
+					rule -> recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage())));
 		}
 	}
 
-	private void checkAssetTypeRules(List<String> recommendations, List<StrategyVo> rules,
+	private void checkAssetTypeRules(List<StrategyResponseDto> recommendations, List<StrategyVo> rules,
 		SimulationRequestDto requestDto) {
 		if (rules == null) {
 			return;
@@ -278,31 +283,31 @@ public class SimulationServiceImpl implements SimulationService {
 				case "HAS_BIZ_TO_SOLE_PROPRIETORSHIP":
 					// 개인 사업체를 증여하는 경우에만 이 전략을 추천합니다.
 					if (isGiftingToSoleProprietorship) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "HAS_BIZ_TO_CORPORATION":
 					// 법인 사업자 경우에만 이 전략을 추천합니다.
 					if (isGiftingToCorporation) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "HAS_REAL_ESTATE_APPRECIATION":
 				case "HAS_REAL_ESTATE_DEBT_SUCCESSION":
 					if (hasRealEstate) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "HAS_CASH":
 					if (hasCashOrSavings) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 			}
 		}
 	}
 
-	private void checkMaritalStatusRules(List<String> recommendations, List<StrategyVo> rules,
+	private void checkMaritalStatusRules(List<StrategyResponseDto> recommendations, List<StrategyVo> rules,
 		SimulationRequestDto requestDto, TaxCalculationResult taxResult) {
 		if (rules == null || rules.isEmpty()) {
 			return;
@@ -320,17 +325,17 @@ public class SimulationServiceImpl implements SimulationService {
 			switch (rule.getStrategyCode()) {
 				case "EXIST_UNMARRIED_CHILD":
 					if (hasUnmarriedChild) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "HAS_GIFT_REAL_ESTATE_AND_EXIST_GRANDCHILD":
 					if (hasRealEstate && hasGrandChild) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 				case "HAS_GIFT_REAL_ESTATE_AND_EXIST_UNMARRIED_CHILD":
 					if (hasRealEstate && hasUnmarriedChild) {
-						recommendations.add(rule.getMessage());
+						recommendations.add(new StrategyResponseDto(rule.getRuleCategory(), rule.getMessage()));
 					}
 					break;
 			}
