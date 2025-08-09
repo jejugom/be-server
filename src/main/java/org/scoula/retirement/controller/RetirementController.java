@@ -1,16 +1,18 @@
 package org.scoula.retirement.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.news.service.NewsService;
 import org.scoula.product.domain.ProductVo;
+import org.scoula.product.dto.FundDailyReturnDto;
 import org.scoula.product.dto.ProductDto;
 import org.scoula.product.mapper.ProductMapper;
 import org.scoula.product.service.ProductService;
-import org.scoula.product.service.ProductsServiceImpl;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.retirement.dto.RetirementMainResponseDto;
 import org.scoula.user.dto.UserDto;
@@ -86,7 +88,19 @@ public class RetirementController {
 		@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
 	})
 	@GetMapping("/{finPrdtCd}")
-	public ResponseEntity<ProductVo> getProductDetail(@PathVariable String finPrdtCd) {
-		return ResponseEntity.ok(productService.getProductDetail(finPrdtCd));
+	public ResponseEntity<?> getProductDetail(@PathVariable String finPrdtCd) {
+		ProductVo productVo = productService.getProductDetail(finPrdtCd);
+		Map<String, Object> response = new HashMap<>();
+		response.put("product",productVo);
+		//펀드 상품일 경우 응답 형식에 3개월 수익률도 추가
+		if (finPrdtCd.matches("^[123].*")) { // startsWith 3번 대신 정규식
+			List<FundDailyReturnDto> fundDailyReturnDtos =
+				productService.getFundDailyReturnByCode(finPrdtCd)
+					.stream()
+					.map(FundDailyReturnDto::of) // 여기서 바로 변환
+					.collect(Collectors.toList());
+			response.put("fundReturn",fundDailyReturnDtos);
+		}
+		return ResponseEntity.ok(response);
 	}
 }

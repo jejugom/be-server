@@ -3,6 +3,7 @@ package org.scoula.product.service;
 import java.util.List;
 import java.util.Map;
 
+import org.scoula.product.domain.FundDailyReturnVo;
 import org.scoula.product.domain.ProductVo;
 import org.scoula.product.dto.ProductDto;
 
@@ -23,4 +24,5 @@ public interface ProductService {
 	public ProductVo getProductDetail(String finPrdtCd);
 
 	String getProductNameByCode(String finPrdtCode);
+	List<FundDailyReturnVo> getFundDailyReturnByCode(String finPrdtCd);
 }
