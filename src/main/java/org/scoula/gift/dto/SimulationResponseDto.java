@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class SimulationResponseDto {
 	private long totalEstimatedTax; // 총 예상 증여세액
 	private List<RecipientTaxDetailDto> recipientDetails;
-	private List<String> taxSavingStrategies;
+	private List<StrategyResponseDto> taxSavingStrategies;
 }

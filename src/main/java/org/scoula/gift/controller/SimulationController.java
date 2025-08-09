@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/gift")
 @RequiredArgsConstructor
-public class SimulationController { // 컨트롤러 이름도 조금 더 명확하게 변경
+public class SimulationController {
 
 	private final SimulationService simulationService;
 
