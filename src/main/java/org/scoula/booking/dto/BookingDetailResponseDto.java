@@ -14,9 +14,6 @@ import lombok.Data;
 @ApiModel(value = "예약 상세 응답 DTO", description = "예약 상세 정보 조회 시 클라이언트에 반환하는 데이터")
 public class BookingDetailResponseDto {
 
-	@ApiModelProperty(value = "예약 고유 ID (내부 시스템용 ULID)", example = "01HXYZABCDEF12345678")
-	private String bookingId;
-
 	@ApiModelProperty(value = "외부 공개용 예약 번호", example = "250810-GANGNAM-001")
 	private String bookingCode;
 
@@ -42,7 +39,6 @@ public class BookingDetailResponseDto {
 		}
 
 		return BookingDetailResponseDto.builder()
-			.bookingId(booking.getBookingId())
 			.bookingCode(booking.getBookingCode())
 			.branchName(branchName)
 			.prodName(prodName)
