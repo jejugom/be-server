@@ -30,7 +30,7 @@
         SELECT booking_id,
                booking_code,
                email,
-               fin_prdt_code, date, time, doc_info, branch_name
+               fin_prdt_cd, date, time, doc_info
         FROM
             booking
         WHERE
@@ -71,6 +71,11 @@
         DELETE
         FROM booking
         WHERE email = #{email}
+    </delete>
+
+    <delete id="deletePastBookingsByEmail">
+        DELETE FROM booking
+        WHERE email = #{email} AND date &lt; #{today}
     </delete>
 
     <select id="countByBranchDateTime" resultType="int">

@@ -1,10 +1,16 @@
 package org.scoula.View.home.service;
 
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.scoula.View.home.dto.HomeResponseDto;
 import org.scoula.View.home.dto.RecommendationDto;
 import org.scoula.View.home.dto.UserSummary;
+import org.scoula.booking.dto.BookingDetailResponseDto;
+import org.scoula.booking.dto.BookingDto;
+import org.scoula.booking.service.BookingService;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeService {
 	private final UserService userService;
+	private final BookingService bookingService;
 
 	/**
 	 * 로그인 상태에 따라 홈 화면에 필요한 데이터를 조회하고 조합하여 반환합니다.
@@ -46,10 +53,24 @@ public class HomeService {
 			.asset(userService.getUser(userEmail).getAsset())
 			.build();
 
+		// 가장 가까운 예약 정보 조회
+		BookingDetailResponseDto nearestBooking = findNearestBooking(userEmail);
+
 		// 사용자 요약 정보와 추천 상품을 모두 포함하여 리턴
 		return HomeResponseDto.builder()
 			.userSummary(summary)
 			.recommandTop3(hardcodedRecommends)
+			.nearestBooking(nearestBooking)
 			.build();
+	}
+
+	private BookingDetailResponseDto findNearestBooking(String userEmail) {
+		List<BookingDto> bookings = bookingService.getBookingsByEmail(userEmail);
+		Date now = new Date();
+
+		Optional<BookingDto> nearestBooking = bookings.stream()
+			.min(Comparator.comparing(BookingDto::getDate));
+
+		return nearestBooking.map(bookingDto -> bookingService.getBookingById(bookingDto.getBookingId())).orElse(null);
 	}
 }

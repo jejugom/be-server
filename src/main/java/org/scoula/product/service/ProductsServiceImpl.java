@@ -88,7 +88,7 @@ public class ProductsServiceImpl implements ProductService {
 
 	@Override
 	public String getProductNameByCode(String finPrdtCode) {
-		return "";
+		return productMapper.findProductDetail(finPrdtCode).getFinPrdtNm();
 	}
 
 	@Override

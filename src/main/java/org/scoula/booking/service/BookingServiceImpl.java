@@ -59,6 +59,7 @@ public class BookingServiceImpl implements BookingService {
 	 */
 	@Override
 	public List<BookingDto> getBookingsByEmail(String email) {
+		deletePastBookings(email);
 		return bookingMapper.getBookingsByEmail(email).stream()
 			.map(BookingDto::of)
 			.collect(Collectors.toList());
@@ -358,6 +359,15 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	// ------------------- 헬퍼 메서드 -------------------
+
+	/**
+	 * 사용자의 지난 예약 내역을 삭제합니다.
+	 * @param email 사용자 이메일
+	 */
+	private void deletePastBookings(String email) {
+		LocalDate today = LocalDate.now();
+		bookingMapper.deletePastBookingsByEmail(email, today);
+	}
 
 	/**
 	 * 문자열을 Date 객체로 파싱 (yyyy-MM-dd 형식)
