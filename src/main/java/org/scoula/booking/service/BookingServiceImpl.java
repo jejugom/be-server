@@ -31,6 +31,7 @@ import org.scoula.branch.service.BranchService;
 import org.scoula.exception.DuplicateBookingException;
 import org.scoula.exception.InvalidBookingDateException;
 import org.scoula.product.service.ProductService;
+import org.scoula.statistics.service.ProductClickLogService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -48,6 +49,7 @@ public class BookingServiceImpl implements BookingService {
 	private final BookingMapper bookingMapper;
 	private final ProductService productService;
 	private final BranchService branchService;
+	private final ProductClickLogService clickLogService;
 
 	// ------------------- 조회 관련 메서드 -------------------
 
@@ -148,6 +150,7 @@ public class BookingServiceImpl implements BookingService {
 	 * @throws DuplicateBookingException 이미 예약이 존재할 경우 예외 발생
 	 * @throws InvalidBookingDateException 예약 날짜가 유효하지 않을 경우 예외 발생
 	 */
+	@Transactional
 	@Override
 	public BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto) {
 		BookingVo bookingVo = requestDto.toVo();
@@ -172,6 +175,7 @@ public class BookingServiceImpl implements BookingService {
 		bookingVo.setBookingId(bookingId);
 
 		bookingMapper.insertBooking(bookingVo);
+		clickLogService.saveClickLog(requestDto.getFinPrdtCode(), email, "/api/bookings");
 
 		return BookingCreateResponseDto.of(bookingVo);
 	}
