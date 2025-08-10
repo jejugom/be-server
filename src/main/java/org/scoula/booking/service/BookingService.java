@@ -3,7 +3,6 @@ package org.scoula.booking.service;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
-import org.scoula.booking.dto.BankBookingRequestDto;
 import org.scoula.booking.dto.BookingCheckResponseDto;
 import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
@@ -37,7 +36,8 @@ public interface BookingService {
 	 * @param requestDto
 	 * @param responseDto
 	 */
-	void sendBookingToBank(String email, BookingCreateRequestDto requestDto, BookingCreateResponseDto responseDto); // 은행 서버 전송
+	void sendBookingToBank(String email, BookingCreateRequestDto requestDto,
+		BookingCreateResponseDto responseDto); // 은행 서버 전송
 
 	/**
 	 * 특정 예약을 삭제합니다.
@@ -53,6 +53,8 @@ public interface BookingService {
 	 * @return 예약 상세 정보 DTO
 	 */
 	BookingDetailResponseDto getBookingById(String bookingId);
+
+	BookingDetailResponseDto getBookingDetailByIdentifier(String identifier, String email);
 
 	/**
 	 * 특정 지점의 예약된 시간 슬롯 목록을 조회합니다.

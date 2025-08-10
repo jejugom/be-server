@@ -67,6 +67,13 @@ public interface BookingMapper {
 	BookingVo findById(String bookingId);
 
 	/**
+	 * 외부 공개용 예약 코드로 예약을 조회합니다.
+	 * @param bookingCode 조회할 예약 코드
+	 * @return BookingVo 객체
+	 */
+	BookingVo findByBookingCode(String bookingCode);
+
+	/**
 	 * 특정 지점의 현재 날짜와 시간 이후에 예약된 미래 예약 목록 조회
 	 * @param branchId 지점 번호
 	 * @param currentTime 현재 시간 (HH:mm 형식)

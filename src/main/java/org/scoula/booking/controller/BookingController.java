@@ -78,12 +78,12 @@ public class BookingController {
 		@ApiResponse(code = 200, message = "조회 성공"),
 		@ApiResponse(code = 404, message = "존재하지 않는 예약")
 	})
-	@GetMapping("/detail/{bookingId}")
-	public ResponseEntity<BookingDetailResponseDto> getBookingById(
-		@ApiParam(value = "조회할 예약의 ID(ULID)", required = true, example = "01H8XJ6B4T1Z0V0E0M0R0P0W0")
-		@PathVariable String bookingId) {
-
-		BookingDetailResponseDto responseDto = bookingService.getBookingById(bookingId);
+	@GetMapping("/detail/{identifier}")
+	public ResponseEntity<BookingDetailResponseDto> getBookingDetail(
+		@ApiParam(value = "조회할 예약의 식별자 (ULID 또는 예약 코드)", required = true, example = "250810-B01-001")
+		@PathVariable String identifier, Authentication authentication) {
+		String email = authentication.getName();
+		BookingDetailResponseDto responseDto = bookingService.getBookingDetailByIdentifier(identifier, email);
 		return ResponseEntity.ok(responseDto);
 	}
 

@@ -30,6 +30,7 @@ import org.scoula.booking.mapper.BookingMapper;
 import org.scoula.branch.service.BranchService;
 import org.scoula.exception.DuplicateBookingException;
 import org.scoula.exception.InvalidBookingDateException;
+import org.scoula.exception.UserAccessDeniedException;
 import org.scoula.product.service.ProductService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -78,6 +79,46 @@ public class BookingServiceImpl implements BookingService {
 		}
 
 		// 시간 초단위 제거 (ex: "10:00:00" → "10:00")
+		String time = bookingVo.getTime();
+		if (time != null && time.length() > 5) {
+			bookingVo.setTime(time.substring(0, 5));
+		}
+
+		String prdtName = productService.getProductNameByCode(bookingVo.getFinPrdtCode());
+		String branchName = branchService.getBranchNameById(bookingVo.getBranchId());
+
+		return BookingDetailResponseDto.of(bookingVo, prdtName, branchName);
+	}
+
+	/**
+	 * 식별자(ULID 또는 예약 코드)와 요청자 이메일로 예약 상세 정보를 조회합니다.
+	 * @param identifier ULID 또는 예약 코드
+	 * @param requesterEmail 조회를 요청한 사용자의 이메일 (권한 확인용)
+	 * @return 예약 상세 응답 DTO
+	 * @throws NoSuchElementException 예약이 없으면 발생
+	 * @throws AccessDeniedException 조회 권한이 없으면 발생
+	 */
+	@Override
+	public BookingDetailResponseDto getBookingDetailByIdentifier(String identifier, String requesterEmail) {
+		BookingVo bookingVo;
+
+		// 1. 식별자로 예약 정보 조회 (기존과 동일)
+		if (identifier != null && identifier.contains("-")) {
+			bookingVo = bookingMapper.findByBookingCode(identifier);
+		} else {
+			bookingVo = bookingMapper.findById(identifier);
+		}
+
+		if (bookingVo == null) {
+			throw new NoSuchElementException("Booking not found with identifier: " + identifier);
+		}
+
+		// 2. 권한 확인: 요청자 이메일과 예약된 이메일이 동일한지 비교
+		if (!requesterEmail.equals(bookingVo.getEmail())) {
+			throw new UserAccessDeniedException("해당 예약을 조회할 권한이 없습니다.");
+		}
+
+		// 3. 권한 확인 통과 후, DTO로 변환하여 반환
 		String time = bookingVo.getTime();
 		if (time != null && time.length() > 5) {
 			bookingVo.setTime(time.substring(0, 5));
