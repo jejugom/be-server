@@ -25,11 +25,13 @@ import org.springframework.stereotype.Service;
 public class NewsServiceImpl implements NewsService {
 
   private static final Map<Integer, String> CATEGORY_KEYWORDS = Map.of(
+      0, "최신",
       1, "예금",
       2, "적금",
       3, "주택담보",
       4, "금",
-      5, "펀드"
+      5, "펀드",
+      6, "신탁"
   );
   @Autowired
   private NewsMapper newsMapper;
@@ -50,7 +52,7 @@ public class NewsServiceImpl implements NewsService {
           2, List.of("적금"),
           3, List.of("주택", "담보", "대출"),
           4, List.of("\\b금\\b", "순금", "골드바", "금 투자", "금 시세"),
-          5, List.of("펀드")
+          5, List.of("펀드"), 6, List.of("신탁", "상속", "증여", "유언")
       );
 
       // 카테고리 1~5: 카테고리별 대표 1건 유지(기존 정책)
