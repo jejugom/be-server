@@ -1,7 +1,7 @@
 package org.scoula.gpt.controller;
 
 import org.scoula.gpt.dto.ChatRequestDto;
-import org.scoula.gpt.dto.ChatResponseDto;
+import org.scoula.gpt.dto.GptParsedResponse;
 import org.scoula.gpt.service.GptService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,15 +22,17 @@ public class GptController {
 	private final GptService gptService;
 
 	/**
-	 * 클라이언트로부터 채팅 요청을 받아 AI의 답변을 반환하는 API 엔드포인트입니다.
-	 * @param chatRequestDto 사용자의 질문이 담긴 요청 본문 (JSON 형태)
-	 * @return AI의 답변이 담긴 ResponseEntity
+	 * 사용자의 채팅 요청을 받아 GPT 서비스에 전달하고,
+	 * 파싱된 최종 결과를 반환하는 API 엔드포인트입니다.
+	 *
+	 * @param chatRequestDto 사용자의 질문이 담긴 DTO
+	 * @return 파싱된 GPT 응답 객체를 담은 ResponseEntity
 	 */
 	@PostMapping("/chat")
-	public ResponseEntity<ChatResponseDto> chat(@RequestBody ChatRequestDto chatRequestDto) {
-		// 서비스 레이어에 요청을 전달하고 응답을 받습니다.
-		ChatResponseDto chatResponseDto = gptService.getChatResponse(chatRequestDto);
+	public ResponseEntity<GptParsedResponse> chat(@RequestBody ChatRequestDto chatRequestDto) {
+		// 서비스 레이어에 요청을 전달하고 파싱된 응답을 받습니다.
+		GptParsedResponse parsedResponse = gptService.getGptResponseAndParse(chatRequestDto);
 		// HTTP 200 OK 상태 코드와 함께 응답 본문을 반환합니다.
-		return ResponseEntity.ok(chatResponseDto);
+		return ResponseEntity.ok(parsedResponse);
 	}
 }
