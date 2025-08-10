@@ -149,11 +149,15 @@ public class BookingServiceImpl implements BookingService {
 	 * @throws InvalidBookingDateException 예약 날짜가 유효하지 않을 경우 예외 발생
 	 */
 	@Override
+	// [수정] 트랜잭션 처리를 위해 @Transactional 애너테이션 추가 (필수)
+	@Transactional
 	public BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto) {
 		BookingVo bookingVo = requestDto.toVo();
 
 		validateBookingDate(bookingVo.getDate());
 
+		// 동시성 문제를 피하기 위해 예약 생성 로직 안에서 중복 체크를 다시 하거나, DB의 UNIQUE 제약조건에 의존하는 것이 더 안전할 수 있습니다.
+		// 기존 로직은 유지하되, 트랜잭션의 격리 수준(isolation level)에 따라 동작이 달라질 수 있음을 인지해야 합니다.
 		int existingBookings = bookingMapper.countByBranchDateTime(
 			bookingVo.getBranchId(),
 			bookingVo.getDate(),
@@ -164,20 +168,41 @@ public class BookingServiceImpl implements BookingService {
 			throw new DuplicateBookingException("해당 지점의 해당 시간에는 이미 예약이 존재합니다.");
 		}
 
-		DocInfoDto initialDocInfo = generateInitialDocInfo(requestDto.getFinPrdtCode());
+		// 1. 내부용 ID (ULID) 생성 (기존과 동일)
 		String bookingId = UlidCreator.getUlid().toString();
 
+		// 2. 외부 공개용 예약 코드 생성
+		// 2-1. 날짜를 'yyMMdd' 형식으로 변환
+		String datePart = new SimpleDateFormat("yyMMdd").format(bookingVo.getDate());
+
+		// 2-2. 지점 ID로 지점 코드(예: "GN")를 조회하는 로직 (별도 구현 필요)
+		// 여기서는 예시로 "BRANCH" + branchId를 사용합니다.
+		String branchPart = "B" + String.format("%03d", bookingVo.getBranchId());
+
+		// 2-3. 해당 날짜, 해당 지점의 다음 순번 계산 (매퍼 호출)
+		int dailySequence = bookingMapper.countByBranchAndDate(bookingVo.getBranchId(), bookingVo.getDate()) + 1;
+		String sequencePart = String.format("%03d", dailySequence); // 3자리로 패딩 (001, 002...)
+
+		// 2-4. 모든 부분을 조합하여 최종 예약 코드 생성
+		String bookingCode = String.format("%s-%s-%s", datePart, branchPart, sequencePart); // 예: 250810-B01-001
+
+		// 3. 생성된 ID와 코드를 Vo에 모두 설정
+		DocInfoDto initialDocInfo = generateInitialDocInfo(requestDto.getFinPrdtCode());
 		bookingVo.setEmail(email);
 		bookingVo.setDocInfo(initialDocInfo);
-		bookingVo.setBookingId(bookingId);
+		bookingVo.setBookingId(bookingId);       // 내부용 ID 설정
+		bookingVo.setBookingCode(bookingCode);   // 외부용 코드 설정
 
+		// 4. 데이터베이스에 최종 예약 정보 삽입
 		bookingMapper.insertBooking(bookingVo);
 
+		// 5. 생성된 예약 정보를 DTO에 담아 반환
 		return BookingCreateResponseDto.of(bookingVo);
 	}
 
 	@Override
-	public void sendBookingToBank(String email, BookingCreateRequestDto requestDto, BookingCreateResponseDto responseDto) {
+	public void sendBookingToBank(String email, BookingCreateRequestDto requestDto,
+		BookingCreateResponseDto responseDto) {
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			String bankApiUrl = "http://localhost:8000/api/bookings"; // 은행 서버 endpoint

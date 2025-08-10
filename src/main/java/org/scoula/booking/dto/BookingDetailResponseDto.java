@@ -14,8 +14,11 @@ import lombok.Data;
 @ApiModel(value = "예약 상세 응답 DTO", description = "예약 상세 정보 조회 시 클라이언트에 반환하는 데이터")
 public class BookingDetailResponseDto {
 
-	@ApiModelProperty(value = "예약 고유 ID (ULID)", example = "01HXYZABCDEF12345678")
+	@ApiModelProperty(value = "예약 고유 ID (내부 시스템용 ULID)", example = "01HXYZABCDEF12345678")
 	private String bookingId;
+
+	@ApiModelProperty(value = "외부 공개용 예약 번호", example = "250810-GANGNAM-001")
+	private String bookingCode;
 
 	@ApiModelProperty(value = "지점명", example = "강남지점")
 	private String branchName;
@@ -32,13 +35,6 @@ public class BookingDetailResponseDto {
 	@ApiModelProperty(value = "필요 서류 정보")
 	private DocInfoDto docInfo;
 
-	/**
-	 * BookingVo와 상품명을 조합하여 상세 응답 DTO를 생성합니다.
-	 * @param booking Vo 객체
-	 * @param prodName 서비스 계층에서 조회한 상품명
-	 * @param branchName 지점명
-	 * @return 변환된 Dto 객체
-	 */
 	public static BookingDetailResponseDto of(BookingVo booking, String prodName, String branchName) {
 		String formattedDate = null;
 		if (booking.getDate() != null) {
@@ -47,6 +43,7 @@ public class BookingDetailResponseDto {
 
 		return BookingDetailResponseDto.builder()
 			.bookingId(booking.getBookingId())
+			.bookingCode(booking.getBookingCode())
 			.branchName(branchName)
 			.prodName(prodName)
 			.date(formattedDate)

@@ -23,6 +23,9 @@ public class BookingVo {
 	/** 예약 고유 ID (ULID 형식 문자열) */
 	private String bookingId;
 
+	/** 외부 공개용 예약 코드 (날짜+지점+순번 등) */
+	private String bookingCode;
+
 	/** 예약 지점 ID */
 	private int branchId;
 
