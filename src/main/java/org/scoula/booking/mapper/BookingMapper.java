@@ -1,5 +1,6 @@
 package org.scoula.booking.mapper;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -112,4 +113,6 @@ public interface BookingMapper {
 	 * @return 예약 건수
 	 */
 	int countByBranchAndDate(@Param("branchId") int branchId, @Param("date") Date date);
+
+	void deletePastBookingsByEmail(@Param("email") String email, @Param("today") LocalDate today);
 }
