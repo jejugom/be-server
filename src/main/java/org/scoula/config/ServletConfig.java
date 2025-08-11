@@ -1,6 +1,9 @@
 package org.scoula.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -28,7 +31,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 	"org.scoula.news.controller",
 	"org.scoula.gpt.controller",
 	"org.scoula.statistics.controller",
-	"org.scoula.View.Event.Controller"
+	"org.scoula.View.Event.Controller",
+	"org.scoula.news.controller",
+	"org.scoula.question.controller" // question 컨트롤러 추가
 }) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
 public class ServletConfig implements WebMvcConfigurer {
 	@Override
@@ -60,5 +65,15 @@ public class ServletConfig implements WebMvcConfigurer {
 		// API 문서 JSON 엔드포인트 설정
 		registry.addResourceHandler("/v2/api-docs")
 			.addResourceLocations("classpath:/META-INF/resources/");
+	}
+
+	// MultipartResolver 빈 설정 - CommonsMultipartResolver 사용
+	@Bean
+	public MultipartResolver multipartResolver() {
+		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+		resolver.setMaxUploadSize(50 * 1024 * 1024); // 50MB
+		resolver.setMaxInMemorySize(1024 * 1024); // 1MB
+		resolver.setDefaultEncoding("UTF-8");
+		return resolver;
 	}
 }
