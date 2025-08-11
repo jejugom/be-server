@@ -54,11 +54,10 @@ public class GptServiceImpl implements GptService {
 
 		try {
 			ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-				.model(ChatModel.GPT_4O_MINI_2024_07_18)
+				.model(ChatModel.GPT_5_NANO)
 				.addSystemMessage(this.systemPrompt)
 				.addUserMessage(chatRequestDto.getQuestion())
 				.maxCompletionTokens(1024)
-				.temperature(0.3)
 				.build();
 
 			ChatCompletion completion = openAiClient.chat().completions().create(params);
@@ -80,5 +79,4 @@ public class GptServiceImpl implements GptService {
 			throw e;
 		}
 	}
-
 }
