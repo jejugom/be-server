@@ -25,7 +25,7 @@ public class BookingStatsScheduler {
 	private final StatsSendHistoryService historyService;
 
 	@Transactional
-	@Scheduled(cron = "0 * * * * *") // 테스트: 매 분 실행 (실제로는 "0 0 0 1 * *")
+	@Scheduled(cron = "0 0 0 1 * *") // 매월 1일 00시
 	public void sendBookingStats() {
 		LocalDateTime startOfLastMonth = YearMonth.now()
 			.minusMonths(1)

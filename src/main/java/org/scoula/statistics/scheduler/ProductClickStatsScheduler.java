@@ -26,7 +26,7 @@ public class ProductClickStatsScheduler {
 	private final ProductClickStatsService clickStatsService;
 
 	@Transactional
-	@Scheduled(cron = "0 * * * * *") // 예시
+	@Scheduled(cron = "0 0 0 * * 1") // 월요일 자정
 	public void sendClickStats() {
 		LocalDateTime lastSentAt = sendHistoryService.findLastSentAt("CLICK");
 		if (lastSentAt == null) {
