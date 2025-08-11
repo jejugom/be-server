@@ -58,7 +58,8 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.news.service",
 	"org.scoula.gpt.service",
 	"org.scoula.statistics.service",
-	"org.scoula.statistics.scheduler"
+	"org.scoula.statistics.scheduler",
+	"org.scoula.View.Event.Service"
 })
 @Log4j2
 @EnableTransactionManagement

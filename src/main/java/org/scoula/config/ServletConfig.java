@@ -27,7 +27,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 	"org.scoula.gift.controller",
 	"org.scoula.news.controller",
 	"org.scoula.gpt.controller",
-	"org.scoula.statistics.controller"
+	"org.scoula.statistics.controller",
+	"org.scoula.View.Event.Controller"
 }) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
 public class ServletConfig implements WebMvcConfigurer {
 	@Override

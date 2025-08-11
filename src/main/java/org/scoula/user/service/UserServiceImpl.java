@@ -215,6 +215,11 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
 			.build();
 	}
 
+	@Override
+	public void addPoint(String email, int delta) {
+		userMapper.addPoint(email, delta);
+	}
+
 	/**
 	 * 자산의 상위 백분위를 계산하는 private 헬퍼 메소드
 	 * @param myAsset 현재 사용자의 자산
