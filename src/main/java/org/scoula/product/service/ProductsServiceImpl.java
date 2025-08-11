@@ -1,6 +1,7 @@
 package org.scoula.product.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -79,7 +80,11 @@ public class ProductsServiceImpl implements ProductService {
 	 * @return
 	 */
 	public ProductVo getProductDetail(String finPrdtCd) {
+		Map<String,Object> result = new HashMap<>();
 		ProductVo product = productMapper.findProductDetail(finPrdtCd);
+		result.put("product",product);
+
+
 		if (product == null) {
 			throw new NoSuchElementException("해당 상품을 찾을 수 없습니다: " + finPrdtCd);
 		}

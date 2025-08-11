@@ -72,4 +72,6 @@ public interface UserService {
 	 * @return 마이페이지에 필요한 데이터가 담긴 DTO
 	 */
 	MyPageResponseDto getMyPageData(String email);
+
+	void addPoint(String email, int delta);
 }

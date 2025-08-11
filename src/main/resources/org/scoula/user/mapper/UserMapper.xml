@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.scoula.user.mapper.UserMapper">
+
     <resultMap id="userMap" type="org.scoula.user.domain.UserVo">
         <id property="email" column="email"/>
         <result property="userName" column="user_name"/>
@@ -16,14 +17,9 @@
         <result property="assetProportion" column="asset_proportion"/>
     </resultMap>
 
-    <!--
-      [수정 핵심] 동적 INSERT 구문:
-      - UserVo 객체에서 값이 null이 아닌 필드만 INSERT 쿼리에 동적으로 포함시킵니다.
-      - 이렇게 하면 user_phone, birth 등이 null일 때 쿼리에서 제외되어,
-        DB 테이블에 설정된 DEFAULT 값이 자동으로 적용됩니다.
-    -->
+    <!-- INSERT: null 아닌 컬럼만 -->
     <insert id="save" parameterType="org.scoula.user.domain.UserVo">
-        INSERT INTO user
+        INSERT INTO `user`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="email != null">email,</if>
             <if test="userName != null">user_name,</if>
@@ -54,6 +50,7 @@
         </trim>
     </insert>
 
+    <!-- 단건 조회 -->
     <select id="findByEmail" resultMap="userMap">
         SELECT email,
                user_name,
@@ -67,21 +64,17 @@
                filename2,
                tendency,
                asset_proportion
-        FROM user
+        FROM `user`
         WHERE email = #{email}
     </select>
 
-    <!--
-      [수정 권장] 동적 UPDATE 구문:
-      - save와 마찬가지로, 값이 변경된 필드만 UPDATE 하도록 동적 쿼리를 사용하는 것이 효율적입니다.
-    -->
+    <!-- UPDATE(선택적): 변경값만 세팅.  point는 여기서 건드리지 않음 -->
     <update id="update" parameterType="org.scoula.user.domain.UserVo">
-        UPDATE user
+        UPDATE `user`
         <set>
             <if test="userName != null">user_name = #{userName},</if>
             <if test="userPhone != null">user_phone = #{userPhone},</if>
             <if test="birth != null">birth = #{birth},</if>
-            <if test="point != null">point = #{point},</if>
             <if test="connectedId != null">connected_id = #{connectedId},</if>
             <if test="branchId != null">branch_id = #{branchId},</if>
             <if test="asset != null">asset = #{asset},</if>
@@ -93,28 +86,19 @@
         WHERE email = #{email}
     </update>
 
-    <update id="updateUserInfo" parameterType="org.scoula.user.domain.UserVo">
-        UPDATE user
-        <set>
-            <if test="userName != null">
-                user_name = #{userName},
-            </if>
-            <if test="userPhone != null">
-                user_phone = #{userPhone},
-            </if>
-            <if test="birth != null">
-                birth = #{birth},
-            </if>
-        </set>
+    <!--  포인트 증감 전용: 동시성 안전하게 누적 -->
+    <update id="addPoint">
+        UPDATE `user`
+        SET point = point + #{delta}
         WHERE email = #{email}
     </update>
 
+    <!-- 삭제 -->
     <delete id="deleteByEmail" parameterType="string">
-        DELETE
-        FROM user
-        WHERE email = #{email}
+        DELETE FROM `user` WHERE email = #{email}
     </delete>
 
+    <!-- 전체 조회 -->
     <select id="findAll" resultMap="userMap">
         SELECT email,
                user_name,
@@ -128,30 +112,25 @@
                filename2,
                tendency,
                asset_proportion
-        FROM user
+        FROM `user`
     </select>
 
+    <!-- 기타 개별 업데이트 -->
     <update id="updateConnectedId">
-        UPDATE user
-        SET connected_id = #{connectedId}
-        WHERE email = #{email}
+        UPDATE `user` SET connected_id = #{connectedId} WHERE email = #{email}
     </update>
 
     <update id="updateBranchId">
-        UPDATE user
-        SET branch_id = #{branchId}
-        WHERE email = #{email}
+        UPDATE `user` SET branch_id = #{branchId} WHERE email = #{email}
     </update>
 
+    <!-- 집계 -->
     <select id="countAllUsersWithAsset" resultType="long">
-        SELECT count(*)
-        FROM user
-        WHERE asset IS NOT NULL
+        SELECT COUNT(*) FROM `user` WHERE asset IS NOT NULL
     </select>
 
     <select id="countUsersWithMoreAsset" parameterType="long" resultType="long">
-        SELECT count(*)
-        FROM user
-        WHERE asset > #{asset}
+        SELECT COUNT(*) FROM `user` WHERE asset > #{asset}
     </select>
+
 </mapper>

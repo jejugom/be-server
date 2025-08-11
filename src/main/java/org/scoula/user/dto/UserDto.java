@@ -38,7 +38,8 @@ public class UserDto {
 
 	@ApiModelProperty(value = "자산 총액", example = "100000000")
 	private Long asset;
-
+	@ApiModelProperty(value = "사용자 포인트", example = "100000000")
+	private int point;
 
 	@ApiModelProperty(value = "첫 번째 파일 이름", example = "profile1.png")
 	private String filename1;
@@ -73,6 +74,7 @@ public class UserDto {
 			.filename2(user.getFilename2())
 			.tendency(user.getTendency())
 			.assetProportion(user.getAssetProportion())
+			.point(user.getPoint())
 			// .incomeRange(user.getIncomeRange())
 			.build();
 	}
