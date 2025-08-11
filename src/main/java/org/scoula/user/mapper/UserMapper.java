@@ -72,4 +72,7 @@ public interface UserMapper {
 	 * @return 기준보다 자산이 많은 사용자 수
 	 */
 	long countUsersWithMoreAsset(@Param("asset") Long asset);
+
+	int addPoint(@Param("email") String email, @Param("delta") int delta);
+
 }
