@@ -9,6 +9,8 @@ public interface NewsMapper {
 
   NewsVo findByCategory(Integer category);
 
+  void upsertNews(NewsVo news);
+
   void insertNews(NewsVo news);
 
   void updateNews(NewsVo news);

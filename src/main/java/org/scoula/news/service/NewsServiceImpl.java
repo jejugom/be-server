@@ -25,11 +25,13 @@ import org.springframework.stereotype.Service;
 public class NewsServiceImpl implements NewsService {
 
   private static final Map<Integer, String> CATEGORY_KEYWORDS = Map.of(
+      0, "최신",
       1, "예금",
       2, "적금",
       3, "주택담보",
       4, "금",
-      5, "펀드"
+      5, "펀드",
+      6, "신탁"
   );
   @Autowired
   private NewsMapper newsMapper;
@@ -37,21 +39,24 @@ public class NewsServiceImpl implements NewsService {
   @Override
   public List<Integer> crawlAndSaveNews() {
     List<Integer> updatedCategories = new ArrayList<>();
+
     try {
       Document doc = Jsoup.connect(
-          "https://www.newswire.co.kr/?md=A10&act=article&no=199&perpage=100").get();
+          "https://www.newswire.co.kr/?md=A10&act=article&no=199&perpage=100"
+      ).get();
       Elements newsList = doc.select(".news-column");
 
-      // 카테고리별 키워드 리스트 (복수 키워드)
-      Map<Integer, List<String>> CATEGORY_KEYWORDS = Map.of(
+      // 복수 키워드(카테고리별)
+      Map<Integer, List<String>> categoryKeywords = Map.of(
           1, List.of("예금"),
           2, List.of("적금"),
           3, List.of("주택", "담보", "대출"),
           4, List.of("\\b금\\b", "순금", "골드바", "금 투자", "금 시세"),
-          5, List.of("펀드")
+          5, List.of("펀드"), 6, List.of("신탁", "상속", "증여", "유언")
       );
 
-      for (Map.Entry<Integer, List<String>> entry : CATEGORY_KEYWORDS.entrySet()) {
+      // 카테고리 1~5: 카테고리별 대표 1건 유지(기존 정책)
+      for (Map.Entry<Integer, List<String>> entry : categoryKeywords.entrySet()) {
         Integer category = entry.getKey();
         List<String> keywords = entry.getValue();
 
@@ -59,21 +64,17 @@ public class NewsServiceImpl implements NewsService {
           String title = news.select("h5 a").text();
 
           boolean isMatch = false;
-
-          // 5번 카테고리는 2개 이상 키워드가 포함돼야 true
-          if (category == 3) {
+          if (category == 3) { // 담보/주택/대출: 1개 이상 포함
             long count = keywords.stream().filter(title::contains).count();
-            if (count >= 1) {
-              isMatch = true;
-            }
-          } else if (category == 4) { // 금 관련 정규식 처리
+            isMatch = count >= 1;
+          } else if (category == 4) { // 금: 정규식 키워드
             for (String keyword : keywords) {
               if (title.matches(".*" + keyword + ".*")) {
                 isMatch = true;
                 break;
               }
             }
-          } else { // 나머지는 단순 포함
+          } else { // 단순 포함
             for (String keyword : keywords) {
               if (title.contains(keyword)) {
                 isMatch = true;
@@ -81,7 +82,6 @@ public class NewsServiceImpl implements NewsService {
               }
             }
           }
-
           if (!isMatch) {
             continue;
           }
@@ -97,13 +97,28 @@ public class NewsServiceImpl implements NewsService {
             newsMapper.insertNews(newNews);
             updatedCategories.add(category);
           } else if (!existing.getTitle().equals(title)) {
-            newsMapper.updateNews(newNews);
+            // 카테고리 대표 1건 정책은 기존 updateNews 로직 유지 가능
+            // 하지만 upsert로 대체해도 무방함(카테고리+링크 유니크 아님)
+            newsMapper.upsertNews(newNews);
             updatedCategories.add(category);
           }
-
-          break; // 다음 카테고리로 이동
+          break; // 카테고리 대표 1건만
         }
       }
+
+      // 카테고리 0: 최신 기사 5건 저장(중복은 upsert로 갱신)
+      int maxCount = Math.min(newsList.size(), 5);
+      for (int i = 0; i < maxCount; i++) {
+        Element news = newsList.get(i);
+        String title = news.select("h5 a").text();
+        String link = news.select("h5 a").attr("href");
+        String summary = news.select(".content a").text();
+        String date = news.select(".info .mdate").text();
+
+        NewsVo newNews = new NewsVo(null, 0, title, link, date, summary, null);
+        newsMapper.upsertNews(newNews); // ← 핵심: category+link 기반 UPSERT
+      }
+      updatedCategories.add(0);
 
     } catch (IOException e) {
       log.error("IOException occurred while crawling and saving news", e);
