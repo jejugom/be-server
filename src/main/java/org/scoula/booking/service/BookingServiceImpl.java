@@ -195,7 +195,6 @@ public class BookingServiceImpl implements BookingService {
 	@Transactional
 	@Override
 	// [수정] 트랜잭션 처리를 위해 @Transactional 애너테이션 추가 (필수)
-	@Transactional
 	public BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto) {
 		BookingVo bookingVo = requestDto.toVo();
 
