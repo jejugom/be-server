@@ -54,7 +54,7 @@ public class GptServiceImpl implements GptService {
 
 		try {
 			ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-				.model(ChatModel.GPT_5_NANO)
+				.model(ChatModel.GPT_4O_MINI_2024_07_18)
 				.addSystemMessage(this.systemPrompt)
 				.addUserMessage(chatRequestDto.getQuestion())
 				.maxCompletionTokens(1024)
