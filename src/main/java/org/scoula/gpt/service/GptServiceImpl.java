@@ -1,64 +1,84 @@
 package org.scoula.gpt.service;
 
-import java.time.Duration;
-import java.util.List;
-
 import org.scoula.gpt.dto.ChatRequestDto;
 import org.scoula.gpt.dto.ChatResponseDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.service.OpenAiService;
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
 /**
- * GptService 인터페이스의 구현체입니다.
- * 실제 OpenAI API와 통신하는 로직을 담당합니다.
+ * GptService 인터페이스의 최종 구현체입니다.
+ * Config 클래스 없이, 서비스 내에서 직접 OpenAIClient를 생성합니다.
  */
 @Service
 public class GptServiceImpl implements GptService {
 
-	private final OpenAiService openAiService;
+	private static final Logger log = LoggerFactory.getLogger(GptServiceImpl.class);
+
+	// 서비스 내에서 직접 생성하고 관리하는 OpenAIClient
+	private final OpenAIClient openAiClient;
+
+	// application-dev.properties에서 주입받는 시스템 프롬프트
+	private final String systemPrompt;
 
 	/**
-	 * 생성자 주입을 통해 OpenAiService를 초기화합니다.
-	 * @param apiKey application.properties에 설정된 OpenAI API 키
+	 * 생성자에서 직접 API 키와 프롬프트를 주입받아 OpenAIClient를 초기화합니다.
+	 * @param apiKey application-dev.properties에 정의된 openai.api.key 값
+	 * @param systemPrompt application-dev.properties에 정의된 gpt.system.prompt 값
 	 */
-	public GptServiceImpl(@Value("${openai.api.key}") String apiKey) {
-		// API 요청 시 타임아웃을 60초로 설정하여 무한 대기를 방지합니다.
-		this.openAiService = new OpenAiService(apiKey, Duration.ofSeconds(60));
+	public GptServiceImpl(@Value("${openai.api.key}") String apiKey,
+		@Value("${gpt.system.prompt}") String systemPrompt) {
+		// 1. 주입받은 API 키로 OpenAIClient를 직접 생성합니다.
+		this.openAiClient = OpenAIOkHttpClient.builder()
+			.apiKey(apiKey)
+			.build();
+		this.systemPrompt = systemPrompt;
+		log.info("GptServiceImpl 초기화 완료: OpenAIClient 생성");
 	}
 
+	/**
+	 * 사용자의 질문 DTO를 받아 GPT 모델의 답변 DTO를 반환합니다.
+	 * @param chatRequestDto 사용자의 질문이 담긴 DTO
+	 * @return GPT 모델의 답변이 담긴 DTO
+	 */
 	@Override
 	public ChatResponseDto getChatResponse(ChatRequestDto chatRequestDto) {
-		try {
-			// 1. GPT에게 보낼 메시지를 생성합니다.
-			//    - role: "user"는 사용자가 보낸 메시지임을 의미합니다.
-			final List<ChatMessage> messages = List.of(
-				new ChatMessage("user", chatRequestDto.getQuestion())
-			);
+		log.info("GPT 요청 시작: {}", chatRequestDto.getQuestion());
 
-			// 2. OpenAI API에 보낼 요청 객체를 생성합니다.
-			ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
-				.model("gpt-4o-mini") // 사용할 AI 모델을 지정합니다.
-				.messages(messages)
-				.maxTokens(150) // 응답의 최대 길이를 설정합니다.
-				.temperature(0.2) // 답변의 창의성, 0에 가까울수록 결정론적
+		try {
+			ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
+				.model(ChatModel.GPT_4O_MINI_2024_07_18)
+				.addSystemMessage(this.systemPrompt)
+				.addUserMessage(chatRequestDto.getQuestion())
+				.maxCompletionTokens(1024)
+				.temperature(0.3)
 				.build();
 
-			// 3. API를 호출하고 응답을 받습니다.
-			//    getChoices().get(0)은 여러 답변 후보 중 첫 번째 것을 선택함을 의미합니다.
-			String content = openAiService.createChatCompletion(completionRequest)
-				.getChoices().get(0).getMessage().getContent();
+			ChatCompletion completion = openAiClient.chat().completions().create(params);
+			log.info("GPT API 호출 성공: {}", completion);
 
-			// 4. 받은 답변을 DTO에 담아 반환합니다.
+			if (completion.choices().isEmpty()) {
+				log.warn("응답 choices가 비어있음");
+				return new ChatResponseDto("GPT 응답 없음");
+			}
+
+			String content = completion.choices().get(0).message().content().orElse("");
+			log.info("GPT 응답 내용: {}", content);
+
 			return new ChatResponseDto(content);
 
 		} catch (Exception e) {
-			// API 호출 중 예외 발생 시 처리
 			e.printStackTrace();
-			return new ChatResponseDto("죄송합니다. AI 서비스에 문제가 발생했습니다.");
+			log.error("GPT 서비스 처리 중 에러 발생: {}", e.getMessage(), e);
+			throw e;
 		}
 	}
+
 }

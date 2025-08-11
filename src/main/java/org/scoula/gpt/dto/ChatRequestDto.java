@@ -1,5 +1,6 @@
 package org.scoula.gpt.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * 사용자의 질문(question)을 필드로 가집니다.
  */
 @Data
+@AllArgsConstructor
 public class ChatRequestDto {
 	private String question;
 }
