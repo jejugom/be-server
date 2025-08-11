@@ -52,7 +52,7 @@ public class GptServiceImpl implements GptService {
 		try {
 			// ChatCompletionCreateParams: GPT API 요청 파라미터를 설정합니다.
 			ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-				.model(ChatModel.GPT_4O_MINI_2024_07_18) // JSON 모드를 안정적으로 지원하는 최신 모델 사용을 권장합니다.
+				.model(ChatModel.GPT_5_NANO) // JSON 모드를 안정적으로 지원하는 최신 모델 사용을 권장합니다.
 				.addSystemMessage(this.systemPrompt)
 				.addUserMessage(buildUserMessage(chatRequestDto.getQuestion()))
 
