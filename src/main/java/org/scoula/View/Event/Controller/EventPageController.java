@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 
+//change
 @Api(tags = "이벤트 페이지 API", description = " 이벤트 화면 및 뉴스 데이터 조회 API")
 @RestController
 @RequiredArgsConstructor
