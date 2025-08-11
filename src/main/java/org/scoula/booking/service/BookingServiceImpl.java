@@ -192,7 +192,6 @@ public class BookingServiceImpl implements BookingService {
 	 * @throws DuplicateBookingException 이미 예약이 존재할 경우 예외 발생
 	 * @throws InvalidBookingDateException 예약 날짜가 유효하지 않을 경우 예외 발생
 	 */
-	@Transactional
 	@Override
 	// [수정] 트랜잭션 처리를 위해 @Transactional 애너테이션 추가 (필수)
 	public BookingCreateResponseDto addBooking(String email, BookingCreateRequestDto requestDto) {
