@@ -129,7 +129,7 @@ public class SimulationServiceImpl implements SimulationService {
 			.collect(Collectors.groupingBy(StrategyVo::getRuleCategory));
 
 		checkTotalAssetRules(recommendations, rulesByCategory.get("총 자산 규모"), taxResult);
-		checkRecipientRules(recommendations, rulesByCategory.get("수증자 관계"), taxResult);
+		checkRecipientRules(recommendations, rulesByCategory.get("수증자 유형"), taxResult);
 		checkGiftHistoryRules(recommendations, rulesByCategory.get("기존 증여이력"), taxResult);
 		checkTaxPayerRules(recommendations, rulesByCategory.get("증여세 납부자"), taxResult);
 		checkAssetTypeRules(recommendations, rulesByCategory.get("자산 유형"), requestDto);
