@@ -37,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/retirement")
 public class RetirementController {
 
-	private final UserService userServiceImpl;
+	private final UserService userService;
 	private final AssetStatusService assetStatusService;
 	private final ProductService productService;
 	private final CustomRecommendService customRecommendService;
@@ -55,7 +55,7 @@ public class RetirementController {
 		String email = authentication.getName();
 
 		// 0. 사용자 정보 조회
-		UserDto userDto = userServiceImpl.getUser(email);
+		UserDto userDto = userService.getUser(email);
 
 		// 1. 자산 현황 데이터 조회
 		List<AssetStatusSummaryDto> assetList = assetStatusService.getAssetStatusSummaryByEmail(email);
@@ -88,9 +88,21 @@ public class RetirementController {
 		@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
 	})
 	@GetMapping("/{finPrdtCd}")
-	public ResponseEntity<?> getProductDetail(@PathVariable String finPrdtCd) {
+	public ResponseEntity<?> getProductDetail(@PathVariable String finPrdtCd,Authentication authentication) {
+		String email = authentication.getName();
 		ProductVo productVo = productService.getProductDetail(finPrdtCd);
 		Map<String, Object> response = new HashMap<>();
+
+		double userTendency = userService.getUser(email).getTendency();
+		double userAssetProportion = userService.getUser(email).getAssetProportion();
+
+		double productTendency = productVo.getTendency();
+		double productAssetProportion = productVo.getAssetProportion();
+
+		double rec = cosineSimilarity(userTendency,userAssetProportion,productTendency,productAssetProportion);
+
+		response.put("rec",rec);
+
 		response.put("product",productVo);
 		//펀드 상품일 경우 응답 형식에 3개월 수익률도 추가
 		if (finPrdtCd.matches("^[123].*")) { // startsWith 3번 대신 정규식
@@ -102,5 +114,21 @@ public class RetirementController {
 			response.put("fundReturn",fundDailyReturnDtos);
 		}
 		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * 두 벡터(사용자, 상품) 간의 코사인 유사도를 계산합니다.
+	 * @param t1 사용자 성향
+	 * @param a1 사용자 자산 비율
+	 * @param t2 상품 성향
+	 * @param a2 상품 자산 비율
+	 * @return 0과 1 사이의 유사도 점수
+	 */
+	private double cosineSimilarity(double t1, double a1, double t2, double a2) {
+		double dotProduct = t1 * t2 + a1 * a2;
+		double normA = Math.sqrt(t1 * t1 + a1 * a1);
+		double normB = Math.sqrt(t2 * t2 + a2 * a2);
+		// 분모가 0이 되는 경우를 방지
+		return (normA == 0 || normB == 0) ? 0 : dotProduct / (normA * normB);
 	}
 }
