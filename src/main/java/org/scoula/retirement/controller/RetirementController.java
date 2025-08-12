@@ -93,8 +93,13 @@ public class RetirementController {
 		ProductVo productVo = productService.getProductDetail(finPrdtCd);
 		Map<String, Object> response = new HashMap<>();
 
-		double userTendency = userService.getUser(email).getTendency();
-		double userAssetProportion = userService.getUser(email).getAssetProportion();
+		Double userTendencyObj = userService.getUser(email).getTendency();
+		Double userAssetProportionObj = userService.getUser(email).getAssetProportion();
+
+		//추가 - 여기부터
+		double userTendency = (userTendencyObj != null) ? userTendencyObj : 0.0;
+		double userAssetProportion = (userAssetProportionObj != null) ? userAssetProportionObj : 0.0;
+		// 여기까지
 
 		double productTendency = productVo.getTendency();
 		double productAssetProportion = productVo.getAssetProportion();
