@@ -1,362 +1,44 @@
--- -------------------------------------------------------------------------
--- 테이블 생성 구문
--- -------------------------------------------------------------------------
-DROP DATABASE jeju_gom;
-CREATE DATABASE jeju_gom;
-USE jeju_gom;
+-- MySQL dump 10.13  Distrib 9.3.0, for macos15.2 (arm64)
+--
+-- Host: localhost    Database: jeju_gom_test
+-- ------------------------------------------------------
+-- Server version	9.3.0
 
--- MySQL Workbench Forward Engineering
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
+/*!40103 SET TIME_ZONE = '+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
+/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
-SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
-SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
-SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
-        'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+--
+-- Table structure for table `asset_category`
+--
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema jeju_gom
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema jeju_gom
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `jeju_gom` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `jeju_gom`;
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`asset_category`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`asset_category`
+DROP TABLE IF EXISTS `asset_category`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `asset_category`
 (
-    `asset_category_code` VARCHAR(2)  NOT NULL,
-    `name`                VARCHAR(10) NULL DEFAULT NULL,
+    `asset_category_code` varchar(2) NOT NULL,
+    `name`                varchar(10) DEFAULT NULL,
     PRIMARY KEY (`asset_category_code`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`branch`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`branch`
-(
-    `branch_id`         INT         NOT NULL AUTO_INCREMENT,
-    `branch_name`       VARCHAR(40) NULL DEFAULT NULL,
-    `branch_phone`      VARCHAR(20) NULL DEFAULT NULL,
-    `address_name`      VARCHAR(30) NULL DEFAULT NULL,
-    `road_address_name` VARCHAR(30) NULL DEFAULT NULL,
-    `x`                 VARCHAR(20) NULL DEFAULT NULL,
-    `y`                 VARCHAR(20) NULL DEFAULT NULL,
-    `distance`          VARCHAR(5)  NULL DEFAULT NULL,
-    PRIMARY KEY (`branch_id`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`user`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`user`
-(
-    `email`            VARCHAR(255) NOT NULL,
-    `user_name`        VARCHAR(20)  NOT NULL DEFAULT '홍길동',
-    `user_phone`       VARCHAR(20)  NOT NULL DEFAULT '010-1234-5678',
-    `birth`            DATE         NOT NULL DEFAULT '1999-01-01',
-    `point`            INT          NULL     DEFAULT 0,
-    `connected_id`     VARCHAR(50)  NULL     DEFAULT NULL,
-    `branch_id`        INT          NULL     DEFAULT NULL,
-    `asset`            BIGINT       NOT NULL DEFAULT 0,
-    `filename1`        VARCHAR(255) NULL     DEFAULT NULL,
-    `filename2`        VARCHAR(255) NULL     DEFAULT NULL,
-    `tendency`         DOUBLE       NOT NULL DEFAULT 0,
-    `asset_proportion` DOUBLE       NULL     DEFAULT NULL,
-    PRIMARY KEY (`email`),
-    INDEX `FK_branch_TO_user_1` (`branch_id` ASC) VISIBLE,
-    CONSTRAINT `FK_branch_TO_user_1`
-        FOREIGN KEY (`branch_id`)
-            REFERENCES `jeju_gom`.`branch` (`branch_id`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`asset_status`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`asset_status`
-(
-    `asset_id`            INT          NOT NULL AUTO_INCREMENT,
-    `email`               VARCHAR(255) NOT NULL,
-    `asset_category_code` VARCHAR(2)   NOT NULL,
-    `amount`              BIGINT       NULL DEFAULT NULL,
-    `asset_name`          VARCHAR(20)  NULL DEFAULT NULL,
-    `business_type`       VARCHAR(10)  NULL DEFAULT NULL,
-    PRIMARY KEY (`asset_id`),
-    INDEX `FK_asset_category_TO_asset_status_1` (`asset_category_code` ASC) VISIBLE,
-    INDEX `FK_user_TO_asset_status_1` (`email` ASC) VISIBLE,
-    CONSTRAINT `FK_asset_category_TO_asset_status_1`
-        FOREIGN KEY (`asset_category_code`)
-            REFERENCES `jeju_gom`.`asset_category` (`asset_category_code`),
-    CONSTRAINT `FK_user_TO_asset_status_1`
-        FOREIGN KEY (`email`)
-            REFERENCES `jeju_gom`.`user` (`email`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`fin_prdt`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`fin_prdt`
-(
-    `fin_prdt_cd`       VARCHAR(20)  NOT NULL,
-    `fin_prdt_category` VARCHAR(3)   NULL DEFAULT NULL,
-    `fin_prdt_nm`       VARCHAR(50)  NULL DEFAULT NULL,
-    `rec_reason`        TEXT         NULL DEFAULT NULL,
-    `kor_co_nm`         VARCHAR(10)  NULL DEFAULT NULL,
-    `fin_co_no`         VARCHAR(10)  NULL DEFAULT NULL,
-    `prdt_feature`      TEXT         NULL DEFAULT NULL,
-    `description`       TEXT         NULL DEFAULT NULL,
-    `join_way`          VARCHAR(50)  NULL DEFAULT NULL,
-    `mtrt_int`          TEXT         NULL DEFAULT NULL,
-    `spcl_cnd`          TEXT         NULL DEFAULT NULL,
-    `join_deny`         VARCHAR(2)   NULL DEFAULT NULL,
-    `join_member`       VARCHAR(100) NULL DEFAULT NULL,
-    `etc_note`          TEXT         NULL DEFAULT NULL,
-    `max_limit`         VARCHAR(200) NULL DEFAULT NULL,
-    `loan_inci_expn`    TEXT         NULL DEFAULT NULL,
-    `erly_rpay_fee`     TEXT         NULL DEFAULT NULL,
-    `dly_rate`          TEXT         NULL DEFAULT NULL,
-    `loan_lmt`          VARCHAR(50)  NULL DEFAULT NULL,
-    `tendency`          DOUBLE       NULL DEFAULT NULL,
-    `asset_proportion`  DOUBLE       NULL DEFAULT NULL,
-    `lot`               VARCHAR(15)  NULL DEFAULT NULL,
-    `currency`          VARCHAR(20)  NULL DEFAULT NULL,
-    PRIMARY KEY (`fin_prdt_cd`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`booking`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`booking`
-(
-    `booking_id`  VARCHAR(50)  NOT NULL,
-    `email`       VARCHAR(255) NOT NULL,
-    `fin_prdt_cd` VARCHAR(255) NOT NULL,
-    `branch_id`   INT          NOT NULL,
-    `date`        DATE         NULL DEFAULT NULL,
-    `time`        TIME         NULL DEFAULT NULL,
-    `doc_info`    TEXT         NULL DEFAULT NULL,
-    PRIMARY KEY (`booking_id`),
-    INDEX `FK_user_TO_booking_1` (`email` ASC) VISIBLE,
-    INDEX `FK_fin_prdt_TO_booking_1` (`fin_prdt_cd` ASC) VISIBLE,
-    INDEX `FK_branch_TO_booking_1` (`branch_id` ASC) VISIBLE,
-    CONSTRAINT `FK_branch_TO_booking_1`
-        FOREIGN KEY (`branch_id`)
-            REFERENCES `jeju_gom`.`branch` (`branch_id`),
-    CONSTRAINT `FK_fin_prdt_TO_booking_1`
-        FOREIGN KEY (`fin_prdt_cd`)
-            REFERENCES `jeju_gom`.`fin_prdt` (`fin_prdt_cd`),
-    CONSTRAINT `FK_user_TO_booking_1`
-        FOREIGN KEY (`email`)
-            REFERENCES `jeju_gom`.`user` (`email`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`custom_recommend_prdt`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`custom_recommend_prdt`
-(
-    `user_email`  VARCHAR(255) NOT NULL,
-    `fin_prdt_cd` VARCHAR(20)  NOT NULL,
-    `score`       DOUBLE       NULL DEFAULT NULL COMMENT '적합률',
-    PRIMARY KEY (`user_email`, `fin_prdt_cd`),
-    CONSTRAINT `fk_custom_recommend_prdt_user`
-        FOREIGN KEY (`user_email`)
-            REFERENCES `jeju_gom`.`user` (`email`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`faq`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`faq`
-(
-    `faq_id`   INT         NOT NULL AUTO_INCREMENT,
-    `category` VARCHAR(8)  NULL DEFAULT NULL,
-    `title`    VARCHAR(50) NULL DEFAULT NULL,
-    `content`  TEXT        NULL DEFAULT NULL,
-    PRIMARY KEY (`faq_id`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`fin_prdt_option`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`fin_prdt_option`
-(
-    `option_code`       INT         NOT NULL AUTO_INCREMENT,
-    `fin_prdt_cd`       VARCHAR(20) NOT NULL,
-    `intr_rate_type_nm` VARCHAR(10) NULL DEFAULT NULL,
-    `save_trm`          VARCHAR(3)  NULL DEFAULT NULL,
-    `intr_rate`         DOUBLE      NULL DEFAULT NULL,
-    `intr_rate2`        DOUBLE      NULL DEFAULT NULL,
-    `rsrv_type_nm`      VARCHAR(10) NULL DEFAULT NULL,
-    `mrtg_type_nm`      VARCHAR(10) NULL DEFAULT NULL,
-    `rpay_type_nm`      VARCHAR(20) NULL DEFAULT NULL,
-    `lend_rate_type_nm` VARCHAR(30) NULL DEFAULT NULL,
-    `lend_rate_min`     DOUBLE      NULL DEFAULT NULL,
-    `lend_rate_max`     DOUBLE      NULL DEFAULT NULL,
-    `lend_rate_avg`     DOUBLE      NULL DEFAULT NULL,
-    PRIMARY KEY (`option_code`, `fin_prdt_cd`),
-    INDEX `FK_fin_prdt_TO_fin_prdt_option_1` (`fin_prdt_cd` ASC) VISIBLE,
-    CONSTRAINT `FK_fin_prdt_TO_fin_prdt_option_1`
-        FOREIGN KEY (`fin_prdt_cd`)
-            REFERENCES `jeju_gom`.`fin_prdt` (`fin_prdt_cd`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`recipient`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`recipient`
-(
-    `recipient_id`      INT          NOT NULL AUTO_INCREMENT,
-    `email`             VARCHAR(255) NULL DEFAULT NULL,
-    `relationship`      VARCHAR(20)  NULL DEFAULT NULL,
-    `recipient_name`    VARCHAR(20)  NULL DEFAULT NULL,
-    `birth_date`        DATE         NULL DEFAULT NULL,
-    `is_married`        TINYINT(1)   NULL DEFAULT NULL,
-    `has_prior_gift`    TINYINT(1)   NULL DEFAULT NULL,
-    `prior_gift_amount` BIGINT       NULL DEFAULT NULL,
-    `gift_tax_payer`    VARCHAR(20)  NULL DEFAULT NULL,
-    PRIMARY KEY (`recipient_id`),
-    INDEX `fk_recipient_user1_idx` (`email` ASC) VISIBLE,
-    CONSTRAINT `fk_recipient_user1`
-        FOREIGN KEY (`email`)
-            REFERENCES `jeju_gom`.`user` (`email`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`refresh_token`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`refresh_token`
-(
-    `email`       VARCHAR(255) NOT NULL,
-    `token_value` VARCHAR(255) NULL DEFAULT NULL,
-    `expires_at`  DATE         NULL DEFAULT NULL,
-    PRIMARY KEY (`email`),
-    CONSTRAINT `FK_user_TO_refresh_token_1`
-        FOREIGN KEY (`email`)
-            REFERENCES `jeju_gom`.`user` (`email`)
-)
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`fund_prdt_option`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`fund_prdt_option`
-(
-    `fin_prdt_cd` VARCHAR(20) NOT NULL,
-    `rate_3mon`   VARCHAR(10) NULL,
-    `start_date`  DATE        NULL,
-    `asset_total` VARCHAR(20) NULL,
-    `total_fee`   VARCHAR(10) NULL,
-    `risk_grade`  VARCHAR(10) NULL,
-    `fee_first`   VARCHAR(10) NULL,
-    `fee_redemp`  VARCHAR(10) NULL,
-    `price_std`   VARCHAR(20) NULL,
-    PRIMARY KEY (`fin_prdt_cd`),
-    INDEX `fk_fund_prdt_option_fin_prdt1_idx` (`fin_prdt_cd` ASC) VISIBLE,
-    CONSTRAINT `fk_fund_prdt_option_fin_prdt1`
-        FOREIGN KEY (`fin_prdt_cd`)
-            REFERENCES `jeju_gom`.`fin_prdt` (`fin_prdt_cd`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`strategy`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`strategy`
-(
-    `strategy_id`   INT          NOT NULL AUTO_INCREMENT,
-    `strategy_code` VARCHAR(100) NOT NULL,
-    `rule_category` VARCHAR(45)  NOT NULL,
-    `message`       TEXT         NOT NULL,
-    PRIMARY KEY (`strategy_id`),
-    UNIQUE INDEX `strategy_code_UNIQUE` (`strategy_code` ASC) VISIBLE
-)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `jeju_gom`.`news`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `jeju_gom`.`news`
-(
-    `id`         BIGINT       NOT NULL AUTO_INCREMENT,
-    `category`   INT          NOT NULL,
-    `title`      VARCHAR(255) NOT NULL,
-    `link`       TEXT         NOT NULL,
-    `date`       VARCHAR(50)  NULL,
-    `summary`    TEXT         NULL,
-    `created_at` DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY ux_category_link (category, link(255))
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `asset_category`
+--
 
-SET SQL_MODE = @OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
-
-
-
--- ------------------------------------------------------------------------------------
-
-
--- -----------------------------------
--- 필수 데이터
--- -----------------------------------
-
--- 자산 카테고리 데이터
+LOCK TABLES `asset_category` WRITE;
+/*!40000 ALTER TABLE `asset_category`
+    DISABLE KEYS */;
 INSERT INTO `asset_category`
 VALUES ('1', '부동산'),
        ('2', '예/적금'),
@@ -364,8 +46,117 @@ VALUES ('1', '부동산'),
        ('4', '주식/펀드'),
        ('5', '사업체/지분'),
        ('6', '기타');
+/*!40000 ALTER TABLE `asset_category`
+    ENABLE KEYS */;
+UNLOCK TABLES;
 
--- 지점 데이터
+--
+-- Table structure for table `asset_status`
+--
+
+DROP TABLE IF EXISTS `asset_status`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `asset_status`
+(
+    `asset_id`            int          NOT NULL AUTO_INCREMENT,
+    `email`               varchar(255) NOT NULL,
+    `asset_category_code` varchar(2)   NOT NULL,
+    `amount`              bigint      DEFAULT NULL,
+    `asset_name`          varchar(20) DEFAULT NULL,
+    `business_type`       varchar(10) DEFAULT NULL,
+    PRIMARY KEY (`asset_id`),
+    KEY `fk_asset_status_asset_category1_idx` (`asset_category_code`),
+    KEY `fk_asset_status_user1_idx` (`email`),
+    CONSTRAINT `fk_asset_status_asset_category1` FOREIGN KEY (`asset_category_code`) REFERENCES `asset_category` (`asset_category_code`),
+    CONSTRAINT `fk_asset_status_user1` FOREIGN KEY (`email`) REFERENCES `user` (`email`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 8
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `asset_status`
+--
+
+LOCK TABLES `asset_status` WRITE;
+/*!40000 ALTER TABLE `asset_status`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `asset_status`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `booking`
+--
+
+DROP TABLE IF EXISTS `booking`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `booking`
+(
+    `booking_id`   varchar(50)  NOT NULL,
+    `booking_code` varchar(30)  NOT NULL,
+    `email`        varchar(255) NOT NULL,
+    `branch_id`    int          NOT NULL,
+    `fin_prdt_cd`  varchar(20)  DEFAULT NULL,
+    `date`         date         DEFAULT NULL,
+    `time`         time         DEFAULT NULL,
+    `doc_info`     text,
+    `bookingcol`   varchar(100) DEFAULT NULL,
+    PRIMARY KEY (`booking_id`),
+    KEY `fk_booking_user1_idx` (`email`),
+    KEY `fk_booking_branch_idx` (`branch_id`),
+    CONSTRAINT `fk_booking_branch` FOREIGN KEY (`branch_id`) REFERENCES `branch` (`branch_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `fk_booking_user1` FOREIGN KEY (`email`) REFERENCES `user` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `booking`
+--
+
+LOCK TABLES `booking` WRITE;
+/*!40000 ALTER TABLE `booking`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `booking`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `branch`
+--
+
+DROP TABLE IF EXISTS `branch`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `branch`
+(
+    `branch_id`         int NOT NULL AUTO_INCREMENT,
+    `branch_name`       varchar(40) DEFAULT NULL,
+    `branch_phone`      varchar(20) DEFAULT NULL,
+    `address_name`      varchar(30) DEFAULT NULL,
+    `road_address_name` varchar(30) DEFAULT NULL,
+    `x`                 varchar(20) DEFAULT NULL,
+    `y`                 varchar(20) DEFAULT NULL,
+    `distance`          varchar(5)  DEFAULT NULL,
+    PRIMARY KEY (`branch_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 171
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `branch`
+--
+
+LOCK TABLES `branch` WRITE;
+/*!40000 ALTER TABLE `branch`
+    DISABLE KEYS */;
 INSERT INTO `branch`
 VALUES (1, 'KB국민은행 봉천역', '1588-9999', '서울 관악구 봉천동 927-21', '서울 관악구 남부순환로 1734',
         '126.94277343570529', '37.48198560181632', ''),
@@ -707,792 +498,2536 @@ VALUES (1, 'KB국민은행 봉천역', '1588-9999', '서울 관악구 봉천동 
         '126.97878762708498', '37.56844782144291', ''),
        (170, 'KB국민은행 광화문역 ATM', '02-739-0881', '서울 종로구 당주동 160', '서울 종로구 새문안로5길 13',
         '126.974415113053', '37.57136978394', '');
+/*!40000 ALTER TABLE `branch`
+    ENABLE KEYS */;
+UNLOCK TABLES;
 
--- 금융 상품 데이터
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
-/*!40103 SET TIME_ZONE = '+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
-/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
+--
+-- Table structure for table `custom_recommend_prdt`
+--
 
-LOCK TABLES `fin_prdt` WRITE;
-/*!40000 ALTER TABLE `fin_prdt`
+DROP TABLE IF EXISTS `custom_recommend_prdt`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `custom_recommend_prdt`
+(
+    `user_email`  varchar(255) NOT NULL,
+    `fin_prdt_cd` varchar(20)  NOT NULL,
+    `score`       double DEFAULT NULL,
+    PRIMARY KEY (`user_email`, `fin_prdt_cd`),
+    CONSTRAINT `fk_custom_recommend_prdt_user` FOREIGN KEY (`user_email`) REFERENCES `user` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `custom_recommend_prdt`
+--
+
+LOCK TABLES `custom_recommend_prdt` WRITE;
+/*!40000 ALTER TABLE `custom_recommend_prdt`
     DISABLE KEYS */;
-INSERT INTO `fin_prdt` (`fin_prdt_cd`, `fin_prdt_category`, `fin_prdt_nm`, `rec_reason`,
-                        `kor_co_nm`,
-                        `fin_co_no`, `prdt_feature`, `description`, `join_way`, `mtrt_int`,
-                        `spcl_cnd`, `join_deny`, `join_member`, `etc_note`, `max_limit`,
-                        `loan_inci_expn`, `erly_rpay_fee`, `dly_rate`, `loan_lmt`, `tendency`,
-                        `asset_proportion`, `lot`, `currency`)
-VALUES ('C016622', NULL, 'KB골드투자통장', NULL, '국민은행', NULL,
+/*!40000 ALTER TABLE `custom_recommend_prdt`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `deposit`
+--
+
+DROP TABLE IF EXISTS `deposit`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `deposit`
+(
+    `fin_prdt_cd`       varchar(50) NOT NULL,
+    `fin_prdt_category` varchar(2)   DEFAULT NULL,
+    `fin_prdt_nm`       varchar(50)  DEFAULT NULL,
+    `fin_co_no`         varchar(20)  DEFAULT NULL,
+    `kor_co_nm`         varchar(15)  DEFAULT NULL,
+    `prdt_feature`      varchar(255) DEFAULT NULL,
+    `description`       text,
+    `join_way`          varchar(50)  DEFAULT NULL,
+    `mtrt_int`          text,
+    `spcl_cnd`          text,
+    `join_deny`         varchar(2)   DEFAULT NULL,
+    `join_member`       varchar(150) DEFAULT NULL,
+    `etc_note`          text,
+    `rec_reason`        text,
+    `tendency`          double       DEFAULT NULL,
+    `asset_proportion`  double       DEFAULT NULL,
+    PRIMARY KEY (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `deposit`
+--
+
+LOCK TABLES `deposit` WRITE;
+/*!40000 ALTER TABLE `deposit`
+    DISABLE KEYS */;
+INSERT INTO `deposit`
+VALUES ('DP01000014', '1', '일반정기예금', '0010927', '국민은행', '대면가입 목돈을 안정적으로 예치하기 위한 예금',
+        '-설명 : 목돈을 일정기간동안 예치하여 안정적인 수익을 목적으로 하는 일시예치식 예금입니다.', '영업점',
+        '-1개월 이내 : 기본이율 X 50%\n-1개월 초과~3개월 이내 : 기본이율 X 30%\n-3개월 초과 : 0.1%,', '해당없음', '1', '제한없음',
+        '-가입금액 : 최저 10만원이상 최고한도 없음(원단위)', '원금 보장 정기예금 상품으로, 목돈을 안전하게 예치하고자 하는 시니어분들에게 적합👍', 0.81,
+        0.86),
+       ('DP01000029', '1', '국민수퍼정기예금(개인)', '0010927', '국민은행', '우대금리 이율 등 직접 설계 가능한 예금',
+        '-설명 : 가입자가 이율, 이자지급, 만기일 등을 직접 설계하여 저축할 수 있는 다기능 맞춤식 정기예금입니다.', '영업점, 고객센터',
+        '-1개월 이내 : 기본이율 X 50%\n-1개월 초과~3개월 이내 : 기본이율 X 30%\n-3개월 초과 : 0.1%',
+        '① 금리우대쿠폰  ② 비과세·중장기주택부금 만기 후 연 0.1%p 우대', '1', '제한없음',
+        '-가입금액 : 신규시 최저 1백만원 이상, 건별 10만원 이상 30회까지 추가 입금 가능',
+        '일정 금액 이상 예치 시 우대금리를 제공하는 상품이빈다. 은퇴자산 늘리고자 하는 시니어분들에게 추천👍', 0.78, 0.98),
+       ('DP01000214', '1', '국민수퍼정기예금(CD금리연동형)', '0010927', '국민은행', '우대금리 CD금리 연동, 금리상승기에 유리한 예금',
+        '-설명 : 매 3개월마다 CD수익률에 따라 금리가 변경 적용되어 금리상승기에 유리한 정기예금 (예금자 보호 대상)', '영업점, 고객센터',
+        '-1개월 이내 : 기본이율 X 50%\n -1개월 초과~3개월 이내 : 기본이율 X 30%\n -3개월 초과 : 0.1%',
+        '비과세가계저축 및 중장기주택부금 만기계좌를 해지일로부터 2개월 이내에 본인이나 배우자 또는 직계존비속 명의로 계약기간 1년 이상 가입하는 계좌 : 연 0.1%p',
+        '1', '제한없음', '-가입금액 : 신규시 최저 1백만원 이상, 건별 10만원 이상 추가입금 가능',
+        'CD금리에 연동되어 시장 금리 상승 시 더 높은 수익 기대할 수 있는 상품입니다. 시니어의 자산을 시장과 연동해 운용하려는 경우 적합👍', 0.91, 0.98),
+       ('DP01000780', '1', 'KB골든라이프연금우대통장', '0010927', '국민은행', '우대금리 연금 수령 시 우대금리 및 수수료 면제',
+        '-설명 : 고객의 안정적인 노후생활을 위한 3층 연금 구조 형성을 지원하며, 연금 수령 시 수수료 면제와 우대금리를 제공하는 요구불예금 상품입니다.', '영업점',
+        '-1개월 이내 : 기본이율 X 50%\n -1개월 초과~3개월 이내 : 기본이율 X 30%\n -3개월 초과 : 0.1%',
+        '연금 수령 실적에 따라 우대금리 제공(최저 0.5% ~ 최고 1.5%)', '1', '실명의 개인 (1인 1계좌)',
+        '비과세종합저축 대상, 수수료 면제 및 환율 우대',
+        '연금 수령 고객에게 우대금리 + 수수료 면제 혜택 제공하기에 국민연금, 공무원연금 등을 수령 중인 시니어에게 적합👍', 0.33, 0.49),
+       ('DP01000938', '1', 'KB Star 정기예금', '0010927', '국민은행', '간편가입 디지털 전용, 편리한 온라인 예금',
+        '-설명 : 인터넷뱅킹, KB스타뱅킹, 고객센터를 통해서만 가입가능한 Digital KB 대표 정기예금으로, 자동 만기관리부터 분할인출까지 가능한 편리한 온라인 전용 정기예금입니다.\n- 분할인출 : 가입일로부터 1개월이상 경과된 계좌에 한해 계좌별 3회(해지 포함) 이내 분할인출이 가능합니다. 인출금액은 제한이 없으나 분할인출 후 계좌별 잔액이 1백만원 이상 유지되어야 합니다.\n-만기해지방법 : 1.자동해지 2.자동재예치(원금) 3.자동재예치(원금+이자)\n-예금유의사항 : 1.금융소비자는 해당 상품 또는 서비스에 대하여 설명받을 권리가 있습니다. 2.만기 전 해지할 경우 계약에서 정한 이율보다 낮은 중도해지이율이 적용됩니다. 계좌에 압류, 가압류, 질권 등이 등록될 경우 원금 및 이자 지급이 제한될 수 있습니다. 이 상품은 KB국민은행 수신상품부(P)에서 관리하는 상품입니다. 기타 상품에 대한 자세한 사항은 영업점 또는 고객센터(☎ 1588-9999)로 문의하시기 바랍니다.',
+        '인터넷뱅킹, KB스타뱅킹, 고객센터', '-1개월 이내 : 기본이율 X 50%\n-1개월 초과~3개월 이내 : 기본이율 X 30%\n-3개월 초과 : 0.1%',
+        '-금리우대쿠폰 : 이 예금의 신규 시 금리우대쿠폰을 적용한 경우 쿠폰 우대금리를 기본이율에 가산', '1', '개인 및 개인사업자',
+        '-가입금액 : 1백만원 이상 (추가입금 불가)\n-계약기간 : 1개월 이상 36개월 이하(월단위)',
+        '디지털 전용 상품으로 높은 금리 제공하는 상품입니다. 스마트폰 사용에 익숙한 시니어에게 추천👍', 0.78, 0.81),
+       ('DP01001624', '1', 'KB Star 지수연동예금 25-3호(KOSPI200 상승추구형(최저이율보장형))', '0010927', '국민은행',
+        '간편가입 KOSPI200 지수 연동, 원금 보장',
+        '-설명 : 만기해지 시 예금원금은 보장하면서 기초자산인 KOSPI200 지수의 변동에 연동하여 이자수익이 결정되는 상품입니다.', '스타뱅킹',
+        '-연 0.1% (만기일부터 예금지급일 전일까지의 적용금리)', '해당없음', '1', '제한없음',
+        '-가입금액 : 만기해지 시 예금원금은 보장하면서 기초자산인 KOSPI200 지수의 변동에 연동하여 이자수익이 결정되는 상품1백만원 이상(만원 단위)',
+        '안정성과 기본 수익+상승 시 추가 수익을 함께 추구하려는 금융 이해도가 높은 시니어에게 적합👍', 0.04, -0.39),
+       ('DP01001625', '1', 'KB Star 지수연동예금 25-3호(KOSPI200 상승낙아웃형(최저이율보장형))', '0010927', '국민은행',
+        '간편가입 KOSPI200 지수 연동, 원금 보장',
+        '-설명 : 만기해지 시 예금원금은 보장하면서 기초자산인 KOSPI200 지수의 변동에 연동하여 이자수익이 결정되는 상품입니다.', '스타뱅킹',
+        '-연 0.1% (만기일부터 예금지급일 전일까지의 적용금리)', '해당없음', '1', '제한없음', '-가입금액 : 1백만원 이상 (만원 단위)',
+        '안정성을 중심으로 수익을 함께 추구하려는 금융 이해도가 높은 시니어에게 적합👍', 0.14, -0.42),
+       ('DP01001626', '1', 'KB Star 지수연동예금 25-3호(KOSPI200 상승낙아웃형(고수익목표형))', '0010927', '국민은행',
+        '간편가입 KOSPI200 지수 연동, 원금 보장',
+        '-설명 : 만기해지 시 예금원금은 보장하면서 기초자산인 KOSPI200 지수의 변동에 연동하여 이자수익이 결정되는 상품입니다.', '스타뱅킹',
+        '-연 0.1% (만기일부터 예금지급일 전일까지의 적용금리)', '해당없음', '1', '제한없음', '-가입금액 : 1백만원 이상 (만원 단위)',
+        '안정성과 고수익을 함께 추구하려는 금융 이해도가 높은 시니어에게 적합👍', 0.05, -0.16),
+       ('DP240000', '1', '정기예금', '0013127', 'KB저축은행', '우대금리 영업점 판매, 확정 금리 제공',
+        '-설명 : 일정기간 여유자금을 예금하시면 확정 금리로 높은 수익을 드리는 영업점 판매 상품입니다.', '영업점',
+        '-1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율',
+        '-인터넷뱅킹 신규가입하여 출금계좌를 등록한 후 당일 창구 신규시 우대금리 연 0.1%p적용.\n단, 신규가입일 포함 14일 이내 타기관 공인인증서 미등록시 우대금리 적용해제',
+        '1', '제한없음', '-가입기간 : 3~36개월\n -가입금액 : 1백만원이상',
+        '전통적이고 단순한 예금 상품으로 복잡한 조건 없이 가입 가능하여 심리적 안정감을 제공하기에 전통적인 예금 상품을 찾는 시니어에게 적합👍', 0.82, 0.99),
+       ('DP240001', '1', 'KB e-plus 정기예금', '0013127', 'KB저축은행', '간편가입 온라인 전용, 확정 금리 제공',
+        '-설명 : 일정기간 여유자금을 예금하시면 확정 금리로 높은 수익을 드리는 온라인 가입 전용상품입니다.', '인터넷뱅킹, 스타뱅킹',
+        '-1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율', '해당없음', '1', '제한없음',
+        '-가입기간 : 3~36개월\n-가입금액 : 1백만원이상', '비대면 가입 시 우대금리 제공하는 상품입니다. 영업점 방문이 어려운 시니어에게 추천👍', 0.84,
+        0.81),
+       ('DP240004', '1', '플러스회전식정기예금(대면)', '0013127', 'KB저축은행', '우대금리 매년 금리 변동 장기 목돈 상품',
+        '-설명 : 매 회전주기(1년)마다 약정이율이 변동되는 장기목돈굴리기 상품입니다.', '영업점',
+        '-1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율',
+        '-만 65세이상 첫가입시 최초 1계좌에 한하여 우대금리 연 0.1%p적용', '1', '제한없음',
+        '-가입기간 36개월로 매 회전주기(1년)마다 자동회전되는 회전정기예금(변동금리상품)\n-가입금액 : 1백만원이상',
+        '만기 시 자동 재예치 기능이 있어 복잡한 재계약 절차 없이 예치 유지가 가능한 상품입니다. 인지적 부담이 적어 시니어에게 적합👍', 0.99, 0.81),
+       ('DP240005', '1', '플러스회전식정기예금', '0013127', 'KB저축은행', '간편가입 매년 금리 변동 장기 상품',
+        '-설명 : 매 회전주기(1년)마다 약정이율이 변동되는 장기목돈굴리기 상품입니다.', '영업점',
+        '-1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율', '해당없음', '1', '제한없음',
+        '-가입기간 36개월로 매 회전주기(1년)마다 자동회전되는 회전정기예금(변동금리상품)\n -가입금액 : 1백만원이상',
+        '만기 시 자동 재예치 기능이 있어 복잡한 재계약 절차 없이 예치 유지가 가능한 상품입니다. 인지적 부담이 적어 시니어에게 적합👍', 0.87, 0.81);
+/*!40000 ALTER TABLE `deposit`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `deposit_option`
+--
+
+DROP TABLE IF EXISTS `deposit_option`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `deposit_option`
+(
+    `option_cd`         int         NOT NULL AUTO_INCREMENT,
+    `fin_prdt_cd`       varchar(50) NOT NULL,
+    `intr_rate_type_nm` varchar(10) DEFAULT NULL,
+    `save_trm`          varchar(3)  DEFAULT NULL,
+    `intr_rate`         double      DEFAULT NULL,
+    `intr_rate2`        double      DEFAULT NULL,
+    PRIMARY KEY (`option_cd`),
+    KEY `fk_fin_prdt_deposit` (`fin_prdt_cd`),
+    CONSTRAINT `fk_fin_prdt_deposit` FOREIGN KEY (`fin_prdt_cd`) REFERENCES `deposit` (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 75
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `deposit_option`
+--
+
+LOCK TABLES `deposit_option` WRITE;
+/*!40000 ALTER TABLE `deposit_option`
+    DISABLE KEYS */;
+INSERT INTO `deposit_option`
+VALUES (38, 'DP01000938', '단리', '1', 1.8, 2.45),
+       (39, 'DP01000938', '단리', '3', 2, 2.45),
+       (40, 'DP01000938', '단리', '6', 2.1, 2.45),
+       (41, 'DP01000938', '단리', '12', 2.15, 2.45),
+       (42, 'DP01000938', '단리', '24', 2.2, 2.4),
+       (43, 'DP01000938', '단리', '36', 2.2, 2.4),
+       (44, 'DP01000029', '고정금리', '12', 2.05, 2.15),
+       (45, 'DP01000214', '변동금리', '12', 2.02, 2.02),
+       (46, 'DP01000014', '고정금리', '36', 2.25, 2.25),
+       (47, 'DP01001624', '지수연동', '12', 2.55, 2.75),
+       (48, 'DP01001625', '지수연동', '12', 2.4, 4.4),
+       (49, 'DP01001626', '지수연동', '12', 2.4, 4.4),
+       (50, 'DP240000', '단리', '3', 2.3, 2.4),
+       (51, 'DP240000', '단리', '6', 2.6, 2.7),
+       (52, 'DP240000', '단리', '12', 2.6, 2.7),
+       (53, 'DP240000', '단리', '24', 2.5, 2.6),
+       (54, 'DP240000', '단리', '36', 2.4, 2.5),
+       (55, 'DP240000', '복리', '3', 2.3, 2.4),
+       (56, 'DP240000', '복리', '6', 2.6, 2.7),
+       (57, 'DP240000', '복리', '12', 2.6, 2.7),
+       (58, 'DP240000', '복리', '24', 2.5, 2.6),
+       (59, 'DP240000', '복리', '36', 2.4, 2.5),
+       (60, 'DP240001', '단리', '3', 2.4, 2.4),
+       (61, 'DP240001', '단리', '6', 2.7, 2.7),
+       (62, 'DP240001', '단리', '12', 2.7, 2.7),
+       (63, 'DP240001', '단리', '24', 2.6, 2.6),
+       (64, 'DP240001', '단리', '36', 2.5, 2.5),
+       (65, 'DP240001', '복리', '3', 2.4, 2.4),
+       (66, 'DP240001', '복리', '6', 2.7, 2.7),
+       (67, 'DP240001', '복리', '12', 2.7, 2.7),
+       (68, 'DP240001', '복리', '24', 2.6, 2.6),
+       (69, 'DP240001', '복리', '36', 2.5, 2.5),
+       (70, 'DP240004', '단리', '12', 2.8, 2.9),
+       (71, 'DP240004', '복리', '12', 2.8, 2.9),
+       (72, 'DP240005', '단리', '12', 2.9, 2.9),
+       (73, 'DP240005', '복리', '12', 2.9, 2.9),
+       (74, 'DP01000780', '변동금리', NULL, 0.1, 1.5);
+/*!40000 ALTER TABLE `deposit_option`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `faq`
+--
+
+DROP TABLE IF EXISTS `faq`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `faq`
+(
+    `faq_id`   int NOT NULL AUTO_INCREMENT,
+    `category` varchar(8)  DEFAULT NULL,
+    `title`    varchar(50) DEFAULT NULL,
+    `content`  text,
+    PRIMARY KEY (`faq_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 36
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `faq`
+--
+
+LOCK TABLES `faq` WRITE;
+/*!40000 ALTER TABLE `faq`
+    DISABLE KEYS */;
+INSERT INTO `faq`
+VALUES (1, '상속', '상속세는 어떤 세금이며, 언제까지 신고해야 하나요?',
+        '<p>상속세란 돌아가신 분(피상속인)이 남긴 재산에 대해 상속인이 내는 세금을 말합니다.</p><p>상속세는 <strong>사망일이 속하는 달의 말일로부터 6개월 이내</strong>(상속인 전원이 해외 거주 시 9개월 이내)에 신고 및 납부해야 합니다. 기한을 넘기면 가산세가 부과됩니다.</p><p>과세 대상은 부동산, 금융자산, 주식 등 모든 재산이며, 여기서 고인의 빚(채무)과 장례비, 각종 공제 금액을 뺀 나머지에 대해 세금이 계산됩니다. 재산과 빚은 정부24 \'안심상속 원스톱서비스\'를 통해 편리하게 조회할 수 있습니다.</p>'),
+       (2, '상속', '재산이 얼마부터 상속세가 나오나요?',
+        '<p>상속세는 일정 금액을 초과할 때만 발생하며, <strong>최소 5억 원까지는 \'기초공제\'로 세금이 없습니다.</strong></p><p>여기에 가족 구성원에 따라 추가 공제가 적용되어 세금 부담이 줄어듭니다.</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li><strong>배우자와 자녀가 모두 있는 경우:</strong> 최소 10억 원까지 공제 (기초공제 5억 + 배우자공제 최소 5억)</li><li><strong>자녀만 있는 경우:</strong> 5억 원까지 공제</li><li><strong>배우자만 있는 경우:</strong> 최소 7억 원에서 최대 30억 원까지 공제</li></ul><p>따라서 같은 10억 원짜리 집을 물려받아도 누가 상속받는지에 따라 세금이 나올 수도, 안 나올 수도 있습니다.</p>'),
+       (3, '상속', '사망 시 재산 외에 상속재산에 추가되는 것이 있나요?',
+        '<p>네, 사망 시점의 재산 외에도 아래 항목들이 상속재산에 포함되어 상속세가 계산됩니다.</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li><strong>사전 증여재산:</strong> 돌아가시기 전 10년 안에 상속인에게, 5년 안에 상속인 외의 자에게 증여한 재산</li><li><strong>사망보험금 및 퇴직금:</strong> 피상속인의 사망으로 인해 지급받는 생명보험금, 손해보험금, 퇴직금 등</li><li><strong>추정 상속재산:</strong> 돌아가시기 전 1~2년 이내에 2억 원 또는 5억 원이 넘는 큰돈을 인출하고 사용처가 불분명한 경우, 그 금액의 일부</li></ul><p>따라서 상속을 대비한 증여는 최소 10년 이상의 장기적인 계획이 중요합니다.</p>'),
+       (4, '증여', '증여세를 줄이는 방법과 공제 한도는 어떻게 되나요?',
+        '<p>증여세는 \'증여재산공제\'를 활용하면 세금을 줄일 수 있습니다. 공제는 <strong>재산을 받는 사람(수증자) 기준</strong>으로, 10년 동안 합산하여 아래 한도까지 적용됩니다.</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li><strong>배우자에게 받을 때:</strong> 6억 원</li><li><strong>직계존속(부모, 조부모)에게 받을 때:</strong> 5천만 원 (수증자가 미성년자면 2천만 원)</li><li><strong>직계비속(자녀, 손주)에게 받을 때:</strong> 5천만 원 (손주가 미성년자면 2천만 원)</li><li><strong>기타 친족(형제, 사위, 며느리 등)에게 받을 때:</strong> 1천만 원</li></ul><p><strong>[중요]</strong> 부모님이 한 자녀에게 증여할 때는 아버지와 어머니를 \'동일인\'으로 보아, 두 분께 받은 금액을 합쳐 총 5천만 원까지만 공제됩니다.</p><p>특히 2024년부터는 <strong>결혼 또는 출산 시, 위 공제와 별도로 1억 원을 추가 공제</strong>받을 수 있는 제도가 신설되었습니다.</p>'),
+       (5, '상속', '형제자매 간 상속 분쟁이 생기면 어떻게 해결하나요?',
+        '<p>상속 분쟁은 주로 상속 재산의 규모, 기여도, 생전 증여 여부 때문에 발생합니다.</p><p>형제자매 간 분쟁을 해결하는 대표적인 방법은 다음과 같습니다:</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li><strong>유류분 반환 청구:</strong> 특정 형제에게 재산이 편중되었다고 판단되면 법정 상속분의 일부를 돌려달라고 청구할 수 있습니다.</li><li><strong>기여분 청구:</strong> 부모님을 특별히 부양하는 등 생전에 기여한 형제는 추가 상속 지분을 주장할 수 있습니다.</li><li><strong>상속재산분할 심판 청구:</strong> 협의가 안 될 경우 가정법원에 조정을 신청하거나 공정한 분할을 요구하는 심판을 청구할 수 있습니다.</li></ul><p>가능하다면, 상속 개시 전 유언장 작성이나 가족 간 사전 합의를 통해 갈등을 최소화하는 것이 가장 바람직합니다.</p>'),
+       (6, '증여', '증여세는 주는 사람과 받는 사람 중 누가 내야 하나요?',
+        '<p>증여세는 <strong>재산을 받는 사람(수증자)이 납부</strong>하는 것이 원칙입니다.</p><p>만약 수증자 대신 증여자가 세금을 내준다면, 그 세금 액수만큼을 추가로 증여한 것으로 간주하여 세금이 더 부과될 수 있습니다. 이를 \'대납 증여\'라고 합니다.</p><p>따라서 세금은 원칙대로 수증자가 직접 신고하고 납부하는 것이 가장 안전합니다.</p>'),
+       (7, '상속', '부모님이 재산보다 빚을 더 많이 남겼는데 상속해야 하나요?',
+        '<p>아닙니다. 상속은 재산뿐 아니라 빚(채무)도 함께 물려받는 것입니다.</p><p>만약 재산보다 빚이 더 많다면, <strong>\'상속 포기\'</strong>나 <strong>\'한정승인\'</strong> 제도를 통해 빚을 떠안지 않을 수 있습니다. 이 제도는 사망 사실을 안 날로부터 <strong>3개월 이내에 가정법원에 신청</strong>해야 합니다.</p><p>상속세는 남긴 재산에서 빚을 뺀 순재산을 기준으로 계산되므로, 빚이 더 많은 경우에는 상속세가 발생하지 않습니다.</p>'),
+       (8, '상속', '유언장이 있으면 반드시 그 내용대로 상속해야 하나요?',
+        '<p>원칙적으로 법적 요건을 갖춘 유언장은 그 내용을 우선적으로 따릅니다. 하지만 아래와 같은 경우 유언장 내용과 다르게 상속될 수 있습니다.</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li><strong>유언장이 무효인 경우:</strong> 자필 서명이나 날짜가 없거나, 법적 형식을 갖추지 않은 유언장은 효력이 없습니다.</li><li><strong>유류분 권리를 침해하는 경우:</strong> 유언으로 특정 상속인의 재산을 0원으로 만들었더라도, 그 상속인은 법으로 보장된 최소한의 상속 지분(유류분)을 청구할 수 있습니다.</li></ul><p>따라서 유언장 내용이 있더라도, 상속인의 법적 권리를 완전히 무시할 수는 없습니다.</p>'),
+       (9, '상속', '증여와 상속 중 어느 쪽이 더 유리한가요?',
+        '<p>증여와 상속은 각각 장단점이 있어 가족의 상황, 자산 규모에 따라 유불리가 달라집니다.</p><p><strong>✔️ 증여가 유리한 경우</strong></p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li>자녀가 미리 재산을 활용해야 할 때</li><li>10년 단위로 나누어 분산 증여하여 낮은 세율을 적용받고 싶을 때</li><li>앞으로 가격이 크게 오를 것으로 예상되는 자산을 미리 넘겨줄 때</li></ul><p><strong>✔️ 상속이 유리한 경우</strong></p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li>배우자 공제 등 공제 혜택이 증여보다 훨씬 클 때</li><li>상속 재산에 빚이 많아 순재산이 적을 때</li><li>상속받은 부동산은 사망일 기준 시가로 취득가액이 정해져 양도세 절세에 유리할 때</li></ul><p>일반적으로 자산 규모가 크지 않다면 상속이, 장기 계획 하에 분산이 가능하다면 증여가 유리할 수 있습니다.</p>'),
+       (10, '증여', '주식이나 가상자산(코인)도 증여세 대상인가요?',
+        '<p>네, 주식이나 가상자산도 금전적 가치가 있는 재산이므로 증여세 과세 대상입니다.</p><p>증여가액은 아래 시점을 기준으로 평가합니다.</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li><strong>상장주식:</strong> 증여일 이전과 이후 각 2개월(총 4개월) 동안의 평균 종가</li><li><strong>가상자산:</strong> 증여일 이전과 이후 각 1개월(총 2개월) 동안 공시된 일평균가액의 평균액</li><li><strong>비상장주식:</strong> 세법에 따른 별도의 평가 방법을 통해 가치 산정</li></ul><p>특히 부모가 자녀 명의 계좌로 직접 주식 투자를 반복하여 수익을 낸다면, 원금뿐만 아니라 그 투자 수익에 대해서도 추가로 증여세가 과세될 수 있으니 주의해야 합니다.</p>'),
+       (11, '상속', '상속 주택의 가격은 어떻게 정하나요?',
+        '<p>상속 주택의 가격은 세법에서 정한 순서에 따라 결정됩니다. 첫 번째는 돌아가시기 전 2년부터 돌아가신 후 15개월 사이에 실제로 거래된 가격(매매, 경매 등)입니다. 만약 이 기간에 거래된 적이 없다면, 비슷한 다른 주택이 거래된 가격을 기준으로 합니다. 이마저도 없다면 마지막으로 나라에서 정한 공시가격을 사용합니다.</p>'),
+       (12, '상속', '배우자가 집을 상속받으면 세금이 어떻게 되나요?',
+        '<p>배우자가 재산을 상속받으면 세금 부담이 크게 줄어듭니다. 배우자가 있으면 다른 가족이 재산을 받더라도 최소 5억 원의 배우자 공제를 받을 수 있습니다. 만약 배우자가 직접 재산을 상속받는다면, 실제로 받은 금액만큼 공제 금액이 더 커집니다. 예를 들어 10억 원이 넘는 집을 자녀보다 배우자가 상속받는 것이 공제를 더 많이 받아 세금 면에서 유리합니다.</p>'),
+       (13, '증여', '부모님 집에서 자녀만 공짜로 살아도 되나요?',
+        '<p>원칙적으로 부모님 소유의 집에 자녀가 무상으로 거주하면 증여세가 부과될 수 있습니다. 세법에서는 월세를 내지 않은 만큼 이익을 증여받았다고 보기 때문입니다. 다만, 집값이 약 13억 원 이하인 경우에는 5년간의 이익이 1억 원을 넘지 않아 세금이 나오지 않습니다. 물론, 집주인인 부모님과 함께 사는 경우에는 증여세가 과세되지 않습니다.</p>'),
+       (14, '상속', '부모님을 모시고 살다 상속받으면 혜택이 있나요?',
+        '<p>네, \'동거주택 상속공제\'라는 세금 혜택이 있습니다. 돌아가신 부모님과 10년 이상 한집에서 계속 같이 살았던 자녀가 그 집을 상속받으면, 집값의 최대 6억 원까지 공제받을 수 있습니다. 군 복무나 학업 등의 이유로 잠시 떨어져 살았던 기간도 10년에 포함될 수 있습니다. 이 혜택은 함께 산 자녀에게만 적용됩니다.</p>'),
+       (15, '상속', '집을 상속받아 2주택자가 되면 종부세를 내나요?',
+        '<p>집을 갑자기 상속받아 2주택자가 되어도 바로 종합부동산세(종부세) 걱정을 할 필요는 없습니다. 상속받은 날로부터 5년 동안은 1주택자로 보기 때문입니다. 또한, 상속받은 집이 수도권이나 광역시 밖의 공시가격 3억 원 이하 주택이거나, 내가 받은 지분이 40% 이하(지분 가액 6억 원 이하)인 경우에도 주택 수에 포함되지 않아 계속 1주택자로 인정됩니다.</p>'),
+       (16, '상속', '2주택일 때 어느 집을 먼저 파는 게 유리한가요?',
+        '<p>상속으로 2주택이 된 경우, 원래 가지고 있던 기존 주택을 먼저 파는 것이 세금상 유리합니다. 원래 살던 집을 먼저 팔면 1세대 1주택으로 인정되어 양도소득세 비과세 혜택을 받을 수 있기 때문입니다. 다만, 기존 주택을 2년 이상 보유하는 등 비과세 요건은 갖춰야 합니다. 상속받은 주택을 먼저 팔게 되면 양도소득세가 과세됩니다.</p>'),
+       (17, '증여', '부모자식 간에 돈을 빌려도 증여세가 나오나요?',
+        '<p>네, 증여로 추정될 수 있어 주의해야 합니다. 부모자식 사이의 돈거래를 빌린 돈으로 인정받으려면, 다른 사람과 거래하는 것처럼 차용증을 자세히 쓰고 실제로 약속한 날에 이자를 지급하고 원금을 갚아야 합니다.</p><p>만약 이자 없이 돈을 빌렸다면, 내지 않은 이자만큼을 증여받은 것으로 볼 수 있습니다. 다만, 법에서 정한 이자율(연 4.6%)로 계산한 이자 금액이 연간 1천만 원 미만일 경우에는 증여세가 과세되지 않습니다.</p>'),
+       (18, '상속', '자녀 이름으로 든 보험금은 상속세가 없나요?',
+        '<p>사실이 아닙니다. 보험계약자가 자녀 이름으로 되어 있어도, 실제 보험료를 부모님이 내주셨다면 그 사망보험금은 상속재산에 포함되어 상속세가 과세됩니다. 자녀가 스스로 번 돈으로 직접 보험료를 냈다는 사실이 증명되어야만 상속재산에서 제외될 수 있습니다.</p>'),
+       (19, '증여', '자녀의 대출을 부모가 대신 갚아줘도 괜찮나요?',
+        '<p>사실이 아닙니다. 자녀 명의로 대출을 받았더라도 부모님이 담보를 제공하거나 원금과 이자를 대신 갚아준다면, 세무서는 이를 \'부모가 자녀에게 현금을 증여한 것\'으로 봅니다. 이 경우 자녀가 증여세를 낼 돈이 없다면, 부모님이 대신 내야 하는 의무가 있습니다.</p>'),
+       (20, '증여', '축의금으로 신혼집을 사도 증여세가 없나요?',
+        '<p>축의금의 주인이 누구인지에 따라 달라져 주의해야 합니다. 법원에서는 축의금을 신랑·신부에게 직접 전달된 일부를 제외하고는 대부분 혼주인 부모님의 돈으로 봅니다. 따라서 부모님께 들어온 축의금으로 자녀가 집을 사면, 부모님께 현금을 증여받은 것으로 보아 증여세가 과세될 수 있습니다. 누구의 손님인지 방명록 등을 잘 보관하는 것이 좋습니다.</p>'),
+       (21, '증여', '생활비 명목으로 보낸 돈은 증여세가 없나요?',
+        '<p>항상 비과세되는 것은 아닙니다. 소득이 없는 가족에게 주는 일반적인 수준의 생활비나 교육비는 증여세가 없습니다. 하지만 소득이 있는 자녀에게 생활비 명목으로 돈을 보내거나, 생활비로 받은 돈을 쓰지 않고 모아서 예·적금을 하거나 집, 주식 등을 사는 데 사용하면 증여세가 부과될 수 있습니다.</p>'),
+       (22, '증여', '세금이 없어도 증여 신고를 꼭 해야 하나요?',
+        '<p>네, 증여받은 날이 속한 달의 말일부터 3개월 안에 신고하는 것이 좋습니다. 공제를 받아 실제로 낼 세금이 없더라도 신고해두면 여러모로 유리합니다. 신고한 금액은 나중에 다른 재산을 사거나 빚을 갚을 때 자금 출처로 당당하게 인정받을 수 있고, 증여받은 재산을 나중에 팔 때 취득가액으로 인정받아 양도소득세를 줄이는 데 도움이 될 수 있습니다.</p>'),
+       (23, '증여', '혼인·출산 증여재산공제는 어떻게 받나요?',
+        '<p>결혼이나 출산 시 1억 원을 추가로 공제받는 제도는 현금뿐만 아니라 부동산, 주식 등 대부분의 재산을 증여받을 때 적용 가능합니다. 증여받은 재산을 꼭 결혼 자금이나 양육비로 써야 하는 것은 아니며, 전세 보증금이나 주택 구입 자금으로 사용해도 공제를 받을 수 있습니다. 다만, 빚을 대신 갚아주거나 저금리로 돈을 빌려주는 등의 방식은 이 혜택에서 제외됩니다.</p>'),
+       (24, '증여', '아버지 집을 시세보다 싸게 사도 증여세가 나오나요?',
+        '<p>네, 증여세가 나올 수 있습니다. 가까운 친척에게서 시세보다 현저히 낮은 가격으로 재산을 살 경우, 그 차액을 증여로 봅니다. 시가와 내가 낸 돈의 차이가 시가의 30%와 3억 원 중 적은 금액보다 크면 증여세 과세 대상이 됩니다. 예를 들어 시가 8억 원짜리 집을 3억 원에 샀다면, 그 차액에서 일정 금액을 뺀 나머지에 대해 증여세가 부과될 수 있습니다.</p>'),
+       (25, '증여', '창업 자금으로 증여받을 때 세금 혜택이 있나요?',
+        '<p>네, \'창업자금 증여세 과세특례\'라는 제도가 있습니다. 만 18세 이상 자녀가 만 60세 이상 부모님께 창업 자금을 증여받을 경우, 최대 5억 원까지 공제되어 사실상 세금을 내지 않습니다. 다만, 혜택을 받으려면 2년 안에 특정 업종으로 창업하고, 4년 안에 자금을 모두 사용하며, 10년간 사업을 유지하는 등 까다로운 조건을 지켜야 합니다.</p>'),
+       (26, '증여', '부동산에 대출이 있을 경우 증여세 계산은 어떻게 되나요?',
+        '<p>부동산을 증여할 때 해당 부동산에 대출(담보대출 등)이 있는 경우, 대출의 부담을 수증자가 승계한다면 그 대출 금액은 \'부담부 증여\'로 간주되어 증여가액에서 차감됩니다.</p><p>즉, <strong>증여가액 = 부동산 시가 - 수증자가 떠안는 대출 금액</strong>으로 계산됩니다.</p><p>예시:</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li>부동산 시가: 4억 원</li><li>대출금: 1억 원</li><li>수증자가 대출까지 함께 승계한 경우 → 증여가액: 3억 원</li></ul><p>이 경우, 3억 원에서 수증자의 공제한도를 뺀 금액에 대해 증여세가 부과됩니다.</p>'),
+       (27, '증여', '과거에 증여한 금액도 이번 증여세 계산에 포함되나요?',
+        '<p>네, 동일한 증여자에게서 10년 이내에 받은 증여는 <strong>합산하여 증여세를 계산</strong>해야 합니다.</p><p>예를 들어, 부모로부터 5년 전에 3,000만 원을 증여받았고, 이번에 4,000만 원을 추가로 받는다면:</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li>합산 증여액: 3,000만 원 + 4,000만 원 = 7,000만 원</li><li>공제 한도(성년 자녀 기준): 5,000만 원</li><li>과세 대상: 2,000만 원</li></ul><p>만약 과거에 이미 공제 한도를 초과해서 세금을 납부했다면, 이번 증여에서 공제를 다시 적용할 수 없습니다.</p>'),
+       (28, '증여', '증여세 계산은 자산별로 따로 하나요, 합쳐서 하나요?',
+        '<p>증여세는 수증자(받는 사람) 1인 기준으로, <strong>모든 자산을 합산하여 한 번에 계산</strong>합니다.</p><p>예를 들어, 자녀에게 예금 1억, 부동산 3억, 주식 5천만 원을 증여한다면, 자산별로 따로 계산하는 것이 아니라 <strong>총 4억 5천만 원을 한꺼번에 합쳐</strong> 증여세를 계산하게 됩니다.</p>'),
+       (29, '상속', '상속받은 부동산은 언제든 팔 수 있나요?',
+        '<p>상속받은 부동산은 <strong>상속등기(소유권 이전 등기)를 마친 후</strong>에야 매도할 수 있습니다.</p><p>특히 공동상속인이 있다면, 협의를 통해 지분을 정리하고 단독 소유로 변경해야 원활한 처분이 가능합니다.</p><p>또한, 향후 부동산을 매각하면 <strong>양도소득세</strong>가 발생할 수 있는데, 이때 취득가액은 <strong>사망일 기준의 시가</strong>로 계산되므로, 부모님이 아주 오래전에 싸게 산 부동산이라도 양도세 부담이 줄어드는 효과가 있을 수 있습니다.</p>'),
+       (30, '상속', '상속 재산이 국내외에 나눠져 있을 경우 어떻게 신고하나요?',
+        '<p>상속세는 <strong>국내에 주소를 둔 사람(거주자)이 사망한 경우</strong> 국내·해외를 불문하고 <strong>전 세계 재산을 모두 포함해 과세</strong>합니다.</p><p>해외 재산도 사망일 기준 시가(한화 환산)로 계산하여 반드시 포함해야 하며, 누락 시 과소신고 가산세(최대 40%)와 탈세 조사 대상이 될 수 있습니다.</p><p>한편, <strong>사망자가 비거주자(해외에 주소가 있는 경우)</strong>라면 한국 내 재산(예: 부동산, 금융자산)만 상속세 과세 대상이 됩니다.</p>'),
+       (31, '증여', '부모와 자녀가 함께 소유한 부동산을 넘길 때도 증여세가 발생하나요?',
+        '<p>부모와 자녀가 <strong>공동 소유하고 있는 부동산의 지분을 이전</strong>할 경우에도, 그 지분이 무상으로 이전된다면 <strong>증여세가 발생</strong>합니다.</p><p>예를 들어, 아파트의 50%를 부모가, 50%를 자녀가 공동소유하고 있었는데, 부모의 지분을 자녀에게 무상으로 넘긴다면, 자녀는 부모로부터 50%의 지분을 \'증여\'받은 것으로 간주되어 그 지분의 시가를 기준으로 증여세가 부과됩니다.</p>'),
+       (32, '증여', '해외 거주자가 증여할 때 어떻게 되나요?',
+        '<p>해외 거주자라도 <strong>대한민국 국적이거나 한국에 일정 기간 이상 거주한 경우</strong>, 국내 증여세 과세 대상이 될 수 있습니다.</p><p>증여세는 <strong>거주자의 국적, 거주기간, 자산 소재지</strong>에 따라 과세 범위가 달라집니다. 기본적인 원칙은 아래와 같습니다:</p><ul class=\"ml-6 list-disc space-y-1 text-sm\"><li><strong>증여자 또는 수증자 중 한 명이라도 \'국내 거주자\'일 경우</strong> → 전 세계 자산에 대해 증여세 과세</li><li><strong>증여자와 수증자 모두 비거주자일 경우</strong> → 국내에 있는 자산에 대해서만 증여세 과세</li></ul>'),
+       (33, '증여', '법인이나 사업체도 증여할 수 있나요?',
+        '<p><strong>사업체나 법인의 지분, 자산, 경영권</strong> 등도 증여의 대상이 될 수 있으며, 이 경우에도 <strong>증여세가 발생</strong>합니다.</p><p>예를 들어, 부모가 자녀에게 법인 지분 30%를 무상으로 넘기면, 그 지분 가치가 <strong>시가로 평가되어 증여세 과세</strong> 대상이 됩니다. 사업체 관련 증여는 세금 구조가 복잡할 수 있으므로, 세무 전문가와 사전 상담을 거치는 것이 필수입니다.</p>'),
+       (34, '증여', '어떤 경우에 증여세를 내야 하나요?',
+        '<p>증여세는 다른 사람에게서 재산을 공짜로 받았을 때 내는 세금입니다. 현금이나 부동산뿐만 아니라 분양권처럼 경제적 가치가 있는 모든 것이 포함됩니다.</p><p>시세보다 훨씬 저렴하게 재산을 살 때 얻는 이익도 증여로 볼 수 있습니다. 다만, 우리가 흔히 주고받는 생활비, 교육비, 축하금, 명절 용돈 등은 사회 통념상 인정되는 범위 내에서 세금이 부과되지 않습니다.</p>'),
+       (35, '증여', '혼인·출산 공제는 첫 결혼, 첫 아이만 되나요?',
+        '<p>아닙니다. 출산 공제는 첫째, 둘째 등 자녀의 출생 순서와 상관없이 받을 수 있습니다. 결혼 공제 역시 초혼과 재혼을 구분하지 않습니다.</p><p>다만, 한 사람당 평생 받을 수 있는 혼인·출산 관련 공제 <strong>총 한도가 1억 원</strong>입니다.</p><p>예를 들어, 결혼할 때 7천만 원을 공제받았다면, 이후 자녀가 태어났을 때는 남은 한도인 3천만 원까지만 추가로 공제받을 수 있습니다.</p>');
+/*!40000 ALTER TABLE `faq`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fund`
+--
+
+DROP TABLE IF EXISTS `fund`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `fund`
+(
+    `fin_prdt_cd`       varchar(50) NOT NULL,
+    `fin_prdt_category` varchar(2)   DEFAULT NULL,
+    `fin_prdt_nm`       varchar(50)  DEFAULT NULL,
+    `fin_co_no`         varchar(20)  DEFAULT NULL,
+    `kor_co_nm`         varchar(15)  DEFAULT NULL,
+    `prdt_feature`      varchar(255) DEFAULT NULL,
+    `rec_reason`        text,
+    `tendency`          double       DEFAULT NULL,
+    `asset_proportion`  double       DEFAULT NULL,
+    PRIMARY KEY (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fund`
+--
+
+LOCK TABLES `fund` WRITE;
+/*!40000 ALTER TABLE `fund`
+    DISABLE KEYS */;
+INSERT INTO `fund`
+VALUES ('1A81', '5', 'KB국민참여정책형뉴딜', '0010930', 'KB자산운용', '뉴딜정책 관련 기업에 분산 투자',
+        '국가 정책과 연계된 안정 투자로 은퇴 이후 자산을 장기적으로 굴리고 싶은 시니어에게 추천👍', -0.72, -0.64),
+       ('2A43', '5', 'KBESG성장리더스', '0010930', 'KB자산운용', 'ESG 우수기업 중심 성장 투자',
+        '사회적 가치와 안정 수익을 함께 추구하는 가치 중심 시니어에게 적합👍', -0.72, -0.58),
+       ('2F33', '5', 'KB중소형주포커스', '0010930', 'KB자산운용', '국내 중소형 우량주에 집중',
+        '성장 가능성 높은 중소형주로 노후 자산에 활력을 더하고 싶은 적극적인 시니어에게 추천👍', -0.66, -0.58),
+       ('2H62', '5', 'KB스타코리아레버리지2.0', '0010930', 'KB자산운용', '코스피200 레버리지 전략',
+        '상승장에서 높은 수익을 노리는 금융 이해도 높은 시니어에게 적합👍', -1, -0.8),
+       ('2K24', '5', 'KB가치배당소득공제', '0010930', 'KB자산운용', '고배당주 투자 및 세제 혜택',
+        '안정적 배당과 세제 혜택으로 노후 생활비를 보완하고 싶은 시니어에게 추천👍', 0.2, 0.35),
+       ('2M72', '5', 'KB가치배당20', '0010930', 'KB자산운용', '고배당 중심의 안정적 수익 추구',
+        '꾸준한 배당과 안정성을 중시하는 장기 투자형 시니어에게 적합👍', 0.19, 0.09),
+       ('2N73', '5', 'KB차이나H주식인덱스', '0010930', 'KB자산운용', '중국 H주 인덱스 연동 투자',
+        '해외 시장 성장성에 투자해 은퇴 후 자산 분산을 원하는 시니어에게 추천👍', -0.77, -0.89),
+       ('2S01', '5', 'KB광개토', '0010930', 'KB자산운용', '국내 가치/성장주 균형 투자',
+        '국내외 다양한 자산에 분산 투자해 안정성과 수익성을 동시에 추구하는 시니어에게 적합👍', -0.1, -0.12),
+       ('32G1', '5', 'KB글로벌대표지수분산', '0010930', 'KB자산운용', '글로벌 주요지수 ETF 분산 투자',
+        '세계 대표 지수에 투자해 장기적이고 안정적인 노후 자산 성장을 원하는 시니어에게 추천👍', 0.21, -0.13),
+       ('33R2', '5', 'KB코리아밸류업액티브', '0010930', 'KB자산운용', '국내 저평가 가치주 집중',
+        '국내 가치주 중심으로 안정 수익과 자산 보전을 원하는 시니어에게 적합👍', 0.36, 0.17);
+/*!40000 ALTER TABLE `fund`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fund_daily_return`
+--
+
+DROP TABLE IF EXISTS `fund_daily_return`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `fund_daily_return`
+(
+    `id`          bigint        NOT NULL AUTO_INCREMENT,
+    `fund_code`   varchar(20)   NOT NULL,
+    `record_date` date          NOT NULL,
+    `return_rate` decimal(5, 2) NOT NULL,
+    `created_at`  datetime DEFAULT CURRENT_TIMESTAMP,
+    `updated_at`  datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_fund_date` (`fund_code`, `record_date`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 901
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fund_daily_return`
+--
+
+LOCK TABLES `fund_daily_return` WRITE;
+/*!40000 ALTER TABLE `fund_daily_return`
+    DISABLE KEYS */;
+INSERT INTO `fund_daily_return`
+VALUES (1, '2N73', '2025-05-08', -0.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (2, '2N73', '2025-05-09', -0.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (3, '2N73', '2025-05-10', 2.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (4, '2N73', '2025-05-11', -0.61, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (5, '2N73', '2025-05-12', 3.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (6, '2N73', '2025-05-13', 2.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (7, '2N73', '2025-05-14', -0.43, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (8, '2N73', '2025-05-15', -2.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (9, '2N73', '2025-05-16', -1.82, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (10, '2N73', '2025-05-17', -1.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (11, '2N73', '2025-05-18', -1.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (12, '2N73', '2025-05-19', 3.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (13, '2N73', '2025-05-20', 1.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (14, '2N73', '2025-05-21', 2.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (15, '2N73', '2025-05-22', 3.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (16, '2N73', '2025-05-23', -1.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (17, '2N73', '2025-05-24', 0.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (18, '2N73', '2025-05-25', 3.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (19, '2N73', '2025-05-26', 3.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (20, '2N73', '2025-05-27', -2.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (21, '2N73', '2025-05-28', -0.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (22, '2N73', '2025-05-29', -0.36, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (23, '2N73', '2025-05-30', 3.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (24, '2N73', '2025-05-31', 2.92, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (25, '2N73', '2025-06-01', -1.14, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (26, '2N73', '2025-06-02', 1.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (27, '2N73', '2025-06-03', 3.69, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (28, '2N73', '2025-06-04', 2.47, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (29, '2N73', '2025-06-05', -1.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (30, '2N73', '2025-06-06', -2.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (31, '2N73', '2025-06-07', -1.53, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (32, '2N73', '2025-06-08', 3.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (33, '2N73', '2025-06-09', -2.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (34, '2N73', '2025-06-10', 1.95, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (35, '2N73', '2025-06-11', 0.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (36, '2N73', '2025-06-12', -0.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (37, '2N73', '2025-06-13', 3.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (38, '2N73', '2025-06-14', -0.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (39, '2N73', '2025-06-15', -0.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (40, '2N73', '2025-06-16', -2.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (41, '2N73', '2025-06-17', -1.82, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (42, '2N73', '2025-06-18', -1.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (43, '2N73', '2025-06-19', 0.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (44, '2N73', '2025-06-20', -2.38, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (45, '2N73', '2025-06-21', -0.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (46, '2N73', '2025-06-22', 2.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (47, '2N73', '2025-06-23', -0.46, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (48, '2N73', '2025-06-24', 3.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (49, '2N73', '2025-06-25', -0.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (50, '2N73', '2025-06-26', -2.84, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (51, '2N73', '2025-06-27', 2.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (52, '2N73', '2025-06-28', 2.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (53, '2N73', '2025-06-29', -1.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (54, '2N73', '2025-06-30', 1.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (55, '2N73', '2025-07-01', 3.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (56, '2N73', '2025-07-02', 0.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (57, '2N73', '2025-07-03', -0.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (58, '2N73', '2025-07-04', -1.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (59, '2N73', '2025-07-05', 0.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (60, '2N73', '2025-07-06', 2.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (61, '2N73', '2025-07-07', 3.95, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (62, '2N73', '2025-07-08', 1.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (63, '2N73', '2025-07-09', 0.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (64, '2N73', '2025-07-10', -2.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (65, '2N73', '2025-07-11', 2.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (66, '2N73', '2025-07-12', 1.87, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (67, '2N73', '2025-07-13', 0.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (68, '2N73', '2025-07-14', 2.92, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (69, '2N73', '2025-07-15', 3.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (70, '2N73', '2025-07-16', -2.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (71, '2N73', '2025-07-17', 0.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (72, '2N73', '2025-07-18', -0.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (73, '2N73', '2025-07-19', 2.94, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (74, '2N73', '2025-07-20', -2.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (75, '2N73', '2025-07-21', 3.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (76, '2N73', '2025-07-22', 1.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (77, '2N73', '2025-07-23', 1.71, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (78, '2N73', '2025-07-24', 1.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (79, '2N73', '2025-07-25', 0.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (80, '2N73', '2025-07-26', 2.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (81, '2N73', '2025-07-27', 1.29, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (82, '2N73', '2025-07-28', -1.23, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (83, '2N73', '2025-07-29', 1.43, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (84, '2N73', '2025-07-30', 1.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (85, '2N73', '2025-07-31', -0.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (86, '2N73', '2025-08-01', -1.90, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (87, '2N73', '2025-08-02', 0.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (88, '2N73', '2025-08-03', -2.45, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (89, '2N73', '2025-08-04', 3.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (90, '2N73', '2025-08-05', 1.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (91, '2H62', '2025-05-08', 3.87, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (92, '2H62', '2025-05-09', -1.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (93, '2H62', '2025-05-10', 1.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (94, '2H62', '2025-05-11', -0.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (95, '2H62', '2025-05-12', -1.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (96, '2H62', '2025-05-13', 0.33, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (97, '2H62', '2025-05-14', -2.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (98, '2H62', '2025-05-15', 3.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (99, '2H62', '2025-05-16', 0.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (100, '2H62', '2025-05-17', 0.95, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (101, '2H62', '2025-05-18', -0.50, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (102, '2H62', '2025-05-19', 1.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (103, '2H62', '2025-05-20', -0.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (104, '2H62', '2025-05-21', -2.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (105, '2H62', '2025-05-22', -0.61, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (106, '2H62', '2025-05-23', 2.02, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (107, '2H62', '2025-05-24', 0.04, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (108, '2H62', '2025-05-25', -1.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (109, '2H62', '2025-05-26', 3.23, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (110, '2H62', '2025-05-27', 0.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (111, '2H62', '2025-05-28', 1.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (112, '2H62', '2025-05-29', 3.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (113, '2H62', '2025-05-30', -1.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (114, '2H62', '2025-05-31', -2.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (115, '2H62', '2025-06-01', 1.84, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (116, '2H62', '2025-06-02', -1.39, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (117, '2H62', '2025-06-03', 0.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (118, '2H62', '2025-06-04', 3.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (119, '2H62', '2025-06-05', 2.56, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (120, '2H62', '2025-06-06', -1.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (121, '2H62', '2025-06-07', -2.43, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (122, '2H62', '2025-06-08', 1.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (123, '2H62', '2025-06-09', 1.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (124, '2H62', '2025-06-10', 3.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (125, '2H62', '2025-06-11', -1.85, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (126, '2H62', '2025-06-12', 1.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (127, '2H62', '2025-06-13', 0.72, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (128, '2H62', '2025-06-14', 3.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (129, '2H62', '2025-06-15', -2.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (130, '2H62', '2025-06-16', -1.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (131, '2H62', '2025-06-17', -0.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (132, '2H62', '2025-06-18', -0.38, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (133, '2H62', '2025-06-19', 2.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (134, '2H62', '2025-06-20', 0.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (135, '2H62', '2025-06-21', -2.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (136, '2H62', '2025-06-22', 2.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (137, '2H62', '2025-06-23', 1.86, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (138, '2H62', '2025-06-24', 0.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (139, '2H62', '2025-06-25', -1.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (140, '2H62', '2025-06-26', 0.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (141, '2H62', '2025-06-27', 0.72, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (142, '2H62', '2025-06-28', -1.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (143, '2H62', '2025-06-29', 3.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (144, '2H62', '2025-06-30', 3.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (145, '2H62', '2025-07-01', 3.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (146, '2H62', '2025-07-02', -1.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (147, '2H62', '2025-07-03', 0.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (148, '2H62', '2025-07-04', 0.47, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (149, '2H62', '2025-07-05', -2.02, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (150, '2H62', '2025-07-06', -1.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (151, '2H62', '2025-07-07', 2.33, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (152, '2H62', '2025-07-08', 0.12, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (153, '2H62', '2025-07-09', -0.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (154, '2H62', '2025-07-10', 1.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (155, '2H62', '2025-07-11', -1.64, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (156, '2H62', '2025-07-12', -0.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (157, '2H62', '2025-07-13', -0.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (158, '2H62', '2025-07-14', 3.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (159, '2H62', '2025-07-15', -1.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (160, '2H62', '2025-07-16', -1.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (161, '2H62', '2025-07-17', -2.71, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (162, '2H62', '2025-07-18', -1.85, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (163, '2H62', '2025-07-19', 3.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (164, '2H62', '2025-07-20', 3.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (165, '2H62', '2025-07-21', -2.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (166, '2H62', '2025-07-22', 2.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (167, '2H62', '2025-07-23', 3.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (168, '2H62', '2025-07-24', -0.45, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (169, '2H62', '2025-07-25', 2.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (170, '2H62', '2025-07-26', 3.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (171, '2H62', '2025-07-27', 3.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (172, '2H62', '2025-07-28', -0.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (173, '2H62', '2025-07-29', 2.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (174, '2H62', '2025-07-30', 1.36, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (175, '2H62', '2025-07-31', 2.02, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (176, '2H62', '2025-08-01', -0.01, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (177, '2H62', '2025-08-02', -0.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (178, '2H62', '2025-08-03', 3.94, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (179, '2H62', '2025-08-04', 3.42, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (180, '2H62', '2025-08-05', -2.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (181, '1A81', '2025-05-08', 3.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (182, '1A81', '2025-05-09', -2.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (183, '1A81', '2025-05-10', -1.69, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (184, '1A81', '2025-05-11', -1.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (185, '1A81', '2025-05-12', 2.39, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (186, '1A81', '2025-05-13', -1.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (187, '1A81', '2025-05-14', 3.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (188, '1A81', '2025-05-15', 2.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (189, '1A81', '2025-05-16', -2.07, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (190, '1A81', '2025-05-17', 2.84, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (191, '1A81', '2025-05-18', 3.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (192, '1A81', '2025-05-19', 2.14, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (193, '1A81', '2025-05-20', -2.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (194, '1A81', '2025-05-21', -0.61, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (195, '1A81', '2025-05-22', -0.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (196, '1A81', '2025-05-23', -2.51, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (197, '1A81', '2025-05-24', -0.64, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (198, '1A81', '2025-05-25', -0.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (199, '1A81', '2025-05-26', -0.29, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (200, '1A81', '2025-05-27', -0.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (201, '1A81', '2025-05-28', -1.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (202, '1A81', '2025-05-29', -0.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (203, '1A81', '2025-05-30', -2.02, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (204, '1A81', '2025-05-31', 0.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (205, '1A81', '2025-06-01', 2.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (206, '1A81', '2025-06-02', 2.47, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (207, '1A81', '2025-06-03', -1.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (208, '1A81', '2025-06-04', 1.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (209, '1A81', '2025-06-05', 3.04, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (210, '1A81', '2025-06-06', 3.50, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (211, '1A81', '2025-06-07', -1.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (212, '1A81', '2025-06-08', 3.38, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (213, '1A81', '2025-06-09', 2.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (214, '1A81', '2025-06-10', -2.92, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (215, '1A81', '2025-06-11', 2.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (216, '1A81', '2025-06-12', 0.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (217, '1A81', '2025-06-13', 1.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (218, '1A81', '2025-06-14', 1.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (219, '1A81', '2025-06-15', 1.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (220, '1A81', '2025-06-16', 2.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (221, '1A81', '2025-06-17', -1.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (222, '1A81', '2025-06-18', 2.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (223, '1A81', '2025-06-19', 3.90, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (224, '1A81', '2025-06-20', -1.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (225, '1A81', '2025-06-21', -1.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (226, '1A81', '2025-06-22', -1.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (227, '1A81', '2025-06-23', 2.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (228, '1A81', '2025-06-24', -0.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (229, '1A81', '2025-06-25', -2.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (230, '1A81', '2025-06-26', 1.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (231, '1A81', '2025-06-27', -2.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (232, '1A81', '2025-06-28', 2.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (233, '1A81', '2025-06-29', 3.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (234, '1A81', '2025-06-30', 2.69, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (235, '1A81', '2025-07-01', 0.85, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (236, '1A81', '2025-07-02', 0.26, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (237, '1A81', '2025-07-03', 3.46, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (238, '1A81', '2025-07-04', -0.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (239, '1A81', '2025-07-05', -1.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (240, '1A81', '2025-07-06', -1.26, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (241, '1A81', '2025-07-07', 1.71, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (242, '1A81', '2025-07-08', 1.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (243, '1A81', '2025-07-09', 1.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (244, '1A81', '2025-07-10', 1.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (245, '1A81', '2025-07-11', 2.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (246, '1A81', '2025-07-12', -2.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (247, '1A81', '2025-07-13', -1.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (248, '1A81', '2025-07-14', 3.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (249, '1A81', '2025-07-15', -2.03, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (250, '1A81', '2025-07-16', 2.42, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (251, '1A81', '2025-07-17', 3.33, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (252, '1A81', '2025-07-18', -1.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (253, '1A81', '2025-07-19', 2.41, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (254, '1A81', '2025-07-20', -0.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (255, '1A81', '2025-07-21', -1.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (256, '1A81', '2025-07-22', 1.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (257, '1A81', '2025-07-23', -0.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (258, '1A81', '2025-07-24', -0.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (259, '1A81', '2025-07-25', 3.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (260, '1A81', '2025-07-26', 3.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (261, '1A81', '2025-07-27', 0.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (262, '1A81', '2025-07-28', 0.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (263, '1A81', '2025-07-29', 0.26, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (264, '1A81', '2025-07-30', 0.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (265, '1A81', '2025-07-31', 1.23, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (266, '1A81', '2025-08-01', -0.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (267, '1A81', '2025-08-02', 1.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (268, '1A81', '2025-08-03', -2.56, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (269, '1A81', '2025-08-04', 0.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (270, '1A81', '2025-08-05', 0.72, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (271, '2A43', '2025-05-08', 0.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (272, '2A43', '2025-05-09', -2.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (273, '2A43', '2025-05-10', -2.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (274, '2A43', '2025-05-11', 1.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (275, '2A43', '2025-05-12', -0.81, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (276, '2A43', '2025-05-13', -0.03, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (277, '2A43', '2025-05-14', -0.51, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (278, '2A43', '2025-05-15', 2.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (279, '2A43', '2025-05-16', -1.81, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (280, '2A43', '2025-05-17', 2.12, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (281, '2A43', '2025-05-18', 1.43, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (282, '2A43', '2025-05-19', -1.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (283, '2A43', '2025-05-20', -1.92, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (284, '2A43', '2025-05-21', 0.23, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (285, '2A43', '2025-05-22', 0.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (286, '2A43', '2025-05-23', 0.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (287, '2A43', '2025-05-24', -0.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (288, '2A43', '2025-05-25', -1.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (289, '2A43', '2025-05-26', -1.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (290, '2A43', '2025-05-27', 2.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (291, '2A43', '2025-05-28', 0.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (292, '2A43', '2025-05-29', 2.86, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (293, '2A43', '2025-05-30', 0.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (294, '2A43', '2025-05-31', -2.53, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (295, '2A43', '2025-06-01', -1.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (296, '2A43', '2025-06-02', -1.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (297, '2A43', '2025-06-03', 2.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (298, '2A43', '2025-06-04', -0.06, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (299, '2A43', '2025-06-05', -0.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (300, '2A43', '2025-06-06', 2.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (301, '2A43', '2025-06-07', -0.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (302, '2A43', '2025-06-08', 0.94, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (303, '2A43', '2025-06-09', 0.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (304, '2A43', '2025-06-10', 0.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (305, '2A43', '2025-06-11', 3.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (306, '2A43', '2025-06-12', -1.26, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (307, '2A43', '2025-06-13', 0.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (308, '2A43', '2025-06-14', -0.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (309, '2A43', '2025-06-15', -0.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (310, '2A43', '2025-06-16', -2.47, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (311, '2A43', '2025-06-17', 2.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (312, '2A43', '2025-06-18', 3.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (313, '2A43', '2025-06-19', 1.43, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (314, '2A43', '2025-06-20', 2.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (315, '2A43', '2025-06-21', -1.84, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (316, '2A43', '2025-06-22', 3.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (317, '2A43', '2025-06-23', 3.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (318, '2A43', '2025-06-24', -1.71, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (319, '2A43', '2025-06-25', 0.26, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (320, '2A43', '2025-06-26', -0.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (321, '2A43', '2025-06-27', 0.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (322, '2A43', '2025-06-28', 0.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (323, '2A43', '2025-06-29', 1.69, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (324, '2A43', '2025-06-30', 2.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (325, '2A43', '2025-07-01', 2.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (326, '2A43', '2025-07-02', -0.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (327, '2A43', '2025-07-03', -1.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (328, '2A43', '2025-07-04', 0.12, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (329, '2A43', '2025-07-05', -1.94, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (330, '2A43', '2025-07-06', 3.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (331, '2A43', '2025-07-07', -2.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (332, '2A43', '2025-07-08', 1.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (333, '2A43', '2025-07-09', 2.37, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (334, '2A43', '2025-07-10', 2.92, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (335, '2A43', '2025-07-11', 1.87, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (336, '2A43', '2025-07-12', 1.41, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (337, '2A43', '2025-07-13', -1.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (338, '2A43', '2025-07-14', -0.21, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (339, '2A43', '2025-07-15', 2.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (340, '2A43', '2025-07-16', 1.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (341, '2A43', '2025-07-17', 3.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (342, '2A43', '2025-07-18', -1.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (343, '2A43', '2025-07-19', 1.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (344, '2A43', '2025-07-20', -2.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (345, '2A43', '2025-07-21', 2.39, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (346, '2A43', '2025-07-22', 4.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (347, '2A43', '2025-07-23', -1.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (348, '2A43', '2025-07-24', 1.56, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (349, '2A43', '2025-07-25', 3.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (350, '2A43', '2025-07-26', -2.47, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (351, '2A43', '2025-07-27', 0.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (352, '2A43', '2025-07-28', -2.07, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (353, '2A43', '2025-07-29', 2.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (354, '2A43', '2025-07-30', 0.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (355, '2A43', '2025-07-31', 1.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (356, '2A43', '2025-08-01', -0.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (357, '2A43', '2025-08-02', 0.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (358, '2A43', '2025-08-03', -0.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (359, '2A43', '2025-08-04', -0.86, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (360, '2A43', '2025-08-05', -0.03, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (361, '2F33', '2025-05-08', 0.50, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (362, '2F33', '2025-05-09', -0.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (363, '2F33', '2025-05-10', 1.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (364, '2F33', '2025-05-11', 0.46, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (365, '2F33', '2025-05-12', 1.14, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (366, '2F33', '2025-05-13', 0.12, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (367, '2F33', '2025-05-14', 2.51, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (368, '2F33', '2025-05-15', 0.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (369, '2F33', '2025-05-16', 1.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (370, '2F33', '2025-05-17', 1.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (371, '2F33', '2025-05-18', 2.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (372, '2F33', '2025-05-19', 0.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (373, '2F33', '2025-05-20', -1.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (374, '2F33', '2025-05-21', -2.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (375, '2F33', '2025-05-22', 3.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (376, '2F33', '2025-05-23', 1.47, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (377, '2F33', '2025-05-24', -0.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (378, '2F33', '2025-05-25', -2.38, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (379, '2F33', '2025-05-26', -2.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (380, '2F33', '2025-05-27', -0.47, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (381, '2F33', '2025-05-28', 2.03, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (382, '2F33', '2025-05-29', -2.23, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (383, '2F33', '2025-05-30', -0.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (384, '2F33', '2025-05-31', 1.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (385, '2F33', '2025-06-01', -2.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (386, '2F33', '2025-06-02', -0.50, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (387, '2F33', '2025-06-03', -0.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (388, '2F33', '2025-06-04', 3.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (389, '2F33', '2025-06-05', 3.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (390, '2F33', '2025-06-06', -2.02, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (391, '2F33', '2025-06-07', -1.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (392, '2F33', '2025-06-08', -0.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (393, '2F33', '2025-06-09', -0.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (394, '2F33', '2025-06-10', 0.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (395, '2F33', '2025-06-11', 1.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (396, '2F33', '2025-06-12', 1.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (397, '2F33', '2025-06-13', -1.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (398, '2F33', '2025-06-14', 1.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (399, '2F33', '2025-06-15', 3.33, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (400, '2F33', '2025-06-16', 0.84, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (401, '2F33', '2025-06-17', 0.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (402, '2F33', '2025-06-18', -1.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (403, '2F33', '2025-06-19', 0.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (404, '2F33', '2025-06-20', 0.39, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (405, '2F33', '2025-06-21', 0.38, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (406, '2F33', '2025-06-22', -1.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (407, '2F33', '2025-06-23', -1.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (408, '2F33', '2025-06-24', 0.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (409, '2F33', '2025-06-25', 0.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (410, '2F33', '2025-06-26', 3.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (411, '2F33', '2025-06-27', 1.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (412, '2F33', '2025-06-28', 3.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (413, '2F33', '2025-06-29', -2.86, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (414, '2F33', '2025-06-30', -1.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (415, '2F33', '2025-07-01', -1.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (416, '2F33', '2025-07-02', 2.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (417, '2F33', '2025-07-03', -0.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (418, '2F33', '2025-07-04', -2.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (419, '2F33', '2025-07-05', -2.45, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (420, '2F33', '2025-07-06', 2.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (421, '2F33', '2025-07-07', 0.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (422, '2F33', '2025-07-08', -2.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (423, '2F33', '2025-07-09', -1.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (424, '2F33', '2025-07-10', 3.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (425, '2F33', '2025-07-11', 2.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (426, '2F33', '2025-07-12', 2.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (427, '2F33', '2025-07-13', -0.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (428, '2F33', '2025-07-14', 1.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (429, '2F33', '2025-07-15', 3.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (430, '2F33', '2025-07-16', -2.12, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (431, '2F33', '2025-07-17', 3.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (432, '2F33', '2025-07-18', 3.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (433, '2F33', '2025-07-19', 2.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (434, '2F33', '2025-07-20', 0.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (435, '2F33', '2025-07-21', -2.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (436, '2F33', '2025-07-22', -0.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (437, '2F33', '2025-07-23', 1.53, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (438, '2F33', '2025-07-24', 2.06, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (439, '2F33', '2025-07-25', 2.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (440, '2F33', '2025-07-26', 1.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (441, '2F33', '2025-07-27', 1.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (442, '2F33', '2025-07-28', 1.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (443, '2F33', '2025-07-29', 0.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (444, '2F33', '2025-07-30', 3.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (445, '2F33', '2025-07-31', -1.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (446, '2F33', '2025-08-01', 0.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (447, '2F33', '2025-08-02', 0.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (448, '2F33', '2025-08-03', 3.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (449, '2F33', '2025-08-04', -2.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (450, '2F33', '2025-08-05', 0.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (451, '32G1', '2025-05-08', 0.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (452, '32G1', '2025-05-09', 0.23, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (453, '32G1', '2025-05-10', 1.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (454, '32G1', '2025-05-11', 2.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (455, '32G1', '2025-05-12', 2.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (456, '32G1', '2025-05-13', 1.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (457, '32G1', '2025-05-14', 3.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (458, '32G1', '2025-05-15', 2.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (459, '32G1', '2025-05-16', 2.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (460, '32G1', '2025-05-17', -0.33, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (461, '32G1', '2025-05-18', -0.12, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (462, '32G1', '2025-05-19', -2.45, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (463, '32G1', '2025-05-20', -1.14, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (464, '32G1', '2025-05-21', 2.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (465, '32G1', '2025-05-22', 2.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (466, '32G1', '2025-05-23', -0.87, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (467, '32G1', '2025-05-24', 3.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (468, '32G1', '2025-05-25', 0.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (469, '32G1', '2025-05-26', -2.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (470, '32G1', '2025-05-27', -0.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (471, '32G1', '2025-05-28', 3.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (472, '32G1', '2025-05-29', -0.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (473, '32G1', '2025-05-30', 1.38, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (474, '32G1', '2025-05-31', 0.02, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (475, '32G1', '2025-06-01', -1.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (476, '32G1', '2025-06-02', 3.41, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (477, '32G1', '2025-06-03', -0.71, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (478, '32G1', '2025-06-04', -0.90, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (479, '32G1', '2025-06-05', 0.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (480, '32G1', '2025-06-06', -0.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (481, '32G1', '2025-06-07', -0.12, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (482, '32G1', '2025-06-08', -2.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (483, '32G1', '2025-06-09', 0.45, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (484, '32G1', '2025-06-10', -2.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (485, '32G1', '2025-06-11', -0.03, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (486, '32G1', '2025-06-12', 3.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (487, '32G1', '2025-06-13', 1.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (488, '32G1', '2025-06-14', 2.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (489, '32G1', '2025-06-15', 2.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (490, '32G1', '2025-06-16', 2.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (491, '32G1', '2025-06-17', 3.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (492, '32G1', '2025-06-18', 2.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (493, '32G1', '2025-06-19', -1.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (494, '32G1', '2025-06-20', 1.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (495, '32G1', '2025-06-21', 1.36, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (496, '32G1', '2025-06-22', -2.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (497, '32G1', '2025-06-23', -2.92, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (498, '32G1', '2025-06-24', -1.02, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (499, '32G1', '2025-06-25', 1.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (500, '32G1', '2025-06-26', -1.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (501, '32G1', '2025-06-27', 1.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (502, '32G1', '2025-06-28', -1.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (503, '32G1', '2025-06-29', -0.50, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (504, '32G1', '2025-06-30', -2.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (505, '32G1', '2025-07-01', -0.14, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (506, '32G1', '2025-07-02', 0.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (507, '32G1', '2025-07-03', 3.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (508, '32G1', '2025-07-04', 3.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (509, '32G1', '2025-07-05', 2.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (510, '32G1', '2025-07-06', 1.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (511, '32G1', '2025-07-07', -1.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (512, '32G1', '2025-07-08', 3.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (513, '32G1', '2025-07-09', -1.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (514, '32G1', '2025-07-10', 3.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (515, '32G1', '2025-07-11', 0.07, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (516, '32G1', '2025-07-12', 1.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (517, '32G1', '2025-07-13', 0.44, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (518, '32G1', '2025-07-14', 1.37, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (519, '32G1', '2025-07-15', 0.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (520, '32G1', '2025-07-16', -1.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (521, '32G1', '2025-07-17', -2.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (522, '32G1', '2025-07-18', 0.87, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (523, '32G1', '2025-07-19', -0.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (524, '32G1', '2025-07-20', 3.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (525, '32G1', '2025-07-21', 1.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (526, '32G1', '2025-07-22', 1.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (527, '32G1', '2025-07-23', -2.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (528, '32G1', '2025-07-24', -1.90, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (529, '32G1', '2025-07-25', -2.37, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (530, '32G1', '2025-07-26', 1.94, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (531, '32G1', '2025-07-27', 0.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (532, '32G1', '2025-07-28', 1.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (533, '32G1', '2025-07-29', -2.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (534, '32G1', '2025-07-30', 0.46, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (535, '32G1', '2025-07-31', 0.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (536, '32G1', '2025-08-01', 1.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (537, '32G1', '2025-08-02', -1.06, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (538, '32G1', '2025-08-03', -0.56, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (539, '32G1', '2025-08-04', -0.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (540, '32G1', '2025-08-05', 2.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (541, '2S01', '2025-05-08', 0.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (542, '2S01', '2025-05-09', -1.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (543, '2S01', '2025-05-10', 1.85, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (544, '2S01', '2025-05-11', 2.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (545, '2S01', '2025-05-12', 2.84, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (546, '2S01', '2025-05-13', 2.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (547, '2S01', '2025-05-14', 0.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (548, '2S01', '2025-05-15', 1.69, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (549, '2S01', '2025-05-16', -0.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (550, '2S01', '2025-05-17', -0.85, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (551, '2S01', '2025-05-18', 1.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (552, '2S01', '2025-05-19', 0.21, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (553, '2S01', '2025-05-20', -0.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (554, '2S01', '2025-05-21', 0.42, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (555, '2S01', '2025-05-22', 2.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (556, '2S01', '2025-05-23', 1.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (557, '2S01', '2025-05-24', 0.45, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (558, '2S01', '2025-05-25', -0.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (559, '2S01', '2025-05-26', -2.95, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (560, '2S01', '2025-05-27', -3.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (561, '2S01', '2025-05-28', -1.85, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (562, '2S01', '2025-05-29', 3.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (563, '2S01', '2025-05-30', 1.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (564, '2S01', '2025-05-31', -2.61, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (565, '2S01', '2025-06-01', 3.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (566, '2S01', '2025-06-02', -0.01, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (567, '2S01', '2025-06-03', -0.39, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (568, '2S01', '2025-06-04', -0.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (569, '2S01', '2025-06-05', -0.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (570, '2S01', '2025-06-06', 3.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (571, '2S01', '2025-06-07', -0.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (572, '2S01', '2025-06-08', 1.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (573, '2S01', '2025-06-09', 1.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (574, '2S01', '2025-06-10', -0.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (575, '2S01', '2025-06-11', 3.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (576, '2S01', '2025-06-12', 3.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (577, '2S01', '2025-06-13', 1.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (578, '2S01', '2025-06-14', -0.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (579, '2S01', '2025-06-15', -0.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (580, '2S01', '2025-06-16', -2.86, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (581, '2S01', '2025-06-17', -2.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (582, '2S01', '2025-06-18', -1.86, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (583, '2S01', '2025-06-19', 1.64, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (584, '2S01', '2025-06-20', 1.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (585, '2S01', '2025-06-21', 3.38, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (586, '2S01', '2025-06-22', 2.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (587, '2S01', '2025-06-23', -0.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (588, '2S01', '2025-06-24', 1.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (589, '2S01', '2025-06-25', 2.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (590, '2S01', '2025-06-26', 2.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (591, '2S01', '2025-06-27', -1.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (592, '2S01', '2025-06-28', 1.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (593, '2S01', '2025-06-29', -2.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (594, '2S01', '2025-06-30', -0.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (595, '2S01', '2025-07-01', 0.01, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (596, '2S01', '2025-07-02', -0.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (597, '2S01', '2025-07-03', 3.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (598, '2S01', '2025-07-04', -2.38, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (599, '2S01', '2025-07-05', -1.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (600, '2S01', '2025-07-06', 3.92, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (601, '2S01', '2025-07-07', -1.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (602, '2S01', '2025-07-08', 1.69, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (603, '2S01', '2025-07-09', 1.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (604, '2S01', '2025-07-10', -0.95, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (605, '2S01', '2025-07-11', 2.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (606, '2S01', '2025-07-12', 0.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (607, '2S01', '2025-07-13', 1.36, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (608, '2S01', '2025-07-14', 1.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (609, '2S01', '2025-07-15', -2.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (610, '2S01', '2025-07-16', -1.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (611, '2S01', '2025-07-17', 0.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (612, '2S01', '2025-07-18', -1.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (613, '2S01', '2025-07-19', 1.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (614, '2S01', '2025-07-20', -0.36, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (615, '2S01', '2025-07-21', 1.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (616, '2S01', '2025-07-22', 3.50, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (617, '2S01', '2025-07-23', -2.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (618, '2S01', '2025-07-24', 3.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (619, '2S01', '2025-07-25', 1.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (620, '2S01', '2025-07-26', -2.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (621, '2S01', '2025-07-27', 1.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (622, '2S01', '2025-07-28', -1.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (623, '2S01', '2025-07-29', 0.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (624, '2S01', '2025-07-30', -2.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (625, '2S01', '2025-07-31', 3.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (626, '2S01', '2025-08-01', -0.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (627, '2S01', '2025-08-02', -0.46, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (628, '2S01', '2025-08-03', 3.43, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (629, '2S01', '2025-08-04', 3.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (630, '2S01', '2025-08-05', 3.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (631, '2M72', '2025-05-08', 1.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (632, '2M72', '2025-05-09', 3.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (633, '2M72', '2025-05-10', -2.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (634, '2M72', '2025-05-11', -2.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (635, '2M72', '2025-05-12', 0.04, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (636, '2M72', '2025-05-13', -1.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (637, '2M72', '2025-05-14', 3.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (638, '2M72', '2025-05-15', -1.01, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (639, '2M72', '2025-05-16', 0.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (640, '2M72', '2025-05-17', 2.60, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (641, '2M72', '2025-05-18', -1.01, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (642, '2M72', '2025-05-19', -1.33, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (643, '2M72', '2025-05-20', 2.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (644, '2M72', '2025-05-21', 2.00, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (645, '2M72', '2025-05-22', -0.95, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (646, '2M72', '2025-05-23', -1.37, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (647, '2M72', '2025-05-24', -2.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (648, '2M72', '2025-05-25', -2.02, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (649, '2M72', '2025-05-26', 2.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (650, '2M72', '2025-05-27', 2.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (651, '2M72', '2025-05-28', 2.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (652, '2M72', '2025-05-29', 3.03, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (653, '2M72', '2025-05-30', 3.07, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (654, '2M72', '2025-05-31', -1.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (655, '2M72', '2025-06-01', -2.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (656, '2M72', '2025-06-02', 0.07, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (657, '2M72', '2025-06-03', 3.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (658, '2M72', '2025-06-04', 3.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (659, '2M72', '2025-06-05', -1.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (660, '2M72', '2025-06-06', -1.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (661, '2M72', '2025-06-07', 3.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (662, '2M72', '2025-06-08', 1.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (663, '2M72', '2025-06-09', 3.29, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (664, '2M72', '2025-06-10', 3.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (665, '2M72', '2025-06-11', -1.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (666, '2M72', '2025-06-12', -1.43, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (667, '2M72', '2025-06-13', 3.90, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (668, '2M72', '2025-06-14', 1.71, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (669, '2M72', '2025-06-15', -0.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (670, '2M72', '2025-06-16', 0.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (671, '2M72', '2025-06-17', 0.87, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (672, '2M72', '2025-06-18', 2.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (673, '2M72', '2025-06-19', 1.72, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (674, '2M72', '2025-06-20', 1.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (675, '2M72', '2025-06-21', -1.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (676, '2M72', '2025-06-22', 0.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (677, '2M72', '2025-06-23', 2.05, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (678, '2M72', '2025-06-24', 0.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (679, '2M72', '2025-06-25', -1.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (680, '2M72', '2025-06-26', 3.10, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (681, '2M72', '2025-06-27', 0.61, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (682, '2M72', '2025-06-28', 2.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (683, '2M72', '2025-06-29', 2.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (684, '2M72', '2025-06-30', 2.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (685, '2M72', '2025-07-01', -1.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (686, '2M72', '2025-07-02', 1.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (687, '2M72', '2025-07-03', 2.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (688, '2M72', '2025-07-04', 2.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (689, '2M72', '2025-07-05', -1.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (690, '2M72', '2025-07-06', 0.81, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (691, '2M72', '2025-07-07', -2.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (692, '2M72', '2025-07-08', -2.81, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (693, '2M72', '2025-07-09', 0.61, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (694, '2M72', '2025-07-10', -0.71, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (695, '2M72', '2025-07-11', -1.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (696, '2M72', '2025-07-12', -2.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (697, '2M72', '2025-07-13', 0.26, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (698, '2M72', '2025-07-14', -1.46, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (699, '2M72', '2025-07-15', -1.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (700, '2M72', '2025-07-16', 2.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (701, '2M72', '2025-07-17', 1.81, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (702, '2M72', '2025-07-18', 3.87, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (703, '2M72', '2025-07-19', 0.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (704, '2M72', '2025-07-20', -0.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (705, '2M72', '2025-07-21', 1.36, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (706, '2M72', '2025-07-22', -0.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (707, '2M72', '2025-07-23', -0.01, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (708, '2M72', '2025-07-24', -2.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (709, '2M72', '2025-07-25', -1.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (710, '2M72', '2025-07-26', -1.85, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (711, '2M72', '2025-07-27', 0.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (712, '2M72', '2025-07-28', -1.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (713, '2M72', '2025-07-29', -2.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (714, '2M72', '2025-07-30', 3.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (715, '2M72', '2025-07-31', 2.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (716, '2M72', '2025-08-01', -0.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (717, '2M72', '2025-08-02', 2.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (718, '2M72', '2025-08-03', 3.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (719, '2M72', '2025-08-04', 0.01, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (720, '2M72', '2025-08-05', 0.64, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (721, '33R2', '2025-05-08', 1.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (722, '33R2', '2025-05-09', 0.43, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (723, '33R2', '2025-05-10', -0.65, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (724, '33R2', '2025-05-11', -1.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (725, '33R2', '2025-05-12', -1.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (726, '33R2', '2025-05-13', -2.29, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (727, '33R2', '2025-05-14', 3.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (728, '33R2', '2025-05-15', 0.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (729, '33R2', '2025-05-16', -1.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (730, '33R2', '2025-05-17', 1.21, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (731, '33R2', '2025-05-18', 1.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (732, '33R2', '2025-05-19', 0.71, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (733, '33R2', '2025-05-20', -1.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (734, '33R2', '2025-05-21', -1.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (735, '33R2', '2025-05-22', 3.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (736, '33R2', '2025-05-23', 0.68, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (737, '33R2', '2025-05-24', -1.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (738, '33R2', '2025-05-25', 1.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (739, '33R2', '2025-05-26', -2.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (740, '33R2', '2025-05-27', 1.58, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (741, '33R2', '2025-05-28', -2.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (742, '33R2', '2025-05-29', -0.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (743, '33R2', '2025-05-30', -2.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (744, '33R2', '2025-05-31', 1.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (745, '33R2', '2025-06-01', 0.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (746, '33R2', '2025-06-02', 3.18, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (747, '33R2', '2025-06-03', -1.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (748, '33R2', '2025-06-04', 0.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (749, '33R2', '2025-06-05', 2.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (750, '33R2', '2025-06-06', -1.72, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (751, '33R2', '2025-06-07', -0.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (752, '33R2', '2025-06-08', -1.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (753, '33R2', '2025-06-09', 1.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (754, '33R2', '2025-06-10', 2.29, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (755, '33R2', '2025-06-11', -1.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (756, '33R2', '2025-06-12', 3.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (757, '33R2', '2025-06-13', -2.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (758, '33R2', '2025-06-14', 1.24, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (759, '33R2', '2025-06-15', -1.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (760, '33R2', '2025-06-16', -0.04, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (761, '33R2', '2025-06-17', -0.90, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (762, '33R2', '2025-06-18', 2.61, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (763, '33R2', '2025-06-19', -0.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (764, '33R2', '2025-06-20', 3.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (765, '33R2', '2025-06-21', -0.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (766, '33R2', '2025-06-22', -0.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (767, '33R2', '2025-06-23', 2.72, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (768, '33R2', '2025-06-24', -1.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (769, '33R2', '2025-06-25', 2.06, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (770, '33R2', '2025-06-26', -1.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (771, '33R2', '2025-06-27', -1.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (772, '33R2', '2025-06-28', 1.62, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (773, '33R2', '2025-06-29', -2.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (774, '33R2', '2025-06-30', -1.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (775, '33R2', '2025-07-01', -1.97, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (776, '33R2', '2025-07-02', -0.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (777, '33R2', '2025-07-03', 2.41, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (778, '33R2', '2025-07-04', 0.34, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (779, '33R2', '2025-07-05', 2.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (780, '33R2', '2025-07-06', -1.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (781, '33R2', '2025-07-07', 1.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (782, '33R2', '2025-07-08', 2.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (783, '33R2', '2025-07-09', 3.21, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (784, '33R2', '2025-07-10', 0.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (785, '33R2', '2025-07-11', 2.96, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (786, '33R2', '2025-07-12', 0.06, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (787, '33R2', '2025-07-13', 2.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (788, '33R2', '2025-07-14', -1.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (789, '33R2', '2025-07-15', -0.69, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (790, '33R2', '2025-07-16', 2.54, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (791, '33R2', '2025-07-17', -1.51, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (792, '33R2', '2025-07-18', 1.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (793, '33R2', '2025-07-19', 1.67, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (794, '33R2', '2025-07-20', 3.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (795, '33R2', '2025-07-21', 0.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (796, '33R2', '2025-07-22', -2.01, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (797, '33R2', '2025-07-23', 2.14, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (798, '33R2', '2025-07-24', 3.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (799, '33R2', '2025-07-25', 1.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (800, '33R2', '2025-07-26', 3.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (801, '33R2', '2025-07-27', -2.35, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (802, '33R2', '2025-07-28', 1.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (803, '33R2', '2025-07-29', 0.72, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (804, '33R2', '2025-07-30', 3.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (805, '33R2', '2025-07-31', 1.06, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (806, '33R2', '2025-08-01', 0.15, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (807, '33R2', '2025-08-02', 1.49, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (808, '33R2', '2025-08-03', -0.72, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (809, '33R2', '2025-08-04', 2.81, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (810, '33R2', '2025-08-05', 0.63, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (811, '2K24', '2025-05-08', -0.86, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (812, '2K24', '2025-05-09', -1.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (813, '2K24', '2025-05-10', -1.21, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (814, '2K24', '2025-05-11', 3.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (815, '2K24', '2025-05-12', 2.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (816, '2K24', '2025-05-13', 1.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (817, '2K24', '2025-05-14', -0.52, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (818, '2K24', '2025-05-15', 3.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (819, '2K24', '2025-05-16', -1.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (820, '2K24', '2025-05-17', 2.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (821, '2K24', '2025-05-18', 0.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (822, '2K24', '2025-05-19', 0.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (823, '2K24', '2025-05-20', 0.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (824, '2K24', '2025-05-21', -2.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (825, '2K24', '2025-05-22', -0.57, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (826, '2K24', '2025-05-23', -1.20, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (827, '2K24', '2025-05-24', -1.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (828, '2K24', '2025-05-25', -0.16, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (829, '2K24', '2025-05-26', -1.19, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (830, '2K24', '2025-05-27', 3.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (831, '2K24', '2025-05-28', 1.37, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (832, '2K24', '2025-05-29', -0.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (833, '2K24', '2025-05-30', -1.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (834, '2K24', '2025-05-31', 2.04, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (835, '2K24', '2025-06-01', -0.87, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (836, '2K24', '2025-06-02', 1.73, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (837, '2K24', '2025-06-03', 2.80, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (838, '2K24', '2025-06-04', 1.33, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (839, '2K24', '2025-06-05', -2.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (840, '2K24', '2025-06-06', 2.98, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (841, '2K24', '2025-06-07', -1.66, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (842, '2K24', '2025-06-08', 0.22, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (843, '2K24', '2025-06-09', 1.59, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (844, '2K24', '2025-06-10', 3.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (845, '2K24', '2025-06-11', -2.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (846, '2K24', '2025-06-12', 0.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (847, '2K24', '2025-06-13', 2.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (848, '2K24', '2025-06-14', 1.82, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (849, '2K24', '2025-06-15', -2.76, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (850, '2K24', '2025-06-16', -1.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (851, '2K24', '2025-06-17', -2.91, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (852, '2K24', '2025-06-18', 2.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (853, '2K24', '2025-06-19', 0.27, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (854, '2K24', '2025-06-20', 0.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (855, '2K24', '2025-06-21', 1.40, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (856, '2K24', '2025-06-22', 1.48, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (857, '2K24', '2025-06-23', 0.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (858, '2K24', '2025-06-24', 0.13, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (859, '2K24', '2025-06-25', 3.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (860, '2K24', '2025-06-26', -0.53, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (861, '2K24', '2025-06-27', -1.28, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (862, '2K24', '2025-06-28', -2.03, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (863, '2K24', '2025-06-29', 2.14, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (864, '2K24', '2025-06-30', 2.79, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (865, '2K24', '2025-07-01', 0.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (866, '2K24', '2025-07-02', 1.56, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (867, '2K24', '2025-07-03', -0.88, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (868, '2K24', '2025-07-04', 2.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (869, '2K24', '2025-07-05', -2.32, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (870, '2K24', '2025-07-06', 2.45, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (871, '2K24', '2025-07-07', -2.17, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (872, '2K24', '2025-07-08', 0.78, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (873, '2K24', '2025-07-09', -2.70, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (874, '2K24', '2025-07-10', -2.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (875, '2K24', '2025-07-11', 0.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (876, '2K24', '2025-07-12', -2.75, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (877, '2K24', '2025-07-13', 2.84, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (878, '2K24', '2025-07-14', 1.99, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (879, '2K24', '2025-07-15', 2.36, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (880, '2K24', '2025-07-16', 2.55, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (881, '2K24', '2025-07-17', 0.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (882, '2K24', '2025-07-18', 2.83, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (883, '2K24', '2025-07-19', -1.45, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (884, '2K24', '2025-07-20', -2.04, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (885, '2K24', '2025-07-21', 0.31, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (886, '2K24', '2025-07-22', -2.30, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (887, '2K24', '2025-07-23', -1.82, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (888, '2K24', '2025-07-24', 1.93, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (889, '2K24', '2025-07-25', -2.39, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (890, '2K24', '2025-07-26', 1.25, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (891, '2K24', '2025-07-27', 3.09, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (892, '2K24', '2025-07-28', -1.94, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (893, '2K24', '2025-07-29', -0.21, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (894, '2K24', '2025-07-30', 1.14, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (895, '2K24', '2025-07-31', 3.08, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (896, '2K24', '2025-08-01', 1.74, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (897, '2K24', '2025-08-02', -0.11, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (898, '2K24', '2025-08-03', 1.03, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (899, '2K24', '2025-08-04', -1.77, '2025-08-07 18:13:41', '2025-08-07 18:13:41'),
+       (900, '2K24', '2025-08-05', -0.89, '2025-08-07 18:13:41', '2025-08-07 18:13:41');
+/*!40000 ALTER TABLE `fund_daily_return`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `fund_option`
+--
+
+DROP TABLE IF EXISTS `fund_option`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `fund_option`
+(
+    `fin_prdt_cd` varchar(50) NOT NULL,
+    `rate_3mon`   varchar(10) DEFAULT NULL,
+    `start_date`  date        DEFAULT NULL,
+    `asset_total` varchar(20) DEFAULT NULL,
+    `total_fee`   varchar(10) DEFAULT NULL,
+    `risk_grade`  varchar(10) DEFAULT NULL,
+    `fee_first`   varchar(10) DEFAULT NULL,
+    `fee_redemp`  varchar(10) DEFAULT NULL,
+    `price_std`   varchar(20) DEFAULT NULL,
+    PRIMARY KEY (`fin_prdt_cd`),
+    CONSTRAINT `fk_fin_prdt_fund` FOREIGN KEY (`fin_prdt_cd`) REFERENCES `fund` (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fund_option`
+--
+
+LOCK TABLES `fund_option` WRITE;
+/*!40000 ALTER TABLE `fund_option`
+    DISABLE KEYS */;
+INSERT INTO `fund_option`
+VALUES ('1A81', '1.62', '2020-12-30', '32200000000', '0.95', '4', '없음', '없음', '1105.08'),
+       ('2A43', '7.52', '2022-05-30', '57800000000', '1.10', '3', '없음', '없음', '1206.14'),
+       ('2F33', '11.02', '2015-03-25', '292900000000', '1.35', '4', '1.00', '없음', '1547.79'),
+       ('2H62', '22.13', '2020-05-12', '100200000000', '1.40', '5', '없음', '없음', '1567.77'),
+       ('2K24', '3.88', '2021-07-08', '89300000000', '1.05', '3', '없음', '없음', '1183.32'),
+       ('2M72', '3.21', '2017-10-13', '53200000000', '1.15', '2', '없음', '없음', '1202.77'),
+       ('2N73', '-5.84', '2016-11-14', '48700000000', '1.40', '5', '없음', '없음', '891.24'),
+       ('2S01', '2.12', '2018-03-23', '74400000000', '1.25', '3', '없음', '없음', '1154.22'),
+       ('32G1', '10.05', '2019-08-19', '69800000000', '0.80', '4', '없음', '없음', '1398.11'),
+       ('33R2', '4.37', '2020-01-06', '65500000000', '1.20', '3', '없음', '없음', '1230.89');
+/*!40000 ALTER TABLE `fund_option`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `gold`
+--
+
+DROP TABLE IF EXISTS `gold`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `gold`
+(
+    `fin_prdt_cd`       varchar(50) NOT NULL,
+    `fin_prdt_category` varchar(2)   DEFAULT NULL,
+    `fin_prdt_nm`       varchar(50)  DEFAULT NULL,
+    `fin_co_no`         varchar(20)  DEFAULT NULL,
+    `kor_co_nm`         varchar(15)  DEFAULT NULL,
+    `prdt_feature`      varchar(255) DEFAULT NULL,
+    `description`       text,
+    `join_way`          varchar(50)  DEFAULT NULL,
+    `lot`               varchar(15)  DEFAULT NULL,
+    `currency`          varchar(20)  DEFAULT NULL,
+    `etc_note`          text,
+    `rec_reason`        text,
+    `tendency`          double       DEFAULT NULL,
+    `asset_proportion`  double       DEFAULT NULL,
+    PRIMARY KEY (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gold`
+--
+
+LOCK TABLES `gold` WRITE;
+/*!40000 ALTER TABLE `gold`
+    DISABLE KEYS */;
+INSERT INTO `gold`
+VALUES ('C016622', '4', 'KB골드투자통장', '0010927', '국민은행',
         '간편가입 금 실물 인수도 없이 자유롭게 금에 투자하는 수시 입출금이 가능한 금융투자상품',
         '금 가격 변동에 따라 수익을 얻을 수 있는 통장으로, 별도의 금 실물 없이 계좌로 금을 사고팔 수 있습니다. 투자 위험이 따를 수 있으며, 자세한 내용은 상품설명서를 참조하세요.',
-        '영업점, 인터넷뱅킹, KB스타뱅킹', '무이자', NULL, NULL, '제한없음 (단, 비거주자는 인터넷뱅킹으로 신규 불가)',
-        '매매차익에 대한 배당소득으로 15.4% 원천징수, 비과세종합저축 가입 불가', NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        '0.01g', '원화(KRW)'),
-       ('DP01000014', '1', '일반정기예금', NULL, '국민은행', '0010927', '목돈 안정적 예치, 영업점 가입',
-        '목돈을 일정기간동안 예치하여 안정적인 수익을 목적으로 하는 일시예치식 예금입니다.', '영업점',
-        '- 1개월 이내 : 기본이율 X 50% - 1개월 초과 ~ 3개월 이내 : 기본이율 X 30% - 3개월 초과 : 0.1%', '해당없음', '1', '제한없음',
-        '- 가입금액 : 최저 10만원이상 최고한도 없음(원단위)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP01000029', '1', '국민수퍼정기예금(개인)', NULL, '국민은행', '0010927', '우대금리 이율 등 직접 설계 가능',
-        '가입자가 이율, 이자지급, 만기일 등을 직접 설계하여 저축할 수 있는 다기능 맞춤식 정기예금입니다.', '영업점, 고객센터',
-        '- 1개월 이내 : 기본이율 X 50% - 1개월 초과 ~ 3개월 이내 : 기본이율 X 30% - 3개월 초과 : 0.1%',
-        '① 금리우대쿠폰 ② 비과세·중장기주택부금 만기 후 연 0.1%p 우대', '1', '제한없음(단, 무기명으로는 가입하실 수 없습니다.)',
-        '- 가입금액 : 신규시 최저 100만원 이상, 건별 10만원 이상 30회까지 추가 입금 가능', NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL),
-       ('DP01000214', '1', '국민수퍼정기예금(CD금리연동형)', NULL, '국민은행', '0010927', '우대금리 CD금리 연동, 금리상승기 유리',
-        '매 3개월마다 CD수익률에 따라 금리가 변경 적용되어 금리상승기에 유리한 정기예금 (예금자 보호 대상)', '영업점, 고객센터',
-        '- 1개월 이내 : 기본이율 X 50% - 1개월 초과 ~ 3개월 이내 : 기본이율 X 30% - 3개월 초과 : 0.1%',
-        '비과세가계저축 및 중장기주택부금 만기계좌를 해지일로부터 2개월 이내에 본인이나 배우자 또는 직계존비속 명의로 계약기간 1년 이상 가입하는 계좌 : 연 0.1%p',
-        '1', '제한없음', '- 가입금액 : 신규시 최저 100만원 이상, 건별 10만원 이상 추가입금 가능', NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL),
-       ('DP01000228', '2', '직장인우대적금', NULL, '국민은행', '0013175', '우대금리 간편가입 직장인 급여/추가적립 우대',
-        '직장인의 재테크 스타일을 반영하여 급여이체를 하거나 보너스 등의 부정기적인 자금을 추가로 적립하는 경우 우대이율로 목돈마련을 지원하고 결혼, 출산, 이사 등 이벤트를 위한 중도해지시 기본이율을 제공 하는 적립식 예금',
-        '영업점, 인터넷, 스마트폰(KB스타뱅킹)', '만기일시지급',
-        '급여이체 시 연0.3%p, 전자금융 자동이체 시 연0.1%p 추가 우대, 분기별 추가입금 시 연0.2%p', '1', '실명 개인 (직장인)',
-        '월 1만원~300만원 정액 적립, 분기별 1회 추가 입금 최대 500만원 가능', '월 300만원 + 분기별 추가 500만원', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('DP01000780', '1', 'KB골든라이프연금우대통장', NULL, '국민은행', '0010927', '우대금리 연금 수령 시 우대금리 및 수수료 면제',
-        '고객의 안정적인 노후생활을 위한 3층 연금 구조 형성을 지원하며, 연금 수령 시 수수료 면제와 우대금리를 제공하는 요구불예금 상품', '영업점',
-        '없음 (요구불예금 상품)', '연금 수령 실적에 따라 우대금리 제공(최저 0.5% ~ 최고 1.5%)', '1', '실명의 개인 (1인 1계좌)',
-        '비과세종합저축 대상, 수수료 면제 및 환율 우대', NULL, '없음 (요구불예금 상품)', '해당없음', '해당없음', NULL, NULL, NULL, NULL,
-        NULL),
-       ('DP01001495', '2', 'KB두근두근여행적금', NULL, '국민은행', '0013175', '우대금리 간편가입 여행 혜택과 설렘, 소비 인증 우대',
-        '여행준비의 혜택과 설렘이 있는 적금으로, 노랑풍선 최대 3만원 & 4% 할인쿠폰 제공', '영업점, 인터넷, 스마트폰(KB스타뱅킹)', '만기일시지급',
-        '여행 관련 소비 인증 시 우대금리', '1', '실명 개인', '6개월, 자유적립', NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL),
-       ('DP01001596', '2', 'KB스타 건강적금', NULL, '국민은행', '0013175', '우대금리 간편가입 걸음수에 따라 이자 우대',
-        '걸음수에 따른 우대금리 적용으로 저축과 건강관리를 함께 할 수 있는 적금', '영업점(만 60세 이상), 스마트폰(KB스타뱅킹)', '만기일시지급',
-        '걸음 걷기 우대 최대 연3.0%p, 발자국 스탬프 우대 연1.0%p, 웰컴 오케어 우대 연1.0%p', '1', '만 14세 이상 실명 개인 (1인 1계좌)',
-        '6개월, 월 1만~20만원 자유적립', '월 20만원', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP01001614', '2', 'KB스타적금Ⅲ', NULL, '국민은행', '0013175', '우대금리 간편가입 신규/장기미거래 고객 우대',
-        '신규 또는 장기미거래 고객에게 우대이율을 제공하는 적금', '영업점, 인터넷, 스마트폰(KB스타뱅킹)', '만기일시지급',
-        '신규/장기미거래 고객 우대금리 연3.0%p', '1', '실명 개인', '12개월, 최고 연 6.0% 금리', '월 1만~30만원', NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP01001624', '1', 'KB Star 지수연동예금 25-3호(KOSPI200 상승추구형(최저이율보장형))', NULL, '국민은행', '0010927',
-        '간편가입 KOSPI200 지수 연동, 원금 보장',
-        '만기해지 시 예금원금은 보장하면서 기초자산인 KOSPI200 지수의 변동에 연동하여 이자수익이 결정되는 상품', '스타뱅킹',
-        '- 연 0.1% (만기일부터 예금지급일 전일까지의 적용금리)', '해당없음', '1', '제한없음',
-        '- 가입금액 : 만기해지 시 예금원금은 보장하면서 기초자산인 KOSPI200 지수의 변동에 연동하여 이자수익이 결정되는 상품1백만원 이상(만원 단위)', NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP01001625', '1', 'KB Star 지수연동예금 25-3호(KOSPI200 상승낙아웃형(최저이율보장형))', NULL, '국민은행',
-        '0010927', '간편가입 KOSPI200 지수 연동, 원금 보장',
-        '만기해지 시 예금원금은 보장하면서 기초자산인 KOSPI200 지수의 변동에 연동하여 이자수익이 결정되는 상품', '스타뱅킹',
-        '- 연 0.1% (만기일부터 예금지급일 전일까지의 적용금리)', '해당없음', '1', '제한없음', '- 가입금액 : 1백만원 이상 (만원 단위)', NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP01001626', '1', 'KB Star 지수연동예금 25-3호(KOSPI200 상승낙아웃형(고수익목표형))', NULL, '국민은행', '0010927',
-        '간편가입 KOSPI200 지수 연동, 원금 보장',
-        '만기해지 시 예금원금은 보장하면서 기초자산인 KOSPI200 지수의 변동에 연동하여 이자수익이 결정되는 상품', '스타뱅킹',
-        '- 연 0.1% (만기일부터 예금지급일 전일까지의 적용금리)', '해당없음', '1', '제한없음', '- 가입금액 : 1백만원 이상 (만원 단위)', NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP010200100051', '2', 'KB국민프리미엄적금(정액)', NULL, '국민은행', '0010927',
-        '우대금리 단체/병역명문가 우대금리 제공하는 적립식 상품', '단체가입고객 또는 병역명문가 등에게 우대금리를 제공하는 적립식 상품',
-        '영업점,인터넷,스마트폰,전화(텔레뱅킹)',
-        '- 1개월 이내 : 기본이율 X 50%\n- 1개월 초과 ~ 3개월 이내 : 기본이율 X 30%\n- 3개월 초과 : 0.1%',
-        '① 단체가입/나라사랑/쿠폰 우대이율: \n 1년: 연 0.6%p, 2년: 연 0.7%p,\n 3년: 연 0.9%p, 5년: 연 1.0%p \n (중복적용되지 않음, 계약기간별차등적용)\n② 교차거래 우대이율: 연 0.3%p',
-        '1', '실명의 개인', '1인 1계좌', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP010200100070', '2', 'KB내맘대로적금', NULL, '국민은행', '0010927',
-        '우대금리 간편가입 직접 설계하는 비대면 DIY, 이율/부가서비스 선택',
-        '상품에 관한 다양한 옵션(우대이율, 부가서비스 등)을 제공함으로써 고객이 직접 상품 요건을 설계하여 가입할 수 있는 비대면채널 전용 DIY(Do-It-Yourself)형 상품',
-        '인터넷,스마트폰', '- 1개월 이내 : 기본이율 X 50%\n- 1개월 초과 ~ 3개월 이내 : 기본이율 X 30%\n- 3개월 초과 : 0.1%',
-        '신규 시 다음의 9가지 우대이율 항목 중 6가지를 자유롭게 선택하고, 아래 우대이율 적용조건 충족 시 항목 당 각 연0.1%p의 우대이율 적용\n(최고 연0.6%p)\n - 우대이율 항목 : 급여이체, 카드결제계좌, 자동이체 저축, 아파트관리비 이체, KB스타뱅킹 이체, 장기거래, 첫 거래, 주택청약종합저축, 소중한 날',
-        '1', '실명의 개인 또는 개인사업자', '인터넷뱅킹/KB스타뱅킹 전용상품', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL),
-       ('DP010200100084', '2', 'KB맑은하늘적금', NULL, '국민은행', '0010927',
-        '우대금리 간편가입 친환경 우대금리, 보험 제공 친환경 특화 상품',
-        '맑은하늘을 위한 생활 속 작은 실천에 대해 우대금리를 제공하고, 대중교통/자전거상해 관련 무료 보험서비스(최대 2억원 보장)를 제공하는 친환경 특화 상품',
-        '영업점,인터넷,스마트폰', '- 1개월 이내 : 기본이율 X 50%\n- 1개월 초과 ~ 3개월 이내 : 기본이율 X 30%\n- 3개월 초과 : 0.1%',
-        '맑은하늘을 위한 미션별 제공조건을 달성하는 경우 각 미션별 우대이율 제공\n - 1년제 최고 연 0.8%p, 2년제 최고 연 0.9%p, 3년제 최고 연 1.0%p\n① 종이통장 줄이기 미션: 연 0.1%p\n② 종이서식 줄이기 미션: 연 0.2%p\n③ 대중교통 미션: 1년제 연 0.4%p, 2년제 연 0.5%p, 3년제 연 0.6%p\n④ 퀴즈미션: 연 0.1%p',
-        '1', '실명의 개인', '공동명의 불가\n(1인 최대 3계좌)', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL),
-       ('DP010200100104', '2', 'KB 특★한 적금', NULL, '국민은행', '0010927',
-        '우대금리 간편가입 특별한 만기일 지정, 단기 고금리 적금 상품', '내가 원하는 특별한 날을 만기일로 지정하고 변경할 수 있는 단기 적금', '스마트폰',
-        '- 1개월 이내 : 기본이율 X 50%\n- 1개월 초과 ~ 3개월 이내 : 기본이율 X 30%\n- 3개월 초과 : 0.1%',
-        '항목별 적용 조건 충족시, 최고 연 4.0%p\n① 목표달성 축하 우대이율: 최고 연 1.0%p\n 50만원 이하: 연 0.5%p, 50만원 초과: 연 1.0%p \n② 별 모으기 우대이율 : 최고 연 1.0%p\n 10개: 연 0.5%p, 20개: 연 1.0%p\n③ 함께해요 우대이율: 최고 연 2.0%p',
-        '1', '실명의 개인', '개인사업자, 임의단체 및\n공동명의 가입 불가\n(1인 최대 3계좌)', NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL),
-       ('DP010300100335', '1', 'KB Star 정기예금', NULL, '국민은행', '0010927', '간편가입 디지털 전용, 편리한 온라인 예금',
-        '인터넷뱅킹, KB스타뱅킹, 고객센터를 통해서만 가입가능한 Digital KB 대표 정기예금으로, 자동 만기관리부터 분할인출까지 가능한 편리한 온라인 전용 정기예금입니다.',
-        '인터넷,스마트폰', '- 1개월 이내 : 기본이율 X 50% - 1개월 초과 ~ 3개월 이내 : 기본이율 X 30% - 3개월 초과 : 0.1%', '해당없음',
-        '1', '실명의 개인 또는 개인사업자', '- 가입금액 : 1백만원 이상', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL),
-       ('DP240000', '1', '정기예금', NULL, 'KB저축은행', '0013127', '우대금리 영업점 판매, 확정 금리 제공',
-        '일정기간 여유자금을 예금하시면 확정 금리로 높은 수익을 드리는 영업점 판매 상품입니다.', '영업점',
-        '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율 - 1개월초과 : 보통예금이율',
-        '- 인터넷뱅킹 신규가입하여 출금계좌를 등록한 후 당일 창구 신규시 우대금리 연 0.1%p적용. 단, 신규가입일 포함 14일 이내 타기관 공인인증서 미등록시 우대금리 적용해제',
-        '1', '제한없음', '- 3~36개월 가입가능 - 가입금액 : 100만원이상', NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL),
-       ('DP240001', '1', 'KB e-plus 정기예금', NULL, 'KB저축은행', '0013127', '간편가입 온라인 전용, 확정 금리 제공',
-        '일정기간 여유자금을 예금하시면 확정 금리로 높은 수익을 드리는 온라인 가입 전용상품입니다.', '인터넷,스마트폰',
-        '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율 - 1개월초과 : 보통예금이율', '없음', '1', '제한없음',
-        '- 3~36개월 가입가능 - 가입금액 : 100만원이상', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP240004', '1', '플러스회전식정기예금(대면)', NULL, 'KB저축은행', '0013127', '우대금리 매년 금리 변동 장기 목돈 상품',
-        '매 회전주기(1년)마다 약정이율이 변동되는 장기목돈굴리기 상품', '영업점',
-        '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율 - 1개월초과 : 보통예금이율',
-        '-만 65세이상 첫가입시 최초 1계좌에 한하여 우대금리 연 0.1%p적용', '1', '제한없음',
-        '- 가입기간 36개월로 매 회전주기(1년)마다 자동회전되는 회전정기예금(변동금리상품) - 가입금액 : 100만원이상', NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('DP240005', '1', '플러스회전식정기예금', NULL, 'KB저축은행', '0013127', '간편가입 매년 금리 변동 장기 상품',
-        '매 회전주기(1년)마다 약정이율이 변동되는 장기목돈굴리기 상품', '스마트폰',
-        '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율 - 1개월초과 : 보통예금이율', '없음', '1', '제한없음',
-        '- 가입기간 36개월로 매 회전주기(1년)마다 자동회전되는 회전정기예금(변동금리상품) - 가입금액 : 100만원이상', NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('DP310002', '2', 'KB착한정기적금', NULL, 'KB저축은행', '0013127', '우대금리 목돈을 마련하는 정기적금',
-        '매월 일정 금액을 저축하고 목돈을 마련하는 정기적금입니다.', '영업점',
-        '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n- 1개월초과 : 보통예금이율',
-        '- 인터넷뱅킹 신규가입하여 출금계좌를 등록한 후 당일 창구 신규시 우대금리 연 0.1%p적용. \n단, 신규가입일 포함 14일 이내 타기관 공인인증서 미등록시 우대금리 적용해제\n-KB스타클럽 고객 연0.1%p적용.\n단, 베스트, 그랜드, VIP,VVIP등급 적용',
-        '1', '제한없음', '- 12~36개월\n- 가입금액: 1만원이상~100만원이하\n- Kbe-Plus착한정기적금과 납입한도 합산 적용', '1000000',
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP310003', '2', 'KB착한e-Plus정기적금', NULL, 'KB저축은행', '0013127',
-        '우대금리 간편가입 목돈을 마련하는 온라인 가입전용 정기적금', '매월 일정 금액을 저축하고 목돈을 마련하는 온라인 가입전용 정기적금입니다.', '인터넷,스마트폰',
-        '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n- 1개월초과 : 보통예금이율',
-        '-KB스타클럽 고객 연0.1%p적용.\n단, 베스트, 그랜드, VIP,VVIP등급 적용', '1', '제한없음',
-        '- 12~36개월\n- 가입금액: 1만원이상~100만원이하\n- KB착한정기적금과 납입한도 합산 적용', '1000000', NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL),
-       ('DP310004', '2', 'KB일반정기적금', NULL, 'KB저축은행', '0013127', '우대금리 목돈을 마련하는 정기적금',
-        '매월 일정금액을 납입하여 목돈을 마련하는 정기적금입니다.', '영업점',
-        '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n- 1개월초과 : 보통예금이율',
-        '- 인터넷뱅킹 신규가입하여 출금계좌를 등록한 후 당일 창구 신규시 우대금리 연 0.1%p적용. \n단, 신규가입일 포함 14일 이내 타기관 공인인증서 미등록시 우대금리 적용해제\n-KB스타클럽 고객 연0.1%p적용.\n단, 베스트, 그랜드, VIP,VVIP등급 적용',
-        '1', '제한없음', '- 12~36개월\n- 가입금액: 1만원이상', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL),
-       ('DP310005', '2', 'KB일반e-Plus정기적금', NULL, 'KB저축은행', '0013127',
-        '우대금리 간편가입 목돈 마련을 위한 온라인 가입전용 정기적금', '목돈 마련을 위한 온라인 가입전용 정기적금입니다.', '인터넷,스마트폰',
-        '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n- 1개월초과 : 보통예금이율',
-        '-KB스타클럽 고객 연0.1%p적용.\n단, 베스트, 그랜드, VIP,VVIP등급 적용', '1', '제한없음', '- 12~36개월\n- 가입금액: 1만원이상',
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('DP310006', '2', 'KB착한누리적금', NULL, 'KB저축은행', '0013127',
-        '우대금리 간편가입 사회적 배려 대상 고객의 목돈 마련을 위한 적립식 적금', '사회적 배려 대상 고객에게 목돈 마련을 지원하는 적립식 적금입니다.',
-        '영업점,인터넷,스마트폰', '- 1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n- 1개월초과 : 보통예금이율',
+        '영업점, 인터넷뱅킹, KB스타뱅킹', '0.01g', '원화(KRW)', '제한없음 (단, 비거주자는 인터넷뱅킹으로 신규 불가)',
+        '매매차익에 대한 배당소득으로 15.4% 원천징수, 비과세종합저축 가입 불가', 0.32, 0.28);
+/*!40000 ALTER TABLE `gold`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mortgage`
+--
+
+DROP TABLE IF EXISTS `mortgage`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mortgage`
+(
+    `fin_prdt_cd`       varchar(50) NOT NULL,
+    `fin_prdt_category` varchar(2)   DEFAULT NULL,
+    `fin_prdt_nm`       varchar(50)  DEFAULT NULL,
+    `fin_co_no`         varchar(20)  DEFAULT NULL,
+    `kor_co_nm`         varchar(15)  DEFAULT NULL,
+    `prdt_feature`      varchar(255) DEFAULT NULL,
+    `description`       text,
+    `join_way`          varchar(50)  DEFAULT NULL,
+    `loan_inci_expn`    text,
+    `erly_rpay_fee`     text,
+    `dly_rate`          text,
+    `loan_lmt`          varchar(50)  DEFAULT NULL,
+    `rec_reason`        text,
+    `tendency`          double       DEFAULT NULL,
+    `asset_proportion`  double       DEFAULT NULL,
+    PRIMARY KEY (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mortgage`
+--
+
+LOCK TABLES `mortgage` WRITE;
+/*!40000 ALTER TABLE `mortgage`
+    DISABLE KEYS */;
+INSERT INTO `mortgage`
+VALUES ('LN013032', '3', '부동산담보(KB손보희망모기지론)', '0010635', '주식회사KB손해보험', '주주택을 담보로 제공하는 일반 대출 상품',
+        '-설명 : 주택을 담보로 대출을 제공하는 상품입니다.', '영업점', '-인지세 : 해당세액의 50%\n-국민주택채권매입비',
+        '-중도상환원금 × 수수료율 × 잔여중도수수료약정기간 ÷ 3년\n※수수료율 : 0.95% (25년적용)', '대출금리 + 3%\n(최고 연체이자율 : 19%)',
+        'LTV 30%~70%', '정기소득이 없어도 부동산 담보를 활용하여 생활자금을 안정적으로 확보할 수 있어, 노후생활비가 필요한 시니어에게 추천👍', -0.8,
+        -0.7),
+       ('LN013037', '3', '부동산담보(KB손보희망모기지론MI)', '0010635', '주식회사KB손해보험',
+        '주택 구입 자금 또는 기존 대출 상환을 위한 담보대출',
+        '-설명 : 주택을 담보로 제공하고 주택 구입 자금 또는 기존 대출 상환 등을 위해 이용할 수 있는 대출 상품입니다.', '영업점',
+        '-인지세 : 해당세액의 50%\n-국민주택채권매입비', '-중도상환원금 × 수수료율 × 잔여중도수수료약정기간 ÷ 3년\n※수수료율 : 0.95% (25년적용)',
+        '대출금리 + 3%\n(최고 연체이자율 : 19%)', 'LTV 30%~70%',
+        '보험(MI)을 활용한 보증 구조로 심사 문턱이 낮아, 건강상 이유 등으로 일반 대출이 어려운 시니어 고객에게 적합👍', -0.89, -0.87),
+       ('LN20000011', '3', 'KB골든라이프 공사주택연금론', '0010927', '국민은행', '종신연금, 종신거주를 보장하는 주택연금 대출',
+        '-설명 : 종신연금, 종신거주 보장\n-대출금 상환의 부담이 없습니다.\n-주택가격을 초과하여 연금 수령 가능\n-예상연금 및 보증료율 조회하기', '영업점',
+        '인지세 50% 고객 부담, 보증서 발급 비용, 화재보험료(해당 시)', '면제(중도상환수수료 없음)', '대출금리+3.0%, 최고 연체이자율 법정 상한',
+        '보증서상의 보증금액 범위 내(최고 10억원)',
+        '한국주택금융공사의 보증을 통해 주택을 담보로 생활자금을 마련할 수 있어, 고정소득이 부족한 시니어 고객에게 추천👍', 0.58, 0.69),
+       ('LN20000115', '3', 'KB골든라이프 주택연금론', '0010927', '국민은행', '고가 주택 소유자를 위한 은행 자체 주택연금 대출',
+        '-설명 : 고가 주택을 소유하고 있지만 생활비가 부족한 고객을 위한 은행 자체 주택연금론입니다.', '영업점',
+        '인지세 50% 고객 부담, 보증서 발급 비용, 화재보험료(해당 시)', '중도상환수수료 0.58% × 잔존일수 ÷ 대출기간 (최초 3년)',
+        '대출금리+3.0%, 최고 연체이자율 법정 상한', '담보조사 가격 및 지역에 따라 최대 10억원 범위',
+        '보유 주택에서 거주를 유지하며 매월 연금 형태로 현금을 수령할 수 있어, 안정적인 노후 자금 운용을 원하는 시니어에게 적합👍', 0.34, 0.67),
+       ('LN200300000002', '3', 'KB주택담보대출변동(일반자금)', '0010927', '국민은행', '대면가입 금리 선택이 가능한 주택담보대출',
+        '-설명 : 혼합금리와 변동금리 중 선택이 가능한 주택담보대출입니다.', '영업점',
+        '① 인지세 : 해당세액의 50%\n② 국민주택채권 매입 : 대출금액 × 120% × 1% × 채권할인율\n③ 화재보험료 (아파트 외 물건지에 한함)',
+        '중도상환금액 × 0.58% × (대출잔여일수 ÷ 3년)', '대출금리+3.0%\n최고연체이자율:15%', 'LTV 70%',
+        '주택을 담보로 생활비, 의료비, 자녀 지원 등을 위한 유동자금 확보가 가능한 상품입니다. 다양한 자금 수요가 있는 시니어에게 맞춤👍', -0.93, -0.9),
+       ('LN200331100045', '3', 'KB스타 아파트담보대출 혼합금리(주택자금)', '0010927', '국민은행', 'KB 스타뱅킹 전용 아파트 담보대출',
+        '-설명 : KB 스타뱅킹 전용 아파트 담보대출 상품입니다.', '영업점',
+        '① 인지세 : 해당세액의 50%\n② 국민주택채권 매입 : 대출금액 × 120% × 1% × 채권할인율\n③ 화재보험료 (아파트 외 물건지에 한함)',
+        '중도상환금액 × 0.58% × (대출잔여일수 ÷ 3년)', '대출금리+3.0%\n최고연체이자율:15%', 'LTV 70%',
+        '혼합금리로 초기 금리 부담을 낮추면서도 일정 금리 고정을 통해 향후 금리 상승 위험에 대비할 수 있어, 안정적 자산 활용을 원하는 시니어에게 추천👍', -0.82,
+        -0.93);
+/*!40000 ALTER TABLE `mortgage`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `mortgage_option`
+--
+
+DROP TABLE IF EXISTS `mortgage_option`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mortgage_option`
+(
+    `option_cd`         int         NOT NULL AUTO_INCREMENT,
+    `fin_prdt_cd`       varchar(50) NOT NULL,
+    `mrtg_type_nm`      varchar(10) DEFAULT NULL,
+    `rpay_type_nm`      varchar(20) DEFAULT NULL,
+    `lend_rate_type_nm` varchar(30) DEFAULT NULL,
+    `lend_rate_min`     double      DEFAULT NULL,
+    `lend_rate_max`     double      DEFAULT NULL,
+    `lend_rate_avg`     double      DEFAULT NULL,
+    PRIMARY KEY (`option_cd`),
+    KEY `fk_fin_prdt_mortgage` (`fin_prdt_cd`),
+    CONSTRAINT `fk_fin_prdt_mortgage` FOREIGN KEY (`fin_prdt_cd`) REFERENCES `mortgage` (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 23
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mortgage_option`
+--
+
+LOCK TABLES `mortgage_option` WRITE;
+/*!40000 ALTER TABLE `mortgage_option`
+    DISABLE KEYS */;
+INSERT INTO `mortgage_option`
+VALUES (12, 'LN200300000002', '아파트', '분할상환방식', '변동금리', 4.17, 5.07, 4.57),
+       (13, 'LN200300000002', '아파트', '만기일시상환방식', '변동금리', 4.3, 5.2, 4.56),
+       (14, 'LN200300000002', '아파트외', '분할상환방식', '변동금리', 4.17, 5.07, 4.6),
+       (15, 'LN200300000002', '아파트외', '만기일시상환방식', '변동금리', 4.3, 5.2, 4.5),
+       (16, 'LN200331100045', '아파트', '분할상환방식', '고정금리', 4.12, 4.12, 3.51),
+       (17, 'LN20000011', '주택연금보증서 담보', '만기일시상환', '변동금리(COFIX 또는 CD기준)', 4.1, 5.24, 4.67),
+       (18, 'LN20000115', '주택담보', '만기일시상환', '변동금리(COFIX 또는 CD기준)', 2.54, 5.24, 3.89),
+       (19, 'LN013032', '아파트', '분할상환방식', '고정금리', 3.76, 5.39, 4.46),
+       (20, 'LN013032', '아파트', '분할상환방식', '변동금리', 3.75, 5.35, 4.35),
+       (21, 'LN013037', '아파트', '분할상환방식', '고정금리', 4.36, 5.79, 4.77),
+       (22, 'LN013037', '아파트', '분할상환방식', '변동금리', 4.35, 5.75, 4.72);
+/*!40000 ALTER TABLE `mortgage_option`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `news`
+--
+
+DROP TABLE IF EXISTS `news`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `news`
+(
+    `id`         bigint       NOT NULL AUTO_INCREMENT,
+    `category`   int          NOT NULL,
+    `title`      varchar(255) NOT NULL,
+    `link`       text         NOT NULL,
+    `date`       varchar(50) DEFAULT NULL,
+    `summary`    text,
+    `created_at` datetime    DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `news`
+--
+
+LOCK TABLES `news` WRITE;
+/*!40000 ALTER TABLE `news`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `news`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `recipient`
+--
+
+DROP TABLE IF EXISTS `recipient`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `recipient`
+(
+    `recipient_id`      int NOT NULL AUTO_INCREMENT,
+    `email`             varchar(255) DEFAULT NULL,
+    `relationship`      varchar(20)  DEFAULT NULL,
+    `recipient_name`    varchar(20)  DEFAULT NULL,
+    `birth_date`        date         DEFAULT NULL,
+    `is_married`        tinyint(1)   DEFAULT NULL,
+    `has_prior_gift`    tinyint(1)   DEFAULT NULL,
+    `prior_gift_amount` bigint       DEFAULT NULL,
+    `gift_tax_payer`    varchar(20)  DEFAULT NULL,
+    PRIMARY KEY (`recipient_id`),
+    KEY `fk_recipient_user2_idx` (`email`),
+    CONSTRAINT `fk_recipient_user2` FOREIGN KEY (`email`) REFERENCES `user` (`email`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `recipient`
+--
+
+LOCK TABLES `recipient` WRITE;
+/*!40000 ALTER TABLE `recipient`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `recipient`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `refresh_token`
+--
+
+DROP TABLE IF EXISTS `refresh_token`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `refresh_token`
+(
+    `email`       varchar(255) NOT NULL,
+    `token_value` varchar(255) DEFAULT NULL,
+    `expires_at`  date         DEFAULT NULL,
+    PRIMARY KEY (`email`),
+    KEY `fk_refresh_token_user1_idx` (`email`),
+    CONSTRAINT `fk_refresh_token_user1` FOREIGN KEY (`email`) REFERENCES `user` (`email`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `refresh_token`
+--
+
+LOCK TABLES `refresh_token` WRITE;
+/*!40000 ALTER TABLE `refresh_token`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `refresh_token`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `saving`
+--
+
+DROP TABLE IF EXISTS `saving`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `saving`
+(
+    `fin_prdt_cd`       varchar(50) NOT NULL,
+    `fin_prdt_category` varchar(2)   DEFAULT NULL,
+    `fin_prdt_nm`       varchar(50)  DEFAULT NULL,
+    `fin_co_no`         varchar(20)  DEFAULT NULL,
+    `kor_co_nm`         varchar(15)  DEFAULT NULL,
+    `prdt_feature`      varchar(255) DEFAULT NULL,
+    `description`       text,
+    `join_way`          varchar(50)  DEFAULT NULL,
+    `mtrt_int`          text,
+    `spcl_cnd`          text,
+    `join_deny`         varchar(2)   DEFAULT NULL,
+    `join_member`       varchar(150) DEFAULT NULL,
+    `etc_note`          text,
+    `max_limit`         varchar(200) DEFAULT NULL,
+    `rec_reason`        text,
+    `tendency`          double       DEFAULT NULL,
+    `asset_proportion`  double       DEFAULT NULL,
+    PRIMARY KEY (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `saving`
+--
+
+LOCK TABLES `saving` WRITE;
+/*!40000 ALTER TABLE `saving`
+    DISABLE KEYS */;
+INSERT INTO `saving`
+VALUES ('DP01000228', '2', '직장인우대적금', '0010927', '국민은행', '우대금리 간편가입 직장인 급여/추가적립 우대',
+        '-설명 : 직장인의 재테크 스타일을 반영하여 급여이체를 하거나 보너스 등의 부정기적인 자금을 추가로 적립하는 경우 우대이율로 목돈마련을 지원하고 결혼, 출산, 이사 등 이벤트를 위한 중도해지시 기본이율을 제공 하는 적립식 예금입니다.',
+        '영업점, 인터넷뱅킹, KB스타뱅킹', '만기일시지급',
+        '급여이체 시 연0.3%p, 전자금융 자동이체 시 연0.1%p 추가 우대, 분기별 추가입금 시 연0.2%p', '1', '실명의 개인(직장인)',
+        '월 1만원~300만원 정액 적립, 분기별 1회 추가 입금 최대 500만원 가능', '월 300만원 + 분기별 추가 500만원',
+        '연금 수령 고객에게 우대금리 및 중도해지 시 기본이율 보장 혜택이 있어 국민연금, 공무원연금 수령 중인 시니어가 안정적으로 목돈 마련하기 적합👍', 0.74,
+        0.91),
+       ('DP01001495', '2', 'KB두근두근여행적금', '0010927', '국민은행', '우대금리 간편가입 여행 혜택과 설렘, 소비 인증 우대',
+        '-설명 : 여행준비의 혜택과 설렘이 있는 적금으로, 노랑풍선 최대 3만원 & 4% 할인쿠폰 제공합니다.', '영업점, 인터넷뱅킹, KB스타뱅킹', '만기일시지급',
+        '여행 관련 소비 인증 시 우대금리', '1', '실명의 개인', '-가입기간 : 6개월, 자유적립', '월 300만원 + 분기별 추가 500만원',
+        '여행 관련 소비 인증 시 우대금리를 제공하여 여행과 여가 활동을 즐기는 65세 이상 시니어에게 적합', 0.74, 0.74),
+       ('DP01001596', '2', 'KB스타 건강적금', '0010927', '국민은행',
+        '우대금리 간편가입 걸음수에 따른 우대금리 적용으로 저축과 건강관리를 한번에',
+        '-설명 : 걸음수에 따른 우대금리 적용으로 저축과 건강관리를 함께 할 수 있는 적금\n이 적금은 판매한도를 정하여 판매하며 KB국민은행 홈페이지, KB스타뱅킹, 영업점에서 판매한도 확인이 가능하고, 정해진 한도가 소진되면 별도의 안내 없이 판매를 종료합니다.\n-예금유의사항 : 1.즐거운 걷기 우대금리를 받기 위해서는 안드로이드 기기에는 ‘구글 피트니스’, iOS 기기에는 ‘건강’ 앱이 설치되어 있어야 합니다. 2.가입 후 KB스타뱅킹 [금리확인] 화면에 들어가 스마트폰 연동을 진행해야 걸음수가 측정됩니다.',
+        '영업점(만 60세 이상), KB스타뱅킹',
+        '-1개월 이내 : 기본이율 X 50%\n -1개월 초과~3개월 이내 : 기본이율 X 30%\n -3개월 초과 : 0.1%',
+        '1.즐거운 걷기 우대금리(매월 연 0.5%p, 최고 연 3.0%p) 2.발자국 스탬프 찍기 우대금리(연1.0%p) 3.웰컴 오케어 우대금리(연1.0%p)',
+        '1', '만 14세 이상 실명의 개인(1인 1계좌 보유 가능) ※개인사업자, 임의단체 및 공동명의 가입 불가(서류 미제출 임의단체 가입 불가)',
+        '-계약기간 : 6개월\n-저축금액 : 월 1만원 이상 20만원 이하(원 단위) ※매월 첫 날부터 마지막 날까지 자유롭게 저축(만기일 전날까지 입금 가능)',
+        '월 20만원', '걸음수에 따른 우대금리와 건강 앱 연동 혜택으로 건강관리에 관심 많은 시니어가 저축과 건강을 함께 챙기기에 적합👍', 0.69, 0.88),
+       ('DP01001614', '2', 'KB스타적금Ⅲ', '0010927', '국민은행', '우대금리 간편가입 신규/장기미거래 고객 우대',
+        '-설명 : 신규 또는 장기미거래 고객에게 우대이율을 제공하는 적금 상품입니다.', '영업점, 인터넷뱅킹, KB스타뱅킹', '만기일시지급',
+        '신규/장기미거래 고객 우대금리 연3.0%p', '1', '실명의 개인', '12개월, 최고 연 6.0% 금리', '월 1만~30만원',
+        '신규·장기미거래 고객 우대금리를 제공해 금융거래가 적은 시니어가 단기간에 목돈 마련하기 적합👍', 0.97, 0.98),
+       ('DP010200100051', '2', 'KB국민프리미엄적금(정액)', '0010927', '국민은행',
+        '우대금리 단체/병역명문가 우대금리 제공하는 적립식 상품', '-설명 : 단체가입고객 또는 병역명문가 등에게 우대금리를 제공하는 적립식 상품입니다.',
+        '영업점, 인터넷뱅킹, KB스타뱅킹', '-1개월 이내 : 기본이율 X 50%\n-1개월 초과~3개월 이내 : 기본이율 X 30%\n-3개월 초과 : 0.1%',
+        '① 단체가입/나라사랑/쿠폰 우대이율: \n1년 : 연 0.6%p, 2년 : 연 0.7%p,\n3년 : 연 0.9%p, 5년 : 연 1.0%p\n(중복적용되지 않음, 계약기간별차등적용)\n② 교차거래 우대이율: 연 0.3%p',
+        '1', '실명의 개인', '1인 1계좌', '월 1만~30만원',
+        '단체가입 및 병역명문가 우대금리 제공 상품으로 우대 대상의 시니어가 금리 혜택을 누리며 안정적인 적금 운용에 적합👍', 0.76, 0.96),
+       ('DP010200100070', '2', 'KB내맘대로적금', '0010927', '국민은행', '우대금리 간편가입 직접 설계하는 비대면 DIY 상품',
+        '-설명 : 상품에 관한 다양한 옵션(우대이율, 부가서비스 등)을 제공함으로써 고객이 직접 상품 요건을 설계하여 가입할 수 있는 비대면채널 전용 DIY(Do-It-Yourself)형 상품입니다.',
+        '인터넷뱅킹, KB스타뱅킹', '-1개월 이내 : 기본이율 X 50%\n-1개월 초과~3개월 이내 : 기본이율 X 30%\n -3개월 초과 : 0.1%',
+        '신규 시 다음의 9가지 우대이율 항목 중 6가지를 자유롭게 선택하고, 아래 우대이율 적용조건 충족 시 항목 당 각 연0.1%p의 우대이율 적용\n(최고 연0.6%p)\n-우대이율 항목 : 급여이체, 카드결제계좌, 자동이체 저축, 아파트관리비 이체, KB스타뱅킹 이체, 장기거래, 첫 거래, 주택청약종합저축, 소중한 날',
+        '1', '실명의 개인 또는 개인사업자', '1인 1계좌', '월 20만원',
+        '이율과 부가서비스를 직접 선택하는 DIY 상품으로, 금융 상품을 적극적으로 설계하고 싶은 시니어에게 적합👍', 0.91, 0.91),
+       ('DP010200100084', '2', 'KB맑은하늘적금', '0010927', '국민은행', '우대금리 간편가입 친환경 우대금리, 보험 제공 친환경 특화 상품',
+        '-설명 : 맑은하늘을 위한 생활 속 작은 실천에 대해 우대금리를 제공하고, 대중교통/자전거상해 관련 무료 보험서비스(최대 2억원 보장)를 제공하는 친환경 특화 상품',
+        '영업점, 인터넷뱅킹, KB스타뱅킹', '-1개월 이내 : 기본이율 X 50%\n-1개월 초과~3개월 이내 : 기본이율 X 30%\n-3개월 초과 : 0.1%',
+        '맑은하늘을 위한 미션별 제공조건을 달성하는 경우 각 미션별 우대이율 제공\n-1년제 최고 연 0.8%p, 2년제 최고 연 0.9%p, 3년제 최고 연 1.0%p\n① 종이통장 줄이기 미션: 연 0.1%p\n② 종이서식 줄이기 미션: 연 0.2%p\n③ 대중교통 미션: 1년제 연 0.4%p, 2년제 연 0.5%p, 3년제 연 0.6%p\n④ 퀴즈미션: 연 0.1%p',
+        '1', '실명의 개인', '공동명의 불가\n(1인 최대 3계좌)', '월 20만원',
+        '친환경 미션 달성 시 우대금리 및 보험서비스 제공으로 환경과 안전을 중시하는 시니어에게 적합👍', 0.84, 0.72),
+       ('DP010200100104', '2', 'KB 특★한 적금', '0010927', '국민은행', '우대금리 간편가입 특별한 만기일 지정, 단기 고금리 적금 상품',
+        '-설명 : 내가 원하는 특별한 날을 만기일로 지정하고 변경할 수 있는 단기 적금 상품입니다.', 'KB스타뱅킹',
+        '-1개월 이내 : 기본이율 X 50%\n-1개월 초과~3개월 이내 : 기본이율 X 30%\n-3개월 초과 : 0.1%',
+        '항목별 적용 조건 충족시, 최고 연 4.0%p\n① 목표달성 축하 우대이율: 최고 연 1.0%p\n50만원 이하: 연 0.5%p, 50만원 초과: 연 1.0%p\n② 별 모으기 우대이율 : 최고 연 1.0%p\n10개: 연 0.5%p, 20개: 연 1.0%p\n③ 함께해요 우대이율: 최고 연 2.0%p',
+        '1', '실명의 개인', '개인사업자, 임의단체 및\n공동명의 가입 불가\n(1인 최대 3계좌)', '월 20만원',
+        '특별한 만기일 지정 및 단기 고금리 혜택으로 중요한 날짜에 맞춰 목돈을 준비하는 시니어에게 적합👍', 0.79, 0.74),
+       ('DP310002', '2', 'KB착한정기적금', '0010927', '국민은행', '우대금리 목돈을 마련하는 정기적금',
+        '-설명 : 매월 일정 금액을 저축하고 목돈을 마련하는 정기적금입니다.', '영업점',
+        '-1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율',
+        '-인터넷뱅킹 신규가입하여 출금계좌를 등록한 후 당일 창구 신규시 우대금리 연 0.1%p적용\n단, 신규가입일 포함 14일 이내 타기관 공인인증서 미등록시 우대금리 적용해제\n-KB스타클럽 고객 연0.1%p적용.\n단, 베스트, 그랜드, VIP,VVIP등급 적용',
+        '1', '제한없음', '-가입기간 : 12~36개월\n-가입금액: 1만원이상~100만원이하\n-Kb e-Plus착한정기적금과 납입한도 합산 적용',
+        '월 20만원', '사회적 배려 대상 및 기초생활수급자 우대금리와 가입 조건으로 경제적 어려움이 있는 시니어에게 적합👍', 0.78, 0.78),
+       ('DP310003', '2', 'KB착한e-Plus정기적금', '0013127', 'KB저축은행', '우대금리 간편가입 목돈을 마련하는 온라인 가입전용 정기적금',
+        '-설명 : 매월 일정 금액을 저축하고 목돈을 마련하는 온라인 가입전용 정기적금입니다.', '인터넷뱅킹, KB스타뱅킹',
+        '-1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율',
+        '-KB스타클럽 고객 연0.1%p적용\n단, 베스트, 그랜드, VIP,VVIP등급 적용', '1', '제한없음',
+        '-가입기간 : 12~36개월\n-가입금액: 1만원이상~100만원이하\n-KB착한정기적금과 납입한도 합산 적용', '월 20만원',
+        '온라인 가입 전용으로 간편하며 우대금리 제공, 스마트폰 활용이 익숙한 시니어에게 적합👍', 0.76, 0.99),
+       ('DP310004', '2', 'KB일반정기적금', '0013127', 'KB저축은행', '우대금리 목돈을 마련하는 정기적금',
+        '-설명 : 매월 일정금액을 납입하여 목돈을 마련하는 정기적금입니다.', '영업점',
+        '1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율',
+        '-인터넷뱅킹 신규가입하여 출금계좌를 등록한 후 당일 창구 신규시 우대금리 연 0.1%p적용.\n단, 신규가입일 포함 14일 이내 타기관 공인인증서 미등록시 우대금리 적용해제\n-KB스타클럽 고객 연0.1%p적용\n단, 베스트, 그랜드, VIP,VVIP등급 적용',
+        '1', '제한없음', '-가입기간 : 12~36개월\n-가입금액 : 1만원이상', '월 1만~30만원',
+        '기본에 충실한 안정적 적금으로 금융상품 이용이 익숙하지 않은 시니어가 장기 목돈 마련하기 적합👍', 0.69, 0.96),
+       ('DP310005', '2', 'KB일반e-Plus정기적금', '0013127', 'KB저축은행', '우대금리 간편가입 목돈 마련을 위한 온라인 가입전용 정기적금',
+        '-설명 : 목돈 마련을 위한 온라인 가입전용 정기적금입니다.', '인터넷뱅킹, KB스타뱅킹',
+        '-1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율',
+        '-KB스타클럽 고객 연0.1%p적용\n단, 베스트, 그랜드, VIP,VVIP등급 적용', '1', '제한없음',
+        '-가입기간 : 12~36개월\n-가입금액 : 1만원이상', '월 1만~30만원',
+        '온라인 전용 간편 가입과 우대금리 혜택으로 디지털 환경에 익숙한 시니어에게 적합👍', 0.68, 0.91),
+       ('DP310006', '2', 'KB착한누리적금', '0013127', 'KB저축은행',
+        '우대금리 간편가입 사회적 배려 대상 고객의 목돈 마련을 위한 적립식 적금', '-설명 : 사회적 배려 대상 고객에게 목돈 마련을 지원하는 적립식 적금입니다.',
+        '영업점, 인터넷뱅킹, KB스타뱅킹', '-1개월이내 : 신규가입일 당시 약정이율과 만기일 현재 고시이율 중 낮은 이율\n-1개월초과 : 보통예금이율',
         '인터넷뱅킹/모바일뱅킹으로 가입시 우대이율 연0.5% 적용', '1',
         '기초생활수급자, 소년소녀가장, 한부모가족지원보호대상자, 새터민, 만65세이상 차상위계층, 장애인연금·장애수당·장애아동수당 대상자',
-        '-12개월 가입가능\n- 가입금액:1만원이상~30만원이하\n- 증빙서류제출후가입', '300000', NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL),
-       ('LN013032', '3', '부동산담보(KB손보희망모기지론)', NULL, '주식회사KB손해보험', '0010635',
-        '주주택을 담보로 제공하는 일반 대출 상품', '주택을 담보로 대출을 제공하는 상품', '영업점,모집인', NULL, NULL, NULL, NULL, NULL,
-        'LTV 30%~70%', '- 인지세 : 해당세액의 50%\n- 국민주택채권매입비',
-        '- 중도상환원금 × 수수료율 × 잔여중도수수료약정기간 ÷ 3년\n※ 수수료율 : 0.95% (25년적용)', '대출금리 + 3%\n(최고 연체이자율 : 19%)',
-        NULL, NULL, NULL, NULL, NULL),
-       ('LN013037', '3', '부동산담보(KB손보희망모기지론MI)', NULL, '주식회사KB손해보험', '0010635',
-        '주택 구입 자금 또는 기존 대출 상환을 위한 담보대출', '주택을 담보로 제공하고 주택 구입 자금 또는 기존 대출 상환 등을 위해 이용할 수 있는 대출 상품',
-        '영업점,모집인', NULL, NULL, NULL, NULL, NULL, 'LTV 30%~70%', '- 인지세 : 해당세액의 50%\n- 국민주택채권매입비',
-        '- 중도상환원금 × 수수료율 × 잔여중도수수료약정기간 ÷ 3년\n※ 수수료율 : 0.95% (25년적용)', '대출금리 + 3%\n(최고 연체이자율 : 19%)',
-        NULL, NULL, NULL, NULL, NULL),
-       ('LN20000011', '3', 'KB골든라이프 공사주택연금론', NULL, '국민은행', '0013175', '종신연금, 종신거주를 보장하는 주택연금 대출',
-        '-종신연금, 종신거주 보장\n-대출금 상환의 부담이 없습니다.\n-주택가격을 초과하여 연금 수령 가능\n-예상연금 및 보증료율 조회하기', '영업점', NULL,
-        NULL, NULL, NULL, NULL, '보증서상의 보증금액 범위 내(최고 10억원)', '인지세 50% 고객 부담, 보증서 발급 비용, 화재보험료(해당 시)',
-        '면제(중도상환수수료 없음)', '대출금리+3.0%, 최고 연체이자율 법정 상한', NULL, NULL, NULL, NULL, NULL),
-       ('LN20000115', '3', 'KB골든라이프 주택연금론', NULL, '국민은행', '0013175', '고가 주택 소유자를 위한 은행 자체 주택연금 대출',
-        '고가 주택을 소유하고 있지만 생활비가 부족한 고객을 위한 은행 자체 주택연금론', '영업점', NULL, NULL, NULL, NULL, NULL,
-        '담보조사 가격 및 지역에 따라 최대 10억원 범위', '인지세 50% 고객 부담, 보증서 발급 비용, 화재보험료(해당 시)',
-        '중도상환수수료 0.58% × 잔존일수 ÷ 대출기간 (최초 3년)', '대출금리+3.0%, 최고 연체이자율 법정 상한', NULL, NULL, NULL, NULL,
-        NULL),
-       ('LN200300000002', '3', 'KB주택담보대출변동(일반자금)', NULL, '국민은행', '0010927',
-        '혼합금리와 변동금리 중 선택이 가능한 주택담보대출', '혼합금리와 변동금리 중 선택이 가능한 주택담보대출', '영업점,모집인', NULL, NULL, NULL,
-        NULL, NULL, NULL,
-        'ㅇ 인지세 : 해당세액의 50%\nㅇ 국민주택채권 매입 : 대출금액 × 120% × 1% × 채권할인율\nㅇ 화재보험료 (아파트 외 물건지에 한함)',
-        '중도상환금액 × 0.58% × (대출잔여일수 ÷ 3년)', '대출금리+3.0%\n최고연체이자율:15%', 'LTV 70%', NULL, NULL, NULL,
-        NULL),
-       ('LN200331100045', '3', 'KB스타 아파트담보대출 혼합금리(주택자금)', NULL, '국민은행', '0010927',
-        'KB 스타뱅킹 전용 아파트 담보대출', 'KB 스타뱅킹 전용 아파트 담보대출', '영업점,모집인', NULL, NULL, NULL, NULL, NULL, NULL,
-        'ㅇ 인지세 : 해당세액의 50%\nㅇ 국민주택채권 매입 : 대출금액 × 120% × 1% × 채권할인율\nㅇ 화재보험료 (아파트 외 물건지에 한함)',
-        '중도상환금액 × 0.58% × (대출잔여일수 ÷ 3년)', '대출금리+3.0%\n최고연체이자율:15%', 'LTV 70%', NULL, NULL, NULL,
-        NULL),
-       ('gift', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       ('inheritance', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
-/*!40000 ALTER TABLE `fin_prdt`
+        '-12개월 가입가능\n-가입금액:1만원이상~30만원이하\n-증빙서류 제출 후 가입', '월 1만~30만원',
+        '기초생활수급자, 장애인 등 사회적 배려 대상 시니어에게 우대금리 및 증빙서류 제출 후 가입 가능해 생활 안정에 적합👍', 0.78, 0.91);
+/*!40000 ALTER TABLE `saving`
     ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
+--
+-- Table structure for table `saving_option`
+--
 
-select *
-from fin_prdt;
--- 상품 옵션 데이터
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE = @@TIME_ZONE */;
-/*!40103 SET TIME_ZONE = '+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0 */;
-/*!40101 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
+DROP TABLE IF EXISTS `saving_option`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `saving_option`
+(
+    `option_cd`         int         NOT NULL AUTO_INCREMENT,
+    `fin_prdt_cd`       varchar(50) NOT NULL,
+    `rsrv_type_nm`      varchar(10) DEFAULT NULL,
+    `intr_rate_type_nm` varchar(10) DEFAULT NULL,
+    `save_trm`          varchar(3)  DEFAULT NULL,
+    `intr_rate`         double      DEFAULT NULL,
+    `intr_rate2`        double      DEFAULT NULL,
+    PRIMARY KEY (`option_cd`),
+    KEY `fk_fin_prdt_saving` (`fin_prdt_cd`),
+    CONSTRAINT `fk_fin_prdt_saving` FOREIGN KEY (`fin_prdt_cd`) REFERENCES `saving` (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 44
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-LOCK TABLES `fin_prdt_option` WRITE;
-/*!40000 ALTER TABLE `fin_prdt_option`
+--
+-- Dumping data for table `saving_option`
+--
+
+LOCK TABLES `saving_option` WRITE;
+/*!40000 ALTER TABLE `saving_option`
     DISABLE KEYS */;
-INSERT INTO `fin_prdt_option`
-VALUES (1, 'DP010300100335', '단리', '1', 1.8, 2.45, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (2, 'DP010300100335', '단리', '3', 2, 2.45, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (3, 'DP010300100335', '단리', '6', 2.1, 2.45, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (4, 'DP010300100335', '단리', '12', 2.15, 2.45, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (5, 'DP010300100335', '단리', '24', 2.2, 2.4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (6, 'DP010300100335', '단리', '36', 2.2, 2.4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (7, 'DP01000029', '고정금리', '12', 2.05, 2.15, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (8, 'DP01000214', '변동금리', '12', 2.02, 2.02, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (9, 'DP01000014', '고정금리', '36', 2.25, 2.25, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (10, 'DP01001624', '지수연동', '12', 2.55, 2.75, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (11, 'DP01001625', '지수연동', '12', 2.4, 4.4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (12, 'DP01001626', '지수연동', '12', 2.4, 4.4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (13, 'DP240000', '단리', '3', 2.3, 2.4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (14, 'DP240000', '단리', '6', 2.6, 2.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (15, 'DP240000', '단리', '12', 2.6, 2.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (16, 'DP240000', '단리', '24', 2.5, 2.6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (17, 'DP240000', '단리', '36', 2.4, 2.5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (18, 'DP240000', '복리', '3', 2.3, 2.4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (19, 'DP240000', '복리', '6', 2.6, 2.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (20, 'DP240000', '복리', '12', 2.6, 2.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (21, 'DP240000', '복리', '24', 2.5, 2.6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (22, 'DP240000', '복리', '36', 2.4, 2.5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (23, 'DP240001', '단리', '3', 2.4, 2.4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (24, 'DP240001', '단리', '6', 2.7, 2.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (25, 'DP240001', '단리', '12', 2.7, 2.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (26, 'DP240001', '단리', '24', 2.6, 2.6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (27, 'DP240001', '단리', '36', 2.5, 2.5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (28, 'DP240001', '복리', '3', 2.4, 2.4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (29, 'DP240001', '복리', '6', 2.7, 2.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (30, 'DP240001', '복리', '12', 2.7, 2.7, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (31, 'DP240001', '복리', '24', 2.6, 2.6, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (32, 'DP240001', '복리', '36', 2.5, 2.5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (33, 'DP240004', '단리', '12', 2.8, 2.9, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (34, 'DP240004', '복리', '12', 2.8, 2.9, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (35, 'DP240005', '단리', '12', 2.9, 2.9, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (36, 'DP240005', '복리', '12', 2.9, 2.9, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (37, 'DP01000780', '변동금리', NULL, 0.1, 1.5, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-       (38, 'DP010200100051', '단리', '12', 2.5, 3.4, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (39, 'DP010200100051', '단리', '24', 2.7, 3.7, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (40, 'DP010200100051', '단리', '36', 2.8, 4, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (41, 'DP010200100070', '단리', '6', 2.3, 2.9, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (42, 'DP010200100070', '단리', '12', 2.55, 3.15, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (43, 'DP010200100070', '단리', '24', 2.75, 3.35, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (44, 'DP010200100070', '단리', '36', 2.95, 3.55, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (45, 'DP010200100084', '단리', '12', 2.45, 3.25, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (46, 'DP010200100084', '단리', '24', 2.55, 3.45, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (47, 'DP010200100084', '단리', '36', 2.85, 3.85, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (48, 'DP010200100104', '단리', '1', 2, 6, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (49, 'DP010200100104', '단리', '3', 2, 6, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (50, 'DP010200100104', '단리', '6', 2, 6, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (51, 'DP01000228', '고정금리', '12', 2.75, 3.25, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (52, 'DP01001596', '고정금리', '6', 1, 6, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (53, 'DP01001614', '고정금리', '12', 3, 6, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (54, 'DP01001495', '고정금리', '6', 2.65, 3.65, '자유적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (55, 'DP310002', '단리', '12', 3.6, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (56, 'DP310002', '단리', '24', 3.6, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (57, 'DP310002', '단리', '36', 3.6, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (58, 'DP310002', '복리', '12', 3.6, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (59, 'DP310002', '복리', '24', 3.6, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (60, 'DP310002', '복리', '36', 3.6, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (61, 'DP310003', '복리', '12', 3.7, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (62, 'DP310003', '복리', '24', 3.7, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (63, 'DP310003', '복리', '36', 3.7, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (64, 'DP310003', '단리', '36', 3.7, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (65, 'DP310003', '단리', '12', 3.7, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (66, 'DP310003', '단리', '24', 3.7, 3.8, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (67, 'DP310004', '단리', '36', 3.2, 3.4, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (68, 'DP310004', '복리', '36', 3.2, 3.4, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (69, 'DP310004', '복리', '24', 3.1, 3.3, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (70, 'DP310004', '복리', '12', 3, 3.2, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (71, 'DP310004', '단리', '24', 3.1, 3.3, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (72, 'DP310004', '단리', '12', 3, 3.2, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (73, 'DP310005', '단리', '12', 3.1, 3.2, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (74, 'DP310005', '단리', '36', 3.3, 3.4, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (75, 'DP310005', '복리', '12', 3.1, 3.2, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (76, 'DP310005', '복리', '24', 3.2, 3.3, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (77, 'DP310005', '복리', '36', 3.3, 3.4, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (78, 'DP310005', '단리', '24', 3.2, 3.3, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (79, 'DP310006', '단리', '12', 4.5, 5, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (80, 'DP310006', '복리', '12', 4.5, 5, '정액적립식', NULL, NULL, NULL, NULL, NULL, NULL),
-       (92, 'LN200300000002', NULL, NULL, NULL, NULL, NULL, '아파트', '분할상환방식', '변동금리', 4.17, 5.07,
-        4.57),
-       (93, 'LN200300000002', NULL, NULL, NULL, NULL, NULL, '아파트', '만기일시상환방식', '변동금리', 4.3, 5.2,
-        4.56),
-       (94, 'LN200300000002', NULL, NULL, NULL, NULL, NULL, '아파트외', '분할상환방식', '변동금리', 4.17, 5.07,
-        4.6),
-       (95, 'LN200300000002', NULL, NULL, NULL, NULL, NULL, '아파트외', '만기일시상환방식', '변동금리', 4.3, 5.2,
-        4.5),
-       (96, 'LN200331100045', NULL, NULL, NULL, NULL, NULL, '아파트', '분할상환방식', '고정금리', 4.12, 4.12,
-        3.51),
-       (97, 'LN20000011', NULL, NULL, NULL, NULL, NULL, '주택연금보증서 담보', '만기일시상환',
-        '변동금리(COFIX 또는 CD기준)', 4.1, 5.24, NULL),
-       (98, 'LN20000115', NULL, NULL, NULL, NULL, NULL, '주택담보', '만기일시상환', '변동금리(COFIX 또는 CD기준)',
-        2.54, 5.24, NULL),
-       (99, 'LN013032', NULL, NULL, NULL, NULL, NULL, '아파트', '분할상환방식', '고정금리', 3.76, 5.39, 4.46),
-       (100, 'LN013032', NULL, NULL, NULL, NULL, NULL, '아파트', '분할상환방식', '변동금리', 3.75, 5.35, NULL),
-       (101, 'LN013037', NULL, NULL, NULL, NULL, NULL, '아파트', '분할상환방식', '고정금리', 4.36, 5.79, 4.77),
-       (102, 'LN013037', NULL, NULL, NULL, NULL, NULL, '아파트', '분할상환방식', '변동금리', 4.35, 5.75, NULL);
-/*!40000 ALTER TABLE `fin_prdt_option`
+INSERT INTO `saving_option`
+VALUES (1, 'DP01000228', '정액적립식', '고정금리', '12', 2.75, 3.25),
+       (2, 'DP01001495', '자유적립식', '고정금리', '6', 2.65, 3.65),
+       (3, 'DP01001596', '자유적립식', '고정금리', '6', 1, 6),
+       (4, 'DP01001614', '자유적립식', '고정금리', '12', 3, 6),
+       (5, 'DP010200100051', '정액적립식', '단리', '12', 2.5, 3.4),
+       (6, 'DP010200100051', '정액적립식', '단리', '24', 2.7, 3.7),
+       (7, 'DP010200100051', '정액적립식', '단리', '36', 2.8, 4),
+       (8, 'DP010200100070', '정액적립식', '단리', '6', 2.3, 2.9),
+       (9, 'DP010200100070', '정액적립식', '단리', '12', 2.55, 3.15),
+       (10, 'DP010200100070', '정액적립식', '단리', '24', 2.75, 3.35),
+       (11, 'DP010200100070', '정액적립식', '단리', '36', 2.95, 3.55),
+       (12, 'DP010200100084', '자유적립식', '단리', '12', 2.45, 3.25),
+       (13, 'DP010200100084', '자유적립식', '단리', '24', 2.55, 3.45),
+       (14, 'DP010200100084', '자유적립식', '단리', '36', 2.85, 3.85),
+       (15, 'DP010200100104', '자유적립식', '단리', '1', 2, 6),
+       (16, 'DP010200100104', '자유적립식', '단리', '3', 2, 6),
+       (17, 'DP010200100104', '자유적립식', '단리', '6', 2, 6),
+       (18, 'DP310002', '정액적립식', '단리', '12', 3.6, 3.8),
+       (19, 'DP310002', '정액적립식', '단리', '24', 3.6, 3.8),
+       (20, 'DP310002', '정액적립식', '단리', '36', 3.6, 3.8),
+       (21, 'DP310002', '정액적립식', '복리', '12', 3.6, 3.8),
+       (22, 'DP310002', '정액적립식', '복리', '24', 3.6, 3.8),
+       (23, 'DP310002', '정액적립식', '복리', '36', 3.6, 3.8),
+       (24, 'DP310003', '정액적립식', '복리', '12', 3.7, 3.8),
+       (25, 'DP310003', '정액적립식', '복리', '24', 3.7, 3.8),
+       (26, 'DP310003', '정액적립식', '복리', '36', 3.7, 3.8),
+       (27, 'DP310003', '정액적립식', '단리', '36', 3.7, 3.8),
+       (28, 'DP310003', '정액적립식', '단리', '12', 3.7, 3.8),
+       (29, 'DP310003', '정액적립식', '단리', '24', 3.7, 3.8),
+       (30, 'DP310004', '정액적립식', '단리', '36', 3.2, 3.4),
+       (31, 'DP310004', '정액적립식', '복리', '36', 3.2, 3.4),
+       (32, 'DP310004', '정액적립식', '복리', '24', 3.1, 3.3),
+       (33, 'DP310004', '정액적립식', '복리', '12', 3, 3.2),
+       (34, 'DP310004', '정액적립식', '단리', '24', 3.1, 3.3),
+       (35, 'DP310004', '정액적립식', '단리', '12', 3, 3.2),
+       (36, 'DP310005', '정액적립식', '단리', '12', 3.1, 3.2),
+       (37, 'DP310005', '정액적립식', '단리', '36', 3.3, 3.4),
+       (38, 'DP310005', '정액적립식', '복리', '12', 3.1, 3.2),
+       (39, 'DP310005', '정액적립식', '복리', '24', 3.2, 3.3),
+       (40, 'DP310005', '정액적립식', '복리', '36', 3.3, 3.4),
+       (41, 'DP310005', '정액적립식', '단리', '24', 3.2, 3.3),
+       (42, 'DP310006', '정액적립식', '단리', '12', 4.5, 5),
+       (43, 'DP310006', '정액적립식', '복리', '12', 4.5, 5);
+/*!40000 ALTER TABLE `saving_option`
     ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
+--
+-- Table structure for table `strategy`
+--
 
+DROP TABLE IF EXISTS `strategy`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `strategy`
+(
+    `strategy_id`   int          NOT NULL AUTO_INCREMENT,
+    `strategy_code` varchar(100) NOT NULL,
+    `rule_category` varchar(45)  NOT NULL,
+    `message`       text         NOT NULL,
+    PRIMARY KEY (`strategy_id`),
+    UNIQUE KEY `strategy_code_UNIQUE` (`strategy_code`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 20
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 수정 필수 데이터
--- 금 상품 카테고리('4')와 은행코드 추가
-select *
-from fin_prdt
-where fin_prdt_cd = 'C016622';
+--
+-- Dumping data for table `strategy`
+--
 
-UPDATE fin_prdt
-SET fin_prdt_category = '4'
-WHERE fin_prdt_cd = 'C016622';
-
-update fin_prdt
-set fin_co_no = '0010927'
-where fin_prdt_cd = 'C016622';
-
-
--- 펀드 데이터
-INSERT INTO fin_prdt (fin_prdt_cd, fin_prdt_nm, fin_prdt_category, prdt_feature)
-VALUES ('2F33', 'KB중소형주포커스', 5, '국내 중소형 우량주에 집중'),
-       ('1A81', 'KB국민참여정책형뉴딜', 5, '뉴딜정책 관련 기업에 분산 투자'),
-       ('2H62', 'KB스타코리아레버리지2.0', 5, '코스피200 레버리지 전략'),
-       ('2K24', 'KB가치배당소득공제', 5, '고배당주 투자 및 세제 혜택'),
-       ('2S01', 'KB광개토', 5, '국내 가치/성장주 균형 투자'),
-       ('32G1', 'KB글로벌대표지수분산', 5, '글로벌 주요지수 ETF 분산 투자'),
-       ('33R2', 'KB코리아밸류업액티브', 5, '국내 저평가 가치주 집중'),
-       ('2A43', 'KBESG성장리더스', 5, 'ESG 우수기업 중심 성장 투자'),
-       ('2M72', 'KB가치배당20', 5, '고배당 중심의 안정적 수익 추구'),
-       ('2N73', 'KB차이나H주식인덱스', 5, '중국 H주 인덱스 연동 투자');
-
-
-
-INSERT INTO fund_prdt_option (fin_prdt_cd, rate_3mon, start_date, asset_total, total_fee,
-                              risk_grade, fee_first, fee_redemp, price_std)
-VALUES ('2M72', '3.21%', '2017-10-13', '532억', '1.15%', '2등급', '없음', '없음', '1,202.77'),
-       ('2N73', '-5.84%', '2016-11-14', '487억', '1.40%', '5등급', '없음', '없음', '891.24');
-UPDATE fin_prdt
-SET tendency         = -0.6,
-    asset_proportion = -0.6
-WHERE fin_prdt_cd = '1A81';
-UPDATE fin_prdt
-SET tendency         = -0.6,
-    asset_proportion = -0.6
-WHERE fin_prdt_cd = '2A43';
-UPDATE fin_prdt
-SET tendency         = -0.8,
-    asset_proportion = -0.8
-WHERE fin_prdt_cd = '2F33';
-UPDATE fin_prdt
-SET tendency         = -1.0,
-    asset_proportion = -1.0
-WHERE fin_prdt_cd = '2H62';
-UPDATE fin_prdt
-SET tendency         = 0.3,
-    asset_proportion = 0.2
-WHERE fin_prdt_cd = '2K24';
-UPDATE fin_prdt
-SET tendency         = 0.3,
-    asset_proportion = 0.2
-WHERE fin_prdt_cd = '2M72';
-UPDATE fin_prdt
-SET tendency         = -0.8,
-    asset_proportion = -0.8
-WHERE fin_prdt_cd = '2N73';
-UPDATE fin_prdt
-SET tendency         = 0.0,
-    asset_proportion = -0.3
-WHERE fin_prdt_cd = '2S01';
-UPDATE fin_prdt
-SET tendency         = 0.0,
-    asset_proportion = -0.3
-WHERE fin_prdt_cd = '32G1';
-UPDATE fin_prdt
-SET tendency         = 0.3,
-    asset_proportion = 0.2
-WHERE fin_prdt_cd = '33R2';
-UPDATE fin_prdt
-SET tendency         = 0.2,
-    asset_proportion = 0.1
-WHERE fin_prdt_cd = 'C016622';
-UPDATE fin_prdt
-SET tendency         = 0.9,
-    asset_proportion = 1.0
-WHERE fin_prdt_cd = 'DP01000014';
-UPDATE fin_prdt
-SET tendency         = 0.9,
-    asset_proportion = 1.0
-WHERE fin_prdt_cd = 'DP01000029';
-UPDATE fin_prdt
-SET tendency         = 0.9,
-    asset_proportion = 1.0
-WHERE fin_prdt_cd = 'DP01000214';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP01000228';
-UPDATE fin_prdt
-SET tendency         = 0.4,
-    asset_proportion = 0.6
-WHERE fin_prdt_cd = 'DP01000780';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP01001495';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP01001596';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP01001614';
-UPDATE fin_prdt
-SET tendency         = 0.0,
-    asset_proportion = -0.3
-WHERE fin_prdt_cd = 'DP01001624';
-UPDATE fin_prdt
-SET tendency         = 0.0,
-    asset_proportion = -0.3
-WHERE fin_prdt_cd = 'DP01001625';
-UPDATE fin_prdt
-SET tendency         = 0.0,
-    asset_proportion = -0.3
-WHERE fin_prdt_cd = 'DP01001626';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP010200100051';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP010200100070';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP010200100084';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP010200100104';
-UPDATE fin_prdt
-SET tendency         = 0.9,
-    asset_proportion = 1.0
-WHERE fin_prdt_cd = 'DP010300100335';
-UPDATE fin_prdt
-SET tendency         = 0.9,
-    asset_proportion = 1.0
-WHERE fin_prdt_cd = 'DP240000';
-UPDATE fin_prdt
-SET tendency         = 0.9,
-    asset_proportion = 1.0
-WHERE fin_prdt_cd = 'DP240001';
-UPDATE fin_prdt
-SET tendency         = 0.9,
-    asset_proportion = 1.0
-WHERE fin_prdt_cd = 'DP240004';
-UPDATE fin_prdt
-SET tendency         = 0.9,
-    asset_proportion = 1.0
-WHERE fin_prdt_cd = 'DP240005';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP310002';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP310003';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP310004';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP310005';
-UPDATE fin_prdt
-SET tendency         = 0.8,
-    asset_proportion = 0.9
-WHERE fin_prdt_cd = 'DP310006';
-UPDATE fin_prdt
-SET tendency         = -0.9,
-    asset_proportion = -0.9
-WHERE fin_prdt_cd = 'LN013032';
-UPDATE fin_prdt
-SET tendency         = -0.9,
-    asset_proportion = -0.9
-WHERE fin_prdt_cd = 'LN013037';
-UPDATE fin_prdt
-SET tendency         = 0.4,
-    asset_proportion = 0.6
-WHERE fin_prdt_cd = 'LN20000011';
-UPDATE fin_prdt
-SET tendency         = 0.4,
-    asset_proportion = 0.6
-WHERE fin_prdt_cd = 'LN20000115';
-UPDATE fin_prdt
-SET tendency         = -0.9,
-    asset_proportion = -0.9
-WHERE fin_prdt_cd = 'LN200300000002';
-UPDATE fin_prdt
-SET tendency         = -0.9,
-    asset_proportion = -0.9
-WHERE fin_prdt_cd = 'LN200331100045';
-
-
--- =======================================
--- 전략 테이블 데이터
--- =======================================
-
--- 1. 총 자산 규모별 전략
-INSERT INTO `jeju_gom`.`strategy` (`strategy_code`, `rule_category`, `message`)
-VALUES ('TOTAL_ASSET_GT_1B', '총 자산 규모',
+LOCK TABLES `strategy` WRITE;
+/*!40000 ALTER TABLE `strategy`
+    DISABLE KEYS */;
+INSERT INTO `strategy`
+VALUES (1, 'TOTAL_ASSET_GT_1B', '총 자산 규모',
         '자산 규모가 크므로 증여 시기 분산 전략을 고려해보세요. 공제는 10년마다 새로 적용되므로, 동일한 수증자라도 10년 단위로 나누어 증여하면 공제 혜택을 반복 활용할 수 있습니다.'),
-       ('TOTAL_ASSET_GT_5B', '총 자산 규모', '대규모 자산은 가업승계 특례나 비상장주식 할인평가 등 전문적인 절세 방안을 함께 고려하시기 바랍니다.');
-
--- 2. 수증자 관계별 전략
-INSERT INTO `jeju_gom`.`strategy` (`strategy_code`, `rule_category`, `message`)
-VALUES ('NOT_EXIST_SPOUSE', '수증자 관계',
+       (2, 'TOTAL_ASSET_GT_5B', '총 자산 규모',
+        '대규모 자산은 가업승계 특례나 비상장주식 할인평가 등 전문적인 절세 방안을 함께 고려하시기 바랍니다.'),
+       (3, 'NOT_EXIST_SPOUSE', '수증자 유형',
         '배우자 증여 시 공제 한도가 6억 원으로 가장 큽니다. 배우자에게 먼저 증여 후 자녀에게 재증여하는 방법도 고려해보세요.'),
-       ('EXIST_GRANDCHILD', '수증자 관계',
+       (4, 'EXIST_GRANDCHILD', '수증자 유형',
         '손자녀 증여 시 세대생략 30% 할증세가 적용됩니다. 부모를 거쳐 증여하는 것과 세부담을 비교해보세요. 단, 부모가 이미 사망한 경우, 세대생략 증여 할증세는 적용되지 않습니다. 또한 장애인 신탁을 통한 세대생략 증여는 30% 할증세가 면제됩니다.'),
-       ('EXIST_MINOR_CHILD', '수증자 관계',
-        '미성년 자녀는 성년자보다 공제 한도가 낮지만(2천만 원 vs 5천만 원), 향후 성년이 되면 추가 공제가 가능합니다.');
-
--- 3. 증여세 납부자별 전략
-INSERT INTO `jeju_gom`.`strategy` (`strategy_code`, `rule_category`, `message`)
-VALUES ('EXIST_GIFTER_PAYS_TAX', '증여세 납부자',
-        '증여세를 증여자가 대납하면 그 세금도 별도 증여로 간주되어 증여세가 이중으로 부과될 수 있습니다. 수증자가 직접 납부하는 것이 절세에 유리합니다.');
-
--- 4. 기존 증여이력별 전략
-INSERT INTO `jeju_gom`.`strategy` (`strategy_code`, `rule_category`, `message`)
-VALUES ('PRIOR_GIFT_EXISTS', '기존 증여이력',
+       (5, 'EXIST_MINOR_CHILD', '수증자 유형',
+        '미성년 자녀는 성년자보다 공제 한도가 낮지만(2천만 원 vs 5천만 원), 향후 성년이 되면 추가 공제가 가능합니다.'),
+       (6, 'EXIST_GIFTER_PAYS_TAX', '증여세 납부자',
+        '증여세를 증여자가 대납하면 그 세금도 별도 증여로 간주되어 증여세가 이중으로 부과될 수 있습니다. 수증자가 직접 납부하는 것이 절세에 유리합니다.'),
+       (7, 'PRIOR_GIFT_EXISTS', '기존 증여이력',
         '기존 증여금액이 누적되어 공제 한도가 줄어들고 높은 세율이 적용될 수 있습니다. 다른 수증자에게 분산 증여를 고려해보세요.'),
-       ('CUMULATIVE_GIFT_EXCEEDS_DEDUCTION', '기존 증여이력',
-        '10년 누적 증여액이 공제 한도를 이미 초과했습니다. 동일 수증자 추가 증여 시 전액 과세되므로 분산 증여 전략이 유리합니다.');
-
--- 5. 자산 유형별 전략
-INSERT INTO `jeju_gom`.`strategy` (`strategy_code`, `rule_category`, `message`)
-VALUES ('HAS_BIZ_TO_SOLE_PROPRIETORSHIP', '자산 유형',
+       (8, 'CUMULATIVE_GIFT_EXCEEDS_DEDUCTION', '기존 증여이력',
+        '10년 누적 증여액이 공제 한도를 이미 초과했습니다. 동일 수증자 추가 증여 시 전액 과세되므로 분산 증여 전략이 유리합니다.'),
+       (9, 'HAS_BIZ_TO_SOLE_PROPRIETORSHIP', '자산 유형',
         '개인사업체는 소득세(사업소득)와 증여세가 동시에 부과될 수 있습니다. 현금흐름을 미리 계산하고 필요시 법인전환도 고려해보세요.'),
-       ('HAS_BIZ_TO_CORPORATION', '자산 유형',
-        '법인에 자산을 증여하면 주주(보통 가족)에게도 ''간접 증여''로 간주되어 추가 증여세가 부과될 수 있습니다. 주주 구성을 확인하고 신중히 결정하세요.'),
-       ('HAS_REAL_ESTATE_APPRECIATION', '자산 유형',
+       (10, 'HAS_BIZ_TO_CORPORATION', '자산 유형',
+        '법인에 자산을 증여하면 주주(보통 가족)에게도 \'간접 증여\'로 간주되어 추가 증여세가 부과될 수 있습니다. 주주 구성을 확인하고 신중히 결정하세요.'),
+       (11, 'HAS_REAL_ESTATE_APPRECIATION', '자산 유형',
         '부동산은 시세 변동과 임대수익이 발생합니다. 향후 가치 상승이 예상되는 자산을 우선 증여하면 절세 효과가 큽니다.'),
-       ('HAS_REAL_ESTATE_DEBT_SUCCESSION', '자산 유형',
+       (12, 'HAS_REAL_ESTATE_DEBT_SUCCESSION', '자산 유형',
         '부동산 증여 시 담보대출이나 전세보증금 등 채무를 함께 승계하면 증여세 과세표준을 줄일 수 있습니다. 다만, 승계채무가 과도하면 부담부 증여로 간주되어 양도소득세가 추가될 수 있으므로, 시가 대비 40~60% 수준의 적정 채무 승계가 유리합니다.'),
-       ('HAS_CASH', '자산 유형', '현금성 자산은 평가 이슈가 없어 증여가 간단하지만, 수익 창출 자산을 먼저 증여하는 것이 장기적으로 유리할 수 있습니다.');
-
--- 6. 수증자 결혼여부별 전략
-INSERT INTO `jeju_gom`.`strategy` (`strategy_code`, `rule_category`, `message`)
-VALUES ('EXIST_UNMARRIED_CHILD', '수증자 결혼여부',
+       (13, 'HAS_CASH', '자산 유형',
+        '현금성 자산은 평가 이슈가 없어 증여가 간단하지만, 수익 창출 자산을 먼저 증여하는 것이 장기적으로 유리할 수 있습니다.'),
+       (17, 'EXIST_UNMARRIED_CHILD', '수증자 유형',
         '미혼 자녀에게 미리 증여하면, 향후 결혼 후 배우자에게도 별도 증여가 가능하여 가족 전체의 증여 한도를 최대화할 수 있습니다.'),
-       ('HAS_GIFT_REAL_ESTATE_AND_EXIST_GRANDCHILD', '수증자 결혼여부',
+       (18, 'HAS_GIFT_REAL_ESTATE_AND_EXIST_GRANDCHILD', '수증자 유형',
         '부동산을 손자녀에게 직접 증여 시 30% 할증이 부담스럽다면, 현금으로 전환 후 자녀를 거쳐 증여하는 방법도 있습니다.'),
-       ('HAS_GIFT_REAL_ESTATE_AND_EXIST_UNMARRIED_CHILD', '수증자 결혼여부',
+       (19, 'HAS_GIFT_REAL_ESTATE_AND_EXIST_UNMARRIED_CHILD', '수증자 유형',
         '주택을 기혼 자녀에게 증여하면 1세대 1주택 혜택으로 향후 양도소득세 면제 가능합니다.');
+/*!40000 ALTER TABLE `strategy`
+    ENABLE KEYS */;
+UNLOCK TABLES;
 
+--
+-- Table structure for table `trust`
+--
 
+DROP TABLE IF EXISTS `trust`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `trust`
+(
+    `fin_prdt_cd`           varchar(50) NOT NULL,
+    `fin_prdt_category`     varchar(2)   DEFAULT NULL,
+    `fin_prdt_nm`           varchar(100) DEFAULT NULL,
+    `fin_co_no`             varchar(20)  DEFAULT NULL,
+    `kor_co_nm`             varchar(15)  DEFAULT NULL,
+    `join_way`              varchar(50)  DEFAULT NULL,
+    `base_price`            double       DEFAULT NULL,
+    `yield_rate`            double       DEFAULT NULL,
+    `fund_type`             varchar(50)  DEFAULT NULL,
+    `fund_structure`        varchar(50)  DEFAULT NULL,
+    `tax_benefit`           varchar(10)  DEFAULT NULL,
+    `sale_start_date`       varchar(10)  DEFAULT NULL,
+    `trust_fee`             varchar(10)  DEFAULT NULL,
+    `early_termination_fee` varchar(20)  DEFAULT NULL,
+    `deposit_protection`    varchar(20)  DEFAULT NULL,
+    `rec_reason`            text,
+    `tendency`              double       DEFAULT NULL,
+    `asset_proportion`      double       DEFAULT NULL,
+    PRIMARY KEY (`fin_prdt_cd`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- -----------------------------------
+--
+-- Dumping data for table `trust`
+--
 
+LOCK TABLES `trust` WRITE;
+/*!40000 ALTER TABLE `trust`
+    DISABLE KEYS */;
+INSERT INTO `trust`
+VALUES ('TR001', '6', 'KB골든라이프연금저축신탁 (채권형)', '0013127', 'KB저축은행', '영업점', 1824.74, 2.16, '노후준비형',
+        '추가형, 개방형, 적립식', '불가', '2013-05-02', '연 0.5%', '없음', '1인당 5천만원 한도',
+        '기초적인 수익을 고려하는 일반적인 시니어 고객에게 적합', 0.45, 0.65),
+       ('TR002', '6', 'KB골든라이프연금저축신탁 (안정형)', '0013127', 'KB저축은행', '영업점', 1894.21, 3.74, '노후준비형',
+        '추가형, 개방형, 적립식', '불가', '2013-05-02', '연 0.5%', '없음', '1인당 5천만원 한도',
+        '기초적인 수익을 고려하는 일반적인 시니어 고객에게 적합', 0.38, 0.61),
+       ('TR003', '6', 'KB실버웰빙연금저축신탁 (채권형)', '0013127', 'KB저축은행', '영업점', 1824.74, 2.16, '노후준비형',
+        '추가형, 개방형, 적립식', '불가', '2013-05-02', '연 0.5%', '없음', '1인당 5천만원 한도',
+        '기초적인 수익을 고려하는 일반적인 시니어 고객에게 적합', 0.37, 0.78),
+       ('TR004', '6', 'KB실버웰빙연금저축신탁 (안정형)', '0013127', 'KB저축은행', '영업점', 1894.21, 3.74, '노후준비형',
+        '추가형, 개방형, 적립식', '불가', '2013-05-02', '연 0.5%', '없음', '1인당 5천만원 한도',
+        '기초적인 수익을 고려하는 일반적인 시니어 고객에게 적합', 0.35, 0.55),
+       ('TR005', '6', 'KB비과세파도타기시스템 주식형신탁', '0013127', 'KB저축은행', '영업점', 4438.83, 35.65, '성장형',
+        '추가형, 개방형', '비과세', '미상', '연 0.5%', '상품설명서 참조', '비보호 상품',
+        '시장 흐름을 적극적으로 활용하고자 하는 투자 성향의 시니어에게 적합', -0.32, -0.12),
+       ('TR006', '6', '퇴직신탁 채권형 제4호', '0013127', 'KB저축은행', '영업점', 1703.26, 0.64, '퇴직연금', '채권형',
+        '불가', '미상', '연 0.5%', '상품설명서 참조', '비보호 상품', '퇴직 후 자산의 안정적 운용을 원하는 시니어에게 적합', 0.27, 0.33),
+       ('TR007', '6', 'KB파도타기장기주택마련신탁 안정성장형 제2호', '0013127', 'KB저축은행', '영업점', 2302.37, 6.13, '주택마련',
+        '안정성장형', '해당 없음', '미상', '연 0.5%', '상품설명서 참조', '비보호 상품',
+        '주택 마련과 관련된 자금을 안정적으로 운용하고자 하는 시니어에게 적합', -0.14, -0.11),
+       ('TR008', '6', 'KB파도타기시스템신추가금전신탁 성장형 제1호', '0013127', 'KB저축은행', '영업점', 2093.98, 0.13, '성장형',
+        '추가형', '해당 없음', '미상', '연 0.5%', '상품설명서 참조', '비보호 상품',
+        '시장 흐름을 적극적으로 활용하고자 하는 투자 성향의 시니어에게 적합', -0.46, -0.42),
+       ('TR009', '6', 'KB실버플랜신노후생활연금신탁 채권형', '0013127', 'KB저축은행', '영업점', 1630.14, 0.1, '노후생활',
+        '채권형', '불가', '미상', '연 0.5%', '없음', '1인당 5천만원 한도', '안정성과 적립 가능성을 중시하는 보수적인 시니어에게 적합', 0.77,
+        0.41),
+       ('TR010', '6', 'KB장기주택마련신탁 채권형', '0013127', 'KB저축은행', '영업점', 1784.62, 0.11, '주택마련', '채권형',
+        '불가', '미상', '연 0.5%', '없음', '1인당 5천만원 한도', '주택 마련과 관련된 자금을 안정적으로 운용하고자 하는 시니어에게 적합', 0.39,
+        0.28);
+/*!40000 ALTER TABLE `trust`
+    ENABLE KEYS */;
+UNLOCK TABLES;
 
--- =======================================
--- FAQ 테이블 데이터
--- =======================================
--- 두 FAQ 데이터 소스를 통합하고, 중복/유사 질문을 병합했으며, 누락된 모든 고유 질문을 포함한 최종 데이터입니다.
+--
+-- Table structure for table `user`
+--
 
-REPLACE INTO `faq` (`faq_id`, `category`, `title`, `content`)
-VALUES
--- =================================================================================
--- Part 1: 중복/유사 질문 통합 및 내용 보강 (10개)
--- =================================================================================
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user`
+(
+    `email`            varchar(255) NOT NULL,
+    `user_name`        varchar(20)  NOT NULL DEFAULT '홍길동',
+    `user_phone`       varchar(20)  NOT NULL DEFAULT '010-1234-5678',
+    `birth`            date         NOT NULL DEFAULT '2000-01-01',
+    `point`            int          NOT NULL DEFAULT '0',
+    `connected_id`     varchar(50)           DEFAULT NULL,
+    `branch_id`        int                   DEFAULT NULL,
+    `asset`            bigint       NOT NULL DEFAULT '0',
+    `filename1`        varchar(255)          DEFAULT NULL,
+    `filename2`        varchar(255)          DEFAULT NULL,
+    `tendency`         double       NOT NULL DEFAULT '0',
+    `asset_proportion` double       NOT NULL DEFAULT '0',
+    PRIMARY KEY (`email`),
+    KEY `fk_user_branch1_idx` (`branch_id`),
+    CONSTRAINT `fk_user_branch1` FOREIGN KEY (`branch_id`) REFERENCES `branch` (`branch_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 1. 상속세 기본 개념 (기존 1번 + 파일 12번)
-(1, '상속', '상속세는 어떤 세금이며, 언제까지 신고해야 하나요?',
- '<p>상속세란 돌아가신 분(피상속인)이 남긴 재산에 대해 상속인이 내는 세금을 말합니다.</p><p>상속세는 <strong>사망일이 속하는 달의 말일로부터 6개월 이내</strong>(상속인 전원이 해외 거주 시 9개월 이내)에 신고 및 납부해야 합니다. 기한을 넘기면 가산세가 부과됩니다.</p><p>과세 대상은 부동산, 금융자산, 주식 등 모든 재산이며, 여기서 고인의 빚(채무)과 장례비, 각종 공제 금액을 뺀 나머지에 대해 세금이 계산됩니다. 재산과 빚은 정부24 ''안심상속 원스톱서비스''를 통해 편리하게 조회할 수 있습니다.</p>'),
+--
+-- Dumping data for table `user`
+--
 
--- 2. 상속세 과세 기준 금액 (기존 3번 + 파일 13번)
-(2, '상속', '재산이 얼마부터 상속세가 나오나요?',
- '<p>상속세는 일정 금액을 초과할 때만 발생하며, <strong>최소 5억 원까지는 ''기초공제''로 세금이 없습니다.</strong></p><p>여기에 가족 구성원에 따라 추가 공제가 적용되어 세금 부담이 줄어듭니다.</p><ul class="ml-6 list-disc space-y-1 text-sm"><li><strong>배우자와 자녀가 모두 있는 경우:</strong> 최소 10억 원까지 공제 (기초공제 5억 + 배우자공제 최소 5억)</li><li><strong>자녀만 있는 경우:</strong> 5억 원까지 공제</li><li><strong>배우자만 있는 경우:</strong> 최소 7억 원에서 최대 30억 원까지 공제</li></ul><p>따라서 같은 10억 원짜리 집을 물려받아도 누가 상속받는지에 따라 세금이 나올 수도, 안 나올 수도 있습니다.</p>'),
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `user`
+    ENABLE KEYS */;
+UNLOCK TABLES;
 
--- 3. 상속재산 포함 항목 (기존 2번 + 파일 20번)
-(3, '상속', '사망 시 재산 외에 상속재산에 추가되는 것이 있나요?',
- '<p>네, 사망 시점의 재산 외에도 아래 항목들이 상속재산에 포함되어 상속세가 계산됩니다.</p><ul class="ml-6 list-disc space-y-1 text-sm"><li><strong>사전 증여재산:</strong> 돌아가시기 전 10년 안에 상속인에게, 5년 안에 상속인 외의 자에게 증여한 재산</li><li><strong>사망보험금 및 퇴직금:</strong> 피상속인의 사망으로 인해 지급받는 생명보험금, 손해보험금, 퇴직금 등</li><li><strong>추정 상속재산:</strong> 돌아가시기 전 1~2년 이내에 2억 원 또는 5억 원이 넘는 큰돈을 인출하고 사용처가 불분명한 경우, 그 금액의 일부</li></ul><p>따라서 상속을 대비한 증여는 최소 10년 이상의 장기적인 계획이 중요합니다.</p>'),
+--
+-- Temporary view structure for view `v_product_list`
+--
 
--- 4. 증여세 공제 한도 (기존 17, 22번 + 파일 1, 6, 7번)
-(4, '증여', '증여세를 줄이는 방법과 공제 한도는 어떻게 되나요?',
- '<p>증여세는 ''증여재산공제''를 활용하면 세금을 줄일 수 있습니다. 공제는 <strong>재산을 받는 사람(수증자) 기준</strong>으로, 10년 동안 합산하여 아래 한도까지 적용됩니다.</p><ul class="ml-6 list-disc space-y-1 text-sm"><li><strong>배우자에게 받을 때:</strong> 6억 원</li><li><strong>직계존속(부모, 조부모)에게 받을 때:</strong> 5천만 원 (수증자가 미성년자면 2천만 원)</li><li><strong>직계비속(자녀, 손주)에게 받을 때:</strong> 5천만 원 (손주가 미성년자면 2천만 원)</li><li><strong>기타 친족(형제, 사위, 며느리 등)에게 받을 때:</strong> 1천만 원</li></ul><p><strong>[중요]</strong> 부모님이 한 자녀에게 증여할 때는 아버지와 어머니를 ''동일인''으로 보아, 두 분께 받은 금액을 합쳐 총 5천만 원까지만 공제됩니다.</p><p>특히 2024년부터는 <strong>결혼 또는 출산 시, 위 공제와 별도로 1억 원을 추가 공제</strong>받을 수 있는 제도가 신설되었습니다.</p>'),
+CREATE OR REPLACE VIEW v_product_list AS
 
--- 5. 상속 분쟁 해결 (기존 내용 없음, 파일 17번 신규 추가)
-(5, '상속', '형제자매 간 상속 분쟁이 생기면 어떻게 해결하나요?',
- '<p>상속 분쟁은 주로 상속 재산의 규모, 기여도, 생전 증여 여부 때문에 발생합니다.</p><p>형제자매 간 분쟁을 해결하는 대표적인 방법은 다음과 같습니다:</p><ul class="ml-6 list-disc space-y-1 text-sm"><li><strong>유류분 반환 청구:</strong> 특정 형제에게 재산이 편중되었다고 판단되면 법정 상속분의 일부를 돌려달라고 청구할 수 있습니다.</li><li><strong>기여분 청구:</strong> 부모님을 특별히 부양하는 등 생전에 기여한 형제는 추가 상속 지분을 주장할 수 있습니다.</li><li><strong>상속재산분할 심판 청구:</strong> 협의가 안 될 경우 가정법원에 조정을 신청하거나 공정한 분할을 요구하는 심판을 청구할 수 있습니다.</li></ul><p>가능하다면, 상속 개시 전 유언장 작성이나 가족 간 사전 합의를 통해 갈등을 최소화하는 것이 가장 바람직합니다.</p>'),
+-- 예금 상품
+SELECT d.fin_prdt_cd,
+       d.fin_prdt_nm,
+       d.prdt_feature,
+       'deposit' AS prdt_type,
+       do.save_trm,
+       do.intr_rate,
+       do.intr_rate2,
+       NULL      AS rate_3mon,
+       NULL      AS risk_grade,
+       NULL      AS price_std,
+       NULL      AS mrtg_type_nm,
+       NULL      AS rpay_type_nm,
+       NULL      AS lend_rate_type_nm,
+       NULL      AS lend_rate_min,
+       NULL      AS lend_rate_max
+FROM deposit d
+         JOIN deposit_option do ON d.fin_prdt_cd = do.fin_prdt_cd
 
--- 6. 증여세 납부 주체 (기존 내용 없음, 파일 5번 신규 추가)
-(6, '증여', '증여세는 주는 사람과 받는 사람 중 누가 내야 하나요?',
- '<p>증여세는 <strong>재산을 받는 사람(수증자)이 납부</strong>하는 것이 원칙입니다.</p><p>만약 수증자 대신 증여자가 세금을 내준다면, 그 세금 액수만큼을 추가로 증여한 것으로 간주하여 세금이 더 부과될 수 있습니다. 이를 ''대납 증여''라고 합니다.</p><p>따라서 세금은 원칙대로 수증자가 직접 신고하고 납부하는 것이 가장 안전합니다.</p>'),
+UNION ALL
 
--- 7. 상속과 부채 (기존 내용 없음, 파일 14번 신규 추가)
-(7, '상속', '부모님이 재산보다 빚을 더 많이 남겼는데 상속해야 하나요?',
- '<p>아닙니다. 상속은 재산뿐 아니라 빚(채무)도 함께 물려받는 것입니다.</p><p>만약 재산보다 빚이 더 많다면, <strong>''상속 포기''</strong>나 <strong>''한정승인''</strong> 제도를 통해 빚을 떠안지 않을 수 있습니다. 이 제도는 사망 사실을 안 날로부터 <strong>3개월 이내에 가정법원에 신청</strong>해야 합니다.</p><p>상속세는 남긴 재산에서 빚을 뺀 순재산을 기준으로 계산되므로, 빚이 더 많은 경우에는 상속세가 발생하지 않습니다.</p>'),
+-- 적금 상품
+SELECT s.fin_prdt_cd,
+       s.fin_prdt_nm,
+       s.prdt_feature,
+       'saving' AS prdt_type,
+       so.save_trm,
+       so.intr_rate,
+       so.intr_rate2,
+       NULL     AS rate_3mon,
+       NULL     AS risk_grade,
+       NULL     AS price_std,
+       NULL     AS mrtg_type_nm,
+       NULL     AS rpay_type_nm,
+       NULL     AS lend_rate_type_nm,
+       NULL     AS lend_rate_min,
+       NULL     AS lend_rate_max
+FROM saving s
+         JOIN saving_option so ON s.fin_prdt_cd = so.fin_prdt_cd
 
--- 8. 유언장의 효력 (기존 내용 없음, 파일 16번 신규 추가)
-(8, '상속', '유언장이 있으면 반드시 그 내용대로 상속해야 하나요?',
- '<p>원칙적으로 법적 요건을 갖춘 유언장은 그 내용을 우선적으로 따릅니다. 하지만 아래와 같은 경우 유언장 내용과 다르게 상속될 수 있습니다.</p><ul class="ml-6 list-disc space-y-1 text-sm"><li><strong>유언장이 무효인 경우:</strong> 자필 서명이나 날짜가 없거나, 법적 형식을 갖추지 않은 유언장은 효력이 없습니다.</li><li><strong>유류분 권리를 침해하는 경우:</strong> 유언으로 특정 상속인의 재산을 0원으로 만들었더라도, 그 상속인은 법으로 보장된 최소한의 상속 지분(유류분)을 청구할 수 있습니다.</li></ul><p>따라서 유언장 내용이 있더라도, 상속인의 법적 권리를 완전히 무시할 수는 없습니다.</p>'),
+UNION ALL
 
--- 9. 증여 vs 상속 유불리 (기존 '기타' -> '상속'으로 변경)
-(9, '상속', '증여와 상속 중 어느 쪽이 더 유리한가요?',
- '<p>증여와 상속은 각각 장단점이 있어 가족의 상황, 자산 규모에 따라 유불리가 달라집니다.</p><p><strong>✔️ 증여가 유리한 경우</strong></p><ul class="ml-6 list-disc space-y-1 text-sm"><li>자녀가 미리 재산을 활용해야 할 때</li><li>10년 단위로 나누어 분산 증여하여 낮은 세율을 적용받고 싶을 때</li><li>앞으로 가격이 크게 오를 것으로 예상되는 자산을 미리 넘겨줄 때</li></ul><p><strong>✔️ 상속이 유리한 경우</strong></p><ul class="ml-6 list-disc space-y-1 text-sm"><li>배우자 공제 등 공제 혜택이 증여보다 훨씬 클 때</li><li>상속 재산에 빚이 많아 순재산이 적을 때</li><li>상속받은 부동산은 사망일 기준 시가로 취득가액이 정해져 양도세 절세에 유리할 때</li></ul><p>일반적으로 자산 규모가 크지 않다면 상속이, 장기 계획 하에 분산이 가능하다면 증여가 유리할 수 있습니다.</p>'),
+-- 주택담보대출 상품
+SELECT m.fin_prdt_cd,
+       m.fin_prdt_nm,
+       m.prdt_feature,
+       'mortgage' AS prdt_type,
+       NULL       AS save_trm,
+       NULL       AS intr_rate,
+       NULL       AS intr_rate2,
+       NULL       AS rate_3mon,
+       NULL       AS risk_grade,
+       NULL       AS price_std,
+       mo.mrtg_type_nm,
+       mo.rpay_type_nm,
+       mo.lend_rate_type_nm,
+       mo.lend_rate_min,
+       mo.lend_rate_max
+FROM mortgage m
+         JOIN mortgage_option mo ON m.fin_prdt_cd = mo.fin_prdt_cd
 
--- 10. 주식/가상자산 증여 (기존 19번 + 파일 11번)
-(10, '증여', '주식이나 가상자산(코인)도 증여세 대상인가요?',
- '<p>네, 주식이나 가상자산도 금전적 가치가 있는 재산이므로 증여세 과세 대상입니다.</p><p>증여가액은 아래 시점을 기준으로 평가합니다.</p><ul class="ml-6 list-disc space-y-1 text-sm"><li><strong>상장주식:</strong> 증여일 이전과 이후 각 2개월(총 4개월) 동안의 평균 종가</li><li><strong>가상자산:</strong> 증여일 이전과 이후 각 1개월(총 2개월) 동안 공시된 일평균가액의 평균액</li><li><strong>비상장주식:</strong> 세법에 따른 별도의 평가 방법을 통해 가치 산정</li></ul><p>특히 부모가 자녀 명의 계좌로 직접 주식 투자를 반복하여 수익을 낸다면, 원금뿐만 아니라 그 투자 수익에 대해서도 추가로 증여세가 과세될 수 있으니 주의해야 합니다.</p>'),
+UNION ALL
 
--- =================================================================================
--- Part 2: 기존 데이터 중 고유한 질문 (내용 보강 및 재정렬)
--- =================================================================================
-(11, '상속', '상속 주택의 가격은 어떻게 정하나요?',
- '<p>상속 주택의 가격은 세법에서 정한 순서에 따라 결정됩니다. 첫 번째는 돌아가시기 전 2년부터 돌아가신 후 15개월 사이에 실제로 거래된 가격(매매, 경매 등)입니다. 만약 이 기간에 거래된 적이 없다면, 비슷한 다른 주택이 거래된 가격을 기준으로 합니다. 이마저도 없다면 마지막으로 나라에서 정한 공시가격을 사용합니다.</p>'),
-(12, '상속', '배우자가 집을 상속받으면 세금이 어떻게 되나요?',
- '<p>배우자가 재산을 상속받으면 세금 부담이 크게 줄어듭니다. 배우자가 있으면 다른 가족이 재산을 받더라도 최소 5억 원의 배우자 공제를 받을 수 있습니다. 만약 배우자가 직접 재산을 상속받는다면, 실제로 받은 금액만큼 공제 금액이 더 커집니다. 예를 들어 10억 원이 넘는 집을 자녀보다 배우자가 상속받는 것이 공제를 더 많이 받아 세금 면에서 유리합니다.</p>'),
-(13, '증여', '부모님 집에서 자녀만 공짜로 살아도 되나요?',
- '<p>원칙적으로 부모님 소유의 집에 자녀가 무상으로 거주하면 증여세가 부과될 수 있습니다. 세법에서는 월세를 내지 않은 만큼 이익을 증여받았다고 보기 때문입니다. 다만, 집값이 약 13억 원 이하인 경우에는 5년간의 이익이 1억 원을 넘지 않아 세금이 나오지 않습니다. 물론, 집주인인 부모님과 함께 사는 경우에는 증여세가 과세되지 않습니다.</p>'),
-(14, '상속', '부모님을 모시고 살다 상속받으면 혜택이 있나요?',
- '<p>네, ''동거주택 상속공제''라는 세금 혜택이 있습니다. 돌아가신 부모님과 10년 이상 한집에서 계속 같이 살았던 자녀가 그 집을 상속받으면, 집값의 최대 6억 원까지 공제받을 수 있습니다. 군 복무나 학업 등의 이유로 잠시 떨어져 살았던 기간도 10년에 포함될 수 있습니다. 이 혜택은 함께 산 자녀에게만 적용됩니다.</p>'),
-(15, '상속', '집을 상속받아 2주택자가 되면 종부세를 내나요?',
- '<p>집을 갑자기 상속받아 2주택자가 되어도 바로 종합부동산세(종부세) 걱정을 할 필요는 없습니다. 상속받은 날로부터 5년 동안은 1주택자로 보기 때문입니다. 또한, 상속받은 집이 수도권이나 광역시 밖의 공시가격 3억 원 이하 주택이거나, 내가 받은 지분이 40% 이하(지분 가액 6억 원 이하)인 경우에도 주택 수에 포함되지 않아 계속 1주택자로 인정됩니다.</p>'),
-(16, '상속', '2주택일 때 어느 집을 먼저 파는 게 유리한가요?',
- '<p>상속으로 2주택이 된 경우, 원래 가지고 있던 기존 주택을 먼저 파는 것이 세금상 유리합니다. 원래 살던 집을 먼저 팔면 1세대 1주택으로 인정되어 양도소득세 비과세 혜택을 받을 수 있기 때문입니다. 다만, 기존 주택을 2년 이상 보유하는 등 비과세 요건은 갖춰야 합니다. 상속받은 주택을 먼저 팔게 되면 양도소득세가 과세됩니다.</p>'),
-(17, '증여', '부모자식 간에 돈을 빌려도 증여세가 나오나요?',
- '<p>네, 증여로 추정될 수 있어 주의해야 합니다. 부모자식 사이의 돈거래를 빌린 돈으로 인정받으려면, 다른 사람과 거래하는 것처럼 차용증을 자세히 쓰고 실제로 약속한 날에 이자를 지급하고 원금을 갚아야 합니다.</p><p>만약 이자 없이 돈을 빌렸다면, 내지 않은 이자만큼을 증여받은 것으로 볼 수 있습니다. 다만, 법에서 정한 이자율(연 4.6%)로 계산한 이자 금액이 연간 1천만 원 미만일 경우에는 증여세가 과세되지 않습니다.</p>'),
-(18, '상속', '자녀 이름으로 든 보험금은 상속세가 없나요?',
- '<p>사실이 아닙니다. 보험계약자가 자녀 이름으로 되어 있어도, 실제 보험료를 부모님이 내주셨다면 그 사망보험금은 상속재산에 포함되어 상속세가 과세됩니다. 자녀가 스스로 번 돈으로 직접 보험료를 냈다는 사실이 증명되어야만 상속재산에서 제외될 수 있습니다.</p>'),
-(19, '증여', '자녀의 대출을 부모가 대신 갚아줘도 괜찮나요?',
- '<p>사실이 아닙니다. 자녀 명의로 대출을 받았더라도 부모님이 담보를 제공하거나 원금과 이자를 대신 갚아준다면, 세무서는 이를 ''부모가 자녀에게 현금을 증여한 것''으로 봅니다. 이 경우 자녀가 증여세를 낼 돈이 없다면, 부모님이 대신 내야 하는 의무가 있습니다.</p>'),
-(20, '증여', '축의금으로 신혼집을 사도 증여세가 없나요?',
- '<p>축의금의 주인이 누구인지에 따라 달라져 주의해야 합니다. 법원에서는 축의금을 신랑·신부에게 직접 전달된 일부를 제외하고는 대부분 혼주인 부모님의 돈으로 봅니다. 따라서 부모님께 들어온 축의금으로 자녀가 집을 사면, 부모님께 현금을 증여받은 것으로 보아 증여세가 과세될 수 있습니다. 누구의 손님인지 방명록 등을 잘 보관하는 것이 좋습니다.</p>'),
-(21, '증여', '생활비 명목으로 보낸 돈은 증여세가 없나요?',
- '<p>항상 비과세되는 것은 아닙니다. 소득이 없는 가족에게 주는 일반적인 수준의 생활비나 교육비는 증여세가 없습니다. 하지만 소득이 있는 자녀에게 생활비 명목으로 돈을 보내거나, 생활비로 받은 돈을 쓰지 않고 모아서 예·적금을 하거나 집, 주식 등을 사는 데 사용하면 증여세가 부과될 수 있습니다.</p>'),
-(22, '증여', '세금이 없어도 증여 신고를 꼭 해야 하나요?',
- '<p>네, 증여받은 날이 속한 달의 말일부터 3개월 안에 신고하는 것이 좋습니다. 공제를 받아 실제로 낼 세금이 없더라도 신고해두면 여러모로 유리합니다. 신고한 금액은 나중에 다른 재산을 사거나 빚을 갚을 때 자금 출처로 당당하게 인정받을 수 있고, 증여받은 재산을 나중에 팔 때 취득가액으로 인정받아 양도소득세를 줄이는 데 도움이 될 수 있습니다.</p>'),
-(23, '증여', '혼인·출산 증여재산공제는 어떻게 받나요?',
- '<p>결혼이나 출산 시 1억 원을 추가로 공제받는 제도는 현금뿐만 아니라 부동산, 주식 등 대부분의 재산을 증여받을 때 적용 가능합니다. 증여받은 재산을 꼭 결혼 자금이나 양육비로 써야 하는 것은 아니며, 전세 보증금이나 주택 구입 자금으로 사용해도 공제를 받을 수 있습니다. 다만, 빚을 대신 갚아주거나 저금리로 돈을 빌려주는 등의 방식은 이 혜택에서 제외됩니다.</p>'),
-(24, '증여', '아버지 집을 시세보다 싸게 사도 증여세가 나오나요?',
- '<p>네, 증여세가 나올 수 있습니다. 가까운 친척에게서 시세보다 현저히 낮은 가격으로 재산을 살 경우, 그 차액을 증여로 봅니다. 시가와 내가 낸 돈의 차이가 시가의 30%와 3억 원 중 적은 금액보다 크면 증여세 과세 대상이 됩니다. 예를 들어 시가 8억 원짜리 집을 3억 원에 샀다면, 그 차액에서 일정 금액을 뺀 나머지에 대해 증여세가 부과될 수 있습니다.</p>'),
-(25, '증여', '창업 자금으로 증여받을 때 세금 혜택이 있나요?',
- '<p>네, ''창업자금 증여세 과세특례''라는 제도가 있습니다. 만 18세 이상 자녀가 만 60세 이상 부모님께 창업 자금을 증여받을 경우, 최대 5억 원까지 공제되어 사실상 세금을 내지 않습니다. 다만, 혜택을 받으려면 2년 안에 특정 업종으로 창업하고, 4년 안에 자금을 모두 사용하며, 10년간 사업을 유지하는 등 까다로운 조건을 지켜야 합니다.</p>'),
+-- 펀드 상품
+SELECT f.fin_prdt_cd,
+       f.fin_prdt_nm,
+       f.prdt_feature,
+       'fund' AS prdt_type,
+       NULL   AS save_trm,
+       NULL   AS intr_rate,
+       NULL   AS intr_rate2,
+       fo.rate_3mon,
+       fo.risk_grade,
+       fo.price_std,
+       NULL   AS mrtg_type_nm,
+       NULL   AS rpay_type_nm,
+       NULL   AS lend_rate_type_nm,
+       NULL   AS lend_rate_min,
+       NULL   AS lend_rate_max
+FROM fund f
+         JOIN fund_option fo ON f.fin_prdt_cd = fo.fin_prdt_cd
 
--- =================================================================================
--- Part 3: 새로 제공된 파일(faq.json)의 고유한 질문
--- =================================================================================
-(26, '증여', '부동산에 대출이 있을 경우 증여세 계산은 어떻게 되나요?',
- '<p>부동산을 증여할 때 해당 부동산에 대출(담보대출 등)이 있는 경우, 대출의 부담을 수증자가 승계한다면 그 대출 금액은 ''부담부 증여''로 간주되어 증여가액에서 차감됩니다.</p><p>즉, <strong>증여가액 = 부동산 시가 - 수증자가 떠안는 대출 금액</strong>으로 계산됩니다.</p><p>예시:</p><ul class="ml-6 list-disc space-y-1 text-sm"><li>부동산 시가: 4억 원</li><li>대출금: 1억 원</li><li>수증자가 대출까지 함께 승계한 경우 → 증여가액: 3억 원</li></ul><p>이 경우, 3억 원에서 수증자의 공제한도를 뺀 금액에 대해 증여세가 부과됩니다.</p>'),
-(27, '증여', '과거에 증여한 금액도 이번 증여세 계산에 포함되나요?',
- '<p>네, 동일한 증여자에게서 10년 이내에 받은 증여는 <strong>합산하여 증여세를 계산</strong>해야 합니다.</p><p>예를 들어, 부모로부터 5년 전에 3,000만 원을 증여받았고, 이번에 4,000만 원을 추가로 받는다면:</p><ul class="ml-6 list-disc space-y-1 text-sm"><li>합산 증여액: 3,000만 원 + 4,000만 원 = 7,000만 원</li><li>공제 한도(성년 자녀 기준): 5,000만 원</li><li>과세 대상: 2,000만 원</li></ul><p>만약 과거에 이미 공제 한도를 초과해서 세금을 납부했다면, 이번 증여에서 공제를 다시 적용할 수 없습니다.</p>'),
-(28, '증여', '증여세 계산은 자산별로 따로 하나요, 합쳐서 하나요?',
- '<p>증여세는 수증자(받는 사람) 1인 기준으로, <strong>모든 자산을 합산하여 한 번에 계산</strong>합니다.</p><p>예를 들어, 자녀에게 예금 1억, 부동산 3억, 주식 5천만 원을 증여한다면, 자산별로 따로 계산하는 것이 아니라 <strong>총 4억 5천만 원을 한꺼번에 합쳐</strong> 증여세를 계산하게 됩니다.</p>'),
-(29, '상속', '상속받은 부동산은 언제든 팔 수 있나요?',
- '<p>상속받은 부동산은 <strong>상속등기(소유권 이전 등기)를 마친 후</strong>에야 매도할 수 있습니다.</p><p>특히 공동상속인이 있다면, 협의를 통해 지분을 정리하고 단독 소유로 변경해야 원활한 처분이 가능합니다.</p><p>또한, 향후 부동산을 매각하면 <strong>양도소득세</strong>가 발생할 수 있는데, 이때 취득가액은 <strong>사망일 기준의 시가</strong>로 계산되므로, 부모님이 아주 오래전에 싸게 산 부동산이라도 양도세 부담이 줄어드는 효과가 있을 수 있습니다.</p>'),
-(30, '상속', '상속 재산이 국내외에 나눠져 있을 경우 어떻게 신고하나요?',
- '<p>상속세는 <strong>국내에 주소를 둔 사람(거주자)이 사망한 경우</strong> 국내·해외를 불문하고 <strong>전 세계 재산을 모두 포함해 과세</strong>합니다.</p><p>해외 재산도 사망일 기준 시가(한화 환산)로 계산하여 반드시 포함해야 하며, 누락 시 과소신고 가산세(최대 40%)와 탈세 조사 대상이 될 수 있습니다.</p><p>한편, <strong>사망자가 비거주자(해외에 주소가 있는 경우)</strong>라면 한국 내 재산(예: 부동산, 금융자산)만 상속세 과세 대상이 됩니다.</p>'),
-(31, '증여', '부모와 자녀가 함께 소유한 부동산을 넘길 때도 증여세가 발생하나요?',
- '<p>부모와 자녀가 <strong>공동 소유하고 있는 부동산의 지분을 이전</strong>할 경우에도, 그 지분이 무상으로 이전된다면 <strong>증여세가 발생</strong>합니다.</p><p>예를 들어, 아파트의 50%를 부모가, 50%를 자녀가 공동소유하고 있었는데, 부모의 지분을 자녀에게 무상으로 넘긴다면, 자녀는 부모로부터 50%의 지분을 ''증여''받은 것으로 간주되어 그 지분의 시가를 기준으로 증여세가 부과됩니다.</p>'),
-(32, '증여', '해외 거주자가 증여할 때 어떻게 되나요?',
- '<p>해외 거주자라도 <strong>대한민국 국적이거나 한국에 일정 기간 이상 거주한 경우</strong>, 국내 증여세 과세 대상이 될 수 있습니다.</p><p>증여세는 <strong>거주자의 국적, 거주기간, 자산 소재지</strong>에 따라 과세 범위가 달라집니다. 기본적인 원칙은 아래와 같습니다:</p><ul class="ml-6 list-disc space-y-1 text-sm"><li><strong>증여자 또는 수증자 중 한 명이라도 ''국내 거주자''일 경우</strong> → 전 세계 자산에 대해 증여세 과세</li><li><strong>증여자와 수증자 모두 비거주자일 경우</strong> → 국내에 있는 자산에 대해서만 증여세 과세</li></ul>'),
-(33, '증여', '법인이나 사업체도 증여할 수 있나요?',
- '<p><strong>사업체나 법인의 지분, 자산, 경영권</strong> 등도 증여의 대상이 될 수 있으며, 이 경우에도 <strong>증여세가 발생</strong>합니다.</p><p>예를 들어, 부모가 자녀에게 법인 지분 30%를 무상으로 넘기면, 그 지분 가치가 <strong>시가로 평가되어 증여세 과세</strong> 대상이 됩니다. 사업체 관련 증여는 세금 구조가 복잡할 수 있으므로, 세무 전문가와 사전 상담을 거치는 것이 필수입니다.</p>'),
-(34, '증여', '어떤 경우에 증여세를 내야 하나요?',
- '<p>증여세는 다른 사람에게서 재산을 공짜로 받았을 때 내는 세금입니다. 현금이나 부동산뿐만 아니라 분양권처럼 경제적 가치가 있는 모든 것이 포함됩니다.</p><p>시세보다 훨씬 저렴하게 재산을 살 때 얻는 이익도 증여로 볼 수 있습니다. 다만, 우리가 흔히 주고받는 생활비, 교육비, 축하금, 명절 용돈 등은 사회 통념상 인정되는 범위 내에서 세금이 부과되지 않습니다.</p>'),
-(35, '증여', '혼인·출산 공제는 첫 결혼, 첫 아이만 되나요?',
- '<p>아닙니다. 출산 공제는 첫째, 둘째 등 자녀의 출생 순서와 상관없이 받을 수 있습니다. 결혼 공제 역시 초혼과 재혼을 구분하지 않습니다.</p><p>다만, 한 사람당 평생 받을 수 있는 혼인·출산 관련 공제 <strong>총 한도가 1억 원</strong>입니다.</p><p>예를 들어, 결혼할 때 7천만 원을 공제받았다면, 이후 자녀가 태어났을 때는 남은 한도인 3천만 원까지만 추가로 공제받을 수 있습니다.</p>');
+UNION ALL
 
+-- 금 상품
+SELECT g.fin_prdt_cd,
+       g.fin_prdt_nm,
+       g.prdt_feature,
+       'gold' AS prdt_type,
+       NULL   AS save_trm,
+       NULL   AS intr_rate,
+       NULL   AS intr_rate2,
+       NULL   AS rate_3mon,
+       NULL   AS risk_grade,
+       NULL   AS price_std,
+       NULL   AS mrtg_type_nm,
+       NULL   AS rpay_type_nm,
+       NULL   AS lend_rate_type_nm,
+       NULL   AS lend_rate_min,
+       NULL   AS lend_rate_max
+FROM gold g
 
--- =======================================
--- 1. 수증자(recipient) 테이블 더미 데이터
--- =======================================
--- 컬럼 변경사항 적용:
--- - relationship: '자녀', '배우자', '손자녀', '형제자매' 등 새로운 값 사용
--- - gift_tax_payer: '본인', '수증자' 값 사용 (기존 '증여자'는 '본인'으로 간주)
+UNION ALL
 
-# INSERT INTO recipient (recipient_id, email, relationship, recipient_name, birth_date, is_married, has_prior_gift, prior_gift_amount, gift_tax_payer)
-# VALUES
-#     -- PDF 예시 1: 첫째 홍길동 (성인, 과거 증여 5천만원 있음, 세금납부: 수증자)
-#     (1, '[각자 토큰 발급한 이메일 넣기]', '자녀', '첫째 홍길동', '1995-01-10', 1, 1, 50000000, '수증자'),
-#
-#     -- PDF 예시 2: 둘째 홍길순 (성인, 과거 증여 없음, 세금납부: 본인(증여자 대납))
-#     (2, '[각자 토큰 발급한 이메일 넣기]', '자녀', '둘째 홍길순', '2002-05-20', 0, 0, 0, '본인'),
-#
-#     -- 예시 3: 배우자 김미영 (6억 공제 테스트용, 세금납부: 수증자)
-#     (3, '[각자 토큰 발급한 이메일 넣기]', '배우자', '배우자 김미영', '1975-03-15', 1, 0, 0, '수증자'),
-#
-#     -- 예시 4: 손자/미성년자 '홍손주' (세대생략 할증, 미성년 공제 등 테스트용)
-#     (4, '[각자 토큰 발급한 이메일 넣기]', '손자녀', '손자 홍손주', '2010-08-05', 0, 0, 0, '수증자'),
-#
-#     -- 예시 5: 과거 증여액(6천만)이 성년자녀 공제(5천만)를 초과하는 수증자
-#     (5, '[각자 토큰 발급한 이메일 넣기]', '자녀', '셋째 홍이력', '1990-01-01', 0, 1, 60000000, '수증자'),
-#
-#     -- 예시 6: 형제자매 관계 테스트용 (기타친족 공제 1천만원)
-#     (6, '[각자 토큰 발급한 이메일 넣기]', '형제자매', '동생 홍자매', '1980-11-25', 1, 0, 0, '본인');
+-- 신탁 상품
+SELECT t.fin_prdt_cd,
+       t.fin_prdt_nm,
+       NULL    AS prdt_feature, -- 이 부분을 수정했습니다.
+       'trust' AS prdt_type,
+       NULL    AS save_trm,
+       NULL    AS intr_rate,
+       NULL    AS intr_rate2,
+       NULL    AS rate_3mon,
+       NULL    AS risk_grade,
+       NULL    AS price_std,
+       NULL    AS mrtg_type_nm,
+       NULL    AS rpay_type_nm,
+       NULL    AS lend_rate_type_nm,
+       NULL    AS lend_rate_min,
+       NULL    AS lend_rate_max
+FROM trust t;
 
+--
+-- Temporary view structure for view `v_all_products`
+--
 
--- =======================================
--- 2. 자산(asset_status) 테이블 더미 데이터
--- =======================================
--- 컬럼 변경사항 적용:
--- - business_type: '개인 사업자', '법인 사업자' 값 사용
+CREATE OR REPLACE VIEW v_all_products AS
+    -- -----------------------------------------------------
+-- 예금 상품 (deposit)
+-- -----------------------------------------------------
+SELECT
+    -- 공통 필드
+    d.fin_prdt_cd,
+    d.fin_prdt_category,
+    d.fin_prdt_nm,
+    d.fin_co_no,
+    d.kor_co_nm,
+    d.prdt_feature,
+    d.description,
+    d.join_way,
+    d.rec_reason,
+    d.tendency,
+    d.asset_proportion,
+    'deposit' AS prdt_type,
 
-# INSERT INTO asset_status (asset_id, email, asset_category_code, amount, asset_name, business_type)
-# VALUES
-#     -- 일반 자산 (business_type이 없는 경우)
-#     (1, '[각자 토큰 발급한 이메일 넣기]', '1', 500000000, '강남 아파트', NULL),
-#     (2, '[각자 토큰 발급한 이메일 넣기]', '2', 200000000, '삼성전자 주식', NULL),
-#     (3, '[각자 토큰 발급한 이메일 넣기]', '3', 300000000, '국민은행 예금', NULL),
-#
-#     -- 사업체/지분 자산 (business_type이 있는 경우, asset_category_code '5'로 가정)
-#     -- 법인 사업자 예시
-#     (4, '[각자 토큰 발급한 이메일 넣기]', '5', 700000000, '(주)길동가족기업', '법인 사업자'),
-#
-#     -- 개인 사업자 예시
-#     (5, '[각자 토큰 발급한 이메일 넣기]', '5', 100000000, '홍길동 개인상점', '개인 사업자');
+    -- 상품 특화 필드
+    d.mtrt_int,
+    d.spcl_cnd,
+    d.join_deny,
+    d.join_member,
+    d.etc_note,
+    NULL      AS lot,
+    NULL      AS currency,
+    NULL      AS loan_inci_expn,
+    NULL      AS erly_rpay_fee,
+    NULL      AS dly_rate,
+    NULL      AS loan_lmt,
+    NULL      AS max_limit,
+    NULL      AS rsrv_type_nm,
+    NULL      AS base_price,
+    NULL      AS yield_rate,
+    NULL      AS fund_type,
+    NULL      AS fund_structure,
+    NULL      AS tax_benefit,
+    NULL      AS sale_start_date,
+    NULL      AS trust_fee,
+    NULL      AS early_termination_fee,
+    NULL      AS deposit_protection,
 
+    -- 옵션 필드
+    do.intr_rate_type_nm,
+    do.save_trm,
+    do.intr_rate,
+    do.intr_rate2,
+    NULL      AS mrtg_type_nm,
+    NULL      AS rpay_type_nm,
+    NULL      AS lend_rate_type_nm,
+    NULL      AS lend_rate_min,
+    NULL      AS lend_rate_max,
+    NULL      AS lend_rate_avg,
+    NULL      AS rate_3mon,
+    NULL      AS start_date,
+    NULL      AS asset_total,
+    NULL      AS total_fee,
+    NULL      AS risk_grade,
+    NULL      AS fee_first,
+    NULL      AS fee_redemp,
+    NULL      AS price_std
+FROM deposit d
+         LEFT JOIN deposit_option do ON d.fin_prdt_cd = do.fin_prdt_cd
 
--- ----------------------------------
--- 조회 구문
--- ----------------------------------
-select *
-from asset_category;
-select *
-from refresh_token;
-select *
-from asset_status;
-select *
-from booking;
-select *
-from fin_prdt;
-select *
-from branch;
-select *
-from faq;
-select *
-from fin_prdt_option;
-select *
-from recipient;
-select *
-from user;
-select *
-from strategy;
--- -----------------------------------
+UNION ALL
+
+-- -----------------------------------------------------
+-- 적금 상품 (saving)
+-- -----------------------------------------------------
+SELECT
+    -- 공통 필드
+    s.fin_prdt_cd,
+    s.fin_prdt_category,
+    s.fin_prdt_nm,
+    s.fin_co_no,
+    s.kor_co_nm,
+    s.prdt_feature,
+    s.description,
+    s.join_way,
+    s.rec_reason,
+    s.tendency,
+    s.asset_proportion,
+    'saving' AS prdt_type,
+
+    -- 상품 특화 필드
+    s.mtrt_int,
+    s.spcl_cnd,
+    s.join_deny,
+    s.join_member,
+    s.etc_note,
+    NULL     AS lot,
+    NULL     AS currency,
+    NULL     AS loan_inci_expn,
+    NULL     AS erly_rpay_fee,
+    NULL     AS dly_rate,
+    NULL     AS loan_lmt,
+    s.max_limit,
+    so.rsrv_type_nm,
+    NULL     AS base_price,
+    NULL     AS yield_rate,
+    NULL     AS fund_type,
+    NULL     AS fund_structure,
+    NULL     AS tax_benefit,
+    NULL     AS sale_start_date,
+    NULL     AS trust_fee,
+    NULL     AS early_termination_fee,
+    NULL     AS deposit_protection,
+
+    -- 옵션 필드
+    so.intr_rate_type_nm,
+    so.save_trm,
+    so.intr_rate,
+    so.intr_rate2,
+    NULL     AS mrtg_type_nm,
+    NULL     AS rpay_type_nm,
+    NULL     AS lend_rate_type_nm,
+    NULL     AS lend_rate_min,
+    NULL     AS lend_rate_max,
+    NULL     AS lend_rate_avg,
+    NULL     AS rate_3mon,
+    NULL     AS start_date,
+    NULL     AS asset_total,
+    NULL     AS total_fee,
+    NULL     AS risk_grade,
+    NULL     AS fee_first,
+    NULL     AS fee_redemp,
+    NULL     AS price_std
+FROM saving s
+         LEFT JOIN saving_option so ON s.fin_prdt_cd = so.fin_prdt_cd
+
+UNION ALL
+
+-- -----------------------------------------------------
+-- 펀드 상품 (fund)
+-- -----------------------------------------------------
+SELECT
+    -- 공통 필드
+    f.fin_prdt_cd,
+    f.fin_prdt_category,
+    f.fin_prdt_nm,
+    f.fin_co_no,
+    f.kor_co_nm,
+    f.prdt_feature,
+    NULL   AS description,
+    NULL   AS join_way,
+    f.rec_reason,
+    f.tendency,
+    f.asset_proportion,
+    'fund' AS prdt_type,
+
+    -- 상품 특화 필드
+    NULL   AS mtrt_int,
+    NULL   AS spcl_cnd,
+    NULL   AS join_deny,
+    NULL   AS join_member,
+    NULL   AS etc_note,
+    NULL   AS lot,
+    NULL   AS currency,
+    NULL   AS loan_inci_expn,
+    NULL   AS erly_rpay_fee,
+    NULL   AS dly_rate,
+    NULL   AS loan_lmt,
+    NULL   AS max_limit,
+    NULL   AS rsrv_type_nm,
+    NULL   AS base_price,
+    NULL   AS yield_rate,
+    NULL   AS fund_type,
+    NULL   AS fund_structure,
+    NULL   AS tax_benefit,
+    NULL   AS sale_start_date,
+    NULL   AS trust_fee,
+    NULL   AS early_termination_fee,
+    NULL   AS deposit_protection,
+
+    -- 옵션 필드
+    NULL   AS intr_rate_type_nm,
+    NULL   AS save_trm,
+    NULL   AS intr_rate,
+    NULL   AS intr_rate2,
+    NULL   AS mrtg_type_nm,
+    NULL   AS rpay_type_nm,
+    NULL   AS lend_rate_type_nm,
+    NULL   AS lend_rate_min,
+    NULL   AS lend_rate_max,
+    NULL   AS lend_rate_avg,
+    fo.rate_3mon,
+    fo.start_date,
+    fo.asset_total,
+    fo.total_fee,
+    fo.risk_grade,
+    fo.fee_first,
+    fo.fee_redemp,
+    fo.price_std
+FROM fund f
+         LEFT JOIN fund_option fo ON f.fin_prdt_cd = fo.fin_prdt_cd
+
+UNION ALL
+
+-- -----------------------------------------------------
+-- 금 상품 (gold)
+-- -----------------------------------------------------
+SELECT
+    -- 공통 필드
+    g.fin_prdt_cd,
+    g.fin_prdt_category,
+    g.fin_prdt_nm,
+    g.fin_co_no,
+    g.kor_co_nm,
+    g.prdt_feature,
+    g.description,
+    g.join_way,
+    g.rec_reason,
+    g.tendency,
+    g.asset_proportion,
+    'gold' AS prdt_type,
+
+    -- 상품 특화 필드
+    NULL   AS mtrt_int,
+    NULL   AS spcl_cnd,
+    NULL   AS join_deny,
+    NULL   AS join_member,
+    g.etc_note,
+    g.lot,
+    g.currency,
+    NULL   AS loan_inci_expn,
+    NULL   AS erly_rpay_fee,
+    NULL   AS dly_rate,
+    NULL   AS loan_lmt,
+    NULL   AS max_limit,
+    NULL   AS rsrv_type_nm,
+    NULL   AS base_price,
+    NULL   AS yield_rate,
+    NULL   AS fund_type,
+    NULL   AS fund_structure,
+    NULL   AS tax_benefit,
+    NULL   AS sale_start_date,
+    NULL   AS trust_fee,
+    NULL   AS early_termination_fee,
+    NULL   AS deposit_protection,
+
+    -- 옵션 필드
+    NULL   AS intr_rate_type_nm,
+    NULL   AS save_trm,
+    NULL   AS intr_rate,
+    NULL   AS intr_rate2,
+    NULL   AS mrtg_type_nm,
+    NULL   AS rpay_type_nm,
+    NULL   AS lend_rate_type_nm,
+    NULL   AS lend_rate_min,
+    NULL   AS lend_rate_max,
+    NULL   AS lend_rate_avg,
+    NULL   AS rate_3mon,
+    NULL   AS start_date,
+    NULL   AS asset_total,
+    NULL   AS total_fee,
+    NULL   AS risk_grade,
+    NULL   AS fee_first,
+    NULL   AS fee_redemp,
+    NULL   AS price_std
+FROM gold g
+
+UNION ALL
+
+-- -----------------------------------------------------
+-- 주택담보대출 상품 (mortgage)
+-- -----------------------------------------------------
+SELECT
+    -- 공통 필드
+    m.fin_prdt_cd,
+    m.fin_prdt_category,
+    m.fin_prdt_nm,
+    m.fin_co_no,
+    m.kor_co_nm,
+    m.prdt_feature,
+    m.description,
+    m.join_way,
+    m.rec_reason,
+    m.tendency,
+    m.asset_proportion,
+    'mortgage' AS prdt_type,
+
+    -- 상품 특화 필드
+    NULL       AS mtrt_int,
+    NULL       AS spcl_cnd,
+    NULL       AS join_deny,
+    NULL       AS join_member,
+    NULL       AS etc_note,
+    NULL       AS lot,
+    NULL       AS currency,
+    m.loan_inci_expn,
+    m.erly_rpay_fee,
+    m.dly_rate,
+    m.loan_lmt,
+    NULL       AS max_limit,
+    NULL       AS rsrv_type_nm,
+    NULL       AS base_price,
+    NULL       AS yield_rate,
+    NULL       AS fund_type,
+    NULL       AS fund_structure,
+    NULL       AS tax_benefit,
+    NULL       AS sale_start_date,
+    NULL       AS trust_fee,
+    NULL       AS early_termination_fee,
+    NULL       AS deposit_protection,
+
+    -- 옵션 필드
+    NULL       AS intr_rate_type_nm,
+    NULL       AS save_trm,
+    NULL       AS intr_rate,
+    NULL       AS intr_rate2,
+    mo.mrtg_type_nm,
+    mo.rpay_type_nm,
+    mo.lend_rate_type_nm,
+    mo.lend_rate_min,
+    mo.lend_rate_max,
+    mo.lend_rate_avg,
+    NULL       AS rate_3mon,
+    NULL       AS start_date,
+    NULL       AS asset_total,
+    NULL       AS total_fee,
+    NULL       AS risk_grade,
+    NULL       AS fee_first,
+    NULL       AS fee_redemp,
+    NULL       AS price_std
+FROM mortgage m
+         LEFT JOIN mortgage_option mo ON m.fin_prdt_cd = mo.fin_prdt_cd
+
+UNION ALL
+
+-- -----------------------------------------------------
+-- 신탁 상품 (trust)
+-- -----------------------------------------------------
+SELECT
+    -- 공통 필드
+    t.fin_prdt_cd,
+    t.fin_prdt_category,
+    t.fin_prdt_nm,
+    t.fin_co_no,
+    t.kor_co_nm,
+    NULL    AS prdt_feature,
+    NULL    AS description,
+    t.join_way,
+    t.rec_reason,
+    t.tendency,
+    t.asset_proportion,
+    'trust' AS prdt_type,
+
+    -- 상품 특화 필드
+    NULL    AS mtrt_int,
+    NULL    AS spcl_cnd,
+    NULL    AS join_deny,
+    NULL    AS join_member,
+    NULL    AS etc_note,
+    NULL    AS lot,
+    NULL    AS currency,
+    NULL    AS loan_inci_expn,
+    NULL    AS erly_rpay_fee,
+    NULL    AS dly_rate,
+    NULL    AS loan_lmt,
+    NULL    AS max_limit,
+    NULL    AS rsrv_type_nm,
+    t.base_price,
+    t.yield_rate,
+    t.fund_type,
+    t.fund_structure,
+    t.tax_benefit,
+    t.sale_start_date,
+    t.trust_fee,
+    t.early_termination_fee,
+    t.deposit_protection,
+
+    -- 옵션 필드
+    NULL    AS intr_rate_type_nm,
+    NULL    AS save_trm,
+    NULL    AS intr_rate,
+    NULL    AS intr_rate2,
+    NULL    AS mrtg_type_nm,
+    NULL    AS rpay_type_nm,
+    NULL    AS lend_rate_type_nm,
+    NULL    AS lend_rate_min,
+    NULL    AS lend_rate_max,
+    NULL    AS lend_rate_avg,
+    NULL    AS rate_3mon,
+    NULL    AS start_date,
+    NULL    AS asset_total,
+    NULL    AS total_fee,
+    NULL    AS risk_grade,
+    NULL    AS fee_first,
+    NULL    AS fee_redemp,
+    NULL    AS price_std
+FROM trust t;
