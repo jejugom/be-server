@@ -80,6 +80,7 @@
             <result property="lendRateTypeNm" column="lend_rate_type_nm"/>
             <result property="lendRateMin" column="lend_rate_min"/>
             <result property="lendRateMax" column="lend_rate_max"/>
+            <result property="lendRateAvg" column="lend_rate_avg"/>
         </collection>
     </resultMap>
 
