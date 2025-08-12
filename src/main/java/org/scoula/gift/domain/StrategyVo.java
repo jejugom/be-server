@@ -8,4 +8,5 @@ public class StrategyVo {
 	private String strategyCode;
 	private String ruleCategory;
 	private String message;
+	private int baseWeight;
 }

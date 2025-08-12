@@ -9,7 +9,8 @@
             strategy_id,
             strategy_code,
             rule_category,
-            message
+            message,
+            base_weight
         FROM
             strategy
     </select>
