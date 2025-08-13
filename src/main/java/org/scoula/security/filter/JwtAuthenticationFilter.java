@@ -1,10 +1,12 @@
 package org.scoula.security.filter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * HTTP 요청 헤더에서 JWT를 감지하고, 유효한 경우 사용자를 인증하여
+ * HTTP 요청에서 쿠키를 통해 JWT를 감지하고, 유효한 경우 사용자를 인증하여
  * Spring Security의 SecurityContext에 인증 정보를 설정하는 필터입니다.
  * 모든 요청에 대해 한 번씩 실행됩니다.
  */
@@ -27,11 +29,6 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-	/** JWT가 담길 HTTP 요청 헤더의 이름 */
-	private static final String AUTHORIZATION_HEADER = "Authorization";
-
-	/** JWT 토큰의 표준 접두사 */
-	public static final String BEARER_PREFIX = "Bearer "; // 끝에 공백 포함
 
 	/** JWT 토큰의 유효성 검사 및 정보 추출을 담당하는 컴포넌트 */
 	private final JwtProcessor jwtProcessor;
@@ -62,31 +59,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		log.debug("JwtAuthenticationFilter running for URI: {}", request.getRequestURI());
 
-		// 1. 요청 헤더에서 'Authorization' 헤더를 통해 토큰을 추출합니다.
-		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+		// 1. 요청의 쿠키에서 'accessToken'을 추출합니다.
+		String token = resolveTokenFromCookie(request);
 
-		// 2. 토큰이 존재하고 'Bearer '로 시작하는지 확인합니다.
-		if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
-			// 'Bearer ' 접두사를 제거하여 순수한 토큰 문자열만 추출합니다.
-			String token = bearerToken.substring(BEARER_PREFIX.length());
-
-			// 2-1. 토큰의 유효성을 검증합니다.
-			if (jwtProcessor.validateToken(token)) {
-				// 2-2. 토큰이 유효하면, Authentication 객체를 생성하여 SecurityContextHolder에 저장합니다.
-				// 이로써 해당 요청은 인증된 것으로 간주됩니다.
-				Authentication authentication = getAuthentication(token);
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-				log.debug("Authentication successful for user: {}", authentication.getName());
-			} else {
-				log.warn("Invalid JWT token received.");
-			}
+		// 2. 토큰이 존재하고 유효한지 확인합니다.
+		if (token != null && jwtProcessor.validateToken(token)) {
+			// 2-1. 토큰이 유효하면, Authentication 객체를 생성하여 SecurityContextHolder에 저장합니다.
+			// 이로써 해당 요청은 인증된 것으로 간주됩니다.
+			Authentication authentication = getAuthentication(token);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			log.debug("Authentication successful for user: {}", authentication.getName());
 		} else {
-			log.debug("Authorization header is missing or does not start with Bearer.");
+			log.debug("No valid JWT token found in cookie.");
 		}
 
 		// 3. 다음 필터로 요청과 응답을 전달합니다.
 		// 토큰이 없거나 유효하지 않더라도 필터 체인은 계속 진행되어야 합니다.
 		// 최종적인 접근 허용 여부는 SecurityConfig의 authorizeRequests 설정에 따라 결정됩니다.
 		filterChain.doFilter(request, response);
+	}
+
+	/**
+	 * HttpServletRequest의 쿠키에서 'accessToken'을 추출하는 새로운 메소드입니다.
+	 * @param request HttpServletRequest 객체
+	 * @return 추출된 accessToken 문자열 또는 null
+	 */
+	private String resolveTokenFromCookie(HttpServletRequest request) {
+		// 요청에 쿠키가 없으면 null을 반환합니다.
+		final Cookie[] cookies = request.getCookies();
+		if (cookies == null) {
+			return null;
+		}
+
+		// 쿠키 배열을 스트림으로 변환하여 'accessToken'이라는 이름의 쿠키를 찾습니다.
+		return Arrays.stream(cookies)
+			.filter(cookie -> "accessToken".equals(cookie.getName()))
+			.findFirst() // 첫 번째로 일치하는 쿠키를 찾습니다.
+			.map(Cookie::getValue) // 쿠키가 존재하면 그 값을 가져옵니다.
+			.orElse(null); // 존재하지 않으면 null을 반환합니다.
 	}
 }
