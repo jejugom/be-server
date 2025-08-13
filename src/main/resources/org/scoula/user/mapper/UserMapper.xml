@@ -87,6 +87,22 @@
     WHERE email = #{email}
   </update>
 
+  <update id="updateUserInfo" parameterType="org.scoula.user.domain.UserVo">
+    UPDATE user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone},
+      </if>
+      <if test="birth != null">
+        birth = #{birth},
+      </if>
+    </set>
+    WHERE email = #{email}
+  </update>
+
   <!--  포인트 증감 전용: 동시성 안전하게 누적 -->
   <update id="addPoint">
     UPDATE `user`
