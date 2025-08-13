@@ -9,7 +9,9 @@
             strategy_id,
             strategy_code,
             rule_category,
-            message
+            message,
+            base_weight,
+            priority_level
         FROM
             strategy
     </select>

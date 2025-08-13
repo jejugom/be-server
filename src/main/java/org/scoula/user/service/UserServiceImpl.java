@@ -95,29 +95,17 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
   @Transactional
   @Override
   public void updateUserInfo(String email, UserInfoUpdateRequestDto requestDto) {
-    // 1) 사용자 존재 확인
-    UserVo exists = Optional.ofNullable(userMapper.findByEmail(email))
+    // 1. 수정 요청을 한 사용자가 DB에 존재하는지 확인
+    UserVo user = Optional.ofNullable(userMapper.findByEmail(email))
         .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다: " + email));
 
-    // 2) 허용 필드만 세팅한 패치 객체 구성 (나머지는 null로 둬서 SET 제외)
-    UserVo patch = new UserVo();
-    patch.setEmail(email);                          // WHERE 절
-    patch.setUserName(requestDto.getUserName());    // null/""면 SET에서 빠짐
-    patch.setUserPhone(requestDto.getUserPhone());
-    patch.setBirth(requestDto.getBirth());          // "YYYY-MM-DD" 그대로
+    // 2. DTO의 데이터로 기존 UserVo 객체의 필드를 업데이트
+    user.setUserName(requestDto.getUserName());
+    user.setUserPhone(requestDto.getUserPhone());
+    user.setBirth(requestDto.getBirth());
 
-    // 3) 최소 1개 이상 변경값 검증 (빈 요청 방지)
-    boolean hasAny =
-        (patch.getUserName() != null && !patch.getUserName().isEmpty()) ||
-            (patch.getUserPhone() != null && !patch.getUserPhone().isEmpty()) ||
-            (patch.getBirth() != null);
-
-    if (!hasAny) {
-      throw new IllegalArgumentException("변경할 값이 없습니다.");
-    }
-
-    // 4) 공통 UPDATE 사용 (선택적 SET)
-    userMapper.update(patch);
+    // 3. Mapper를 호출하여 DB에 변경사항 저장
+    userMapper.updateUserInfo(user);
   }
 
   @Transactional

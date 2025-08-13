@@ -390,7 +390,7 @@ public class BookingServiceImpl implements BookingService {
 	 * @param prdtCode 상품 코드
 	 * @return DocInfoDto 객체 (필요 서류 포함)
 	 */
-	private DocInfoDto generateInitialDocInfo(String prdtCode) {
+	public DocInfoDto generateInitialDocInfo(String prdtCode) {
 		DocInfoDto docInfo = new DocInfoDto();
 		List<String> requiredDocs = new ArrayList<>();
 
@@ -410,6 +410,17 @@ public class BookingServiceImpl implements BookingService {
 			requiredDocs.add("건축물대장");
 		} else if (prdtCode.startsWith("DP")) {
 			requiredDocs.add("신분증");
+		} else if ("gift".equals(prdtCode)) {
+			// 증여 필요 서류
+			requiredDocs.add("실명확인증");
+			requiredDocs.add("가족관계증명서");
+			requiredDocs.add("인감증명서 및 인감도장");
+		} else if ("inheritance".equals(prdtCode)) {
+			// 상속 필요 서류
+			requiredDocs.add("실명확인증");
+			requiredDocs.add("피상속인의 가족관계증명서");
+			requiredDocs.add("피상속인의 기본증명서");
+			requiredDocs.add("인감증명서");
 		} else {
 			requiredDocs.add("신분증");
 			requiredDocs.add("상품가입 관련 추가서류 (필요시)");
