@@ -13,7 +13,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.client.RestTemplate;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -21,6 +23,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.log4j.Log4j2;
 
 @Configuration
+@EnableScheduling
 @PropertySource({"classpath:/application-dev.properties"})
 @MapperScan(basePackages = {
 	"org.scoula.user.mapper",
@@ -32,7 +35,8 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.auth.mapper",
 	"org.scoula.product.mapper",
 	"org.scoula.gift.mapper",
-	"org.scoula.news.mapper"
+	"org.scoula.news.mapper",
+	"org.scoula.statistics.mapper",
 })
 @ComponentScan(basePackages = {
 	"org.scoula.user.service",
@@ -51,7 +55,13 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.sms.service",
 	"org.scoula.View.preference.service",
 	"org.scoula.gift.service",
-	"org.scoula.news.service"
+	"org.scoula.news.service",
+	"org.scoula.gpt.service",
+	"org.scoula.statistics.service",
+	"org.scoula.statistics.scheduler",
+	"org.scoula.View.Event.Service",
+	"org.scoula.news.service",
+	"org.scoula.question.service"
 })
 @Log4j2
 @EnableTransactionManagement
@@ -99,6 +109,11 @@ public class RootConfig {
 	public DataSourceTransactionManager transactionManager() {
 		DataSourceTransactionManager manager = new DataSourceTransactionManager(dataSource());
 		return manager;
+	}
+
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 
 }

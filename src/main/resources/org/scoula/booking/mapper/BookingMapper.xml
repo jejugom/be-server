@@ -3,6 +3,7 @@
 <mapper namespace="org.scoula.booking.mapper.BookingMapper">
     <resultMap id="bookingMap" type="org.scoula.booking.domain.BookingVo">
         <result property="bookingId" column="booking_id"/>
+        <result property="bookingCode" column="booking_code"/>
         <result property="branchId" column="branch_id"/>
         <result property="email" column="email"/>
         <result property="finPrdtCode" column="fin_prdt_cd"/>
@@ -19,8 +20,6 @@
         ORDER BY `date` ASC, `time` ASC
     </select>
 
-
-    <!-- 2. ID로 예약을 조회하는 select 쿼리 추가 -->
     <select id="findById" resultMap="bookingMap">
         SELECT *
         FROM booking
@@ -29,8 +28,9 @@
 
     <select id="getBookingsByEmail" resultMap="bookingMap">
         SELECT booking_id,
+               booking_code,
                email,
-               fin_prdt_code, date, time, doc_info, branch_name
+               fin_prdt_cd, date, time, doc_info
         FROM
             booking
         WHERE
@@ -43,9 +43,15 @@
         WHERE booking_id = #{bookingId}
     </select>
 
+    <select id="findByBookingCode" resultMap="bookingMap">
+        SELECT *
+        FROM booking
+        WHERE booking_code = #{bookingCode}
+    </select>
+
     <insert id="insertBooking">
-        INSERT INTO booking (booking_id, branch_id, email, fin_prdt_cd, date, time, doc_info)
-        VALUES (#{bookingId}, #{branchId}, #{email}, #{finPrdtCode}, #{date}, #{time}, #{docInfo})
+        INSERT INTO booking (booking_id, booking_code, branch_id, email, fin_prdt_cd, date, time, doc_info)
+        VALUES (#{bookingId}, #{bookingCode}, #{branchId}, #{email}, #{finPrdtCode}, #{date}, #{time}, #{docInfo})
     </insert>
 
     <update id="updateBooking">
@@ -65,6 +71,11 @@
         DELETE
         FROM booking
         WHERE email = #{email}
+    </delete>
+
+    <delete id="deletePastBookingsByEmail">
+        DELETE FROM booking
+        WHERE email = #{email} AND date &lt; #{today}
     </delete>
 
     <select id="countByBranchDateTime" resultType="int">
@@ -94,5 +105,12 @@
           AND fin_prdt_cd = #{finPrdtCode}
         ORDER BY date DESC, time DESC
             LIMIT 1
+    </select>
+
+    <select id="countByBranchAndDate" resultType="int">
+        SELECT COUNT(*)
+        FROM booking
+        WHERE branch_id = #{branchId}
+          AND date = #{date}
     </select>
 </mapper>

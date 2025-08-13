@@ -1,18 +1,18 @@
 package org.scoula.retirement.controller;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.scoula.asset.dto.AssetStatusSummaryDto;
 import org.scoula.asset.service.AssetStatusService;
 import org.scoula.news.service.NewsService;
+import org.scoula.product.domain.ProductVo;
+import org.scoula.product.dto.FundDailyReturnDto;
+import org.scoula.product.dto.ProductDto;
 import org.scoula.product.mapper.ProductMapper;
-import org.scoula.product.service.FundProductService;
-import org.scoula.product.service.GoldProductService;
-import org.scoula.product.service.MortgageLoanService;
-import org.scoula.product.service.ProductsService;
-import org.scoula.product.service.SavingDepositsService;
-import org.scoula.product.service.TimeDepositsService;
+import org.scoula.product.service.ProductService;
 import org.scoula.recommend.service.CustomRecommendService;
 import org.scoula.retirement.dto.RetirementMainResponseDto;
 import org.scoula.user.dto.UserDto;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -38,15 +37,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/retirement")
 public class RetirementController {
 
-	private final UserService userServiceImpl;
+	private final UserService userService;
 	private final AssetStatusService assetStatusService;
-	private final ProductsService productsService;
+	private final ProductService productService;
 	private final CustomRecommendService customRecommendService;
-	private final TimeDepositsService timeDepositsService;
-	private final SavingDepositsService savingsService;
-	private final MortgageLoanService mortgageLoansService;
-	private final GoldProductService goldProductService;
-	private final FundProductService fundProductService;
 	private final ProductMapper productMapper;
 	private final NewsService newsService;
 
@@ -57,11 +51,11 @@ public class RetirementController {
 	})
 	@GetMapping("")
 	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(Authentication authentication) {
-		RetirementMainResponseDto response = new RetirementMainResponseDto();
+		// RetirementMainResponseDto response = new RetirementMainResponseDto();
 		String email = authentication.getName();
 
 		// 0. 사용자 정보 조회
-		UserDto userDto = userServiceImpl.getUser(email);
+		UserDto userDto = userService.getUser(email);
 
 		// 1. 자산 현황 데이터 조회
 		List<AssetStatusSummaryDto> assetList = assetStatusService.getAssetStatusSummaryByEmail(email);
@@ -71,17 +65,18 @@ public class RetirementController {
 			.userName(userDto.getUserName())
 			.assetStatus(assetList)
 			.build();
-
-		response.setUserInfo(userGraphDto);
+		// response.setUserInfo(userGraphDto);
 
 		// 2. 나머지 데이터 조회 및 설정
-		response.setCustomRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email));
-		response.setTimeDeposits(productsService.getAllTimeDeposits());
-		response.setSavingsDeposits(productsService.getAllSavingsDeposits());
-		response.setMortgageLoan(productsService.getAllMortgageLoans());
-		response.setGoldProducts(productsService.getAllGoldProducts());
-		response.setFundProducts(productsService.getAllFundProducts());
-		response.setNews(newsService.getAllNews());
+		Map<String, List<? extends ProductDto>> allProducts = productService.findAllProducts();
+
+		// 응답 DTO 생성
+		RetirementMainResponseDto response = RetirementMainResponseDto.builder()
+			.userInfo(userGraphDto)
+			.allProducts(allProducts)
+			.customRecommendPrdt(customRecommendService.getCustomRecommendsByEmail(email))
+			.news(newsService.getAllNews())
+			.build();
 
 		return ResponseEntity.ok(response);
 	}
@@ -93,29 +88,55 @@ public class RetirementController {
 		@ApiResponse(code = 400, message = "유효하지 않은 상품 카테고리")
 	})
 	@GetMapping("/{finPrdtCd}")
-	public ResponseEntity<?> getProductDetail(
-		@ApiParam(value = "조회할 금융 상품의 코드", required = true, example = "PRD001")
-		@PathVariable String finPrdtCd) {
+	public ResponseEntity<?> getProductDetail(@PathVariable String finPrdtCd,Authentication authentication) {
+		String email = authentication.getName();
+		ProductVo productVo = productService.getProductDetail(finPrdtCd);
+		Map<String, Object> response = new HashMap<>();
 
-		String category = productMapper.findCategoryByFinPrdtCd(finPrdtCd);
+		double userTendency = userService.getUser(email).getTendency();
+		double userAssetProportion = userService.getUser(email).getAssetProportion();
 
-		if (category == null) {
-			throw new NoSuchElementException("상품을 찾을 수 없습니다: " + finPrdtCd);
+		//추가 - 여기부터
+		// Double userTendencyObj = userService.getUser(email).getTendency();
+		// Double userAssetProportionObj = userService.getUser(email).getAssetProportion();
+		//
+		// double userTendency = (userTendencyObj != null) ? userTendencyObj : 0.0;
+		// double userAssetProportion = (userAssetProportionObj != null) ? userAssetProportionObj : 0.0;
+		// 여기까지
+
+		double productTendency = productVo.getTendency();
+		double productAssetProportion = productVo.getAssetProportion();
+
+		double rec = cosineSimilarity(userTendency,userAssetProportion,productTendency,productAssetProportion);
+
+		response.put("rec",rec);
+
+		response.put("product",productVo);
+		//펀드 상품일 경우 응답 형식에 3개월 수익률도 추가
+		if (finPrdtCd.matches("^[123].*")) { // startsWith 3번 대신 정규식
+			List<FundDailyReturnDto> fundDailyReturnDtos =
+				productService.getFundDailyReturnByCode(finPrdtCd)
+					.stream()
+					.map(FundDailyReturnDto::of) // 여기서 바로 변환
+					.collect(Collectors.toList());
+			response.put("fundReturn",fundDailyReturnDtos);
 		}
+		return ResponseEntity.ok(response);
+	}
 
-		switch (category) {
-			case "1": //예금
-				return ResponseEntity.ok(timeDepositsService.getDetail(finPrdtCd));
-			case "2": //적금
-				return ResponseEntity.ok(savingsService.getDetail(finPrdtCd));
-			case "3": //주택담보대출
-				return ResponseEntity.ok(mortgageLoansService.getDetail(finPrdtCd));
-			case "4": //금
-				return ResponseEntity.ok(goldProductService.getDetail(finPrdtCd));
-			case "5": //펀드
-				return ResponseEntity.ok(fundProductService.getDetail(finPrdtCd));
-			default:
-				throw new IllegalArgumentException("유효하지 않은 카테고리: " + category);
-		}
+	/**
+	 * 두 벡터(사용자, 상품) 간의 코사인 유사도를 계산합니다.
+	 * @param t1 사용자 성향
+	 * @param a1 사용자 자산 비율
+	 * @param t2 상품 성향
+	 * @param a2 상품 자산 비율
+	 * @return 0과 1 사이의 유사도 점수
+	 */
+	private double cosineSimilarity(double t1, double a1, double t2, double a2) {
+		double dotProduct = t1 * t2 + a1 * a2;
+		double normA = Math.sqrt(t1 * t1 + a1 * a1);
+		double normB = Math.sqrt(t2 * t2 + a2 * a2);
+		// 분모가 0이 되는 경우를 방지
+		return (normA == 0 || normB == 0) ? 0 : dotProduct / (normA * normB);
 	}
 }

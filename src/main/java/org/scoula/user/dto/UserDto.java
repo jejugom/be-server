@@ -30,9 +30,6 @@ public class UserDto {
 	@ApiModelProperty(value = "생년월일", example = "1990-01-01", required = true)
 	private Date birth;
 
-	@ApiModelProperty(value = "포인트", example = "1000")
-	private Integer point;
-
 	@ApiModelProperty(value = "연결된 금융기관 ID", example = "connect123")
 	private String connectedId;
 
@@ -41,6 +38,8 @@ public class UserDto {
 
 	@ApiModelProperty(value = "자산 총액", example = "100000000")
 	private Long asset;
+	@ApiModelProperty(value = "사용자 포인트", example = "100000000")
+	private int point;
 
 	@ApiModelProperty(value = "첫 번째 파일 이름", example = "profile1.png")
 	private String filename1;
@@ -54,6 +53,9 @@ public class UserDto {
 	@ApiModelProperty(value = "자산 구성 비율", example = "0.45")
 	private Double assetProportion;
 
+	@ApiModelProperty(value = "소득 구간", example = "5000만원~7000만원")
+	private String incomeRange;
+
 	/**
 	 * UserVo(도메인 객체)를 UserDto(데이터 전송 객체)로 변환합니다.
 	 * @param user UserVo 객체
@@ -65,7 +67,6 @@ public class UserDto {
 			.userName(user.getUserName())
 			.userPhone(user.getUserPhone())
 			.birth(user.getBirth())
-			.point(user.getPoint())
 			.connectedId(user.getConnectedId())
 			.branchId(user.getBranchId())
 			.asset(user.getAsset())
@@ -73,6 +74,8 @@ public class UserDto {
 			.filename2(user.getFilename2())
 			.tendency(user.getTendency())
 			.assetProportion(user.getAssetProportion())
+			.point(user.getPoint())
+			// .incomeRange(user.getIncomeRange())
 			.build();
 	}
 
@@ -86,7 +89,6 @@ public class UserDto {
 			.userName(userName)
 			.userPhone(userPhone)
 			.birth(birth)
-			.point(point)
 			.connectedId(connectedId)
 			.branchId(branchId)
 			.asset(asset)
@@ -94,6 +96,7 @@ public class UserDto {
 			.filename2(filename2)
 			.tendency(tendency)
 			.assetProportion(assetProportion)
+			// .incomeRange(incomeRange)
 			.build();
 	}
 }

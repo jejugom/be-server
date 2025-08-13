@@ -109,6 +109,9 @@ dependencies {
     // Jackson - Json 처리
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
 
+    // Commons FileUpload - MultipartFile 처리
+    implementation 'commons-fileupload:commons-fileupload:1.5'
+
     // 테스트
     testImplementation "org.springframework:spring-test:${springVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -124,8 +127,15 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
-//    jsoup
+    // jsoup
     implementation 'org.jsoup:jsoup:1.16.1'
+
+    // OpenAI API 클라이언트 라이브러리
+//    implementation 'com.theokanning.openai-gpt3-java:service:0.18.2'
+    implementation("com.openai:openai-java:3.0.1")
+
+    // ffmpeg
+    implementation 'net.bramp.ffmpeg:ffmpeg:0.7.0'
 }
 
 test {

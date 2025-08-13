@@ -4,7 +4,6 @@ import java.net.URI;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
-import org.scoula.booking.dto.BankBookingRequestDto;
 import org.scoula.booking.dto.BookingCheckResponseDto;
 import org.scoula.booking.dto.BookingCreateRequestDto;
 import org.scoula.booking.dto.BookingCreateResponseDto;
@@ -13,9 +12,6 @@ import org.scoula.booking.dto.BookingDto;
 import org.scoula.booking.dto.BookingPatchRequestDto;
 import org.scoula.booking.dto.ReservedSlotsResponseDto;
 import org.scoula.booking.service.BookingService;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.Api;
@@ -61,7 +56,7 @@ public class BookingController {
 		URI location = ServletUriComponentsBuilder
 			.fromCurrentRequest()
 			.path("/{id}")
-			.buildAndExpand(responseDto.getBookingId())
+			.buildAndExpand(responseDto.getBookingCode())
 			.toUri();
 
 		bookingService.sendBookingToBank(email, requestDto, responseDto);
@@ -83,12 +78,12 @@ public class BookingController {
 		@ApiResponse(code = 200, message = "조회 성공"),
 		@ApiResponse(code = 404, message = "존재하지 않는 예약")
 	})
-	@GetMapping("/detail/{bookingId}")
-	public ResponseEntity<BookingDetailResponseDto> getBookingById(
-		@ApiParam(value = "조회할 예약의 ID(ULID)", required = true, example = "01H8XJ6B4T1Z0V0E0M0R0P0W0")
-		@PathVariable String bookingId) {
-
-		BookingDetailResponseDto responseDto = bookingService.getBookingById(bookingId);
+	@GetMapping("/detail/{identifier}")
+	public ResponseEntity<BookingDetailResponseDto> getBookingDetail(
+		@ApiParam(value = "조회할 예약의 식별자 (ULID 또는 예약 코드)", required = true, example = "250810-B01-001")
+		@PathVariable String identifier, Authentication authentication) {
+		String email = authentication.getName();
+		BookingDetailResponseDto responseDto = bookingService.getBookingDetailByIdentifier(identifier, email);
 		return ResponseEntity.ok(responseDto);
 	}
 

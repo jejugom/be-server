@@ -1,5 +1,6 @@
 package org.scoula.booking.mapper;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -67,6 +68,13 @@ public interface BookingMapper {
 	BookingVo findById(String bookingId);
 
 	/**
+	 * 외부 공개용 예약 코드로 예약을 조회합니다.
+	 * @param bookingCode 조회할 예약 코드
+	 * @return BookingVo 객체
+	 */
+	BookingVo findByBookingCode(String bookingCode);
+
+	/**
 	 * 특정 지점의 현재 날짜와 시간 이후에 예약된 미래 예약 목록 조회
 	 * @param branchId 지점 번호
 	 * @param currentTime 현재 시간 (HH:mm 형식)
@@ -97,5 +105,14 @@ public interface BookingMapper {
 	 * @param bookingId 조회할 예약의 ULID
 	 * @return 상품명과 지점명이 포함된 예약 정보 객체
 	 */
-	// BookingVo findByIdWithDetails(String bookingId);
+
+	/**
+	 * 특정 날짜와 지점의 총 예약 건수를 조회합니다.
+	 * @param branchId 지점 ID
+	 * @param date 날짜
+	 * @return 예약 건수
+	 */
+	int countByBranchAndDate(@Param("branchId") int branchId, @Param("date") Date date);
+
+	void deletePastBookingsByEmail(@Param("email") String email, @Param("today") LocalDate today);
 }

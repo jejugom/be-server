@@ -25,6 +25,13 @@ public class GlobalExceptionHandler {
 			.body(new ErrorResponse("외부 서버 통신 장애", error.getResponseBodyAsString()));
 	}
 
+	@ExceptionHandler(UserAccessDeniedException.class)
+	public ResponseEntity<ErrorResponse> handleCustomAccessDenied(UserAccessDeniedException ex) {
+		log.warn("Access denied: {}", ex.getMessage());
+		ErrorResponse response = new ErrorResponse("FORBIDDEN", ex.getMessage());
+		return new ResponseEntity<>(response, HttpStatus.FORBIDDEN); // 403 Forbidden
+	}
+
 	/**
 	 * 유효하지 않은 예약 날짜 요청을 처리하는 핸들러
 	 */
@@ -135,6 +142,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleAssetNotFound(AssetNotFoundException ex) {
 		log.warn("Asset not found: {}", ex.getMessage());
 		ErrorResponse response = new ErrorResponse("ASSET_NOT_FOUND", ex.getMessage());
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 Not Found
+	}
+
+	@ExceptionHandler(BookingNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleBookingNotFound(BookingNotFoundException ex) {
+		log.warn("Booking not found: {}", ex.getMessage());
+		ErrorResponse response = new ErrorResponse("BOOKING_NOT_FOUND", ex.getMessage());
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 Not Found
 	}
 }
