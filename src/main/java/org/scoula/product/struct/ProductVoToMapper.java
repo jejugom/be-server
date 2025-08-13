@@ -144,7 +144,6 @@ public class ProductVoToMapper {
 			.joinDeny(vo.getJoinDeny())
 			.joinMember(vo.getJoinMember())
 			.etcNote(vo.getEtcNote())
-			.maxLimit(vo.getMaxLimit())
 			// .tendency(vo.getTendency())
 
 			// 옵션 리스트

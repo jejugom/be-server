@@ -96,6 +96,14 @@ public class RetirementController {
 		double userTendency = userService.getUser(email).getTendency();
 		double userAssetProportion = userService.getUser(email).getAssetProportion();
 
+		//추가 - 여기부터
+		// Double userTendencyObj = userService.getUser(email).getTendency();
+		// Double userAssetProportionObj = userService.getUser(email).getAssetProportion();
+		//
+		// double userTendency = (userTendencyObj != null) ? userTendencyObj : 0.0;
+		// double userAssetProportion = (userAssetProportionObj != null) ? userAssetProportionObj : 0.0;
+		// 여기까지
+
 		double productTendency = productVo.getTendency();
 		double productAssetProportion = productVo.getAssetProportion();
 

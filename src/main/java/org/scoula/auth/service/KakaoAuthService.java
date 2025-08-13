@@ -119,7 +119,7 @@ public class KakaoAuthService {
     // 4. 성향 미정의 여부 확인 (기존 회원인 경우에만)
     lastProcessedUserTendencyNotDefined = false;
     if (!lastProcessedUserIsNew) {
-      lastProcessedUserTendencyNotDefined = (user.getTendency() == 0.0);
+      lastProcessedUserTendencyNotDefined = (user.getTendency() == null);
     }
 
     Map<String, Object> claims = new HashMap<>();
