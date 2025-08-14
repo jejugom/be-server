@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.scoula.View.Event.Service.EventService;
+import org.scoula.View.Event.dto.QuizDto;
 import org.scoula.news.dto.NewsDto;
 import org.scoula.news.service.NewsService;
 import org.scoula.user.dto.UserDto;
@@ -47,5 +48,9 @@ public class EventPageController {
 		userDto.setPoint(plusedPoint);
 		userService.addPoint(authentication.getName(),plusedPoint);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	@GetMapping("/quiz")
+	public ResponseEntity<List<QuizDto>> getQuiz(){
+		return ResponseEntity.ok(eventService.getQuiz());
 	}
 }
