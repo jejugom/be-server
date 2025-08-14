@@ -14,6 +14,8 @@ ext {
     junitVersion = '5.9.1'
     springVersion = '5.3.37'
     lombokVersion = '1.18.30'
+    aspectjVersion = '1.9.20.1'    // AspectJ 최신 마이너 버전
+    log4j2Version = '2.24.1'       // Log4j2 최신 안정 버전 (보안 업데이트 포함)
     springSecurityVersion = '5.8.13'
 }
 
@@ -58,10 +60,16 @@ dependencies {
     implementation("org.springframework.security:spring-security-core:${springSecurityVersion}")
     implementation("org.springframework.security:spring-security-taglibs:${springSecurityVersion}")
 
+
+    // ===== 로깅 시스템 (Log4j2) - 최신 버전으로 업데이트 =====
+    // Log4j2 API - 로깅 인터페이스 (2.24.1 - 최신 안정 버전, 보안 개선 포함)
+    implementation "org.apache.logging.log4j:log4j-api:${log4j2Version}"
+    // Log4j2 Core - 로깅 구현체 (성능 및 보안 개선)
+    implementation "org.apache.logging.log4j:log4j-core:${log4j2Version}"
+    // SLF4J와 Log4j2 연결 - Spring에서 사용하는 SLF4J를 Log4j2로 연결
+    implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4j2Version}"
     // 로깅
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
-    implementation 'org.apache.logging.log4j:log4j-api:2.0.1'
-    implementation 'org.apache.logging.log4j:log4j-core:2.0.1'
 
     //데이터베이스
     implementation 'com.zaxxer:HikariCP:2.7.4'
@@ -83,9 +91,10 @@ dependencies {
     implementation "org.springframework:spring-webmvc:${springVersion}"
     implementation 'javax.inject:javax.inject:1'
 
-    // AOP
-    implementation 'org.aspectj:aspectjrt:1.9.20'
-    implementation 'org.aspectj:aspectjweaver:1.9.20'
+    // AspectJ 런타임 - AOP 기능 실행을 위한 라이브러리 (최신 마이너 버전)
+    implementation "org.aspectj:aspectjrt:${aspectjVersion}"
+    // AspectJ 위버 - 컴파일/로드 타임에 AOP 적용 (최신 마이너 버전)
+    implementation "org.aspectj:aspectjweaver:${aspectjVersion}"
 
     // JSP, SERVLET, JSTL
     implementation('javax.servlet:javax.servlet-api:4.0.1')
@@ -93,11 +102,6 @@ dependencies {
     // compileOnly 'javax.servlet.jsp:jsp-api:2.1'
     compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
     implementation 'javax.servlet:jstl:1.2'
-
-    // Log4j2 Logging
-    implementation 'org.apache.logging.log4j:log4j-api:2.18.0'
-    implementation 'org.apache.logging.log4j:log4j-core:2.18.0'
-    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.18.0'
 
     // xml내 한글 처리
     implementation 'xerces:xercesImpl:2.12.2'
