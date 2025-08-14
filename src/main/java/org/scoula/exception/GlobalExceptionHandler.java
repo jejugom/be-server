@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -48,6 +49,11 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleProductNotFound(ProductNotFoundException ex) {
 		ErrorResponse error = new ErrorResponse("NOT_FOUND", ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(NoHandlerFoundException.class)
+	public ResponseEntity<Void> handleNoHandlerFound(NoHandlerFoundException ex) {
+		return ResponseEntity.notFound().build();
 	}
 
 	/**

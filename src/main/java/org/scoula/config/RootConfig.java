@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -62,8 +63,10 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.statistics.scheduler",
 	"org.scoula.View.Event.Service",
 	"org.scoula.news.service",
-	"org.scoula.question.service"
+	"org.scoula.question.service",
+	"org.scoula.common.aop"
 })
+@EnableAspectJAutoProxy
 @Log4j2
 @EnableTransactionManagement
 /***
