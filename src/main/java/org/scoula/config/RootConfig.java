@@ -60,6 +60,7 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.gpt.service",
 	"org.scoula.statistics.service",
 	"org.scoula.statistics.scheduler",
+	"org.scoula.news.scheduler",
 	"org.scoula.View.Event.Service",
 	"org.scoula.news.service",
 	"org.scoula.question.service"
