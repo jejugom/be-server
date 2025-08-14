@@ -37,16 +37,11 @@ public class BookingStatsScheduler {
 			.atEndOfMonth()
 			.atTime(23, 59, 59);
 
-		log.info("전월 예약 집계 기간: {} ~ {}", startOfLastMonth, endOfLastMonth);
-
 		List<BookingStatsDto> stats = bookingStatsService.getBookingStatsBetween(startOfLastMonth, endOfLastMonth);
 
 		if (!stats.isEmpty()) {
 			bankServerApiClient.sendBookingStats(stats);
 			historyService.insertSentAt("BOOKING", LocalDateTime.now());
-			log.info("예약 집계 데이터 {}건 전송 완료", stats.size());
-		} else {
-			log.info("전송할 예약 집계 데이터 없음");
 		}
 	}
 }

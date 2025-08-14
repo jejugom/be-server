@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.mapstruct.Mapper;
 
+/**
+ * 집계 데이터 은행서버 전달 시, 남는 히스토리 mapper
+ */
 @Mapper
 public interface StatsSendHistoryMapper {
 

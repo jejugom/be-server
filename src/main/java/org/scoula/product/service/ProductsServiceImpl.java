@@ -32,7 +32,7 @@ public class ProductsServiceImpl implements ProductService {
 	private final FundDailyReturnMapper fundDailyReturnMapper;
 
 	/**
-	 * 전체 상품 목록으로 조회
+	 * 전체 금융상품 목록 조회
 	 * @return
 	 */
 	public Map<String, List<? extends ProductDto>> findAllProducts() {
@@ -45,7 +45,7 @@ public class ProductsServiceImpl implements ProductService {
 		List<ProductDto<Void>> goldList = new ArrayList<>();
 		List<ProductDto<Void>> trustList = new ArrayList<>();
 
-		//VO -> DTO
+		// VO -> DTO
 		for (ProductVo p : list) {
 			if (p instanceof DepositVo) {
 				// 예금 상품 처리 VO -> DTO
@@ -55,7 +55,7 @@ public class ProductsServiceImpl implements ProductService {
 			} else if (p instanceof MortgageVo) {
 				mortgageList.add(ProductVoToMapper.toMortgageSimpleDto((MortgageVo)p));
 			} else if (p instanceof FundVo) {
-				//                // 펀드 상품 처리 VO -> DTO
+				// 펀드 상품 처리 VO -> DTO
 				fundList.add(ProductVoToMapper.toFundSimpleDto((FundVo) p));
 			} else if (p instanceof GoldVo) {
 				goldList.add(ProductVoToMapper.toGoldSimpleDto((GoldVo) p));
@@ -75,7 +75,7 @@ public class ProductsServiceImpl implements ProductService {
 	}
 
 	/**
-	 * 상품 코드로 상세정보 가져오기
+	 * 상품 코드로 상세정보 조회하기
 	 * @param finPrdtCd
 	 * @return
 	 */
@@ -84,7 +84,6 @@ public class ProductsServiceImpl implements ProductService {
 		ProductVo product = productMapper.findProductDetail(finPrdtCd);
 		result.put("product",product);
 
-
 		if (product == null) {
 			throw new NoSuchElementException("해당 상품을 찾을 수 없습니다: " + finPrdtCd);
 		}
@@ -92,8 +91,8 @@ public class ProductsServiceImpl implements ProductService {
 	}
 
 	@Override
-	public String getProductNameByCode(String finPrdtCode) {
-		return productMapper.findProductDetail(finPrdtCode).getFinPrdtNm();
+	public String getProductNameByCode(String finPrdtCd) {
+		return productMapper.findProductDetail(finPrdtCd).getFinPrdtNm();
 	}
 
 	@Override

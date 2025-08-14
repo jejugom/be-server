@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Deposit(예금)과 Saving(적금)에 동일하게 요구되는 필드를 모아둔 DTO
+ */
 @SuperBuilder
 @ToString(callSuper = true)
 @Getter

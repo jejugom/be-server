@@ -7,7 +7,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 /**
- * 최상위 부모(상품 리스트 조회시 전달하는 필드와 동일)
+ * 최상위 부모 DTO 클래스(상품 목록 조회시 전달하는 필드와 동일)
  * @param <T>
  */
 @SuperBuilder
