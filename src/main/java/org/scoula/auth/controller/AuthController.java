@@ -1,6 +1,8 @@
 package org.scoula.auth.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.scoula.auth.dto.KakaoLoginRequestDto;
@@ -9,6 +11,7 @@ import org.scoula.auth.dto.RefreshTokenRequestDto;
 import org.scoula.auth.dto.TokenRefreshResponseDto;
 import org.scoula.auth.service.KakaoAuthService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -79,39 +82,56 @@ public class AuthController {
 		@RequestParam("code") String code) {
 
 		try {
-			// 1. 카카오 로그인 처리 - 토큰 생성, 사용자 정보 저장 및 신규/성향 여부 판단 (인가코드 한번만 사용)
+			// 1. 카카오 로그인 처리 -> 서비스 전용 Access/Refresh 토큰 생성
 			KakaoLoginResponseDto loginResponse = kakaoAuthService.processKakaoLogin(code);
 
-			// 2. processKakaoLogin에서 처리된 신규 회원 여부 및 성향 미정의 여부 가져오기
+			// 2. 신규 회원 여부 및 성향 미정의 여부 가져오기
 			boolean isNew = kakaoAuthService.getLastProcessedUserIsNew();
 			boolean isTendencyNotDefined = kakaoAuthService.getLastProcessedUserTendencyNotDefined();
 
-			// 3. 프론트엔드로 리다이렉트 (토큰, 신규 회원 여부, 성향 미입력 여부를 URL 파라미터로 전달)
-			// !!! 고도화 기간에 보안상의 이유로 httpOnly 쿠키로 변경 예정
-			String redirectUrl = String.format("%s/auth/success?token=%s&refreshToken=%s&isNew=%s&isTendencyNotDefined=%s",
-				frontendUrl,
+			// 3. Access Token을 위한 HttpOnly 쿠키 생성 🍪
+			// Access Token은 수명이 짧으므로 Max-Age를 짧게 설정합니다 (예: 30분)
+			long accessTokenValidityInSeconds = 30 * 60;
+			String accessTokenCookie = String.format(
+				"accessToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Lax",
 				loginResponse.getAccessToken(),
+				accessTokenValidityInSeconds
+			);
+
+			// 4. Refresh Token을 위한 HttpOnly 쿠키 생성 🍪
+			// Refresh Token은 수명이 길게 설정됩니다 (예: 14일)
+			long refreshTokenValidityInSeconds = 14 * 24 * 60 * 60;
+			String refreshTokenCookie = String.format(
+				"refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Lax",
 				loginResponse.getRefreshToken(),
+				refreshTokenValidityInSeconds
+			);
+
+			// 5. 프론트엔드로 리다이렉트할 URL 생성 (토큰 정보는 모두 제거)
+			String redirectUrl = String.format("%s/auth/success?isNew=%s&isTendencyNotDefined=%s",
+				frontendUrl,
 				isNew,
 				isTendencyNotDefined);
 
-			// 4. HTTP 302 Found 상태로 리다이렉트 응답
-			return ResponseEntity.status(HttpStatus.FOUND)
-				.header("Location", redirectUrl)
-				.build();
+			// 6. HTTP 302 응답 생성: Location 헤더와 2개의 Set-Cookie 헤더 추가
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Location", redirectUrl);
+			headers.add("Set-Cookie", accessTokenCookie);
+			headers.add("Set-Cookie", refreshTokenCookie); // 동일한 이름의 헤더를 여러 개 추가
+
+			return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
 		} catch (Exception e) {
 			log.error("카카오 로그인 처리 중 오류 발생", e);
 
-			// 5. 오류 발생 시 에러 페이지로 리다이렉트
+			// 7. 오류 발생 시 에러 페이지로 리다이렉트
 			try {
 				String errorRedirectUrl =
-					frontendUrl + "/auth/error?message=" + java.net.URLEncoder.encode("로그인 처리 중 오류가 발생했습니다.", "UTF-8");
+					frontendUrl + "/auth/error?message=" + URLEncoder.encode("로그인 처리 중 오류가 발생했습니다.", "UTF-8");
 				return ResponseEntity.status(HttpStatus.FOUND)
 					.header("Location", errorRedirectUrl)
 					.build();
 			} catch (UnsupportedEncodingException ue) {
-				// URL 인코딩 실패 시 메시지 없이 에러 페이지로 리다이렉트
 				return ResponseEntity.status(HttpStatus.FOUND)
 					.header("Location", frontendUrl + "/auth/error")
 					.build();
@@ -190,9 +210,46 @@ public class AuthController {
 	})
 	@PostMapping("/logout")
 	public ResponseEntity<Void> logout(Authentication authentication) {
-		// JWT에서 추출된 사용자 이메일로 Refresh Token 삭제
+		// 1. DB에서 Refresh Token 삭제 (기존 로직)
 		String email = authentication.getName();
 		kakaoAuthService.logout(email);
-		return ResponseEntity.noContent().build();
+
+		// 2. 브라우저의 쿠키를 삭제하라는 응답 헤더 생성
+		HttpHeaders headers = new HttpHeaders();
+		// accessToken 쿠키를 즉시 만료시킴
+		headers.add("Set-Cookie", "accessToken=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax");
+		// refreshToken 쿠키를 즉시 만료시킴
+		headers.add("Set-Cookie", "refreshToken=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax");
+
+		// 3. 본문 없이 헤더만 담아 204 No Content 응답 전송
+		return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
+	}
+
+	@ApiOperation(value = "사용자 프로필 조회", notes = "현재 로그인된 사용자의 이메일과 이름을 반환합니다.")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "프로필 조회 성공"),
+		@ApiResponse(code = 401, message = "인증되지 않은 사용자")
+	})
+	@GetMapping("/profile")
+	public ResponseEntity<Map<String, String>> getProfile(Authentication authentication) {
+		// 1. SecurityContext에서 인증된 사용자의 이메일 추출
+		String email = authentication.getName();
+
+		log.info("====================== 프로필 ===========================");
+		log.info("email = " + email);
+		log.info("====================== 프로필 ===========================");
+		// 2. 이메일을 기반으로 사용자 정보 조회
+		//    (실제로는 DB에서 사용자 이름을 조회해야 합니다. KakaoAuthService에 해당 로직이 있다고 가정)
+		String displayName = kakaoAuthService.getDisplayNameByEmail(email);
+
+		// 3. 프론트엔드가 필요한 JSON 형식으로 응답 생성
+		Map<String, String> profile = new HashMap<>();
+		profile.put("email", email);
+		profile.put("displayName", displayName);
+
+		return ResponseEntity.ok(profile);
 	}
 }
+
+
+
