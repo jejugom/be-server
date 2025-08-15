@@ -43,7 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(HttpSecurity http) throws Exception {
     // 필터 순서 설정: 인코딩 필터 -> JWT 인증 필터 -> Spring Security 기본 필터
-    http.addFilterBefore(encodingFilter(), UsernamePasswordAuthenticationFilter.class)
+    http.cors() // CORS 필터 추가
+        .and()
+        .addFilterBefore(encodingFilter(), UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     // stateless REST API 설정을 위해 기본 보안 기능 비활성화
@@ -67,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/",
             "/favicon.ico",
             "/api/home",
+            "/api/home/test",
             "/auth/kakao",
             "/auth/kakao/callback",
             "/api/retirement",
