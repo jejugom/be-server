@@ -5,7 +5,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 /**
- * 중간 부모 클래스(상품 상세조회 시 사용)
+ * 중간 부모 클래스(상품 상세조회 시 사용되는 DTO)
  * @param <T>
  */
 @SuperBuilder

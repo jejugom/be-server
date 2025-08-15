@@ -37,6 +37,7 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.gift.mapper",
 	"org.scoula.news.mapper",
 	"org.scoula.statistics.mapper",
+	"org.scoula.View.Event.mapper"
 })
 @ComponentScan(basePackages = {
 	"org.scoula.user.service",
@@ -59,6 +60,7 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.gpt.service",
 	"org.scoula.statistics.service",
 	"org.scoula.statistics.scheduler",
+	"org.scoula.news.scheduler",
 	"org.scoula.View.Event.Service",
 	"org.scoula.news.service",
 	"org.scoula.question.service"

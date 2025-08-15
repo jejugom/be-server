@@ -12,7 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 상품들의 부모 클래스입니다.
+ * 금융상품들의 부모 클래스입니다.
  * @param <T>
  */
 @Getter

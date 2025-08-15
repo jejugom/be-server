@@ -51,7 +51,6 @@ public class RetirementController {
 	})
 	@GetMapping("")
 	public ResponseEntity<RetirementMainResponseDto> getRetirementMainData(Authentication authentication) {
-		// RetirementMainResponseDto response = new RetirementMainResponseDto();
 		String email = authentication.getName();
 
 		// 0. 사용자 정보 조회
@@ -65,7 +64,6 @@ public class RetirementController {
 			.userName(userDto.getUserName())
 			.assetStatus(assetList)
 			.build();
-		// response.setUserInfo(userGraphDto);
 
 		// 2. 나머지 데이터 조회 및 설정
 		Map<String, List<? extends ProductDto>> allProducts = productService.findAllProducts();
@@ -90,19 +88,12 @@ public class RetirementController {
 	@GetMapping("/{finPrdtCd}")
 	public ResponseEntity<?> getProductDetail(@PathVariable String finPrdtCd,Authentication authentication) {
 		String email = authentication.getName();
+
 		ProductVo productVo = productService.getProductDetail(finPrdtCd);
 		Map<String, Object> response = new HashMap<>();
 
 		double userTendency = userService.getUser(email).getTendency();
 		double userAssetProportion = userService.getUser(email).getAssetProportion();
-
-		//추가 - 여기부터
-		// Double userTendencyObj = userService.getUser(email).getTendency();
-		// Double userAssetProportionObj = userService.getUser(email).getAssetProportion();
-		//
-		// double userTendency = (userTendencyObj != null) ? userTendencyObj : 0.0;
-		// double userAssetProportion = (userAssetProportionObj != null) ? userAssetProportionObj : 0.0;
-		// 여기까지
 
 		double productTendency = productVo.getTendency();
 		double productAssetProportion = productVo.getAssetProportion();

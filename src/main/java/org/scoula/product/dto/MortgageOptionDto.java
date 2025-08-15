@@ -3,6 +3,9 @@ package org.scoula.product.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Mortgage(주택담보대출) 옵션 ㄴDTO
+ */
 @Builder
 @Getter
 public class MortgageOptionDto {

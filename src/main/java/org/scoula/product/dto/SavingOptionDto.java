@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Saving(적금) 옵션 DTO
+ */
 @SuperBuilder
 @Getter
 public class SavingOptionDto extends DepositSavingOptionDto {

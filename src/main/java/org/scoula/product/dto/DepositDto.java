@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Deposit(예금) DTO
+ */
 @SuperBuilder
 @ToString(callSuper = true)
 @Getter

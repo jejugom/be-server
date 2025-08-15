@@ -11,6 +11,9 @@ import org.springframework.web.client.RestTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+/**
+ * 은행서버와의 통신을 위한 service
+ */
 @Log4j2
 @Component
 @RequiredArgsConstructor
@@ -20,6 +23,10 @@ public class BankServerApiClient {
 
 	private final String bankApiUrl = "http://localhost:8000/api";
 
+	/**
+	 * `/click-stats` - 상품 예약하기를 클릭했을 시 발생
+	 * @param stats
+	 */
 	public void sendClickStats(List<ProductClickStatsDto> stats) {
 		restTemplate.postForEntity(bankApiUrl + "/click-stats", stats, Void.class);
 	}
@@ -29,11 +36,7 @@ public class BankServerApiClient {
 	 * @param stats 예약 통계 리스트
 	 */
 	public void sendBookingStats(List<BookingStatsDto> stats) {
-		log.info("Sending booking stats: {}", stats);
 		ResponseEntity<Void> response =
 			restTemplate.postForEntity(bankApiUrl + "/booking-stats", stats, Void.class);
-		log.info("Response from bank server: status={}, headers={}",
-			response.getStatusCode(), response.getHeaders());
 	}
-
 }
