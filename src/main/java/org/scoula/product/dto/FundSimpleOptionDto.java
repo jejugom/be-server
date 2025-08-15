@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Fund(펀드) 간단 옵션 DTO
+ * 펀드 상품 전체 목록 조회 시 필요한 필드만 사용하기 위함
+ */
 @SuperBuilder
 @ToString(callSuper = true)
 @Getter

@@ -27,7 +27,7 @@ import org.scoula.product.dto.TrustDto;
 public class ProductVoToMapper {
 
 	/**
-	 * 예금 VO를 DTO로 변환, 상품 목록 조회용
+	 * 예금 VO를 DTO로 변환하는 메서드, 상품 목록 조회용
 	 * @param vo
 	 * @return
 	 */
@@ -49,7 +49,7 @@ public class ProductVoToMapper {
 	}
 
 	/**
-	 * 예금 VO를 DTO로 변환, 상세보기용
+	 * 예금 VO를 DTO로 변환, 상품 상세보기용
 	 * @param vo
 	 * @return
 	 */
@@ -67,6 +67,7 @@ public class ProductVoToMapper {
 			.finPrdtCd(vo.getFinPrdtCd())
 			.finPrdtNm(vo.getFinPrdtNm())
 			.prdtFeature(vo.getPrdtFeature())
+
 			// 공통 정보 -중간부모
 			.korCoNm(vo.getKorCoNm())
 			.finPrdtCategory(vo.getFinPrdtCategory())
@@ -80,7 +81,6 @@ public class ProductVoToMapper {
 			.joinDeny(vo.getJoinDeny())
 			.joinMember(vo.getJoinMember())
 			.etcNote(vo.getEtcNote())
-			// .tendency(vo.getTendency())
 
 			// 옵션 리스트
 			.optionList(depositDtoList)
@@ -130,7 +130,7 @@ public class ProductVoToMapper {
 			.finPrdtCd(vo.getFinPrdtCd())
 			.finPrdtNm(vo.getFinPrdtNm())
 			.prdtFeature(vo.getPrdtFeature())
-			
+
 			// 공통 정보 -중간부모
 			.korCoNm(vo.getKorCoNm())
 			.finPrdtCategory(vo.getFinPrdtCategory())
@@ -159,7 +159,7 @@ public class ProductVoToMapper {
 	public static ProductDto<MortgageOptionDto> toMortgageSimpleDto(MortgageVo vo) {
 		List<MortgageOptionDto> optionList = vo.getOptionList().stream()
 			.map(option -> MortgageOptionDto.builder()
-				. mrtgTypeNm(option.getMrtgTypeNm())
+				.mrtgTypeNm(option.getMrtgTypeNm())
 				.rpayTypeNm(option.getRpayTypeNm())
 				.lendRateTypeNm(option.getLendRateTypeNm())
 				.lendRateMin(option.getLendRateMin())
@@ -261,15 +261,13 @@ public class ProductVoToMapper {
 			.finPrdtCd(vo.getFinPrdtCd())
 			.finPrdtNm(vo.getFinPrdtNm())
 			.prdtFeature(vo.getPrdtFeature())
+
 			// 공통 정보 -중간부모
 			.korCoNm(vo.getKorCoNm())
 			.finPrdtCategory(vo.getFinPrdtCategory())
 			.description(vo.getDescription())
 			.joinWay(vo.getJoinWay())
 			.recReason(vo.getRecReason())
-
-			// 펀드 전용 정보
-			// .tendency(vo.getTendency())
 
 			// 옵션 리스트
 			.optionList(fundDtoList)
@@ -363,5 +361,4 @@ public class ProductVoToMapper {
 
 			.build();
 	}
-	
 }

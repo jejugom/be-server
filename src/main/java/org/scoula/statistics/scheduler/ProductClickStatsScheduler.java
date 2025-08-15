@@ -25,6 +25,9 @@ public class ProductClickStatsScheduler {
 	private final StatsSendHistoryService sendHistoryService;
 	private final ProductClickStatsService clickStatsService;
 
+	/**
+	 * 매주 월요일 자정, 스케줄러 실행
+	 */
 	@Transactional
 	@Scheduled(cron = "0 0 0 * * 1") // 월요일 자정
 	public void sendClickStats() {
@@ -38,17 +41,16 @@ public class ProductClickStatsScheduler {
 		if (!stats.isEmpty()) {
 			bankServerApiClient.sendClickStats(stats);
 			sendHistoryService.insertSentAt("CLICK", LocalDateTime.now());
-			log.info("클릭 집계 데이터 {}건 전송 완료", stats.size());
-		} else {
-			log.info("클릭 집계 데이터 없음");
 		}
 	}
 
+	/**
+	 * 매월 1일 자정, 스케줄러 실행
+	 */
 	@Transactional
 	@Scheduled(cron = "0 0 0 1 * *") // 매월 1일 자정 실행
 	public void deleteOldLogs() {
 		LocalDateTime threshold = LocalDateTime.now().minusMonths(1);
 		logMapper.deleteClickLogsBefore(threshold);
 	}
-
 }

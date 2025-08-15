@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Mortgage(주택담보대출) DTO
+ */
 @SuperBuilder
 @ToString(callSuper = true)
 @Getter

@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Trust(신탁) DTO
+ */
 @SuperBuilder
 @ToString(callSuper = true)
 @Getter

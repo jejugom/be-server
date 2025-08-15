@@ -10,6 +10,9 @@ import org.apache.ibatis.annotations.Param;
 import org.scoula.statistics.domain.ProductClickLogVo;
 import org.scoula.statistics.dto.ProductClickStatsDto;
 
+/**
+ * 상품 예약하기 클릭 데이터 저장 Mapper
+ */
 @Mapper
 public interface ProductClickLogMapper {
 

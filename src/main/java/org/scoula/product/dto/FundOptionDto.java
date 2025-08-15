@@ -3,6 +3,9 @@ package org.scoula.product.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * Fund(펀드) 옵션 DTO
+ */
 @Builder
 @Getter
 public class FundOptionDto {
