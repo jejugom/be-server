@@ -5,10 +5,7 @@ import javax.servlet.ServletRegistration;
 
 import org.scoula.security.config.SecurityConfig;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -43,29 +40,13 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 
 	@Override
 	protected Filter[] getServletFilters() {
-		// 1. 기존 문자 인코딩 필터
+		// 1. 기존 문자 인코딩 필터만 남깁니다.
 		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
 		encodingFilter.setEncoding("UTF-8");
 		encodingFilter.setForceEncoding(true);
 
-		// 2. ⭐ CORS 설정을 위한 필터 추가 ⭐
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		CorsConfiguration config = new CorsConfiguration();
+		// ❌ CORS 관련 코드는 모두 삭제합니다.
 
-		// 자격 증명(쿠키 등)을 허용
-		config.setAllowCredentials(true);
-		// 프론트엔드 서버 주소 허용
-		config.addAllowedOrigin("http://localhost:5173");
-		// 모든 헤더 허용
-		config.addAllowedHeader("*");
-		// 모든 HTTP 메서드 허용
-		config.addAllowedMethod("*");
-
-		// 모든 경로에 대해 위 CORS 설정을 적용
-		source.registerCorsConfiguration("/**", config);
-		CorsFilter corsFilter = new CorsFilter(source);
-
-		// 인코딩 필터와 CORS 필터를 함께 반환
-		return new Filter[] {encodingFilter, corsFilter};
+		return new Filter[] {encodingFilter};
 	}
 }
