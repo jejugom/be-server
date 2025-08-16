@@ -56,19 +56,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http
 			.authorizeRequests()
-			// ... 기존 antMatchers 설정은 동일 ...
+			// --- 1. 인증 없이 항상 접근 가능한 경로 ---
 			.antMatchers(
-				"/assets/**", "/swagger-ui.html", "/webjars/**",
-				"/swagger-resources/**", "/v2/api-docs"
+				// 기본 경로
+				"/",
+				"/favicon.ico",
+
+				// Swagger UI 관련 경로
+				"/swagger-ui.html",
+				"/swagger-resources/**",
+				"/v2/api-docs",
+				"/webjars/**",
+
+				// 인증 관련 전체 경로 (카카오 로그인, 토큰 재발급 등)
+				"/auth/**",
+
+				// 회원가입 경로
+				"/api/user/join",
+
+				// 비로그인 사용자도 볼 수 있는 컨텐츠 API
+				"/api/home",
+				"/api/news/**"
 			).permitAll()
-			.antMatchers(HttpMethod.GET,
-				"/", "/favicon.ico", "/api/home", "/auth/kakao",
-				"/auth/kakao/callback", "/api/retirement", "/api/news"
-			).permitAll()
-			.antMatchers(HttpMethod.POST,
-				"/api/user/join", "/auth/kakao", "/auth/refresh", "/api/news/crawl"
-			).permitAll()
+
+			// --- 2. CORS Pre-flight 요청은 항상 허용 ---
 			.antMatchers(HttpMethod.OPTIONS).permitAll()
+
+			// --- 3. 위에서 정의한 경로 외 모든 요청은 반드시 인증 필요 ---
 			.anyRequest().authenticated();
 	}
 

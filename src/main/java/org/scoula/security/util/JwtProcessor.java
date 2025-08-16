@@ -19,9 +19,9 @@ import io.jsonwebtoken.security.Keys;
 public class JwtProcessor {
 
 	// 액세스 토큰 유효 기간: 1시간
-	private static final long ACCESS_TOKEN_VALID_MILISECOND = 1000L * 60 * 60;
+	private static final long ACCESS_TOKEN_VALID_MILLISECOND = 1000L * 60 * 60;
 	// 리프레시 토큰 유효 기간: 2주
-	private static final long REFRESH_TOKEN_VALID_MILISECOND = 1000L * 60 * 60 * 24 * 14;
+	private static final long REFRESH_TOKEN_VALID_MILLISECOND = 1000L * 60 * 60 * 24 * 14;
 
 	// JWT 서명에 사용할 비밀키
 	private final String secretKey = "비밀키는 충반한 길이의 문자열이어야 한다";
@@ -37,7 +37,7 @@ public class JwtProcessor {
 		return Jwts.builder()
 			.setSubject(subject)
 			.setIssuedAt(new Date())
-			.setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_VALID_MILISECOND)) // 1시간
+			.setExpiration(new Date(new Date().getTime() + ACCESS_TOKEN_VALID_MILLISECOND)) // 1시간
 			.signWith(key)
 			.compact();
 	}
@@ -52,7 +52,7 @@ public class JwtProcessor {
 		return Jwts.builder()
 			.setSubject(subject)
 			.setIssuedAt(new Date())
-			.setExpiration(new Date(new Date().getTime() + REFRESH_TOKEN_VALID_MILISECOND)) // 2주
+			.setExpiration(new Date(new Date().getTime() + REFRESH_TOKEN_VALID_MILLISECOND)) // 2주
 			.signWith(key)
 			.compact();
 	}
@@ -79,7 +79,7 @@ public class JwtProcessor {
 			.setSubject(subject)
 			.addClaims(claims) // name, email 등 커스텀 클레임 주입
 			.setIssuedAt(new Date())
-			.setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALID_MILISECOND))
+			.setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALID_MILLISECOND))
 			.signWith(key)
 			.compact();
 	}

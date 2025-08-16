@@ -138,7 +138,7 @@ public class AuthController {
 
 		ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", responseDto.getAccessToken())
 			.path("/")
-			.maxAge(10) // 1시간 (초 단위)
+			.maxAge(60 * 60) // 1시간 (초 단위)
 			.httpOnly(true)
 			.secure(true)
 			.sameSite("Lax")
@@ -197,6 +197,13 @@ public class AuthController {
 	})
 	@GetMapping("/profile")
 	public ResponseEntity<Map<String, String>> getProfile(Authentication authentication) {
+		// ✅ 1. 인증 객체가 null인지 먼저 확인합니다.
+		if (authentication == null || !authentication.isAuthenticated()) {
+			// 인증 정보가 없으면, 명시적으로 401 에러를 반환합니다.
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+
+		// ✅ 2. 이제 authentication 객체가 null이 아님이 보장됩니다.
 		String email = authentication.getName();
 		log.info("====================== 프로필 ===========================");
 		log.info("email = " + email);
