@@ -9,11 +9,16 @@
         <Routing name="DomainRouting">
             <Routes pattern="${ctx:domain}">
                 <Route>
-                    <RollingFile name="DomainFile" fileName="logs/domain/${ctx:domain}.csv"
-                                 filePattern="logs/domain/archive/${ctx:domain}-%d{yyyy-MM-dd}-%i.csv.gz">
-                        <PatternLayout charset="UTF-8"
-                                       pattern="%d{yyyy-MM-dd HH:mm:ss},%-5level,%c{1},&quot;%m&quot;,&quot;%ex{full}&quot;%n"
-                                       header="Time,Level,Logger,Message,Exception\n"/>
+                    <RollingFile name="DomainFile"
+                                 fileName="logs/domain/${ctx:domain:-unknown}/${ctx:domain:-unknown}.json"
+                                 filePattern="logs/domain/${ctx:domain:-unknown}/archive/${ctx:domain:-unknown}-%d{yyyy-MM-dd}-%i.json.gz">
+                        <JsonLayout
+                                complete="true"
+                                compact="false"
+                                eventEol="true"
+                                header="true"
+                                properties="true"
+                                includeStacktrace="true"/>
                         <Policies>
                             <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
                             <SizeBasedTriggeringPolicy size="10MB"/>
@@ -23,25 +28,36 @@
             </Routes>
         </Routing>
 
-        <RollingFile name="InfoFile" fileName="logs/info.csv"
-                     filePattern="logs/archive/info-%d{yyyy-MM-dd}-%i.csv.gz">
-            <PatternLayout charset="UTF-8"
-                           pattern="%d{yyyy-MM-dd HH:mm:ss},%-5level,%c{1},&quot;%m&quot;,&quot;%ex{full}&quot;%n"
-                           header="Time,Level,Logger,Message,Exception\n"/>
+
+        <RollingFile name="InfoFile"
+                     fileName="logs/level/INFO/info.json"
+                     filePattern="logs/level/INFO/archive/info-%d{yyyy-MM-dd}-%i.json.gz">
+            <JsonLayout
+                    complete="true"
+                    compact="false"
+                    eventEol="true"
+                    header="true"
+                    properties="true"
+                    includeStacktrace="true"/>
             <Filters>
                 <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="10MB"/>
+                <SizeBasedTriggeringPolicy size="1MB"/>
             </Policies>
         </RollingFile>
 
-        <RollingFile name="WarnFile" fileName="logs/warn.csv"
-                     filePattern="logs/archive/warn-%d{yyyy-MM-dd}-%i.csv.gz">
-            <PatternLayout charset="UTF-8"
-                           pattern="%d{yyyy-MM-dd HH:mm:ss},%-5level,%c{1},&quot;%m&quot;,&quot;%ex{full}&quot;%n"
-                           header="Time,Level,Logger,Message,Exception\n"/>
+        <RollingFile name="WarnFile"
+                     fileName="logs/level/WARN/warn.json"
+                     filePattern="logs/level/WARN/archive/warn-%d{yyyy-MM-dd}-%i.json.gz">
+            <JsonLayout
+                    complete="true"
+                    compact="false"
+                    eventEol="true"
+                    header="true"
+                    properties="true"
+                    includeStacktrace="true"/>
             <Filters>
                 <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
@@ -51,11 +67,16 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="ErrorFile" fileName="logs/error.csv"
-                     filePattern="logs/archive/error-%d{yyyy-MM-dd}-%i.csv.gz">
-            <PatternLayout charset="UTF-8"
-                           pattern="%d{yyyy-MM-dd HH:mm:ss},%-5level,%c{1},&quot;%m&quot;,&quot;%ex{full}&quot;%n"
-                           header="Time,Level,Logger,Message,Exception\n"/>
+        <RollingFile name="ErrorFile"
+                     fileName="logs/level/ERROR/error.json"
+                     filePattern="logs/level/ERROR/archive/error-%d{yyyy-MM-dd}-%i.json.gz">
+            <JsonLayout
+                    complete="true"
+                    compact="false"
+                    eventEol="true"
+                    header="true"
+                    properties="true"
+                    includeStacktrace="true"/>
             <Filters>
                 <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
@@ -64,11 +85,14 @@
                 <SizeBasedTriggeringPolicy size="10MB"/>
             </Policies>
         </RollingFile>
+
+
     </Appenders>
 
     <Loggers>
         <!-- AOP 로그를 RoutingAppender로 처리 -->
         <Logger name="org.scoula.common.aop" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="DomainRouting"/>
             <AppenderRef ref="InfoFile"/>
         </Logger>

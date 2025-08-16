@@ -4,12 +4,14 @@ import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 import org.scoula.security.config.SecurityConfig;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override

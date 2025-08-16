@@ -25,7 +25,6 @@ public class ControllerLogAspect {
 	@Around("execution(* org.scoula..*Controller.*(..))")
 	public Object logControllerMethodExecution(ProceedingJoinPoint joinPoint) throws Throwable {
 
-		// --- 로깅에 필요한 모든 정보를 try 블록 실행 전에 미리 확보 ---
 		long startTime = System.currentTimeMillis();
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes())
 			.getRequest();
@@ -35,38 +34,43 @@ public class ControllerLogAspect {
 		String httpMethod = request.getMethod();
 		String requestUri = request.getRequestURI();
 		String params = getRequestParams(request);
+
 		MethodSignature signature = (MethodSignature)joinPoint.getSignature();
 		String className = signature.getDeclaringType().getSimpleName();
 		String methodName = signature.getName();
 
+		// MDC / ThreadContext 설정
 		ThreadContext.put("domain", domainName);
-		log.info("▶▶▶ [REQUEST] {} {} | {}.{} | PARAMS: {}", httpMethod, requestUri, className, methodName, params);
+		ThreadContext.put("params", params);
+
+		log.info("▶▶▶ [REQUEST] {} {} | {}.{} 호출 시작", httpMethod, requestUri, className, methodName);
 
 		try {
-			// 대상 메소드 실행
 			Object result = joinPoint.proceed();
+			long executionTime = System.currentTimeMillis() - startTime;
 
-			long endTime = System.currentTimeMillis();
-			long executionTime = endTime - startTime;
+			// duration, return 별도 MDC 필드에 기록
+			ThreadContext.put("duration", String.valueOf(executionTime));
+			ThreadContext.put("return", String.valueOf(result));
 
-			log.info("◀◀◀ [RESPONSE] {} {} | RETURN: {} | DURATION: {}ms", httpMethod, requestUri, result,
-				executionTime);
+			log.info("◀◀◀ [RESPONSE] {} {} | {}.{} 호출 완료", httpMethod, requestUri, className, methodName);
+
 			return result;
 
 		} catch (Throwable e) {
-			// --- startTime을 포함한 모든 변수를 여기서도 안전하게 사용 가능 ---
-			long endTime = System.currentTimeMillis();
-			long executionTime = endTime - startTime;
+			long executionTime = System.currentTimeMillis() - startTime;
 
-			log.error("❌❌❌ [EXCEPTION] {} {} | EXCEPTION_TYPE: {} | DURATION: {}ms",
-				httpMethod, requestUri, e.getClass().getSimpleName(), executionTime, e);
+			ThreadContext.put("duration", String.valueOf(executionTime));
+			ThreadContext.put("exceptionType", e.getClass().getSimpleName());
+
+			log.error("XXX [EXCEPTION] {} {} | {}.{} 호출 중 예외 발생", httpMethod, requestUri, className, methodName, e);
 			throw e;
+
 		} finally {
 			ThreadContext.clearMap();
 		}
 	}
 
-	// HttpServletRequest의 파라미터를 문자열로 변환하는 헬퍼 메소드
 	private String getRequestParams(HttpServletRequest request) {
 		Map<String, String[]> paramMap = request.getParameterMap();
 		if (paramMap.isEmpty()) {
@@ -77,16 +81,23 @@ public class ControllerLogAspect {
 			.collect(Collectors.joining(", "));
 	}
 
-	// 클래스 이름에서 도메인 이름을 추출하는 헬퍼 메소드
 	private String extractDomainName(String fullClassName) {
-		// 예: "org.scoula.booking.controller.BookingController"
 		try {
-			String[] parts = fullClassName.split("\\."); // "." 기준으로 분리
-			if (parts.length > 2) {
-				return parts[2]; // "booking" 반환
+			// "org.scoula." 이후 부분만 가져오기
+			String basePackage = "org.scoula.";
+			if (fullClassName.startsWith(basePackage)) {
+				String remainder = fullClassName.substring(basePackage.length());
+				// 패키지를 . 기준으로 쪼개기
+				String[] parts = remainder.split("\\.");
+				for (String part : parts) {
+					// Controller 또는 Service 직전의 패키지를 domain으로 잡음
+					if (!part.toLowerCase().contains("controller") && !part.toLowerCase().contains("service")) {
+						return part;
+					}
+				}
 			}
 		} catch (Exception e) {
-			// 파싱 실패 시 기본값 반환
+			// 실패 시 기본값
 		}
 		return "unknown";
 	}

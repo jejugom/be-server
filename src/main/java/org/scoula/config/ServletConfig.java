@@ -2,6 +2,7 @@ package org.scoula.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -35,6 +36,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 	"org.scoula.news.controller",
 	"org.scoula.question.controller" // question 컨트롤러 추가
 }) //SPRING MVC용 컴포넌트 등록을 위한 스 캔 패키지
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class ServletConfig implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {

@@ -21,39 +21,57 @@ public class ServiceLogAspect {
 
 		MethodSignature signature = (MethodSignature)joinPoint.getSignature();
 		String fullClassName = signature.getDeclaringTypeName();
+		String domainName = extractDomainName(fullClassName);
 		String className = signature.getDeclaringType().getSimpleName();
 		String methodName = signature.getName();
 		String params = Arrays.toString(joinPoint.getArgs());
 
-		// --- 도메인명 추출 ---
-		String[] packageParts = fullClassName.split("\\.");
-		String domainName = packageParts.length >= 3 ? packageParts[2] : "unknown";
-
-		// --- ThreadContext에 도메인 세팅 (RoutingAppender에서 참조) ---
 		ThreadContext.put("domain", domainName);
+		ThreadContext.put("params", params);
 
 		long startTime = System.currentTimeMillis();
 
-		log.info("▶▶▶ [SERVICE] {}.{} | PARAMS: {}", className, methodName, params);
+		log.info("▶▶▶ [SERVICE] {}.{} 호출 시작", className, methodName);
 
 		try {
 			Object result = joinPoint.proceed();
-
 			long executionTime = System.currentTimeMillis() - startTime;
 
-			log.info("◀◀◀ [SERVICE] {}.{} | RETURN: {} | DURATION: {}ms", className, methodName, result,
-				executionTime);
+			ThreadContext.put("duration", String.valueOf(executionTime));
+			ThreadContext.put("return", String.valueOf(result));
 
+			log.info("◀◀◀ [SERVICE] {}.{} 호출 완료", className, methodName);
 			return result;
 
 		} catch (Throwable e) {
 			long executionTime = System.currentTimeMillis() - startTime;
-			log.error("❌❌❌ [SERVICE] {}.{} | EXCEPTION_TYPE: {} | DURATION: {}ms", className, methodName,
-				e.getClass().getSimpleName(), executionTime, e);
+
+			ThreadContext.put("duration", String.valueOf(executionTime));
+			ThreadContext.put("exceptionType", e.getClass().getSimpleName());
+
+			log.error("XXX [SERVICE] {}.{} 호출 중 예외 발생", className, methodName, e);
 			throw e;
 
 		} finally {
-			ThreadContext.clearMap(); // 다른 요청에 영향 안 가도록 ThreadContext 초기화
+			ThreadContext.clearMap();
 		}
+	}
+
+	private String extractDomainName(String fullClassName) {
+		try {
+			String basePackage = "org.scoula.";
+			if (fullClassName.startsWith(basePackage)) {
+				String remainder = fullClassName.substring(basePackage.length());
+				String[] parts = remainder.split("\\.");
+				for (String part : parts) {
+					if (!part.toLowerCase().contains("controller") && !part.toLowerCase().contains("service")) {
+						return part;
+					}
+				}
+			}
+		} catch (Exception e) {
+			// 실패 시 기본값
+		}
+		return "unknown";
 	}
 }

@@ -40,33 +40,8 @@ import lombok.extern.log4j.Log4j2;
 	"org.scoula.statistics.mapper",
 	"org.scoula.View.Event.mapper"
 })
-@ComponentScan(basePackages = {
-	"org.scoula.user.service",
-	"org.scoula.asset.service",
-	"org.scoula.recommend.service",
-	"org.scoula.faq.service",
-	"org.scoula.branch.service",
-	"org.scoula.booking.service",
-	"org.scoula.View.codef.util",
-	"org.scoula.View.codef.service",
-	"org.scoula.View.codef.dto",
-	"org.scoula.product.service",
-	"org.scoula.View.home.service",
-	"org.scoula.auth.service",
-	"org.scoula.product.service",
-	"org.scoula.sms.service",
-	"org.scoula.View.preference.service",
-	"org.scoula.gift.service",
-	"org.scoula.news.service",
-	"org.scoula.gpt.service",
-	"org.scoula.statistics.service",
-	"org.scoula.statistics.scheduler",
-	"org.scoula.View.Event.Service",
-	"org.scoula.news.service",
-	"org.scoula.question.service",
-	"org.scoula.common.aop"
-})
-@EnableAspectJAutoProxy
+@ComponentScan(basePackages = "org.scoula")
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @Log4j2
 @EnableTransactionManagement
 /***
