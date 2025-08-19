@@ -24,9 +24,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2      // Swagger 2.0 활성화
 public class SwaggerConfig {
 	// API 문서 메타 정보 상수
-	private final String API_NAME = "Board API";
+	private final String API_NAME = "노후도락 사용자 서버";
 	private final String API_VERSION = "1.0";
-	private final String API_DESCRIPTION = "Board API 명세서";
+	private final String API_DESCRIPTION = "노후도락 사용자 서버 API 명세서";
 
 	/**
 	 * API 문서 기본 정보 설정
