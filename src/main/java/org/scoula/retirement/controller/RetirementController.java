@@ -41,7 +41,6 @@ public class RetirementController {
 	private final AssetStatusService assetStatusService;
 	private final ProductService productService;
 	private final CustomRecommendService customRecommendService;
-	private final ProductMapper productMapper;
 	private final NewsService newsService;
 
 	@ApiOperation(value = "노후 메인 페이지 데이터 조회", notes = "현재 로그인한 사용자의 노후 메인 페이지에 필요한 모든 데이터를 조회합니다.")

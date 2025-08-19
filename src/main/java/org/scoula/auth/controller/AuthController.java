@@ -62,7 +62,7 @@ public class AuthController {
 			// ResponseCookie 빌더를 사용하여 쿠키 생성
 			ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", loginResponse.getAccessToken())
 				.path("/")
-				.maxAge(10) // 1시간으로 수정
+				.maxAge(10) // 1시간
 				.httpOnly(true)
 				.secure(true)
 				.sameSite("Lax")

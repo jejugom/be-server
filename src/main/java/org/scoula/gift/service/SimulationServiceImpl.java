@@ -198,7 +198,7 @@ public class SimulationServiceImpl implements SimulationService {
 	}
 
 	/**
-	 * [수정] 수증자 관련 모든 전략을 통합하여 검사하는 메서드
+	 * 수증자 관련 모든 전략을 통합하여 검사하는 메서드
 	 */
 	private void checkRecipientRules(List<StrategyVo> matchedRules, List<StrategyVo> rules, TaxCalculationResult taxResult, SimulationRequestDto requestDto) {
 		if (rules == null) return;

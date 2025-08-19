@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService, UserAssetUpdater {
   @Override
   public void updateUser(String email, UserDto userDto) {
     UserVo user = Optional.ofNullable(userMapper.findByEmail(email))
-        .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다: " + email));
+        .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다: " + email));
 
     // DTO의 정보로 기존 VO 객체의 상태를 업데이트
     user.setUserName(userDto.getUserName());

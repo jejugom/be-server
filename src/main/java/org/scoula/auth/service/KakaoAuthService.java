@@ -340,7 +340,7 @@ public class KakaoAuthService {
 
 		// 2. 저장된 토큰과 일치하는지 검증
 		if (storedToken == null || !storedToken.getTokenValue().equals(refreshToken)) {
-			throw new RuntimeException("Invalid Refresh Token");
+			throw new RuntimeException("유호하지 않은 리프래시 토큰입니다.");
 		}
 
 		// 3. 새로운 토큰 쌍 생성
