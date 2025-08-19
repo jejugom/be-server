@@ -7,7 +7,6 @@ import org.scoula.statistics.dto.ProductClickStatsDto;
 import org.scoula.statistics.mapper.ProductClickLogMapper;
 import org.scoula.statistics.service.BankServerApiClient;
 import org.scoula.statistics.service.StatsSendHistoryService;
-import org.scoula.statistics.service.ProductClickStatsService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,6 @@ public class ProductClickStatsScheduler {
 	private final ProductClickLogMapper logMapper;
 	private final BankServerApiClient bankServerApiClient;
 	private final StatsSendHistoryService sendHistoryService;
-	private final ProductClickStatsService clickStatsService;
 
 	/**
 	 * 매주 월요일 자정, 스케줄러 실행

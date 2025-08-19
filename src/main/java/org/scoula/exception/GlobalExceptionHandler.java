@@ -13,7 +13,11 @@ import lombok.extern.log4j.Log4j2;
 @RestControllerAdvice
 @Log4j2
 public class GlobalExceptionHandler {
-	//카카오 등 외부 요청 실패
+	/**
+	 * 외부 API 요청 실패 시 처리 (예: 카카오 API 등)
+	 * @param error HttpClientErrorException 객체
+	 * @return 외부 요청 오류에 대한 적절한 에러 응답
+	 */
 	@ExceptionHandler(HttpClientErrorException.class)
 	public ResponseEntity<ErrorResponse> handleHttpClientError(HttpClientErrorException error) {
 		log.error("Http client Error: {}", error.getMessage());
@@ -25,15 +29,22 @@ public class GlobalExceptionHandler {
 			.body(new ErrorResponse("외부 서버 통신 장애", error.getResponseBodyAsString()));
 	}
 
+	/**
+	 * 사용자가 권한이 없는 리소스에 접근할 때 발생
+	 * @param ex UserAccessDeniedException 객체
+	 * @return 403 Forbidden 에러 응답
+	 */
 	@ExceptionHandler(UserAccessDeniedException.class)
 	public ResponseEntity<ErrorResponse> handleCustomAccessDenied(UserAccessDeniedException ex) {
 		log.warn("Access denied: {}", ex.getMessage());
 		ErrorResponse response = new ErrorResponse("FORBIDDEN", ex.getMessage());
-		return new ResponseEntity<>(response, HttpStatus.FORBIDDEN); // 403 Forbidden
+		return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 	}
 
 	/**
-	 * 유효하지 않은 예약 날짜 요청을 처리하는 핸들러
+	 * 잘못된 예약 날짜를 요청했을 때 발생
+	 * @param ex InvalidBookingDateException 객체
+	 * @return 400 Bad Request 에러 응답
 	 */
 	@ExceptionHandler(InvalidBookingDateException.class)
 	public ResponseEntity<ErrorResponse> handleInvalidBookingDate(InvalidBookingDateException ex) {
@@ -131,6 +142,11 @@ public class GlobalExceptionHandler {
 			.body(new ErrorResponse("서버 내부 오류", error.getMessage()));
 	}
 
+	/**
+	 * HTTP 요청 바디가 올바른 JSON 형식이 아닌 경우 발생
+	 * @param error 예외 객체
+	 * @return 잘못된 JSON 포맷에 대한 에러 응답
+	 */
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorResponse> handleInvalidFormat(HttpMessageNotReadableException error) {
 		log.error("잘못된 Json Format", error.getMessage(), error);
@@ -138,18 +154,28 @@ public class GlobalExceptionHandler {
 			.body(new ErrorResponse("잘못된 JSON 포맷", error.getMessage()));
 	}
 
+	/**
+	 * 요청한 자산이 존재하지 않을 때 발생
+	 * @param ex AssetNotFoundException 객체
+	 * @return 404 Not Found 에러 응답
+	 */
 	@ExceptionHandler(AssetNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleAssetNotFound(AssetNotFoundException ex) {
 		log.warn("Asset not found: {}", ex.getMessage());
 		ErrorResponse response = new ErrorResponse("ASSET_NOT_FOUND", ex.getMessage());
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 Not Found
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
+	/**
+	 * 요청한 예약이 존재하지 않을 때 발생
+	 * @param ex BookingNotFoundException 객체
+	 * @return 404 Not Found 에러 응답
+	 */
 	@ExceptionHandler(BookingNotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleBookingNotFound(BookingNotFoundException ex) {
 		log.warn("Booking not found: {}", ex.getMessage());
 		ErrorResponse response = new ErrorResponse("BOOKING_NOT_FOUND", ex.getMessage());
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 Not Found
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 }
 

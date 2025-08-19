@@ -73,6 +73,12 @@ public interface UserMapper {
 	 */
 	long countUsersWithMoreAsset(@Param("asset") Long asset);
 
+	/**
+	 * 특정 사용자의 포인트를 증가 또는 감소시킵니다.
+	 *
+	 * @param email 포인트를 변경할 사용자 이메일
+	 * @param delta 변경할 포인트 값 (양수면 증가, 음수면 감소)
+	 * @return 업데이트된 레코드 수
+	 */
 	int addPoint(@Param("email") String email, @Param("delta") int delta);
-
 }
