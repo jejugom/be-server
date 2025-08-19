@@ -23,7 +23,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration        // Spring 설정 클래스임을 명시
 @EnableSwagger2      // Swagger 2.0 활성화
 public class SwaggerConfig {
-
 	// API 문서 메타 정보 상수
 	private final String API_NAME = "Board API";
 	private final String API_VERSION = "1.0";

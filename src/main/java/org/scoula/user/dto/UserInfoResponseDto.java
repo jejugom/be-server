@@ -9,6 +9,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * 사용자 기본 정보 조회 응답 DTO
+ *
+ * - UserVo 객체를 기반으로 API 응답 형태로 변환
+ * - 생년월일(Date)을 "yyyy-MM-dd" 형식 문자열로 변환
+ */
 @Data
 @Builder
 @ApiModel(description = "사용자 기본 정보 조회 응답 DTO")
@@ -24,8 +30,14 @@ public class UserInfoResponseDto {
 	private String userPhone;
 
 	@ApiModelProperty(value = "생년월일", example = "1995-08-07")
-	private String birth; // Date -> String
+	private String birth; // Date -> String 변환
 
+	/**
+	 * UserVo -> UserInfoResponseDto 변환 메서드
+	 *
+	 * @param user 사용자 정보 VO
+	 * @return UserInfoResponseDto 객체
+	 */
 	public static UserInfoResponseDto of(UserVo user) {
 		String formattedBirth = null;
 		if (user.getBirth() != null) {

@@ -73,5 +73,11 @@ public interface UserService {
 	 */
 	MyPageResponseDto getMyPageData(String email);
 
+	/**
+	 * 특정 사용자의 포인트를 증가 또는 감소시킵니다.
+	 *
+	 * @param email 포인트를 변경할 사용자 이메일
+	 * @param delta 변경할 포인트 값 (양수면 증가, 음수면 감소)
+	 */
 	void addPoint(String email, int delta);
 }

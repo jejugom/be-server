@@ -4,5 +4,5 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 
 // Spring Security 필터 등록
 public class SecurityInitializer extends AbstractSecurityWebApplicationInitializer {
-	// Dispatcher 진입 전에 Spring security 필터 체인으로 먼저 진입하게끔 함 ( 아마도. )
+	// Dispatcher 진입 전에 Spring security 필터 체인으로 먼저 진입하게끔 함
 }

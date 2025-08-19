@@ -101,12 +101,6 @@ public interface BookingMapper {
 	List<BookingVo> findUpcomingByUserEmail(String email);
 
 	/**
-	 * 예약 ID로 예약의 상세 정보(상품명, 지점명 등)를 함께 조회합니다. (N+1 문제 해결용)
-	 * @param bookingId 조회할 예약의 ULID
-	 * @return 상품명과 지점명이 포함된 예약 정보 객체
-	 */
-
-	/**
 	 * 특정 날짜와 지점의 총 예약 건수를 조회합니다.
 	 * @param branchId 지점 ID
 	 * @param date 날짜
@@ -114,5 +108,10 @@ public interface BookingMapper {
 	 */
 	int countByBranchAndDate(@Param("branchId") int branchId, @Param("date") Date date);
 
+	/**
+	 * 특정 사용자의 과거 예약을 삭제합니다.
+	 * @param email 사용자 이메일
+	 * @param today 기준 날짜 (오늘)
+	 */
 	void deletePastBookingsByEmail(@Param("email") String email, @Param("today") LocalDate today);
 }

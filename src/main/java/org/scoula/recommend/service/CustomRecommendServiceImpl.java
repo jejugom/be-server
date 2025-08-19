@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.scoula.product.service.ProductService;
-import org.scoula.recommend.dto.CustomRecommendDto;
-import org.scoula.recommend.mapper.CustomRecommendMapper;
-
 import org.scoula.product.domain.ProductVo;
 import org.scoula.product.mapper.ProductMapper;
+import org.scoula.product.service.ProductService;
 import org.scoula.recommend.domain.CustomRecommendVo;
+import org.scoula.recommend.dto.CustomRecommendDto;
+import org.scoula.recommend.mapper.CustomRecommendMapper;
 import org.scoula.user.dto.UserDto;
 import org.scoula.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -22,22 +21,22 @@ import lombok.RequiredArgsConstructor;
 public class CustomRecommendServiceImpl implements CustomRecommendService {
 
 	private final CustomRecommendMapper customRecommendMapper;
- 	private final UserService userService;
- 	private final ProductService productService;
+	private final UserService userService;
+	private final ProductService productService;
 
- 	@Override
- 	public List<CustomRecommendDto> getCustomRecommendsByEmail(String email) {
- 		List<CustomRecommendVo> recommendList = customRecommendMapper.getCustomRecommendsByEmail(email);
+	@Override
+	public List<CustomRecommendDto> getCustomRecommendsByEmail(String email) {
+		List<CustomRecommendVo> recommendList = customRecommendMapper.getCustomRecommendsByEmail(email);
 
- 		// 추천 목록이 없는 초기 사용자를 위해 임시 데이터를 반환하는 로직
- 		if (recommendList == null || recommendList.isEmpty()) {
- 			return createTemporaryRecommendData();
- 		}
+		// 추천 목록이 없는 초기 사용자를 위해 임시 데이터를 반환하는 로직
+		if (recommendList == null || recommendList.isEmpty()) {
+			return createTemporaryRecommendData();
+		}
 
- 		return recommendList.stream()
- 			.map(CustomRecommendDto::of)
- 			.collect(Collectors.toList());
- 	}
+		return recommendList.stream()
+			.map(CustomRecommendDto::of)
+			.collect(Collectors.toList());
+	}
 
 	/**
 	 * 사용자의 성향/자산 정보를 기반으로 모든 상품과의 유사도를 계산하여
@@ -46,6 +45,7 @@ public class CustomRecommendServiceImpl implements CustomRecommendService {
 	 */
 
 	private final ProductMapper productMapper;
+
 	@Override
 	public void addCustomRecommend(String email) {
 
@@ -97,7 +97,6 @@ public class CustomRecommendServiceImpl implements CustomRecommendService {
 			customRecommendMapper.insertCustomRecommend(recommendVoList.get(i));
 		}
 	}
-
 
 	/**
 	 * 두 벡터(사용자, 상품) 간의 코사인 유사도를 계산합니다.
