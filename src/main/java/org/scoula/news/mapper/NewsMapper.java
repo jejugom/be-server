@@ -16,4 +16,6 @@ public interface NewsMapper {
   void updateNews(NewsVo news);
 
   List<NewsVo> findAll();
+
+  void deleteByCategory(int i);
 }

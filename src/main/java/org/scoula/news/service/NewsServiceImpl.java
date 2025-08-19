@@ -1,12 +1,8 @@
 package org.scoula.news.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
@@ -106,7 +102,10 @@ public class NewsServiceImpl implements NewsService {
         }
       }
 
-      // 카테고리 0: 최신 기사 5건 저장(중복은 upsert로 갱신)
+      // 1. 기존 category 0번 뉴스 전체 삭제
+      newsMapper.deleteByCategory(0);
+
+      // 2. 최신 기사 5건 저장
       int maxCount = Math.min(newsList.size(), 5);
       for (int i = 0; i < maxCount; i++) {
         Element news = newsList.get(i);
@@ -116,10 +115,10 @@ public class NewsServiceImpl implements NewsService {
         String date = news.select(".info .mdate").text();
 
         NewsVo newNews = new NewsVo(null, 0, title, link, date, summary, null);
-        newsMapper.upsertNews(newNews); // ← 핵심: category+link 기반 UPSERT
+        newsMapper.insertNews(newNews); // upsert 대신 insert를 사용
       }
       updatedCategories.add(0);
-
+      
     } catch (IOException e) {
       log.error("IOException occurred while crawling and saving news", e);
     }
@@ -132,5 +131,10 @@ public class NewsServiceImpl implements NewsService {
         .map(n -> new NewsDto(n.getCategory(), n.getTitle(), n.getLink(), n.getDate(),
             n.getSummary()))
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public void deleteNewsByCategory(int category) {
+    newsMapper.deleteByCategory(category);
   }
 }
