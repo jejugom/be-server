@@ -45,4 +45,8 @@
     WHERE category = #{category}
   </update>
 
+  <delete id="deleteByCategory">
+    DELETE FROM news WHERE category = #{category}
+  </delete>
+
 </mapper>
